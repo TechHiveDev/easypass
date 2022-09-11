@@ -1,10 +1,20 @@
+import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import path from "path";
 import cookieParser from "cookie-parser";
 import logger from "morgan";
 import errors from "./src/utils/error/errorHandler.middlerware";
-import swagger from "./src/utils/swaggerDocs/swagger.middleware";
+import swagger from "./src/utils/swagger-docs/swagger.middleware";
+import passport from "passport";
+import cookieSession from "cookie-session";
+import { cookiesConfigs, corsConfigs } from "./src/utils/configs/configs";
+
+// ------------------------------------------------------
+
+// Auth
+import authRouter from "./src/utils/auth/passport/passport.router.auth";
+import passportAuthenticate from "./src/utils/auth/passport/passport.auth";
 
 // ------------------------------------------------------
 
@@ -23,13 +33,24 @@ const app = express();
 
 // ------------------------------------------------------
 
-// Middlewares
-app.use(cors());
+// Middlewares ( web )
+app.use(cors(corsConfigs));
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
+app.use(cookieSession(cookiesConfigs));
+app.use(passport.initialize());
+app.use(passport.session());
+
+// ------------------------------------------------------
+
+// Auth Router ( login / register )
+app.use(authRouter);
+
+// Auth Passport Protect Middleware
+app.use(passportAuthenticate(passport));
 
 // ------------------------------------------------------
 
@@ -41,6 +62,8 @@ app.use(invitationController);
 app.use(scanController);
 app.use(deviceController);
 app.use(_exampleController);
+
+// ------------------------------------------------------
 
 // Swagger Documentaion Middleware
 app.use("/api-docs", swagger.server, swagger.setup); // Docs

@@ -15,23 +15,6 @@ generator client {
 
 // Data Model
 
-model Compound {
-  id       Int     @id @default(autoincrement())
-  name     String
-  logoUrl  String?
-  location String?
-  settings Json?
-
-  users       UserCompound[]
-  invitations Invitation[]
-  Device      Device[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-
 model User {
   id       Int      @id @default(autoincrement())
   email    String   @unique
@@ -51,9 +34,28 @@ model User {
 
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
+model Compound {
+  id       Int     @id @default(autoincrement())
+  name     String
+  logoUrl  String?
+  location String?
+  settings Json?
+
+  users       UserCompound[]
+  invitations Invitation[]
+  Device      Device[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
 model UserCompound {
-  id      Int   @id @default(autoincrement())
-  address Json?
+  id          Int    @id @default(autoincrement())
+  streetName  String
+  blockNumber Int
+  unitNumber  Int
 
   userId Int
   user   User @relation(fields: [userId], references: [id])

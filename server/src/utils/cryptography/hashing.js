@@ -10,7 +10,7 @@ import bcrypt from "bcrypt";
  * @param {*} str
  * @returns
  */
-const hash = async (str) => {
+const hash0 = async (str) => {
   return new Promise((resolve, reject) => {
     try {
       const algorithm = "sha256"; // should be at env
@@ -30,7 +30,7 @@ const hash = async (str) => {
  * @param {*} str
  * @returns
  */
-const verifyHash = async (str, hashedStr) => {
+const verifyHash0 = async (str, hashedStr) => {
   return new Promise(async (resolve, reject) => {
     try {
       const newHashed = await hash(str);
@@ -40,6 +40,42 @@ const verifyHash = async (str, hashedStr) => {
       reject(err);
     }
   });
+};
+
+// ============================================================
+
+/**
+ * this hash function because of migration from flask
+ * werkzeug generate hash password password
+ * @param { password, salt, iterations, keylength, algorithm }
+ * @returns hash of pbkdf2  sha256 of length 32
+ */
+
+const hash = ({
+  password,
+  salt = crypto.randomBytes(4).toString("hex"),
+  iterations = 150000,
+  keylength = 32,
+  algorithm = "sha256",
+}) => {
+  const hashed = crypto
+    .pbkdf2Sync(password, salt, iterations, keylength, algorithm)
+    .toString("hex");
+  return `pbkdf2:${algorithm}:${iterations}$${salt}$${hashed}`;
+};
+
+// ============================================================
+
+const verifyHash = ({ password, hashed }) => {
+  if (!hashed) return false;
+  const [_, __, iterationsSaltHashedKey] = hashed?.split(":");
+  if (!iterationsSaltHashedKey) return false;
+
+  const [iterations, salt, hashedKey] = iterationsSaltHashedKey?.split("$");
+  if (!iterations || !salt || !hashedKey) return false;
+
+  const newHashedPassword = hash({ password, salt });
+  return newHashedPassword === hashed;
 };
 
 // ============================================================
