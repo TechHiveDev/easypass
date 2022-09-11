@@ -1,0 +1,136 @@
+// Data source
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// Generator
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// ===============================================================
+
+// Data Model
+
+model Compound {
+  id       Int     @id @default(autoincrement())
+  name     String
+  logoUrl  String?
+  location String?
+  settings Json?
+
+  users       UserCompound[]
+  invitations Invitation[]
+  Device      Device[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+model User {
+  id       Int      @id @default(autoincrement())
+  email    String   @unique
+  name     String?
+  password String
+  type     UserType
+  photoUrl String?
+  phone    String?  @unique
+  docs     Json?
+
+  userCompound UserCompound[]
+  Invitation   Invitation[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+model UserCompound {
+  id      Int   @id @default(autoincrement())
+  address Json?
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+
+  compoundId Int
+  compound   Compound @relation(fields: [compoundId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+model Invitation {
+  id        Int            @id @default(autoincrement())
+  name      String?
+  docs      Json?
+  type      InvitationType
+  notes     String?
+  expiresAt DateTime?
+
+  compoundId Int
+  compound   Compound @relation(fields: [compoundId], references: [id])
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+
+  Scan Scan[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+model Scan {
+  id Int @id @default(autoincrement())
+
+  invitationId Int
+  invitation   Invitation @relation(fields: [invitationId], references: [id])
+
+  deviceId Int
+  device   Device @relation(fields: [deviceId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+model Device {
+  id Int     @id @default(autoincrement())
+  ip String?
+
+  compoundId Int
+  compound   Compound? @relation(fields: [compoundId], references: [id])
+
+  Scan Scan[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+enum UserType {
+  SuperAdmin
+  Admin
+  Resident
+  Security
+}
+
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+enum InvitationType {
+  Visitor
+  Delivery
+}
+
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
