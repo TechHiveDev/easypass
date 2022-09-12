@@ -98,7 +98,19 @@
 // ------------------------------------------------------------------
 
 import { crud, prismaCrud } from "../../utils/crud/express-crud-router";
+import scanService from "./scan.service";
 
 // ------------------------------------------------------------------
 
-export default crud("/scan", prismaCrud("scan"));
+const crudController = {
+  ...prismaCrud("scan"),
+  //   getList: exampleService.getList,
+  // getOne: id => Promise,
+  create: (body) => scanService.create(body),
+  update: (id, body) => null,
+  // destroy: id => Promise ,
+};
+
+// ------------------------------------------------------------------
+
+export default crud("/scan", crudController);

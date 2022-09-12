@@ -64,6 +64,7 @@ CREATE TABLE `Scan` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `invitationId` INTEGER NOT NULL,
     `deviceId` INTEGER NOT NULL,
+    `success` BOOLEAN NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
 

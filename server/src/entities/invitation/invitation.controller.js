@@ -104,7 +104,19 @@
 // ------------------------------------------------------------------
 
 import { crud, prismaCrud } from "../../utils/crud/express-crud-router";
+import invitationService from "./invitation.service";
 
 // ------------------------------------------------------------------
 
-export default crud("/invitation", prismaCrud("invitation"));
+const crudController = {
+  ...prismaCrud("invitation"),
+  //   getList: exampleService.getList,
+  // getOne: id => Promise,
+  create: (body) => invitationService.create(body),
+  update: (id, body) => null,
+  // destroy: id => Promise ,
+};
+
+// ------------------------------------------------------------------
+
+export default crud("/invitation", crudController);
