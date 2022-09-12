@@ -107,8 +107,9 @@ model Scan {
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
 model Device {
-  id Int     @id @default(autoincrement())
-  ip String?
+  id   Int     @id @default(autoincrement())
+  name String?
+  ip   String?
 
   compoundId Int
   compound   Compound? @relation(fields: [compoundId], references: [id])

@@ -8,6 +8,7 @@
     "build": "babel ./bin/www.js -d dist",
     "dev": "nodemon --exec babel-node ./bin/www.js",
     "migrate-database": "npx prisma migrate dev",
+    "seed-database": "node ./src/utils/database/seed.database.js",
     "prisma-studio": "npx prisma studio"
   },
   "dependencies": {

@@ -73,6 +73,7 @@ CREATE TABLE `Scan` (
 -- CreateTable
 CREATE TABLE `Device` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(191) NULL,
     `ip` VARCHAR(191) NULL,
     `compoundId` INTEGER NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
