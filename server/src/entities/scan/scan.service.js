@@ -29,7 +29,6 @@
 
 // ------------------------------------------------------------
 
-import lodash from "lodash";
 import { decryptWithPrivateKey } from "../../utils/cryptography/cryptography";
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient({
@@ -43,26 +42,24 @@ const prisma = new PrismaClient({
 
 const scanService = {
   create: async (body) => {
-    const decryptedInvitation = decryptWithPrivateKey(body.invitation);
+    try {
+      const decryptedInvitation = decryptWithPrivateKey(body.invitation);
 
-    const invitation = await prisma.invitation.findUnique({
-      where: { id: decryptedInvitation.id },
-    });
+      const invitation = await prisma.invitation.findUnique({
+        where: { id: decryptedInvitation?.id },
+      });
 
-    console.log(
-      { decryptedInvitation },
-      { invitation },
-      JSON.stringify(invitation) === JSON.stringify(decryptedInvitation)
-    );
-
-    return prisma.scan.create({
-      data: {
-        deviceId: body.deviceId,
-        invitationId: decryptedInvitation.id,
-        success:
-          JSON.stringify(invitation) === JSON.stringify(decryptedInvitation),
-      },
-    });
+      return prisma.scan.create({
+        data: {
+          deviceId: body.deviceId,
+          invitationId: decryptedInvitation.id,
+          success:
+            JSON.stringify(invitation) === JSON.stringify(decryptedInvitation),
+        },
+      });
+    } catch (error) {
+      throw { message: error };
+    }
   },
 };
 
