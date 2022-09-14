@@ -57,6 +57,11 @@ app.use(qrcodeRouter);
 
 // ------------------------------------------------------
 
+// Swagger Documentaion Middleware
+app.use("/api-docs", swagger.server, swagger.setup); // Docs
+
+// ------------------------------------------------------
+
 // Auth Router ( login / register )
 app.use(authRouter);
 
@@ -73,11 +78,6 @@ app.use(invitationController);
 app.use(scanController);
 app.use(deviceController);
 app.use(_exampleController);
-
-// ------------------------------------------------------
-
-// Swagger Documentaion Middleware
-app.use("/api-docs", swagger.server, swagger.setup); // Docs
 
 // ------------------------------------------------------
 

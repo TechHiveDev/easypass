@@ -7,6 +7,7 @@
     "serve": "yarn build && node dist/app.js",
     "build": "babel ./bin/www.js -d dist",
     "dev": "nodemon --exec babel-node ./bin/www.js",
+    "inital-migrate-database": "sudo rm -r -f ./prisma/migrations && npx prisma migrate dev",
     "migrate-database": "npx prisma migrate dev",
     "seed-database": "node ./src/utils/database/seed.database.js",
     "generate-RSA-keys": "node ./src/utils/cryptography/test/generateRSAKeys.test.js",
@@ -14,6 +15,7 @@
   },
   "dependencies": {
     "@prisma/client": "^3.10.0",
+    "ajv": "^8.11.0",
     "axios": "^0.27.2",
     "bcrypt": "^5.0.1",
     "cookie-parser": "~1.4.4",

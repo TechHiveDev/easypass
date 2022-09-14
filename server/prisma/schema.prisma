@@ -18,11 +18,11 @@ generator client {
 model User {
   id       Int      @id @default(autoincrement())
   email    String   @unique
-  name     String?
+  name     String
   password String
   type     UserType
   photoUrl String?
-  phone    String?  @unique
+  phone    String   @unique
   docs     Json?
 
   userCompound UserCompound[]
@@ -36,7 +36,7 @@ model User {
 
 model Compound {
   id       Int     @id @default(autoincrement())
-  name     String
+  name     String  @unique
   logoUrl  String?
   location String?
   settings Json?

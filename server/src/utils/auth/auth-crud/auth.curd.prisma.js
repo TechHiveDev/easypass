@@ -19,46 +19,96 @@
 
 import { hash, verifyHash } from "../../cryptography/hashing";
 import jwt from "jsonwebtoken";
-import { PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient({ log: ["info" /* "query" */] });
-
 import nodemailer from "nodemailer";
+import { PrismaClient } from "@prisma/client";
+
 // ---------------------------------------------------------
 
-export const createUserAndAddress = async (data) => {
-  if (data.type === "Resident") {
-    const address = {
-      compoundId: data.compoundId,
-      streetName: data.streetName,
-      blockNumber: data.blockNumber,
-      unitNumber: data.unitNumber,
-    };
+const prisma = new PrismaClient({ log: ["info" /* "query" */] });
 
-    // to create user successfully
-    delete data.compoundId;
-    delete data.streetName;
-    delete data.blockNumber;
-    delete data.unitNumber;
+// ---------------------------------------------------------
 
-    // ----------------------------
+export const createUserAndAddress = async (payload) => {
+  const expectedUserBody = ["email", "name", "password", "phone", "type"];
 
-    return prisma.user.create({
-      data: {
-        ...data,
-        password: hash({ password: data.password }),
-        userCompound: {
-          create: [address],
+  const expectedResiendtBody = [
+    "compoundName",
+    "streetName",
+    "blockNumber",
+    "unitNumber",
+  ];
+
+  // check the body is verfied ( need joi validation )
+  for (let item of expectedUserBody) {
+    if (item && !payload[item]) {
+      throw { status: 400, message: `${i} is required!` };
+    }
+  }
+
+  const { type } = payload;
+
+  // check resident address is completed
+  if (type === "Resident") {
+    for (let item of expectedResiendtBody) {
+      console.log(item, payload[item]);
+      if (item && !payload[item]) {
+        throw { status: 400, message: `${i} is required!` };
+      }
+    }
+  }
+
+  // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+  const {
+    email,
+    name,
+    phone,
+    password,
+    compoundName,
+    streetName,
+    blockNumber,
+    unitNumber,
+  } = payload;
+
+  const compound = await prisma.compound.findFirst({
+    where: {
+      name: compoundName,
+    },
+  });
+
+  if (!compound?.id) {
+    throw { status: 400, message: "No Compound with this name" };
+  }
+
+  let compundUserPayload = {};
+
+  // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+  if (type === "Resident") {
+    compundUserPayload = {
+      userCompound: {
+        create: {
+          compoundId: compound?.id,
+          streetName,
+          blockNumber: +blockNumber,
+          unitNumber: +unitNumber,
         },
       },
-    });
-  } else {
-    return prisma.user.create({
-      data: {
-        ...data,
-        password: hash({ password: data.password }),
-      },
-    });
+    };
   }
+
+  // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+  return prisma.user.create({
+    data: {
+      name,
+      email,
+      phone,
+      type,
+      password: hash({ password }),
+      ...compundUserPayload,
+    },
+  });
 };
 
 // ---------------------------------------------------------
@@ -104,24 +154,22 @@ export const findOrCreateGithubUser = async (payload) => {
  * @param {*} email , password
  * @returns  user , services , accessToken
  */
-export const login = async ({ email, phone, id, password }) => {
-  const user = email
-    ? await prisma.user.findUnique({ where: { email } })
-    : phone
-    ? await prisma.user.findUnique({ where: { phone } })
-    : await prisma.user.findUnique({ where: { id: parseInt(id) } });
+export const login = async ({ email, password }) => {
+  const user = await prisma.user.findUnique({ where: { email } });
 
-  if (!user) return "notFound";
+  // Handle errors ( will be catched by error handler)
+  if (!user) throw { status: 404, message: "User Not Found" };
 
-  if (user.deleted) return "deleted";
+  if (user.deleted) throw { status: 403, message: "User has been deleted" };
 
   if (!verifyHash({ password, hashed: user.password })) {
-    return "invalidPassword";
+    throw { status: 401, message: "Un-Authenticated" };
   }
 
-  // forever access token ( just bad shit beacuase of screens )
+  console.log("he", process.env.jwtExpires);
+
   const accessToken = jwt.sign(user, process.env.jwtSecret, {
-    expiresIn: "9999 years",
+    expiresIn: process.env.jwtExpires,
   });
 
   return { user, accessToken };
