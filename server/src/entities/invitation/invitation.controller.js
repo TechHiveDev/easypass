@@ -117,6 +117,7 @@ const crudController = {
   // destroy: id => Promise ,
 };
 
+
 // ------------------------------------------------------------------
 
 export default crud("/invitation", crudController);

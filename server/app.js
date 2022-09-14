@@ -9,6 +9,7 @@ import swagger from "./src/utils/swagger-docs/swagger.middleware";
 import passport from "passport";
 import cookieSession from "cookie-session";
 import { cookiesConfigs, corsConfigs } from "./src/utils/configs/configs";
+import ejs from "ejs";
 
 // ------------------------------------------------------
 
@@ -26,6 +27,7 @@ import invitationController from "./src/entities/invitation/invitation.controlle
 import scanController from "./src/entities/scan/scan.controller.js";
 import deviceController from "./src/entities/device/device.controller.js";
 import _exampleController from "./src/entities/_example/_example.controller.js";
+import qrcodeRouter from "./src/utils/QRCode/qrcode.router";
 
 // ------------------------------------------------------
 
@@ -43,6 +45,15 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(cookieSession(cookiesConfigs));
 app.use(passport.initialize());
 app.use(passport.session());
+
+// ------------------------------------------------------
+
+// set ejs engine
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
+
+// QRCode Route {{basepath}}/guest/:encryptedInvitation
+app.use(qrcodeRouter);
 
 // ------------------------------------------------------
 

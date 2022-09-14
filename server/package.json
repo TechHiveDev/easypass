@@ -9,7 +9,7 @@
     "dev": "nodemon --exec babel-node ./bin/www.js",
     "migrate-database": "npx prisma migrate dev",
     "seed-database": "node ./src/utils/database/seed.database.js",
-    "generate-RSA-keys": "node ./src/utils/cryptography/test/generateRSAKeys.test.js", 
+    "generate-RSA-keys": "node ./src/utils/cryptography/test/generateRSAKeys.test.js",
     "prisma-studio": "npx prisma studio"
   },
   "dependencies": {
@@ -22,6 +22,7 @@
     "crypto": "^1.0.1",
     "debug": "~2.6.9",
     "dotenv": "^16.0.0",
+    "ejs": "^3.1.8",
     "express": "~4.16.1",
     "http-errors": "~1.6.3",
     "jsonwebtoken": "^8.5.1",
@@ -35,6 +36,7 @@
     "passport-github2": "^0.1.12",
     "passport-google-oauth20": "^2.0.0",
     "passport-jwt": "^4.0.0",
+    "qrcode": "^1.5.1",
     "swagger-jsdoc": "^6.2.0",
     "swagger-ui-express": "^4.3.0"
   },
