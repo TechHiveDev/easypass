@@ -20,15 +20,20 @@ const QRCode = async (encryptedInvitation) => {
 
     const invalidLink =
       JSON.stringify(invitation) !== JSON.stringify(decryptedInvitation);
+
     const expired = new Date(invitation?.expiresAt) < new Date();
+
+    console.log(new Date(invitation?.expiresAt), new Date(), expired);
 
     if (invalidLink) return { message: "Invalid Link" };
 
     if (expired) return { message: "Expired Link" };
 
-    return  qrcode.toDataURL(encryptedInvitation) ;
+    const qr_code = await qrcode.toDataURL(encryptedInvitation);
+
+    return { qr_code };
   } catch (error) {
-    throw { message: error };
+    return { message: "Invalid Link" };
   }
 };
 

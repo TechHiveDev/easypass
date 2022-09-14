@@ -10,13 +10,24 @@
 </head>
 
 <body>
-  <div class="container">
+  <div class="container" style="display:flex;">
+
     <% if(res?.qr_code){ %>
-    <img src=<%=res.qr_code %> alt="QR Code">
+
+    <div style="margin:auto;">
+      <img src=<%=res.qr_code %> alt="QR Code">
+    </div>
+
     <% } %>
+
     <% if(res?.message){  %>
-    <h1><%=res?.message %></h1>
+
+    <div style="margin:auto;">
+      <h1><%=res?.message %></h1>
+    </div>
+
     <% } %>
+
   </div>
 </body>
 
