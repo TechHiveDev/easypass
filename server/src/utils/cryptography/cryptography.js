@@ -22,12 +22,14 @@ const getPrivateKey = () => fs.readFileSync(keysPath + "/id_rsa_private.pem");
 
 // Data Encryption
 const encryptWithPublicKey = (json) =>
-  crypto.publicEncrypt(getPublicKey(), JSON.stringify(json)).toString("base64");
+  crypto
+    .publicEncrypt(getPublicKey(), JSON.stringify(json))
+    .toString("base64url");
 
 const decryptWithPrivateKey = (message) =>
   JSON.parse(
     crypto
-      .privateDecrypt(getPrivateKey(), Buffer.from(message, "base64"))
+      .privateDecrypt(getPrivateKey(), Buffer.from(message, "base64url"))
       .toString()
   );
 
