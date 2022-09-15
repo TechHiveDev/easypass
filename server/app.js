@@ -26,7 +26,6 @@ import userCompoundController from "./src/entities/userCompound/userCompound.con
 import invitationController from "./src/entities/invitation/invitation.controller.js";
 import scanController from "./src/entities/scan/scan.controller.js";
 import deviceController from "./src/entities/device/device.controller.js";
-import _exampleController from "./src/entities/_example/_example.controller.js";
 import qrcodeRouter from "./src/utils/QRCode/qrcode.router";
 
 // ------------------------------------------------------
@@ -52,13 +51,15 @@ app.use(passport.session());
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
-// QRCode Route {{basepath}}/guest/:encryptedInvitation
-app.use(qrcodeRouter);
-
 // ------------------------------------------------------
 
 // Swagger Documentaion Middleware
 app.use("/api-docs", swagger.server, swagger.setup); // Docs
+
+// ------------------------------------------------------
+
+// QRCode Route {{basepath}}/guest/:encryptedInvitation
+app.use(qrcodeRouter);
 
 // ------------------------------------------------------
 
@@ -77,7 +78,6 @@ app.use(userCompoundController);
 app.use(invitationController);
 app.use(scanController);
 app.use(deviceController);
-app.use(_exampleController);
 
 // ------------------------------------------------------
 

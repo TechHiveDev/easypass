@@ -6,9 +6,11 @@ const qrcodeRouter = Router();
 
 // ------------------------------------------------------
 
+qrcodeRouter.route("/qrcode").get(qrcodeController.getEncryptedQrCode);
+
 qrcodeRouter
   .route("/guest/:encryptedInvitation")
-  .get((req, res, next) => qrcodeController(req, res, next));
+  .get(qrcodeController.makeEncryptedInvitation);
 
 // ------------------------------------------------------
 

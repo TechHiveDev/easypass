@@ -2,11 +2,27 @@ import QRCode from "./qrcode.service";
 
 // -----------------------------------------------------------
 
-// /guest/:encryptedInvitation
-const qrcodeController = async (req, res, next) => {
+/**
+ * /guest/:encryptedInvitation
+ */
+const makeEncryptedInvitation = async (req, res, next) => {
   try {
+    let res = await QRCode(req.params.encryptedInvitation);
+    return res.render("QRCode", { res });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// -----------------------------------------------------------
+
+/**
+ * /guest/:encryptedInvitation
+ */
+const getEncryptedQrCode = async (req, res, next) => {
+  try {
+    console.log("req user", req.user);
     let out = await QRCode(req.params.encryptedInvitation);
-    // console.log({ res });
     return res.render("QRCode", { res: out });
   } catch (error) {
     next(error);
@@ -15,4 +31,7 @@ const qrcodeController = async (req, res, next) => {
 
 // -----------------------------------------------------------
 
-export default qrcodeController;
+export default {
+  makeEncryptedInvitation,
+  getEncryptedQrCode,
+};
