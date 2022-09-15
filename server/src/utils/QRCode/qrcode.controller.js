@@ -1,4 +1,4 @@
-import QRCode from "./qrcode.service";
+import { QRCodeEncrypt, QRCodeDecrypt } from "./qrcode.service";
 
 // -----------------------------------------------------------
 
@@ -7,7 +7,7 @@ import QRCode from "./qrcode.service";
  */
 const makeEncryptedInvitation = async (req, res, next) => {
   try {
-    let res = await QRCode(req.params.encryptedInvitation);
+    let res = await QRCodeDecrypt(req.params.encryptedInvitation);
     return res.render("QRCode", { res });
   } catch (error) {
     next(error);
@@ -21,9 +21,10 @@ const makeEncryptedInvitation = async (req, res, next) => {
  */
 const getEncryptedQrCode = async (req, res, next) => {
   try {
-    console.log("req user", req.user);
-    let out = await QRCode(req.params.encryptedInvitation);
-    return res.render("QRCode", { res: out });
+    const { id: userId } = req.user;
+    const { compoundId } = req.params;
+    let qrcode = await QRCodeEncrypt({ compoundId, userId });
+    return res.status(202).json({ qrcode });
   } catch (error) {
     next(error);
   }

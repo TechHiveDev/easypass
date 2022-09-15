@@ -1,5 +1,8 @@
 import qrcode from "qrcode";
-import { decryptWithPrivateKey } from "../../utils/cryptography/cryptography";
+import {
+  decryptWithPrivateKey,
+  encryptWithPublicKey,
+} from "../../utils/cryptography/cryptography";
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient({
   log: [
@@ -10,7 +13,7 @@ const prisma = new PrismaClient({
 
 // ------------------------------------------------------------
 
-const QRCode = async (encryptedInvitation) => {
+export const QRCodeDecrypt = async (encryptedInvitation) => {
   try {
     const decryptedInvitation = decryptWithPrivateKey(encryptedInvitation);
 
@@ -22,8 +25,6 @@ const QRCode = async (encryptedInvitation) => {
       JSON.stringify(invitation) !== JSON.stringify(decryptedInvitation);
 
     const expired = new Date(invitation?.expiresAt) < new Date();
-
-    console.log(new Date(invitation?.expiresAt), new Date(), expired);
 
     if (invalidLink) return { message: "Invalid Link" };
 
@@ -39,4 +40,11 @@ const QRCode = async (encryptedInvitation) => {
 
 // ------------------------------------------------------------------
 
-export default QRCode;
+export const QRCodeEncrypt = async (objectToEncrypt = {}) => {
+  try {
+    return encryptWithPublicKey(JSON.stringify(objectToEncrypt));
+  } catch (error) {
+    return { message: "Invalid Link" };
+  }
+};
+// ------------------------------------------------------------------

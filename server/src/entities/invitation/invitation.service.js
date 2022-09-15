@@ -42,7 +42,6 @@ const prisma = new PrismaClient({
 
 const invitationService = {
   create: async (body) => {
-    console.log(body);
     const invitation = await prisma.invitation.create({ data: body });
     return {
       invitation,

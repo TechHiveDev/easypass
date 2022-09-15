@@ -50,7 +50,6 @@ export const createUserAndAddress = async (payload) => {
   // check resident address is completed
   if (type === "Resident") {
     for (let item of expectedResiendtBody) {
-      console.log(item, payload[item]);
       if (item && !payload[item]) {
         throw { status: 400, message: `${i} is required!` };
       }
@@ -166,8 +165,6 @@ export const login = async ({ email, password }) => {
     throw { status: 401, message: "Un-Authenticated" };
   }
 
-  console.log("he", process.env.jwtExpires);
-
   const accessToken = jwt.sign(user, process.env.jwtSecret, {
     expiresIn: process.env.jwtExpires,
   });
@@ -253,7 +250,6 @@ async function mailOTP(otp, email) {
       otp +
       " </strong></p>", // html body
   });
-  // console.log("Message sent: %s", info.messageId);
 }
 
 // ---------------------------------------------------------------
