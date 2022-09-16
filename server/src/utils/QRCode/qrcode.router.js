@@ -15,7 +15,8 @@ qrcodeRouter
 
 qrcodeRouter
   .route("/qrcode/:compoundId")
-  .get(passportAuthenticate(passport), qrcodeController.getEncryptedQrCode);
+  .get(passportAuthenticate(passport), qrcodeController.getEncryptedQrCode)
+  .post(passportAuthenticate(passport), qrcodeController.verifyQrCode);
 
 // ------------------------------------------------------
 

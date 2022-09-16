@@ -43,8 +43,20 @@ export const QRCodeDecrypt = async (encryptedInvitation) => {
 export const QRCodeEncrypt = async (objectToEncrypt = {}) => {
   try {
     return encryptWithPublicKey(JSON.stringify(objectToEncrypt));
+  } catch (error) {}
+};
+// ------------------------------------------------------------------
+
+export const verifyResident = async ({
+  userId,
+  compoundId,
+  encryptedQrCode,
+}) => {
+  try {
+    let { compoundId, userId } = JSON.parse(
+      await decryptWithPrivateKey(encryptedQrCode)
+    );
   } catch (error) {
     return { message: "Invalid Link" };
   }
 };
-// ------------------------------------------------------------------

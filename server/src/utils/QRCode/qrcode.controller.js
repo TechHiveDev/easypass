@@ -16,9 +16,6 @@ const makeEncryptedInvitation = async (req, res, next) => {
 
 // -----------------------------------------------------------
 
-/**
- * /guest/:encryptedInvitation
- */
 const getEncryptedQrCode = async (req, res, next) => {
   try {
     const { id: userId } = req.user;
@@ -32,7 +29,22 @@ const getEncryptedQrCode = async (req, res, next) => {
 
 // -----------------------------------------------------------
 
+const verifyQrCode = async (req, res, next) => {
+  try {
+    const { id: userId } = req.user;
+    const { compoundId } = req.params;
+    const { encryptedQrCode } = req.body;
+    let qrcode = await QRCodeDecrypt(encryptedQrCode);
+    return res.status(202).json({ qrcode });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// -----------------------------------------------------------
+
 export default {
   makeEncryptedInvitation,
   getEncryptedQrCode,
+  verifyQrCode,
 };
