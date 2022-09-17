@@ -1,9 +1,9 @@
 pipeline {
   agent any
   stages {
-    stage('Checkout Code') {
+    stage('hello world pip') {
       steps {
-        git(branch: 'master', url: 'https://github.com/TechHiveDev/easypass-api')
+        echo 'hello world'
       }
     }
 
