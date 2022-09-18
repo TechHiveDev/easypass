@@ -26,7 +26,7 @@ import userCompoundController from "./src/entities/userCompound/userCompound.con
 import invitationController from "./src/entities/invitation/invitation.controller.js";
 import scanController from "./src/entities/scan/scan.controller.js";
 import deviceController from "./src/entities/device/device.controller.js";
-import qrcodeRouter from "./src/utils/QRCode/qrcode.router";
+import qrcodeController from "./src/entities/qrcode/qrcode.controller.js";
 
 // ------------------------------------------------------
 
@@ -59,7 +59,7 @@ app.use("/api-docs", swagger.server, swagger.setup); // Docs
 // ------------------------------------------------------
 
 // QRCode Route {{basepath}}/guest/:encryptedInvitation
-app.use(qrcodeRouter);
+app.use(qrcodeController);
 
 // ------------------------------------------------------
 
@@ -78,6 +78,7 @@ app.use(userCompoundController);
 app.use(invitationController);
 app.use(scanController);
 app.use(deviceController);
+app.use(qrcodeController);
 
 // ------------------------------------------------------
 

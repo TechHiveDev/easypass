@@ -1,62 +1,65 @@
 import qrcode from "qrcode";
 import {
-  decryptWithPrivateKey,
-  encryptWithPublicKey,
+    decryptWithPrivateKey,
+    encryptWithPublicKey,
 } from "../../utils/cryptography/cryptography";
 import { PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient({
-  log: [
-    "info",
-    // "query"
-  ],
-});
 
 // ------------------------------------------------------------
 
-export const QRCodeDecrypt = async (encryptedInvitation) => {
-  try {
-    const decryptedInvitation = decryptWithPrivateKey(encryptedInvitation);
+const prisma = new PrismaClient({ log: ["info"] });
 
-    const invitation = await prisma.invitation.findUnique({
-      where: { id: decryptedInvitation?.id },
-    });
+// ------------------------------------------------------------
 
-    const invalidLink =
-      JSON.stringify(invitation) !== JSON.stringify(decryptedInvitation);
+const decryptQrCode = async (encryptedInvitation) => {
+    try {
+        const decryptedInvitation = decryptWithPrivateKey(encryptedInvitation);
 
-    const expired = new Date(invitation?.expiresAt) < new Date();
+        const invitation = await prisma.invitation.findUnique({
+            where: { id: decryptedInvitation?.id },
+        });
 
-    if (invalidLink) return { message: "Invalid Link" };
+        const invalidLink =
+            JSON.stringify(invitation) !== JSON.stringify(decryptedInvitation);
 
-    if (expired) return { message: "Expired Link" };
+        const expired = new Date(invitation?.expiresAt) < new Date();
 
-    const qr_code = await qrcode.toDataURL(encryptedInvitation);
+        if (invalidLink) return { message: "Invalid Link" };
 
-    return { qr_code };
-  } catch (error) {
-    return { message: "Invalid Link" };
-  }
+        if (expired) return { message: "Expired Link" };
+
+        const qr_code = await qrcode.toDataURL(encryptedInvitation);
+
+        return { qr_code };
+    } catch (error) {
+        return { message: "Invalid Link" };
+    }
 };
 
 // ------------------------------------------------------------------
 
-export const QRCodeEncrypt = async (objectToEncrypt = {}) => {
-  try {
-    return encryptWithPublicKey(JSON.stringify(objectToEncrypt));
-  } catch (error) {}
+const encryptQrCode = async (objectToEncrypt = {}) => {
+    try {
+        return encryptWithPublicKey(JSON.stringify(objectToEncrypt));
+    } catch (error) {}
 };
+
 // ------------------------------------------------------------------
 
-export const verifyResident = async ({
-  userId,
-  compoundId,
-  encryptedQrCode,
-}) => {
-  try {
-    let { compoundId, userId } = JSON.parse(
-      await decryptWithPrivateKey(encryptedQrCode)
-    );
-  } catch (error) {
-    return { message: "Invalid Link" };
-  }
+const verifyResident = async ({ userId, compoundId, encryptedQrCode }) => {
+    try {
+        let { compoundId, userId } = JSON.parse(
+            await decryptWithPrivateKey(encryptedQrCode)
+        );
+    } catch (error) {
+        return { message: "Invalid Link" };
+    }
+};
+
+// ------------------------------------------------------------------
+
+export default {
+    encryptQrCode,
+    decryptQrCode,
+    verifyResident,
 };
