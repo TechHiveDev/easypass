@@ -14,79 +14,79 @@ import theme from "../../Theme/paper.theme";
 // =================================================================
 
 export default function LoginScreen() {
-    const { navigate } = useNavigation();
-    const [login, { data, isLoading, error }] = useLoginMutation();
-    const dispatch = useAppDispatch();
+  const { navigate } = useNavigation();
+  const [login, { data, isLoading, error }] = useLoginMutation();
+  const dispatch = useAppDispatch();
 
-    // -------------------------------------
+  // -------------------------------------
 
-    const defaultValues = {
-        email: "resident2@email.com",
-        password: "12345",
-    };
+  const defaultValues = {
+    email: "resident@email.com",
+    password: "12345",
+  };
 
-    // -------------------------------------
+  // -------------------------------------
 
-    const onSubmit = async (values) => await login(values);
+  const onSubmit = async (values) => await login(values);
 
-    // -------------------------------------
+  // -------------------------------------
 
-    useEffect(() => {
-        (async () => {
-            if (data && data?.user && data?.accessToken) {
-                await AsyncStorage.setItem("accessToken", data?.accessToken);
-                dispatch(setAuthUser(data));
-            }
-        })();
-    }, [data]);
+  useEffect(() => {
+    (async () => {
+      if (data && data?.user && data?.accessToken) {
+        await AsyncStorage.setItem("accessToken", data?.accessToken);
+        dispatch(setAuthUser(data));
+      }
+    })();
+  }, [data]);
 
-    // -------------------------------------
+  // -------------------------------------
 
-    return (
-        <SafeAreaView style={styles.container}>
-            <Logo
-                width={500}
-                height={170}
-                source={{ uri: "https://picsum.photos/900" }}
-            />
-            <View style={styles.body}>
-                <Form
-                    {...{
-                        isLoading,
-                        error,
-                        onCancel: () => navigate("register"),
-                        defaultValues,
-                        onSubmit,
-                        cancelButton: true,
-                        cancelText: "register",
-                        cancelIcon: "account-plus-outline",
-                        title: "Easy Pass",
-                        submitText: "login",
-                        submitIcon: "login",
-                    }}
-                >
-                    <Input name="email" label="email" icon="email" />
-                    <Input name="password" label="password" secureTextEntry />
-                </Form>
-            </View>
-            <StatusBar hidden />
-        </SafeAreaView>
-    );
+  return (
+    <SafeAreaView style={styles.container}>
+      <Logo
+        width={500}
+        height={170}
+        source={{ uri: "https://picsum.photos/900" }}
+      />
+      <View style={styles.body}>
+        <Form
+          {...{
+            isLoading,
+            error,
+            onCancel: () => navigate("register"),
+            defaultValues,
+            onSubmit,
+            cancelButton: true,
+            cancelText: "register",
+            cancelIcon: "account-plus-outline",
+            title: "Easy Pass",
+            submitText: "login",
+            submitIcon: "login",
+          }}
+        >
+          <Input name="email" label="email" icon="email" />
+          <Input name="password" label="password" secureTextEntry />
+        </Form>
+      </View>
+      <StatusBar hidden />
+    </SafeAreaView>
+  );
 }
 
 // =================================================================
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: theme.colors.white,
-    },
-    body: {
-        flex: 1,
-        borderTopLeftRadius: 30,
-        borderTopRightRadius: 30,
-        marginTop: -hp(4),
-        backgroundColor: theme.colors.white,
-        borderBottomWidth: 0,
-    },
+  container: {
+    flex: 1,
+    backgroundColor: theme.colors.white,
+  },
+  body: {
+    flex: 1,
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    marginTop: -hp(4),
+    backgroundColor: theme.colors.white,
+    borderBottomWidth: 0,
+  },
 });

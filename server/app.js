@@ -9,7 +9,7 @@ import swagger from "./src/utils/swagger-docs/swagger.middleware";
 import passport from "passport";
 import cookieSession from "cookie-session";
 import { cookiesConfigs, corsConfigs } from "./src/utils/configs/configs";
-import ejs from "ejs";
+import compoundUnprotectedController from "./src/entities/compound/compound.unprotected.controller";
 
 // ------------------------------------------------------
 
@@ -60,6 +60,7 @@ app.use("/api-docs", swagger.server, swagger.setup); // Docs
 
 // QRCode Route {{basepath}}/guest/:encryptedInvitation
 app.use(qrcodeController);
+app.use(compoundUnprotectedController);
 
 // ------------------------------------------------------
 
@@ -78,7 +79,6 @@ app.use(userCompoundController);
 app.use(invitationController);
 app.use(scanController);
 app.use(deviceController);
-app.use(qrcodeController);
 
 // ------------------------------------------------------
 

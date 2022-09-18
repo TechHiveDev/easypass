@@ -14,39 +14,23 @@
 
 // ------------------------------------------------------------
 
-/**
- *  you can call your orm here ( prisma ) and
- *  return what you want from database
- *
- *  import { PrismaClient } from "@prisma/client";
- *  const prisma = new PrismaClient();
- *
- *  const entityService = {
- *      create: (body) => prisma.user.create({ ...body }),
- *  };
- *
- */
-
-// ------------------------------------------------------------
-
-import { encryptWithPublicKey } from "../../utils/cryptography/cryptography";
 import { PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient({
-  log: [
-    "info",
-    // "query"
-  ],
-});
+const prisma = new PrismaClient({ log: ["info"] });
 
 // ------------------------------------------------------------
 
 const invitationService = {
-  create: async (body) => {
-    const invitation = await prisma.invitation.create({ data: body });
-    return {
-      invitation,
-      encryptedInvitation: encryptWithPublicKey(invitation),
-    };
+  create: async ({ name, type, compoundId, expiresAt, notes = "" }) => {
+    return await prisma.invitation.create({
+      data: {
+        userId,
+        type,
+        name,
+        compoundId,
+        expiresAt,
+        notes,
+      },
+    });
   },
 };
 

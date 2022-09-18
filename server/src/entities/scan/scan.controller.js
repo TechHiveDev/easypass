@@ -113,4 +113,34 @@ const crudController = {
 
 // ------------------------------------------------------------------
 
-export default crud("/scan", crudController);
+const customRoutesController = [
+  {
+    // :id => user id
+    method: "post",
+    path: "/generate-resident-qrcode",
+    controller: async (req, res, next) => {
+      try {
+        const qrcode = await scanService.generateResidentQrCode(req.body);
+        return res.status(202).json({ qrcode });
+      } catch (err) {
+        next(err);
+      }
+    },
+  },
+  //  ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+  {
+    method: "post", // get, post, put, delete  (from express router)
+    path: "/generate",
+    controller: async (req, res, next) => {},
+  },
+  //  ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+  {
+    method: "get", // get, post, put, delete  (from express router)
+    path: "/guest3/:encryptedInvitation",
+    controller: async (req, res, next) => {},
+  },
+];
+
+// ------------------------------------------------------------------
+
+export default crud("/scan", crudController, customRoutesController);

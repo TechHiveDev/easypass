@@ -1,5 +1,5 @@
 /**
- * Invitation Controller
+ * Compound Controller
  * -------------------------------------------------------
  *
  * you can recap the architecture of entity controller and how
@@ -16,47 +16,47 @@
  *
  * components:
  *   schemas:
- *     invitation:
+ *     compound:
  *       type: object
  *       properties:
  *         name:
  *           type: string
- *         type:
+ *         logoUrl:
  *           type: string
- *         notes:
+ *         location:
  *           type: string
  *
  * tags:
- *   name: invitation
+ *   name: compound
  *
- * /invitation:
+ * /compound:
  *   get:
- *    summary: Get all invitations
- *    tags: [invitation]
+ *    summary: Get all compounds
+ *    tags: [compound]
  *    responses:
  *      200:
  *       schema:
- *         $ref: '#/components/schemas/invitation'
+ *         $ref: '#/components/schemas/compound'
  *
  *   post:
- *     summary: Create invitation
- *     tags: [invitation]
+ *     summary: Create compound
+ *     tags: [compound]
  *     requestBody:
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/invitation'
+ *             $ref: '#/components/schemas/compound'
  *     responses:
  *       201:
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/invitation'
+ *               $ref: '#/components/schemas/compound'
  *
- * /invitation/{id}:
+ * /compound/{id}:
  *   get:
- *     summary: Get invitation by id
- *     tags: [invitation]
+ *     summary: Get compound by id
+ *     tags: [compound]
  *     parameters:
  *       - in: path
  *         name: id
@@ -65,11 +65,11 @@
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/invitation'
+ *               $ref: '#/components/schemas/compound'
  *
  *   put:
- *     summary: Edit invitation
- *     tags: [invitation]
+ *     summary: Edit compound
+ *     tags: [compound]
  *     parameters:
  *       - in: path
  *         name: id
@@ -78,16 +78,16 @@
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/invitation'
+ *               $ref: '#/components/schemas/compound'
  *     requestBody:
  *       content:
  *           application/json:
  *             schema:
- *              $ref: '#/components/schemas/invitation'
+ *              $ref: '#/components/schemas/compound'
  *
  *   delete:
- *     summary: Delete invitation
- *     tags: [invitation]
+ *     summary: Delete compound
+ *     tags: [compound]
  *     parameters:
  *       - in: path
  *         name: id
@@ -96,7 +96,7 @@
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/invitation'
+ *               $ref: '#/components/schemas/compound'
  *
  *
  */
@@ -104,15 +104,17 @@
 // ------------------------------------------------------------------
 
 import { crud, prismaCrud } from "../../utils/crud/express-crud-router";
-import invitationService from "./invitation.service";
 
 // ------------------------------------------------------------------
 
 const crudController = {
-  ...prismaCrud("invitation"),
-  create: invitationService.create,
+  ...prismaCrud("/unprotected/compound"),
+  create: null,
+  getOne: null,
+  update: null,
+  destroy: null,
 };
 
 // ------------------------------------------------------------------
 
-export default crud("/invitation", crudController);
+export default crud("/unprotected/compound", crudController);

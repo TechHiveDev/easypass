@@ -9,7 +9,7 @@ import SvgQRCode from "react-native-qrcode-svg";
 import theme from "../../Theme/paper.theme";
 import { futureDate } from "../../Components/Timer";
 import { useTimer } from "react-timer-hook";
-import { useLazyGetOneQuery } from "../../API/api";
+import { useLazyGetOneQuery, useCreateMutation } from "../../API/api";
 import { useAppSelector } from "../../Store/redux.hooks";
 
 // =================================================================
@@ -21,16 +21,23 @@ export default function QrCodeScreen() {
   const { seconds, restart } = useTimer({
     expiryTimestamp: futureDate({ oldDate: new Date() }),
   });
-  const { currentCompoundId } = useAppSelector((s) => s?.auth);
-  const [updateQrCode] = useLazyGetOneQuery({});
+  const {
+    currentCompoundId,
+    user: { id },
+  } = useAppSelector((s) => s?.auth);
+
+  const [generateQrCode] = useCreateMutation();
 
   // ---------------------------------------------------
 
   const updateQrCodeHandler = async () => {
     restart(futureDate({ oldDate: new Date() }));
-    const { data } = await updateQrCode({
-      entity: "qrcode",
-      id: currentCompoundId,
+    const { data } = await generateQrCode({
+      entity: "generate-resident-qrcode",
+      body: {
+        compoundId: currentCompoundId,
+        userId: id,
+      },
     });
     if (data?.qrcode) {
       setQrCode(data?.qrcode);
