@@ -1,25 +1,74 @@
-import MyText from "./MyText.jsx";
-import { View, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
+import { Appbar } from "react-native-paper";
+import i18n from "i18n-js";
+import theme from "../Theme/paper.theme";
 
 // ========================================================
 
-export default function MyStatusBar({ children }) {
+const hiddenStatusBar = ["login"];
+
+// ========================================================
+
+export default function MyStatusBar({
+  navigation: { goBack, openDrawer },
+  route: { name, params },
+}) {
+  if (hiddenStatusBar.includes(name)) return <></>;
+
+  let back = true;
+  let drawer = false;
+  let title = params?.title ? params.title : name;
+
+  // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+  if (!params?.title) {
+    title = `${i18n.t(title)} ${params?.id ? " - " + params?.id : ""}`;
+  }
+
+  if (name === "home" || name == "HomeTabNavigator") title = "Easy Pass";
+
+  // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+  if (
+    ["HomeTabNavigator", "exploreGroups", "home", i18n.t("home")].includes(name)
+  ) {
+    back = false;
+    drawer = true;
+  }
+
+  if (["Tabs", "login"].includes(name)) back = false;
+
+  // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+  // {menu ? <MenuBar /> : false}
+
   return (
-    <View style={styles.container}>
-      <MyText text={children} />
-    </View>
+    <Appbar.Header style={styles.header}>
+      {back && (
+        <Appbar.BackAction onPress={goBack} color={theme.colors.primary} />
+      )}
+      {drawer && (
+        <Appbar.Action
+          size={30}
+          icon="menu"
+          onPress={openDrawer}
+          color={theme.colors.primary}
+        />
+      )}
+      <Appbar.Content title={title} titleStyle={styles.content} />
+    </Appbar.Header>
   );
 }
 
 // ========================================================
 
 const styles = StyleSheet.create({
-  container: {
-    // flex: 1,
-    // marginTop: -1,
-    // backgroundColor: "white",
-    // height: 60,
-    // marginLeft: -20,
-    // marginBottom: -1,
+  header: {
+    backgroundColor: theme.colors.white,
+  },
+  content: {
+    fontSize: 22,
+    fontWeight: "500",
+    alignSelf: "center",
+    color: theme.colors.primary,
   },
 });

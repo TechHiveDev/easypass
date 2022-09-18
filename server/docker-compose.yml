@@ -1,0 +1,43 @@
+version: "3.9"
+
+# ===========================================
+
+services:
+  # ----------------------
+  mysqldb:
+    image: mysql:5.7
+    platform: linux/amd64
+    restart: unless-stopped
+    env_file: ./.env
+    environment:
+      - MYSQL_ROOT_PASSWORD=$DB_PASSWORD
+      - MYSQL_DATABASE=$DB_NAME
+    ports:
+      - 3306:3306
+    volumes:
+      - db:/var/lib/mysql
+
+  # ----------------------
+
+  app:
+    depends_on:
+      - mysqldb
+    env_file: ./.env
+    container_name: $APP_NAME
+    build: .
+    restart: unless-stopped
+    ports:
+      - $PORT:$PORT
+    # environment:
+    #   - DB_HOST=mysql
+    #   - DB_USER=$DB_USER
+    #   - DB_PASSWORD=$DB_PASSWORD
+    #   - DB_NAME=$DB_NAME
+    #   - DB_PORT=3306
+    stdin_open: true
+    tty: true
+
+# ===========================================
+
+volumes:
+  db:

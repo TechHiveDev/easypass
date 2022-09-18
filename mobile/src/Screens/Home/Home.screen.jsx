@@ -1,31 +1,19 @@
-import React from "react";
-import { SafeAreaView } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { SafeAreaView, ScrollView } from "react-native";
 import globalStyles from "../../Theme/global.styles";
-import MyButton from "../../Components/MyButton";
-import MyText from "../../Components/MyText";
+import UserCard from "./Components/UserCard";
+import Announcements from "./Components/Announcements";
+import Actions from "./Components/Actions";
 
-export default function HomeScreen() {
-  const { navigate } = useNavigation();
-  const entities = [
-    "Compound",
-    "User",
-    "UserCompound",
-    "Invitation",
-    "Scan",
-    "Device",
-  ];
+// =================================================================
 
+export default function HomeScreen({ type = "Just Home" }) {
   return (
     <SafeAreaView style={globalStyles.screen}>
-      {entities?.map((entity, idx) => (
-        <MyButton
-          key={idx}
-          onPress={() => navigate("List" + entity + "Screen")}
-        >
-          <MyText text={entity} />
-        </MyButton>
-      ))}
+      <ScrollView>
+        <UserCard />
+        <Announcements />
+        <Actions />
+      </ScrollView>
     </SafeAreaView>
   );
 }

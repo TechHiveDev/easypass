@@ -1,18 +1,18 @@
 import { StyleSheet } from "react-native";
-// import {
-//   widthPercentageToDP as wp,
-//   heightPercentageToDP as hp,
-// } from "react-native-responsive-screen";
 import { colors } from "./colors.theme";
+import { widthPercentageToDP as wp } from "react-native-responsive-screen";
+import { pow } from "react-native-reanimated";
 
 // ----------------------------------------
 
 const globalStyles = StyleSheet.create({
   screen: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: "flex-start",
+    // alignItems: "center",
     backgroundColor: colors.background,
+    width: wp(100),
+    paddingHorizontal: wp(2),
   },
   rowView: {
     width: "100%",
