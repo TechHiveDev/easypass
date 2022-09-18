@@ -39,7 +39,8 @@ export const cookiesConfigs = {
  * {@link https://github.com/expressjs/cors}
  */
 export const corsConfigs = {
-  origin: process.env.CORS_ORIGIN,
+  // origin: process.env.CORS_ORIGIN,
+  origin: "*",
   methods: "GET,POST,PUT,DELETE",
   credentials: true,
 };
