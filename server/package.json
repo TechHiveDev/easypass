@@ -3,9 +3,8 @@
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
-    "start": "nodemon --exec babel-node ./bin/www.js",
-    "serve": "yarn build && node dist/app.js",
-    "build": "babel ./bin/www.js -d dist",
+    "start": "babel ./bin/www.js -d dist",
+    "serve": "babel ./bin/www.js -d dist",
     "dev": "nodemon --exec babel-node ./bin/www.js",
     "inital-migrate-database": "sudo rm -r -f ./prisma/migrations && npx prisma migrate dev",
     "migrate-database": "npx prisma migrate dev",
