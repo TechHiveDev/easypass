@@ -40,7 +40,6 @@ export const authProvider = {
   login: async ({ username: email, password }) => {
     const data = await queryAuth(authUrls.login, { email, password });
     if (data?.accessToken && data?.user?.id) {
-      console.log("here");
       localStorage.setItem("user", JSON.stringify(data?.user));
       localStorage.setItem("accessToken", data?.accessToken);
       return Promise.resolve();
@@ -91,7 +90,9 @@ export const authProvider = {
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
   // get the user permissions (optional)
-  getPermissions: () => Promise.resolve(),
+  getPermissions: () => {
+    return Promise.resolve();
+  },
 
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 };
