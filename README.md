@@ -1,1 +1,1 @@
-# easypass-api
+# Easypass
