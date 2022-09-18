@@ -33,66 +33,68 @@ const queryAuth = async (url, payload = {}, method = "POST", headers = {}) => {
 };
 
 // =====================================================================
+export const authProvider = {
+  // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
+  // send username and password to the auth server and get back credentials
+  login: async ({ username: email, password }) => {
+    const data = await queryAuth(authUrls.login, { email, password });
+    if (data?.accessToken && data?.user?.id) {
+      console.log("here");
+      localStorage.setItem("user", JSON.stringify(data?.user));
+      localStorage.setItem("accessToken", data?.accessToken);
+      return Promise.resolve();
+    }
+    return Promise.reject();
+  },
+
+  // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+  // when the dataProvider returns an error, check if this is an authentication error
+  checkError: (error) => {
+    console.error({ error });
+    return Promise.resolve();
+  },
+
+  // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+  // when the user navigates, make sure that their credentials are still valid
+  checkAuth: async (params) => {
+    const token = localStorage.getItem("accessToken");
+    if (!token) return Promise.reject();
+    const data = await queryAuth(authUrls.me, null, "GET", {
+      Authorization: `Bearer ${token}`,
+    });
+    if (token && data?.id) {
+      return Promise.resolve();
+    }
+    return Promise.reject();
+  },
+
+  // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+  // remove local credentials and notify the auth server that the user logged out
+  logout: () => {
+    localStorage.removeItem("user");
+    localStorage.removeItem("accessToken");
+    return Promise.resolve();
+  },
+
+  // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+  // get the user's profile
+  getIdentity: async () => {
+    const user = localStorage.getItem("user");
+    return JSON.parse(user);
+  },
+
+  // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+  // get the user permissions (optional)
+  getPermissions: () => Promise.resolve(),
+
+  // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+};
 export default function UseAuthProvider() {
-  const authProvider = {
-    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-
-    // send username and password to the auth server and get back credentials
-    login: async ({ username: email, password }) => {
-      const data = await queryAuth(authUrls.login, { email, password });
-      if (data?.accessToken && data?.user?.id) {
-        localStorage.setItem("user", JSON.stringify(data?.user));
-        localStorage.setItem("accessToken", data?.accessToken);
-        return Promise.resolve();
-      }
-      return Promise.reject();
-    },
-
-    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-
-    // when the dataProvider returns an error, check if this is an authentication error
-    checkError: (error) => {
-      console.error({ error });
-      return Promise.resolve();
-    },
-
-    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-
-    // when the user navigates, make sure that their credentials are still valid
-    checkAuth: async (params) => {
-      const token = localStorage.getItem("accessToken");
-      if (!token) return Promise.reject();
-      const data = await queryAuth(authUrls.me, null, "GET", {
-        Authorization: `Bearer ${token}`,
-      });
-      if (data?.accessToken && data?.user?.id) {
-        return Promise.resolve();
-      }
-      return Promise.reject();
-    },
-
-    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-
-    // remove local credentials and notify the auth server that the user logged out
-    logout: () => {
-      localStorage.removeItem("user");
-      localStorage.removeItem("accessToken");
-      return Promise.resolve();
-    },
-
-    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-
-    // get the user's profile
-    getIdentity: async () => Promise.resolve(),
-
-    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-
-    // get the user permissions (optional)
-    getPermissions: () => Promise.resolve(),
-
-    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-  };
-
   return authProvider;
 }

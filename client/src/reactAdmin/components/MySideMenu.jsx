@@ -6,16 +6,15 @@ import ViewTimelineIcon from "@mui/icons-material/ViewTimeline";
 
 // ------------------------------------------------
 
+const icons = {
+  group: <GroupIcon />,
+  video: <YouTubeIcon />,
+  post: <ViewTimelineIcon />,
+};
+// ------------------------------------------------
+
 export default function MySideMenu(props) {
   const translate = useTranslate();
-
-  const icons = {
-    group: <GroupIcon />,
-    video: <YouTubeIcon />,
-    post: <ViewTimelineIcon />,
-  };
-
-  // ------------------------------------------------
   return (
     <Sidebar {...props}>
       {entities
@@ -33,12 +32,12 @@ export default function MySideMenu(props) {
           );
         })}
 
-      <MenuItemLink
-        key={"asd"}
-        to={`/asd`}
-        primaryText={"custom route"}
-        leftIcon={<GroupIcon />}
-      />
+      {/*<MenuItemLink*/}
+      {/*  key={"asd"}*/}
+      {/*  to={`/asd`}*/}
+      {/*  primaryText={"custom route"}*/}
+      {/*  leftIcon={<GroupIcon />}*/}
+      {/*/>*/}
     </Sidebar>
   );
 }

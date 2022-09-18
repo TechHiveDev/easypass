@@ -11,7 +11,7 @@ import {
 
 export default function EditUser(props) {
   return (
-    <Edit>
+    <Edit {...props}>
       <SimpleForm redirect="list">
         <NumberInput variant="outlined" source="id" />
         <TextInput variant="outlined" source="email" />

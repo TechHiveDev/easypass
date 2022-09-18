@@ -4,6 +4,12 @@ const arabicMessages = {
     Post: "المنشورات",
     inventory: "المخزون",
     Consumption: "الاستهلاك",
+    Compound: "المجمع",
+    Compounds: "المجمعات",
+    UserCompound: "مستخدمين المجمع",
+    Invitation: "الدعوات",
+    Scan: "الكشوف",
+    Device: "الاجهزة",
   },
 
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
@@ -28,46 +34,52 @@ const arabicMessages = {
         info: "معلومات المستخدم",
         createdAt: "تاريخ الإنشاء",
         updatedAt: "تاريخ التعديل",
+        phone: "رقم الهاتف",
+        photoUrl: "الصورة",
       },
     },
-    inventory: {
-      name: "مخزون |||| المخزن",
-      fields: {
-        id: "الكود",
-        name: "السلعة",
-        unit: "الوحدة",
-        quantity: "الكمية",
-        expectedMealConsumption: "الاستهلاك المتوقع للفرد في الوجبة",
-        ChildExpectedMealConsumption: "الاستهلاك المتوقع للطفل في الوجبة",
-        createdAt: "تاريخ الإنشاء",
-        updatedAt: "تاريخ التعديل",
-      },
-    },
-    user: {
-      name: "مستخدمين |||| مستخدم",
+    compound: {
+      name: "مجمعات |||| مجمع",
       fields: {
         id: "الكود",
         name: "الاسم",
-        userType: "الدور",
-        email: "البريد الإلكتروني",
-        password: "كلمة المرور",
-        permission: "الصلاحيات",
-        info: "معلومات المستخدم",
-        createdAt: "تاريخ الإنشاء",
-        updatedAt: "تاريخ التعديل",
+        location: "العنوان",
+        logoUrl: "الصورة",
       },
     },
-
-    post: {
-      name: "منشورات |||| منشور",
+    userCompound: {
+      name: "مستخدمين المجمع |||| مستخدم المجمع",
       fields: {
         id: "الكود",
-        content: "المحتوى",
-        likes: "عدد الإعجابات",
-        comments: "التعليقات",
-        userId: "كود المستخدم",
-        createdAt: "تاريخ الإنشاء",
-        updatedAt: "تاريخ التعديل",
+        userId: "المستخدم",
+        compoundId: "المجمع",
+      },
+    },
+    invitation: {
+      name: "دعوات |||| دعوة",
+      fields: {
+        id: "الكود",
+        name: "الاسم",
+        type: "النوع",
+        notes: "الملاحظات",
+        userId: "المستخدم",
+        compoundId: "المجمع",
+      },
+    },
+    scan: {
+      name: "الكشوف |||| الكشف",
+      fields: {
+        id: "الكود",
+        invitationId: "الدعوة",
+        deviceId: "الجهاز",
+      },
+    },
+    device: {
+      name: "الاجهزة |||| الجهاز",
+      fields: {
+        id: "الكود",
+        ip: "عنوان ال ip",
+        compoundId: "المجمع",
       },
     },
   },
