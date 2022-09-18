@@ -1,3 +1,3 @@
 export default {
-  baseUrl: "http://localhost:5000",
+  baseUrl: "https://easypass-api.techhive.dev/",
 };
