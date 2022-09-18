@@ -1,12 +1,5 @@
-//import { StylesProvider, jssPreset } from "@mui/styles";
-//import { create } from "jss";
-//import rtl from "jss-rtl";
 import React from "react";
-import MyAdmin from "./reactAdmin/components/MyAdmin";
-// ------------------------------------------------
-
-// Configure JSS
-//const jss = create({ plugins: [...jssPreset().plugins, rtl()] });
+import MyAdmin from "./reactAdmin";
 
 // ------------------------------------------------
 
@@ -23,11 +16,7 @@ document.body.style.backgroundColor =
 // ------------------------------------------------
 
 function App() {
-  return (
-    //<StylesProvider jss={jss}>
-    <MyAdmin />
-    //</StylesProvider>
-  );
+  return <MyAdmin />;
 }
 
 // ------------------------------------------------

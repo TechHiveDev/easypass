@@ -10,6 +10,11 @@ const allEnglishMessages = {
     Post: "Posts",
     inventory: "Inventory",
     Consumption: "Consumption",
+    Compound: "Compound",
+    UserCompound: "User Compound",
+    Invitation: "Invitation",
+    Scan: "Scan",
+    Device: "Device",
   },
 
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~

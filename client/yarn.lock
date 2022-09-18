@@ -1722,6 +1722,11 @@ postcss@^8.4.13:
     picocolors "^1.0.0"
     source-map-js "^1.0.2"
 
+prettier@^2.7.1:
+  version "2.7.1"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.7.1.tgz#e235806850d057f97bb08368a4f7d899f7760c64"
+  integrity sha512-ujppO+MkdPqoVINuDFDRLClm7D78qbDt0/NR+wp5FqEZOoTNAjPHWj17QRhu7geIHJfcNhRk1XVQmF8Bp3ye+g==
+
 prismjs@^1.6.0:
   version "1.28.0"
   resolved "https://registry.yarnpkg.com/prismjs/-/prismjs-1.28.0.tgz#0d8f561fa0f7cf6ebca901747828b149147044b6"
@@ -1786,6 +1791,22 @@ ra-core@^4.2.1, ra-core@^4.2.5:
     react-is "^17.0.2"
     react-query "^3.32.1"
 
+ra-core@^4.3.3:
+  version "4.3.3"
+  resolved "https://registry.yarnpkg.com/ra-core/-/ra-core-4.3.3.tgz#a572db4cef441a2e317cff24d9869d670036c1f8"
+  integrity sha512-fD1bKFNiAq9Ubm31r/HxIp7aXmWpDT1r7gGQsQxP/i+L4WZndSXn9TOm/NYlYKC3+4kQGdlL/b5Uz5xUUgRPaA==
+  dependencies:
+    clsx "^1.1.1"
+    date-fns "^2.19.0"
+    eventemitter3 "^4.0.7"
+    inflection "~1.12.0"
+    jsonexport "^3.2.0"
+    lodash "~4.17.5"
+    prop-types "^15.6.1"
+    query-string "^7.1.1"
+    react-is "^17.0.2"
+    react-query "^3.32.1"
+
 ra-data-simple-rest@^3.19.10:
   version "3.19.11"
   resolved "https://registry.yarnpkg.com/ra-data-simple-rest/-/ra-data-simple-rest-3.19.11.tgz#d0f6a41cd256aa018386267003b354f29c86baf2"
@@ -1801,12 +1822,27 @@ ra-i18n-polyglot@^4.2.1:
     node-polyglot "^2.2.2"
     ra-core "^4.2.5"
 
+ra-i18n-polyglot@^4.3.3:
+  version "4.3.3"
+  resolved "https://registry.yarnpkg.com/ra-i18n-polyglot/-/ra-i18n-polyglot-4.3.3.tgz#1d09ead6aa59426c3dcee283a726d03ef9935e58"
+  integrity sha512-GwZN3HKn0ij0j7ey6Q56B8gSrlAaqnCo8ZAflmLLEjZDVkzb8YiT02df6j/ko8kPmPSOnBoq6utE3emWaRNjhw==
+  dependencies:
+    node-polyglot "^2.2.2"
+    ra-core "^4.3.3"
+
 ra-language-english@^4.2.1:
   version "4.2.5"
   resolved "https://registry.yarnpkg.com/ra-language-english/-/ra-language-english-4.2.5.tgz#1f029059f18e695b351d342aa32c547956e884a3"
   integrity sha512-2CDBeCHXdBwUI6zsLlAFw5P08Ol0YRAipBikYqRbu/O6CsvC9DJxqyQgH1pR3n3vPUvCAOAYBOHlhO2wJ6/m+g==
   dependencies:
     ra-core "^4.2.5"
+
+ra-language-english@^4.3.3:
+  version "4.3.3"
+  resolved "https://registry.yarnpkg.com/ra-language-english/-/ra-language-english-4.3.3.tgz#f0a9580c613a71da77f0e2d378e69a7487e10d4c"
+  integrity sha512-Wek5+uf5jzI+KgZkpvIaBdSoIXqG0M4fu6EQnwDEqN+amqVghqUvhRKDqTpiUtYTGBmNQryBiu9VU1aZv2aT8w==
+  dependencies:
+    ra-core "^4.3.3"
 
 ra-ui-materialui@^4.2.2:
   version "4.2.5"

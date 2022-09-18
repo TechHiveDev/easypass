@@ -1,3 +1,3 @@
 export default {
-  baseUrl: "https://easypass-api.techhive.dev/",
+  baseUrl: "https://easypass-api.techhive.dev",
 };
