@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { SignUpForm } from "./SignUpForm";
 import { SignInForm } from "./SignInForm";
+import Button from "@mui/material/Button";
 
 export default function SignUp() {
   const [login, setLogin] = useState(true);
   return (
     <>
-      {login ? <SignInForm /> : <SignUpForm />}
       <div
         style={{
           display: "flex",
@@ -17,27 +17,33 @@ export default function SignUp() {
         }}
       >
         {login ? (
-          <div>
-            don't have an account ?
-            <button
-              onClick={() => {
-                setLogin(false);
-              }}
-            >
-              Sign up
-            </button>
-          </div>
+          <>
+            <SignInForm />
+            <div>
+              don't have an account ?
+              <Button
+                onClick={() => {
+                  setLogin(false);
+                }}
+              >
+                Sign up
+              </Button>
+            </div>
+          </>
         ) : (
-          <div>
-            already have an account ?
-            <button
-              onClick={() => {
-                setLogin(true);
-              }}
-            >
-              login
-            </button>
-          </div>
+          <>
+            <SignUpForm />
+            <div>
+              already have an account ?
+              <Button
+                onClick={() => {
+                  setLogin(true);
+                }}
+              >
+                login
+              </Button>
+            </div>
+          </>
         )}
       </div>
     </>
