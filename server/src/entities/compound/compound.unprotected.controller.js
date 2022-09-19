@@ -108,7 +108,7 @@ import { crud, prismaCrud } from "../../utils/crud/express-crud-router";
 // ------------------------------------------------------------------
 
 const crudController = {
-  ...prismaCrud("/unprotected/compound"),
+  ...prismaCrud("compound"),
   create: null,
   getOne: null,
   update: null,
@@ -117,4 +117,4 @@ const crudController = {
 
 // ------------------------------------------------------------------
 
-export default crud("/unprotected/compound", crudController);
+export default crud("/compounds", crudController);

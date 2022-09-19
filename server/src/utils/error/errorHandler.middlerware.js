@@ -31,10 +31,9 @@ const errorHandler = (error, req, res, next) => {
 
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
-  console.error("*** Caught Error ***" + "*".repeat(40));
-  // console.error({ error });
-  console.error({ errorJson });
-  console.error("*".repeat(60));
+  console.error({ error });
+  // console.error({ errorJson });
+  // console.error("*".repeat(60));
 
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
