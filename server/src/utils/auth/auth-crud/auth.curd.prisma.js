@@ -51,7 +51,7 @@ export const createUserAndAddress = async (payload) => {
   if (type === "Resident") {
     for (let item of expectedResiendtBody) {
       if (item && !payload[item]) {
-        throw { status: 400, message: `${i} is required!` };
+        throw { status: 400, message: `${item} is required!` };
       }
     }
   }
