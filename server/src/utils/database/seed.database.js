@@ -24,7 +24,9 @@ const prisma = new PrismaClient({ log: ["info", "query"] });
               create: {
                 email: "admin@example.com",
                 name: "admin name",
-                password: "12345",
+                // password :12345
+                password:
+                  "pbkdf2:sha256:150000$eb677977$204a8e45b57abd97e11bea7c49d7fd223a32e8b2976c677e5b74e444bad16003",
                 type: "Admin",
                 phone: "01201200222",
                 active: true,
@@ -36,7 +38,9 @@ const prisma = new PrismaClient({ log: ["info", "query"] });
               create: {
                 email: "resident@example.com",
                 name: "resident name",
-                password: "12345",
+                // password :12345
+                password:
+                  "pbkdf2:sha256:150000$eb677977$204a8e45b57abd97e11bea7c49d7fd223a32e8b2976c677e5b74e444bad16003",
                 type: "Resident",
                 phone: "01201200333",
                 active: true,
@@ -48,7 +52,9 @@ const prisma = new PrismaClient({ log: ["info", "query"] });
               create: {
                 email: "security@example.com",
                 name: "security name",
-                password: "12345",
+                // password :12345
+                password:
+                  "pbkdf2:sha256:150000$eb677977$204a8e45b57abd97e11bea7c49d7fd223a32e8b2976c677e5b74e444bad16003",
                 type: "Security",
                 phone: "01201200555",
                 active: true,
