@@ -10,7 +10,12 @@ const authUrls = {
 
 // =====================================================================
 
-const queryAuth = async (url, payload = {}, method = "POST", headers = {}) => {
+export const queryAuth = async (
+  url,
+  payload = {},
+  method = "POST",
+  headers = {}
+) => {
   const body = method !== "GET" ? { body: JSON.stringify(payload) } : {};
   const options = {
     method,
@@ -31,22 +36,21 @@ const queryAuth = async (url, payload = {}, method = "POST", headers = {}) => {
     return e;
   }
 };
-
+export const login = async ({ username: email, password }) => {
+  const data = await queryAuth(authUrls.login, { email, password });
+  if (data?.accessToken && data?.user?.id) {
+    localStorage.setItem("user", JSON.stringify(data?.user));
+    localStorage.setItem("accessToken", data?.accessToken);
+    return Promise.resolve();
+  }
+  return Promise.reject();
+};
 // =====================================================================
 export const authProvider = {
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
   // send username and password to the auth server and get back credentials
-  login: async ({ username: email, password }) => {
-    const data = await queryAuth(authUrls.login, { email, password });
-    if (data?.accessToken && data?.user?.id) {
-      console.log("here");
-      localStorage.setItem("user", JSON.stringify(data?.user));
-      localStorage.setItem("accessToken", data?.accessToken);
-      return Promise.resolve();
-    }
-    return Promise.reject();
-  },
+  login,
 
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
@@ -91,7 +95,9 @@ export const authProvider = {
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
   // get the user permissions (optional)
-  getPermissions: () => Promise.resolve(),
+  getPermissions: () => {
+    return Promise.resolve();
+  },
 
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 };
