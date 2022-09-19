@@ -33,7 +33,7 @@ export default function QrCodeScreen() {
 
   const updateQrCodeHandler = async () => {
     restart(futureDate({ oldDate: new Date() }));
-    const { data } = await generateQrCode({
+    const { data, error } = await generateQrCode({
       entity: "generate-resident-qrcode",
       body: {
         compoundId: currentCompoundId,
@@ -41,14 +41,18 @@ export default function QrCodeScreen() {
       },
     });
 
+    if (error) {
+      console.error({ error });
+    }
+
     if (data?.encryptedQrcode) {
       const { encryptedQrcode } = data;
       setQrCode(encryptedQrcode);
-      const { data: verified } = await verifyQrCode({
-        entity: "scan-qrcode",
-        body: { encryptedQrcode },
-      });
-      console.log({ verified });
+      // const { data: verified } = await verifyQrCode({
+      // entity: "scan-qrcode",
+      // body: { encryptedQrcode },
+      // });
+      // console.log({ verified });
     }
   };
 
@@ -60,11 +64,11 @@ export default function QrCodeScreen() {
 
   // ---------------------------------------------------
 
-  useEffect(() => {
-    if (seconds <= 1) {
-      updateQrCodeHandler();
-    }
-  });
+  // useEffect(() => {
+  //   if (seconds <= 1) {
+  //     updateQrCodeHandler();
+  //   }
+  // });
 
   // ---------------------------------------------------
 
