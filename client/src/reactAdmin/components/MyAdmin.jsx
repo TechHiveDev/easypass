@@ -5,10 +5,11 @@ import { authProvider } from "../providers/auth.provider.hook";
 import { dataProvider } from "../providers/data.provider.hook";
 import MyLayout from "./MyLayout";
 import SignUp from "../../custom-views/Signup";
+
 // =======================================================
+
 export default function MyAdmin() {
   const type = JSON.parse(localStorage.getItem("user"))?.type;
-  console.log(type);
   return (
     <Admin
       layout={MyLayout}

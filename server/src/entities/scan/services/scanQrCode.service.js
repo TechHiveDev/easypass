@@ -35,10 +35,34 @@ const prisma = new PrismaClient({
 //   }
 // };
 
+// model Scan {
+//   id Int @id @default(autoincrement())
+
+//   invitationId Int
+//   invitation   Invitation @relation(fields: [invitationId], references: [id])
+
+//   deviceId Int
+//   device   Device @relation(fields: [deviceId], references: [id])
+
+//   success Boolean
+
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+// }
 // ===============================================================
 
 export const scanQrCode = async ({ encryptedQrcode }) => {
   const qrcode = await verifyEncryptedQrCode(encryptedQrcode);
-  const { type, expiresAt } = qrcode;
+  const { type, expiresAt, invitaion } = qrcode;
+
+  await prisma.scan.create({
+    data: {
+      deviceId,
+      invitationId,
+      success:
+        JSON.stringify(invitation) === JSON.stringify(decryptedInvitation),
+    },
+  });
+
   return { message: "mario" };
 };

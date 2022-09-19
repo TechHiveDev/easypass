@@ -1,11 +1,7 @@
-import { PrismaClient } from "@prisma/client";
+import qrcode from "qrcode";
 import { encryptWithPublicKey } from "../../../utils/cryptography/cryptography";
 import invitationService from "../../invitation/invitation.service";
 import { isUserBelongsToCompound } from "../../userCompound/userCompound.service";
-
-// ===============================================================
-
-const prisma = new PrismaClient({ log: ["info"] });
 
 // ===============================================================
 
@@ -49,15 +45,19 @@ export const generateGuestQrCodeInvitationLink = async ({
   userId,
   name = "",
   compoundId,
-  type = "Visitor",
-  expiresIn = null,
+  type = "Delivery",
+  phone = "",
   notes = "",
 }) => {
-  if (!expiresIn) {
-    expiresIn = addHoursToDate(new Date(), 3);
-  }
-
   const userCompound = await isUserBelongsToCompound({ userId, compoundId });
+
+  let expiresAt = new Date();
+
+  if (type === "Visitor") {
+    expiresAt = addHoursToDate(new Date(), 12);
+  } else {
+    expiresAt = addHoursToDate(new Date(), 3);
+  }
 
   const invitation = await invitationService.create({
     name,
@@ -68,5 +68,22 @@ export const generateGuestQrCodeInvitationLink = async ({
     notes,
   });
 
-  return false;
+  if (!invitation.id) throw { status: 400, message: "can't invite " + type };
+
+  const encryptedQrcode = encryptWithPublicKey(
+    JSON.stringify({
+      userId,
+      compoundId,
+      invitationId: invitation?.id,
+      type: userCompound?.user?.type,
+      expiresAt: addMinutesToDate(new Date(), 1),
+    })
+  );
+
+  const link = await qrcode.toDataURL(encryptedQrcode);
+
+  return {
+    link,
+    qrcode: encryptedQrcode,
+  };
 };

@@ -8,32 +8,56 @@ import globalStyles from "../../Theme/global.styles";
 import Form from "../../Components/Form/Form";
 import Input from "../../Components/Form/Input";
 import Radios from "../../Components/Form/Radios";
+import { useCreateMutation } from "../../API/api";
+import { useAppSelector } from "../../Store/redux.hooks";
 
 // =================================================================
 
-export default function ProfileScreen({
-  name = "user name",
-  phone = "01201200774",
-  type = "delivery",
-}) {
+export default function InviteGuest({}) {
   // ---------------------------------------------------
 
-  const defaultValues = { name, phone, type };
+  const [generateInviteLink, { isLoading, error }] = useCreateMutation();
+  const defaultValues = { name: "", phone: "", type: "Delivery", notes: "" };
 
   // ---------------------------------------------------
 
-  const onSubmit = async (values) => {
-    const message = "hello world mario is pretty";
+  const {
+    currentCompoundId: compoundId,
+    user: { id: userId },
+  } = useAppSelector((s) => s?.auth);
+
+  // ---------------------------------------------------
+
+  const onSubmit = async ({
+    name,
+    // phone,
+    type,
+    notes,
+  }) => {
     try {
-      const result = await Share.share({ message });
-      if (result.action === Share.sharedAction) {
-        if (result.activityType) {
-          // shared with activity type of result.activityType
-        } else {
-          // shared
-        }
-      } else if (result.action === Share.dismissedAction) {
-        // dismissed
+      const { data } = await generateInviteLink({
+        entity: "generate-guest-link",
+        body: {
+          userId,
+          compoundId,
+          name,
+          //   phone,
+          type,
+        },
+      });
+
+      if (data?.link) {
+        let message = data?.link;
+        const result = await Share.share({ message });
+        // if (result.action === Share.sharedAction) {
+        //   if (result.activityType) {
+        //     // shared with activity type of result.activityType
+        //   } else {
+        //     // shared
+        //   }
+        // } else if (result.action === Share.dismissedAction) {
+        //   // dismissed
+        // }
       }
     } catch (e) {
       console.error(error.message);
@@ -46,8 +70,7 @@ export default function ProfileScreen({
     <SafeAreaView style={globalStyles.screen}>
       <Form
         {...{
-          //   isLoading,
-          //   error,
+          isLoading,
           onCancel: () => navigate("register"),
           defaultValues,
           onSubmit,
@@ -58,20 +81,21 @@ export default function ProfileScreen({
           submitIcon: "qrcode",
         }}
       >
-        <Input name="name" label="name" icon="account" />
-        <Input name="phone" label="phone" icon="cellphone" />
+        <Input name="name" label="name" icon="account" required={false} />
+        {/* <Input name="phone" label="phone" icon="cellphone" required={false} /> */}
+        <Input name="notes" label="notes" icon="pen" required={false} />
         <Radios
           name="type"
           placeholder="invitationType"
           icon="cellphone"
           radios={[
             {
-              label: "guest",
-              value: "guest",
+              label: "visitor",
+              value: "Visitor",
             },
             {
               label: "delivery",
-              value: "delivery",
+              value: "Delivery",
             },
           ]}
         />

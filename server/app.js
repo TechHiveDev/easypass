@@ -58,14 +58,6 @@ app.use("/api-docs", swagger.server, swagger.setup); // Docs
 // ------------------------------------------------------
 
 // Un-Protected Route
-// app.use((_, __, next) => {
-//   console.log("a7aaaa ba2a");
-// });
-
-// app.get("/compounds", (req, res) => {
-//   res.send("Hello World!");
-// });
-
 app.use(compoundUnprotectedController);
 app.use(scanController);
 

@@ -11,7 +11,7 @@ import theme from "../../Theme/paper.theme";
 
 // ========================================================
 
-function Radio({ label, checked, checkRadio }) {
+function Radio({ label, checked, checkRadio, value }) {
   const textStyle =
     checked === label
       ? {
@@ -23,13 +23,13 @@ function Radio({ label, checked, checkRadio }) {
   // -------------------------------
 
   return (
-    <TouchableOpacity style={styles.radio} onPress={() => checkRadio(label)}>
+    <TouchableOpacity style={styles.radio} onPress={() => checkRadio(value)}>
       <MyText text={i18n.t(label)} style={textStyle} />
       <RadioButton
         color={theme.colors.primary}
-        value={label}
-        status={checked === label ? "checked" : "unchecked"}
-        onPress={() => checkRadio(label)}
+        value={value}
+        status={checked === value ? "checked" : "unchecked"}
+        onPress={() => checkRadio(value)}
       />
     </TouchableOpacity>
   );
@@ -48,9 +48,9 @@ export default function Radios({
 
   // -----------------------------------
 
-  const checkRadio = (label) => {
-    setValue(radioName, label);
-    setChecked(label);
+  const checkRadio = (value) => {
+    setValue(radioName, value);
+    setChecked(value);
   };
 
   // -----------------------------------

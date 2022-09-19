@@ -20,7 +20,6 @@ export default function RegisterScreen() {
   const [register] = useRegisterMutation();
 
   // const { data } = useGetListQuery({ entity: "compounds" });
-  // console.log({ data });
 
   // ------------------------------
 
