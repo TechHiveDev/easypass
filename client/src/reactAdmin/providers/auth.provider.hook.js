@@ -89,14 +89,15 @@ export const authProvider = {
   // get the user's profile
   getIdentity: async () => {
     const user = localStorage.getItem("user");
-    return JSON.parse(user);
+    return Promise.resolve(JSON.parse(user));
   },
 
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
   // get the user permissions (optional)
   getPermissions: () => {
-    return Promise.resolve();
+    const user = localStorage.getItem("user");
+    return Promise.resolve(JSON.parse(user).type);
   },
 
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~

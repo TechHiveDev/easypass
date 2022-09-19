@@ -16,7 +16,7 @@ export default function ShowUser(props) {
         <NumberField variant="outlined" source="id" />
         <TextField variant="outlined" source="email" />
         <TextField variant="outlined" source="name" />
-        <TextField variant="outlined" source="password" />
+        {/*<TextField variant="outlined" source="password" />*/}
         <TextField variant="outlined" source="photoUrl" />
         <TextField variant="outlined" source="phone" />
       </SimpleShowLayout>

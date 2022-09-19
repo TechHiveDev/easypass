@@ -23,9 +23,9 @@ export default function ListCompound(props) {
         <TextField variant="outlined" source="location" />
 
         <Actions label="">
-          <ShowButton label="show" />
-          <EditButton label="edit" />
-          <DeleteButton label="delete" />
+          <ShowButton label="ra.action.show" />
+          <EditButton label="ra.action.edit" />
+          <DeleteButton label="ra.action.delete" />
         </Actions>
       </Datagrid>
     </List>

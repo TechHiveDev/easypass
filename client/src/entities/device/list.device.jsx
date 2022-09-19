@@ -22,9 +22,9 @@ export default function ListDevice(props) {
         <NumberField variant="outlined" source="compoundId" />
 
         <Actions label="">
-          <ShowButton label="show" />
-          <EditButton label="edit" />
-          <DeleteButton label="delete" />
+          <ShowButton label="ra.action.show" />
+          <EditButton label="ra.action.edit" />
+          <DeleteButton label="ra.action.delete" />
         </Actions>
       </Datagrid>
     </List>
