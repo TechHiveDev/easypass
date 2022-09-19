@@ -27,9 +27,9 @@ export default function ListInvitation(props) {
         <NumberField variant="outlined" source="userId" />
 
         <Actions label="">
-          <ShowButton label="show" />
-          <EditButton label="edit" />
-          <DeleteButton label="delete" />
+          <ShowButton label="ra.action.show" />
+          <EditButton label="ra.action.edit" />
+          <DeleteButton label="ra.action.delete" />
         </Actions>
       </Datagrid>
     </List>
