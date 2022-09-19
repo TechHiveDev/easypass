@@ -36,21 +36,22 @@ export const queryAuth = async (
     return e;
   }
 };
-export const login = async ({ username: email, password }) => {
-  const data = await queryAuth(authUrls.login, { email, password });
-  if (data?.accessToken && data?.user?.id) {
-    localStorage.setItem("user", JSON.stringify(data?.user));
-    localStorage.setItem("accessToken", data?.accessToken);
-    return Promise.resolve();
-  }
-  return Promise.reject();
-};
+
 // =====================================================================
+
 export const authProvider = {
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
   // send username and password to the auth server and get back credentials
-  login,
+  login: async ({ username: email, password }) => {
+    const data = await queryAuth(authUrls.login, { email, password });
+    if (data?.accessToken && data?.user?.id) {
+      localStorage.setItem("user", JSON.stringify(data?.user));
+      localStorage.setItem("accessToken", data?.accessToken);
+      return Promise.resolve();
+    }
+    return Promise.reject();
+  },
 
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 

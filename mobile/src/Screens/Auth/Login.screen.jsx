@@ -21,7 +21,7 @@ export default function LoginScreen() {
   // -------------------------------------
 
   const defaultValues = {
-    email: "resident@email.com",
+    email: "resident@example.com",
     password: "12345",
   };
 

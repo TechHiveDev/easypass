@@ -6,6 +6,7 @@ import Form from "../../Components/Form/Form";
 import Input from "../../Components/Form/Input";
 import Select from "../../Components/Form/Select";
 import { userTypes, levels } from "../../Config/constants";
+import { useGetListQuery } from "../../API/api";
 import { useRegisterMutation } from "../../API/api";
 import { useNavigation } from "@react-navigation/native";
 import Toast from "react-native-toast-message";
@@ -17,6 +18,10 @@ export default function RegisterScreen() {
 
   const { navigate } = useNavigation();
   const [register] = useRegisterMutation();
+
+  const { data } = useGetListQuery({ entity: "compounds" });
+
+  console.log({ data });
 
   // ------------------------------
 
