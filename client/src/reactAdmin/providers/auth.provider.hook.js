@@ -89,7 +89,7 @@ export const authProvider = {
   // get the user's profile
   getIdentity: async () => {
     const user = localStorage.getItem("user");
-    return Promise.resolve(JSON.parse(user));
+    return user ? Promise.resolve(JSON.parse(user)) : Promise.reject();
   },
 
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
@@ -97,7 +97,7 @@ export const authProvider = {
   // get the user permissions (optional)
   getPermissions: () => {
     const user = localStorage.getItem("user");
-    return Promise.resolve(JSON.parse(user).type);
+    return user ? Promise.resolve(JSON.parse(user).type) : Promise.reject();
   },
 
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~

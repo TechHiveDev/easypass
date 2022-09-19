@@ -24,7 +24,10 @@ export const SignUpForm = () => {
   const notify = useNotify();
   const login = useLogin();
   const onSubmit = async (data) => {
-    const res = await queryAuth(config.baseUrl + "/oauth/register", data);
+    const res = await queryAuth(config.baseUrl + "/oauth/register", {
+      ...data,
+      active: true,
+    });
     const { email: username, password } = data;
     if (res?.user?.id) {
       login({
