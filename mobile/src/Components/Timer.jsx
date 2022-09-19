@@ -12,8 +12,8 @@ import { useTimer } from "react-timer-hook";
 
 export const futureDate = ({
   date = new Date(),
-  seconds = 10,
-  minutes = 0,
+  seconds = 0,
+  minutes = 1,
   hours = 0,
 }) => {
   date.setSeconds(date.getSeconds() + seconds);

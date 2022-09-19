@@ -2,12 +2,13 @@
 CREATE TABLE `User` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `email` VARCHAR(191) NOT NULL,
-    `name` VARCHAR(191) NULL,
+    `name` VARCHAR(191) NOT NULL,
     `password` VARCHAR(191) NOT NULL,
     `type` ENUM('SuperAdmin', 'Admin', 'Resident', 'Security') NOT NULL,
     `photoUrl` VARCHAR(191) NULL,
-    `phone` VARCHAR(191) NULL,
+    `phone` VARCHAR(191) NOT NULL,
     `docs` JSON NULL,
+    `active` BOOLEAN NOT NULL DEFAULT false,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
 
@@ -26,15 +27,16 @@ CREATE TABLE `Compound` (
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
 
+    UNIQUE INDEX `Compound_name_key`(`name`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
 CREATE TABLE `UserCompound` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `streetName` VARCHAR(191) NOT NULL,
-    `blockNumber` INTEGER NOT NULL,
-    `unitNumber` INTEGER NOT NULL,
+    `streetName` VARCHAR(191) NULL,
+    `blockNumber` INTEGER NULL,
+    `unitNumber` INTEGER NULL,
     `userId` INTEGER NOT NULL,
     `compoundId` INTEGER NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),

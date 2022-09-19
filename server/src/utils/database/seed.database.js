@@ -1,22 +1,62 @@
 require("dotenv").config("../../../.env");
-const { exec } = require("child_process");
+
+import { PrismaClient } from "@prisma/client";
+const prisma = new PrismaClient({ log: ["info", "query"] });
 
 // ==========================================================
 
-console.log("process", process.env.DB_NAME, process.env.DB_PASSWORD);
+// Create compound
+// Create admin user
+// Create resident user
+// Create security user
+// assign admin to compound
+// assign security to compound
+// Create security user to compound
 
-const command = `mysql -u ${process.env.DB_USER}  --password=${process.env.DB_PASSWORD} ${process.env.DB_NAME} < ./src/utils/database/testData.sql `;
-
-exec(command, (error, stdout, stderr) => {
-  if (error) {
-    console.log(`error: ${error.message}`);
-    return;
-  }
-  if (stderr) {
-    console.log(`stderr: ${stderr}`);
-    return;
-  }
-  console.log(`stdout: ${stdout}`);
-});
-
-// ==========================================================
+(async () => {
+  await prisma.compound.create({
+    data: {
+      name: "Tech-Hive Compound - " + Date.now(),
+      users: {
+        create: [
+          {
+            user: {
+              create: {
+                email: "admin@example.com",
+                name: "admin name",
+                password: "12345",
+                type: "Admin",
+                phone: "01201200222",
+                active: true,
+              },
+            },
+          },
+          {
+            user: {
+              create: {
+                email: "resident@example.com",
+                name: "resident name",
+                password: "12345",
+                type: "Resident",
+                phone: "01201200333",
+                active: true,
+              },
+            },
+          },
+          {
+            user: {
+              create: {
+                email: "security@example.com",
+                name: "security name",
+                password: "12345",
+                type: "Security",
+                phone: "01201200555",
+                active: true,
+              },
+            },
+          },
+        ],
+      },
+    },
+  });
+})();

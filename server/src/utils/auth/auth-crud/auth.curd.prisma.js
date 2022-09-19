@@ -167,7 +167,9 @@ export const login = async ({ email, password }) => {
   // Handle errors ( will be catched by error handler)
   if (!user) throw { status: 404, message: "User Not Found" };
 
-  if (user.deleted) throw { status: 403, message: "User has been deleted" };
+  if (user?.deleted) throw { status: 403, message: "User has been deleted" };
+
+  if (!user?.active) throw { status: 403, message: "User is not active" };
 
   if (!verifyHash({ password, hashed: user.password })) {
     throw { status: 401, message: "Un-Authenticated" };

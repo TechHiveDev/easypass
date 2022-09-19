@@ -98,47 +98,69 @@
 // ------------------------------------------------------------------
 
 import { crud, prismaCrud } from "../../utils/crud/express-crud-router";
-import scanService from "./scan.service";
-
+import {
+  generateGuestQrCodeInvitationLink,
+  generateResidentQrCode,
+} from "./services/createQrCode.service";
+import { scanQrCode } from "./services/scanQrCode.service";
 // ------------------------------------------------------------------
 
 const crudController = {
   ...prismaCrud("scan"),
-  //   getList: exampleService.getList,
-  // getOne: id => Promise,
-  create: (body) => scanService.create(body),
-  update: (id, body) => null,
-  // destroy: id => Promise ,
+  getList: null,
+  getOne: null,
+  create: null,
+  update: null,
+  destroy: null,
 };
 
 // ------------------------------------------------------------------
 
 const customRoutesController = [
   {
-    // :id => user id
     method: "post",
     path: "/generate-resident-qrcode",
     controller: async (req, res, next) => {
       try {
-        const qrcode = await scanService.generateResidentQrCode(req.body);
+        const encryptedQrcode = await generateResidentQrCode(req.body);
+        return res.status(202).json({ encryptedQrcode });
+      } catch (err) {
+        next(err);
+      }
+    },
+  },
+
+  //  ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+  {
+    method: "post",
+    path: "/generate-guest-link",
+    controller: async (req, res, next) => {
+      try {
+        const qrcode = await generateGuestQrCodeInvitationLink(req.body);
         return res.status(202).json({ qrcode });
       } catch (err) {
         next(err);
       }
     },
   },
+
   //  ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
   {
-    method: "post", // get, post, put, delete  (from express router)
-    path: "/generate",
-    controller: async (req, res, next) => {},
+    method: "post",
+    path: "/scan-qrcode",
+    controller: async (req, res, next) => {
+      try {
+        const encryptedQrcode = await scanQrCode(req.body);
+        return res.status(202).json({ encryptedQrcode });
+      } catch (err) {
+        next(err);
+      }
+    },
   },
+
   //  ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-  {
-    method: "get", // get, post, put, delete  (from express router)
-    path: "/guest3/:encryptedInvitation",
-    controller: async (req, res, next) => {},
-  },
 ];
 
 // ------------------------------------------------------------------

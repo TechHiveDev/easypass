@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
-import { encryptWithPublicKey } from "../../utils/cryptography/cryptography";
+import { encryptWithPublicKey } from "../../../utils/cryptography/cryptography";
 import invitationService from "../../invitation/invitation.service";
+import { isUserBelongsToCompound } from "../../userCompound/userCompound.service";
 
 // ===============================================================
 
@@ -12,32 +13,31 @@ const addHoursToDate = (date = new Date(), hours = 3) => {
   return new Date(new Date(date).setHours(date.getHours() + hours));
 };
 
+const addMinutesToDate = (date = new Date(), minutes = 1) => {
+  return new Date(new Date(date).setMinutes(date.getMinutes() + minutes));
+};
+
 // ===============================================================
 
 /**
  * Generate QrCode for Resident
  */
 export const generateResidentQrCode = async ({ userId, compoundId }) => {
-  try {
-    if (!userId || !compoundId) {
-      throw { status: 400, message: "userId , compoundId is required" };
-    }
+  const userCompound = await isUserBelongsToCompound({ userId, compoundId });
 
-    const userCompound = await prisma.userCompound.findFirst({
-      where: { userId: userId, compoundId: compoundId },
-      include: { user: true, compound: true },
-    });
-
-    if (!userCompound) {
-      throw { status: 404, message: "user compound is not exist" };
-    }
-
-    let payload = { userId, compoundId, type: "Resident" };
-    return encryptWithPublicKey(JSON.stringify(payload));
-  } catch (error) {
-    console.error(error);
-    throw error;
+  // Type has to be Resident
+  if (userCompound?.user?.type !== "Resident") {
+    throw { status: 400, message: "user is not resident" };
   }
+
+  return encryptWithPublicKey(
+    JSON.stringify({
+      userId,
+      compoundId,
+      type: userCompound?.user?.type,
+      expiresAt: addMinutesToDate(new Date(), 1),
+    })
+  );
 };
 
 // ===============================================================
@@ -53,40 +53,20 @@ export const generateGuestQrCodeInvitationLink = async ({
   expiresIn = null,
   notes = "",
 }) => {
-  try {
-    if (!expiresIn) {
-      // expires in 3 hours
-      expiresIn = addHoursToDate(new Date(), 3);
-    }
-
-    // TODO: check if there is a user and compound
-
-    const invitation = await invitationService.create({
-      name,
-      userId,
-      type,
-      compoundId,
-      expiresAt,
-      notes,
-    });
-
-    // Create invitation
-    // const invitation = await
-
-    // if (!userId || !compoundId) {
-    //   throw { status: 400, message: "userId , compoundId is required" };
-    // }
-    // const userCompound = await prisma.userCompound.findFirst({
-    //   where: { userId: userId, compoundId: compoundId },
-    //   include: { user: true, compound: true },
-    // });
-    // if (!userCompound) {
-    //   throw { status: 404, message: "user compound is not exist" };
-    // }
-    // let payload = { userId, compoundId, type: "Resident" };
-    // return encryptWithPublicKey(JSON.stringify(payload));
-  } catch (error) {
-    console.error(error);
-    throw error;
+  if (!expiresIn) {
+    expiresIn = addHoursToDate(new Date(), 3);
   }
+
+  const userCompound = await isUserBelongsToCompound({ userId, compoundId });
+
+  const invitation = await invitationService.create({
+    name,
+    userId,
+    type,
+    compoundId,
+    expiresAt,
+    notes,
+  });
+
+  return false;
 };
