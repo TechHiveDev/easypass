@@ -16,15 +16,15 @@ generator client {
 // Data Model
 
 model User {
-  id       Int      @id @default(autoincrement())
-  email    String   @unique
-  name     String
-  password String
-  type     UserType
-  photoUrl String?
-  phone    String   @unique
-  docs     Json?
-
+  id           Int            @id @default(autoincrement())
+  email        String         @unique
+  name         String
+  password     String
+  type         UserType
+  photoUrl     String?
+  phone        String         @unique
+  docs         Json?
+  active       Boolean        @default(false)
   userCompound UserCompound[]
   Invitation   Invitation[]
 

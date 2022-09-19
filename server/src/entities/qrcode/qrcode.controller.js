@@ -12,7 +12,7 @@ const customRoutesController = [
   {
     // :id => user id
     method: "post",
-    path: "/generate-resident-qrcode",
+    // path: "/generate-resident-qrcode",
     controller: async (req, res, next) => {
       try {
         const qrcode = await qrcodeService.generateResidentQrCode(req.body);

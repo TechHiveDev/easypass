@@ -9,7 +9,7 @@ import SvgQRCode from "react-native-qrcode-svg";
 import theme from "../../Theme/paper.theme";
 import { futureDate } from "../../Components/Timer";
 import { useTimer } from "react-timer-hook";
-import { useLazyGetOneQuery, useCreateMutation } from "../../API/api";
+import { useCreateMutation } from "../../API/api";
 import { useAppSelector } from "../../Store/redux.hooks";
 
 // =================================================================
@@ -27,6 +27,7 @@ export default function QrCodeScreen() {
   } = useAppSelector((s) => s?.auth);
 
   const [generateQrCode] = useCreateMutation();
+  const [verifyQrCode] = useCreateMutation();
 
   // ---------------------------------------------------
 
@@ -39,10 +40,23 @@ export default function QrCodeScreen() {
         userId: id,
       },
     });
-    if (data?.qrcode) {
-      setQrCode(data?.qrcode);
+
+    if (data?.encryptedQrcode) {
+      const { encryptedQrcode } = data;
+      setQrCode(encryptedQrcode);
+      const { data: verified } = await verifyQrCode({
+        entity: "scan-qrcode",
+        body: { encryptedQrcode },
+      });
+      console.log({ verified });
     }
   };
+
+  // ---------------------------------------------------
+
+  useEffect(() => {
+    updateQrCodeHandler();
+  }, []);
 
   // ---------------------------------------------------
 
