@@ -13,7 +13,9 @@ import MyText from "../../../Components/MyText";
 import { Avatar } from "react-native-paper";
 import i18n from "i18n-js";
 import { useNavigation } from "@react-navigation/native";
-
+import facilities from "../../../../assets/facilities.png";
+import invite from "../../../../assets/invite.png";
+import qrcode from "../../../../assets/qrcode.png";
 // ====================================================================
 
 // Static Data
@@ -21,14 +23,17 @@ const actions = [
   {
     title: "facilities",
     navigateTo: "facilities",
+    icon: facilities,
   },
   {
     title: "qrcode",
     navigateTo: "qrcode",
+    icon: qrcode,
   },
   {
     title: "invite",
     navigateTo: "invite",
+    icon: invite,
   },
   // {
   //   title: "report",
@@ -38,7 +43,7 @@ const actions = [
 
 // ====================================================================
 
-function Action({ title, navigateTo }) {
+function Action({ title, navigateTo, icon }) {
   const { navigate } = useNavigation();
   return (
     <TouchableOpacity
@@ -51,8 +56,11 @@ function Action({ title, navigateTo }) {
           style={styles.iconContainer}
           icon={({ size }) => (
             <Image
-              source={require("../../../../assets/logo.png")}
-              style={{ width: size, height: size }}
+              source={icon}
+              style={{
+                width: title === "facilities" ? 72 : size,
+                height: title === "facilities" ? 72 : size,
+              }}
             />
           )}
         />
@@ -67,8 +75,8 @@ function Action({ title, navigateTo }) {
 export default function Actions() {
   return (
     <SafeAreaView style={styles.container}>
-      {actions?.map(({ title, navigateTo }, index) => (
-        <Action key={index} {...{ title, navigateTo }} />
+      {actions?.map(({ title, navigateTo, icon }, index) => (
+        <Action key={index} {...{ title, navigateTo, icon }} />
       ))}
     </SafeAreaView>
   );

@@ -1,10 +1,16 @@
 import React, { useState } from "react";
-import { SafeAreaView, StyleSheet, ScrollView, View } from "react-native";
+import {
+  SafeAreaView,
+  StyleSheet,
+  ScrollView,
+  View,
+  TouchableOpacity,
+} from "react-native";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
-import { Avatar, IconButton } from "react-native-paper";
+import { Avatar as PaperAvatar, IconButton } from "react-native-paper";
 import MyText from "../../Components/MyText";
 import globalStyles from "../../Theme/global.styles";
 import Form from "../../Components/Form/Form";
@@ -14,7 +20,8 @@ import { useUpdateMutation } from "../../API/api";
 import { useAppSelector, useAppDispatch } from "../../Store/redux.hooks";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
 import { setUser } from "../../Store/Slices/auth.slice";
-
+import * as ImagePicker from "expo-image-picker";
+import * as FileSystem from "expo-file-system";
 // =================================================================
 
 export default function ProfileScreen() {
@@ -22,10 +29,10 @@ export default function ProfileScreen() {
 
   const [hideSubmitButton, setHideSubmitButton] = useState(true);
   const dispatch = useAppDispatch();
-  const { id, name, email, phone, type } = useAppSelector(
+  const { id, name, email, phone, type, photoUrl } = useAppSelector(
     (state) => state?.auth?.user
   );
-  const defaultValues = { email, name, phone };
+  const defaultValues = { email, name, phone, photoUrl };
 
   // ---------------------------------------------------
 
@@ -34,6 +41,23 @@ export default function ProfileScreen() {
   // ---------------------------------------------------
 
   const onSubmit = async ({ email, name, phone }) => {
+    if (
+      defaultValues.email === email &&
+      defaultValues.name === name &&
+      defaultValues.phone === phone &&
+      defaultValues.photoUrl === image
+    ) {
+      return setHideSubmitButton(true);
+    }
+    const uploadResult = await FileSystem.uploadAsync(
+      "http://localhost:8000/upload/picture/1",
+      image,
+      {
+        httpMethod: "POST",
+        uploadType: FileSystem.FileSystemUploadType.MULTIPART,
+        fieldName: "demo_image",
+      }
+    );
     const { data } = await updateMyProfile({
       entity: "user",
       id,
@@ -44,21 +68,36 @@ export default function ProfileScreen() {
       Toast.show({ type: "success", text1: "Updated Successfully" });
       dispatch(setUser(data));
     }
-
     setHideSubmitButton(true);
   };
-
+  const [image, setImage] = useState(photoUrl);
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 1,
+    });
+    if (!result.cancelled) {
+      setImage(result.uri);
+    }
+  };
   // ---------------------------------------------------
 
   return (
     <SafeAreaView style={globalStyles.screen}>
       <ScrollView>
         <View style={styles.container}>
-          <Avatar.Image
-            size={95}
-            source={require("../../../assets/logo.png")}
-            style={styles.image}
-          />
+          <TouchableOpacity disabled={hideSubmitButton} onPress={pickImage}>
+            <PaperAvatar.Image
+              size={95}
+              source={
+                image ? { uri: image } : require("../../../assets/logo.png")
+              }
+              style={styles.image}
+            />
+          </TouchableOpacity>
           <View style={styles.icon}>
             <IconButton
               icon="pencil-box-outline"
