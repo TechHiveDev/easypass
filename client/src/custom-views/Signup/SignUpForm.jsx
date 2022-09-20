@@ -10,11 +10,13 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-import { useLogin, useNotify } from "react-admin";
+import { useLogin, useNotify, useTranslate } from "react-admin";
 import { queryAuth } from "../../reactAdmin/providers/auth.provider.hook";
 import config from "../../configs/config";
+import cardStyles from "./cardStyles";
 
 export const SignUpForm = () => {
+  const translate = useTranslate();
   const {
     register,
     handleSubmit,
@@ -33,47 +35,58 @@ export const SignUpForm = () => {
       login({
         username,
         password,
-      }).catch(() => notify("Invalid email or password"));
+      }).catch(() => notify(translate("signCommon.invalid")));
     } else {
-      notify("Error while registering");
+      notify(translate("signUp.error"));
     }
   };
 
   return (
-    <Card sx={{ width: "20vw", minWidth: "200px", marginTop: "5vh" }}>
+    <Card sx={cardStyles}>
       <CardContent>
-        <h2>SignUp</h2>
+        <h2> {translate("signUp.label")}</h2>
         <Stack spacing={2} as={"form"} onSubmit={handleSubmit(onSubmit)}>
           <FormControl fullWidth>
-            <InputLabel id="Name-label">Name</InputLabel>
+            <InputLabel id="Name-label">
+              {translate("signUp.name.label")}
+            </InputLabel>
             <Input
               type="text"
               labelId="Name-label"
               id="Name"
               {...register("name", {
-                required: { value: true, message: "Name is required" },
+                required: {
+                  value: true,
+                  message: translate("signUp.name.required"),
+                },
                 minLength: {
                   value: 3,
-                  message: "Name can't be less than 3 characters",
+                  message: translate("signUp.name.minLength", {
+                    count: 3,
+                  }),
                 },
               })}
             />
             {errors?.name ? (
-              <Alert severity={"error"}>{errors.email.name}</Alert>
+              <Alert severity={"error"}>{errors.name.message}</Alert>
             ) : null}
           </FormControl>
           <FormControl fullWidth>
-            <InputLabel id="Email-label">Email</InputLabel>
+            <InputLabel id="Email-label">
+              {translate("signUp.email.label")}
+            </InputLabel>
             <Input
               type="text"
               labelId="Email-label"
               id="Email"
               {...register("email", {
-                required: { value: true, message: "Email is required" },
+                required: {
+                  value: true,
+                  message: translate("signUp.email.required"),
+                },
                 pattern: {
                   value: /^\S+@\S+$/i,
-                  message:
-                    "Email doesn't match email pattern(eg. example@example.com)",
+                  message: translate("signUp.email.pattern"),
                 },
               })}
             />
@@ -82,13 +95,18 @@ export const SignUpForm = () => {
             ) : null}
           </FormControl>
           <FormControl fullWidth>
-            <InputLabel id="Phone-label">Phone</InputLabel>
+            <InputLabel id="Phone-label">
+              {translate("signUp.phone.label")}
+            </InputLabel>
             <Input
               type="tel"
               labelId="Phone-label"
               id="Phone"
               {...register("phone", {
-                required: { value: true, message: "Phone is required" },
+                required: {
+                  value: true,
+                  message: translate("signUp.phone.required"),
+                },
               })}
             />
             {errors?.phone ? (
@@ -101,16 +119,22 @@ export const SignUpForm = () => {
               id={"Password"}
               labelId="Password-label"
               type="password"
-              placeholder="Password"
               {...register("password", {
-                required: { value: true, message: "Password is required" },
+                required: {
+                  value: true,
+                  message: translate("signUp.password.required"),
+                },
                 minLength: {
                   value: 8,
-                  message: "Password must be 8 characters or more",
+                  message: translate("signUp.password.minLength", {
+                    count: 8,
+                  }),
                 },
                 maxLength: {
                   value: 20,
-                  message: "Password must be 20 characters or less",
+                  message: translate("signUp.password.maxLength", {
+                    count: 20,
+                  }),
                 },
               })}
             />
@@ -119,15 +143,16 @@ export const SignUpForm = () => {
             ) : null}
           </FormControl>
           <FormControl>
-            <InputLabel id="ConfirmPassword-label">Confirm Password</InputLabel>
+            <InputLabel id="ConfirmPassword-label">
+              {translate("signUp.confirmPassword.label")}
+            </InputLabel>
             <Input
               type="password"
               label-id={"ConfirmPassword-label"}
-              placeholder="Confirm Password"
               {...register("ConfirmPassword", {
                 validate: (val) => {
                   if (watch("password") !== val) {
-                    return "Your passwords do no match";
+                    return translate("signUp.confirmPassword.match");
                   }
                 },
               })}
@@ -143,7 +168,10 @@ export const SignUpForm = () => {
               id="Type"
               label="Age"
               {...register("type", {
-                required: { value: true, message: "Type is required" },
+                required: {
+                  value: true,
+                  message: translate("singUp.type.label"),
+                },
               })}
             >
               <MenuItem value="SuperAdmin">SuperAdmin</MenuItem>
@@ -154,7 +182,7 @@ export const SignUpForm = () => {
           {errors?.type ? (
             <Alert severity={"error"}>{errors.type.message}</Alert>
           ) : null}
-          <Button type={"submit"}>Submit</Button>
+          <Button type={"submit"}>{translate("signUp.register")}</Button>
         </Stack>
       </CardContent>
     </Card>

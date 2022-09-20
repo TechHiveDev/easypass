@@ -1,4 +1,40 @@
 const arabicMessages = {
+  signCommon: {
+    invalid: "يوجد خطأ بالايميل او الباسورد",
+  },
+  signUp: {
+    error: "خطأ اثناء التسجيل",
+    name: {
+      label: "الاسم",
+      required: "الاسم مطلوب",
+      minLength: "الاسم لا يمكن ان يكون اقل من {count}% حروف",
+    },
+    email: {
+      label: "البريد الالكتروني",
+      required: "البريد الالكتروني مطلوب",
+      pattern: "البريد الالكتروني لا يطابق النمط example@example.com",
+    },
+    phone: {
+      label: "الهاتف",
+      required: "الهاتف مطلوب",
+    },
+    password: {
+      label: "كلمة المرور",
+      required: "كلمة المرور مطلوبة",
+      minLength: "كلمة المرور لا يمكن ان تكون اقل من %{count} حروف",
+      maxLength: "كلمة المرور يجب ان تكون اقل من %{count} حرف",
+    },
+    confirmPassword: {
+      label: "تاكيد كلمة المرور",
+      match: "كلمات المرور غير متطابقة",
+    },
+    type: {
+      label: "النوع",
+      required: "النوع مطلوب",
+    },
+    register: "التسجيل",
+    label: "التسجيل",
+  },
   menu: {
     User: "المستخدمين",
     Post: "المنشورات",

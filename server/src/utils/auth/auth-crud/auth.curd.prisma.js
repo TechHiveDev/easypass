@@ -75,6 +75,7 @@ export const createUserAndAddress = async (payload) => {
     streetName,
     blockNumber,
     unitNumber,
+    active = false,
   } = payload;
 
   const compound = await prisma.compound.findFirst({
