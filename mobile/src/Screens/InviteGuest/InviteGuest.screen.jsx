@@ -35,29 +35,29 @@ export default function InviteGuest({}) {
     notes,
   }) => {
     try {
-      const { data } = await generateInviteLink({
-        entity: "generate-guest-link",
-        body: {
-          userId,
-          compoundId,
-          name,
-          //   phone,
-          type,
-        },
-      });
+      // const { data } = await generateInviteLink({
+      //   entity: "generate-guest-link",
+      //   body: {
+      //     userId,
+      //     compoundId,
+      //     name,
+      //     //   phone,
+      //     type,
+      //   },
+      // });
 
-      if (data?.link) {
-        let message = data?.link;
-        const result = await Share.share({ message });
-        // if (result.action === Share.sharedAction) {
-        //   if (result.activityType) {
-        //     // shared with activity type of result.activityType
-        //   } else {
-        //     // shared
-        //   }
-        // } else if (result.action === Share.dismissedAction) {
-        //   // dismissed
-        // }
+      if (true) {
+        // let message = data?.link;
+        const result = await Share.share({ message: "mario" });
+        if (result.action === Share.sharedAction) {
+          if (result.activityType) {
+            // shared with activity type of result.activityType
+          } else {
+            // shared
+          }
+        } else if (result.action === Share.dismissedAction) {
+          // dismissed
+        }
       }
     } catch (e) {
       console.error(error.message);

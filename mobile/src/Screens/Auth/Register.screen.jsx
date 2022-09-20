@@ -19,7 +19,8 @@ export default function RegisterScreen() {
   const { navigate } = useNavigation();
   const [register] = useRegisterMutation();
 
-  // const { data } = useGetListQuery({ entity: "compounds" });
+  const { data } = useGetListQuery({ entity: "compounds" });
+  // console.log({ data });
 
   // ------------------------------
 
