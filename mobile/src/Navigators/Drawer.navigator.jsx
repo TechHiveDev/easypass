@@ -5,7 +5,7 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import MyStatusBar from "../Components/MyStatusBar";
 import SideDrawer from "../Components/Drawer/Side.drawer";
 import TabNavigator from "./Tab.navigator";
-
+import UserCompounds from "../Screens/UserCompounds/UserCompounds";
 // ==============================================================
 
 const Stack = createNativeStackNavigator();
@@ -41,13 +41,15 @@ const StackTabNavigator = () => {
 export default function DrawerNavigator() {
   return (
     <Drawer.Navigator
-      initialRouteName="HomeDrawerNavigator"
+      initialRouteName="UserCompounds"
       drawerStyle={{ width: wp(70) }}
       edgeWidth={15}
       screenOptions={{ swipeEnabled: true, headerShown: false }}
       drawerPosition="right"
       drawerContent={(props) => <SideDrawer {...props} />}
     >
+      <Drawer.Screen name="UserCompounds" component={UserCompounds} />
+
       <Drawer.Screen
         name="HomeStackTabNavigator"
         component={StackTabNavigator}

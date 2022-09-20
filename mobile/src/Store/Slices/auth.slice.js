@@ -36,6 +36,13 @@ const reducers = {
 
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
+
+
+  setCompountId: (state, action) => {
+    state.currentCompoundId = action.payload;
+  },
+  // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
   resetAuthUser: () => initialState,
 
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
@@ -47,7 +54,7 @@ const auhthSlice = createSlice({ name: "auth", initialState, reducers });
 
 // =====================================================================
 
-export const { setAuthUser, setAccesToken, setUser, resetAuthUser } =
+export const { setAuthUser, setAccesToken, setUser, resetAuthUser, setCompountId } =
   auhthSlice.actions;
 
 // =====================================================================
