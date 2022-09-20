@@ -5,7 +5,6 @@ import { useAppSelector } from "../Store/redux.hooks";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import theme from "../Theme/paper.theme";
 import MyStatusBar from "../Components/MyStatusBar";
-import i18n from "i18n-js";
 
 // -------------------------------------------------------
 
@@ -14,6 +13,7 @@ import Facilities from "../Screens/Facilities/Facilities.screen";
 import Profile from "../Screens/Profile/Profile.screen";
 import QrCode from "../Screens/QrCode/QrCode.screen";
 import InviteGuesst from "../Screens/InviteGuest/InviteGuest.screen";
+import ScanQrCode from "../Screens/ScanQrCode/ScanQrCode.screen";
 
 // -------------------------------------------------------
 
@@ -56,13 +56,14 @@ const screenOptions = ({ route: { name } }) => ({
 export default function TabNavigator() {
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
-  const userType = useAppSelector((state) => state?.auth?.user?.userType);
+  const userType = useAppSelector((state) => state?.auth?.user?.type);
 
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
-  return userType === "security" ? (
+  return userType === "Security" ? (
     <Tab.Navigator screenOptions={screenOptions}>
-      <Tab.Screen name={i18n.t("home")} component={HomeScreen} />
+      <Tab.Screen name={"home"} component={HomeScreen} />
+      <Tab.Screen name={"qrcode"} component={ScanQrCode} />
     </Tab.Navigator>
   ) : (
     <Tab.Navigator screenOptions={screenOptions}>

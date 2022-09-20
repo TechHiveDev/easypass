@@ -92,6 +92,7 @@ export default {
     delivery: "Delivery",
     visitor: "Visitor",
     notes: "Notes",
+    scanQrCode: "Scan QR Code",
     invitationType: "Type of Invitation",
     cancel: "Cancel",
     compoundName: "Compound Name",
