@@ -3,16 +3,22 @@ import globalStyles from "../../Theme/global.styles";
 import UserCard from "./Components/UserCard";
 import Announcements from "./Components/Announcements";
 import Actions from "./Components/Actions";
+import { useAppSelector } from "../../Store/redux.hooks";
 
 // =================================================================
 
-export default function HomeScreen({ type = "Just Home" }) {
+export default function HomeScreen() {
+  const { type } = useAppSelector((s) => s?.auth?.user);
   return (
     <SafeAreaView style={globalStyles.screen}>
       <ScrollView>
         <UserCard />
-        <Announcements />
-        <Actions />
+        {type === "Resident" && (
+          <>
+            <Announcements />
+            <Actions />
+          </>
+        )}
       </ScrollView>
     </SafeAreaView>
   );

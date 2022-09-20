@@ -34,6 +34,7 @@ const theme = {
     accent: "green",
     accent: "#0AA1DD",
     white: "#FFFFFF",
+    black: "black",
     grey: "rgb(180, 180, 184)",
     lightgrey: "rgb(199, 199, 204)",
   },

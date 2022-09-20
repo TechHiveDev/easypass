@@ -29,7 +29,14 @@ const prisma = new PrismaClient({ log: ["info" /* "query" */] });
 // ---------------------------------------------------------
 
 export const createUserAndAddress = async (payload) => {
-  const expectedUserBody = ["email", "name", "password", "phone", "type"];
+  const expectedUserBody = [
+    "email",
+    "name",
+    "password",
+    "phone",
+    "type",
+    "active",
+  ];
 
   const expectedResiendtBody = [
     "compoundName",
@@ -62,6 +69,7 @@ export const createUserAndAddress = async (payload) => {
     email,
     name,
     phone,
+    active = false,
     password,
     compoundName,
     streetName,

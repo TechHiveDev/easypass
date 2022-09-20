@@ -5,6 +5,7 @@ import authSlice from "./Slices/auth.slice";
 import requestsSlice from "./Slices/requests.slice";
 import enrolmentsSlice from "./Slices/enrolments.slice";
 import Toast from "react-native-toast-message";
+import config from "../Config/config";
 
 // ========================================================
 
@@ -18,6 +19,17 @@ const rtkQueryErrorLogger = (api) => (next) => (action) => {
   if (isRejectedWithValue(action)) {
     let message = "Something went wrong";
     let errRes = action?.payload;
+
+    console.log({ errRes, config: config?.API_URL });
+
+    // No Network
+    if (errRes.status === "FETCH_ERROR") {
+      Toast.show({
+        type: "error",
+        text1: `😔  Can't Connect to ${config.API_URL}`,
+      });
+      return next(action);
+    }
 
     // handle un-auth request
     if (errRes.status === 401) {

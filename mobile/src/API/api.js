@@ -1,8 +1,8 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import config from "../Config/config";
 import endpoints from "./api.queries";
-import { resetAuthUser } from "../Store/Slices/auth.slice";
-import Toast from "react-native-toast-message";
+// import { resetAuthUser } from "../Store/Slices/auth.slice";
+// import Toast from "react-native-toast-message";
 
 // ==========================================================
 
@@ -28,9 +28,21 @@ const baseQueryClient = fetchBaseQuery({
 const baseQuery = async (args, api, extraOptions) => {
   let result = await baseQueryClient(args, api, extraOptions);
 
-  if (result?.error?.data?.message) {
-    Toast.show({ type: "error", text1: "😔  " + result?.error?.data?.message });
-  }
+  // const status = result?.error?.status;
+  // if (status === "FETCH_ERROR") {
+  //   Toast.show({
+  //     type: "success",
+  //     text1: `😔  Can't Connect to Network on Server ${config.API_URL}`,
+  //   });
+  // } else {
+  //   if (result?.error?.data?.message) {
+  //     Toast.show({
+  //       type: "error",
+  //       text1: "😔  " + result?.error?.data?.message,
+  //     });
+  //   }
+  // }
+
   /*
    * TODO: can handle if the token is expired
    * const refreshResult = await baseQueryClient("/refreshToken", api, extraOptions);
