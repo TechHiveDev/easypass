@@ -46,7 +46,7 @@ export const generateGuestQrCodeInvitationLink = async ({
   name = "",
   compoundId,
   type = "Delivery",
-  phone = "",
+  // phone = "",
   notes = "",
 }) => {
   const userCompound = await isUserBelongsToCompound({ userId, compoundId });
@@ -83,7 +83,11 @@ export const generateGuestQrCodeInvitationLink = async ({
   const link = await qrcode.toDataURL(encryptedQrcode);
 
   return {
-    link,
+    link: `https://easypass-api.techhive.dev/guest/${link}`,
     qrcode: encryptedQrcode,
   };
 };
+
+// ===============================================================
+
+export const serveQrCodeScreen = async ({}) => {};

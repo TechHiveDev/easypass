@@ -46,9 +46,14 @@ app.use(passport.session());
 
 // ------------------------------------------------------
 
+// TODO : path of ejs is not true
+
 // set ejs engine
 // app.set("view engine", "ejs");
 // app.set("views", path.join(__dirname, "./src/entitites/qrcode"));
+
+// Static Files ( Uploaded Images )
+app.use("/assets", express.static(path.join(__dirname, "/assets")));
 
 // ------------------------------------------------------
 

@@ -40,16 +40,41 @@ export const verifyResidentQrCode = async ({ expiresAt, ...rest }) => {
   if (new Date(expiresAt) < new Date()) {
     return { success: false, message: "Expired QrCode" };
   }
-  return { ...rest };
+  return { ...rest, success: true, message: "QrCode Accepted" };
 };
 
 // ===============================================================
 
+// TODO : VERIFY QR CODE FOR GUEST ( Delivery or Vistor )
+/**
+ * 1 -
+ */
+
 /**
  * Verify Scan QrCode for Guest ( delivery or guest )
  */
-export const verifyGuestQrCode = async ({ expiresAt }) => {
+export const verifyGuestQrCode = async ({
+  expiresAt,
+  invitationId,
+  userId,
+}) => {
+  if (!userId || !compoundId || !type || !invitationId) {
+    return { success: false, message: "Invalid QrCode Payload" };
+  }
+
   const invitation = await prisma.invitation.findUnique({
-    where: { id: invitationId },
+    where: { id: invitationId, userId },
   });
+
+  // TODO : check user id , is the user id thas owns the invitation
+
+  // if userid not the owner of the invitation or any thing wrong return Invalid QrCode
+
+  //  check expirry
+
+  // if (new Date(expiresAt) < new Date()) {
+  //   return { success: false, message: "Expired QrCode" };
+  // }
+
+  // if expiry passes accpet if not say it's expired
 };

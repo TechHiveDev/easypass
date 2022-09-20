@@ -12,21 +12,16 @@
       crossorigin="anonymous"
     />
   </head>
-
   <body>
     <div class="container" style="display: flex">
       <% if(res?.qr_code){ %>
-
       <div style="margin: auto">
         <img src="<%" ="res.qr_code" % /> alt="QR Code">
       </div>
-
       <% } %> <% if(res?.message){ %>
-
       <div style="margin: auto">
         <h1><%=res?.message %></h1>
       </div>
-
       <% } %>
     </div>
   </body>

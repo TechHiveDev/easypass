@@ -23,10 +23,6 @@ RUN npx prisma generate
 RUN yarn migrate-database
 
 
-# RUN  
-
-
-
 # Launch the app 
 CMD ["yarn", "start"]
 

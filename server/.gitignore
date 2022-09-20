@@ -1,2 +1,5 @@
 node_modules
 .env
+
+# exclude everything inside assets
+assets/*
