@@ -30,10 +30,10 @@ const actions = [
     title: "invite",
     navigateTo: "invite",
   },
-  {
-    title: "report",
-    navigateTo: "facilities",
-  },
+  // {
+  //   title: "report",
+  //   navigateTo: "facilities",
+  // },
 ];
 
 // ====================================================================

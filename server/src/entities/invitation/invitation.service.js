@@ -20,10 +20,10 @@ const prisma = new PrismaClient({ log: ["info"] });
 // ------------------------------------------------------------
 
 const invitationService = {
-  create: async ({ name, type, compoundId, expiresAt, notes = "" }) => {
+  create: async ({ userId, name, type, compoundId, expiresAt, notes = "" }) => {
     return await prisma.invitation.create({
       data: {
-        userId,
+        userId: +userId,
         type,
         name,
         compoundId,

@@ -17,21 +17,18 @@ export const verifyEncryptedQrCode = async (encryptedQrcode) => {
   const { userId, compoundId, type, expiresAt } = decryptedObject;
 
   if (!userId || !compoundId || !type || !expiresAt) {
-    throw { status: 400, message: "Invalid Qrcode" };
+    return { success: false, message: "Invalid QrCode Payload" };
   }
 
   const userCompound = await isUserBelongsToCompound({ userId, compoundId });
 
-  console.log({ expiresAt });
-
-  if (type === "Visitor") {
+  if (type === "Delivery" || "Visitor") {
     return await verifyGuestQrCode({ invitationId });
   } else if (type === "Resident") {
     return await verifyResidentQrCode({ ...decryptedObject, userCompound });
   }
 
-  // Valid Resident
-  throw { status: 400, message: "Invalid Qrcode Type" };
+  return { success: false, message: "Invalid QrCode Type" };
 };
 
 // ===============================================================
@@ -40,12 +37,9 @@ export const verifyEncryptedQrCode = async (encryptedQrcode) => {
  * Verify Scan QrCode for Resident expired or not
  */
 export const verifyResidentQrCode = async ({ expiresAt, ...rest }) => {
-  console.log({ expiresAt });
-
   if (new Date(expiresAt) < new Date()) {
-    throw { status: 400, message: "Expired QrCode" };
+    return { success: false, message: "Expired QrCode" };
   }
-
   return { ...rest };
 };
 
@@ -54,7 +48,7 @@ export const verifyResidentQrCode = async ({ expiresAt, ...rest }) => {
 /**
  * Verify Scan QrCode for Guest ( delivery or guest )
  */
-export const verifyGuestQrCode = async ({ expiresA }) => {
+export const verifyGuestQrCode = async ({ expiresAt }) => {
   const invitation = await prisma.invitation.findUnique({
     where: { id: invitationId },
   });

@@ -90,6 +90,8 @@ export default {
     announcements: "Announcements",
     guest: "Guest",
     delivery: "Delivery",
+    visitor: "Visitor",
+    notes: "Notes",
     invitationType: "Type of Invitation",
     cancel: "Cancel",
     compoundName: "Compound Name",
