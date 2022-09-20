@@ -153,7 +153,7 @@ export const SignUpForm = () => {
           {errors?.type ? (
             <Alert severity={"error"}>{errors.type.message}</Alert>
           ) : null}
-          <Button type={"submit"}>Submit</Button>
+          <Button type={"submit"}>Register</Button>
         </Stack>
       </CardContent>
     </Card>

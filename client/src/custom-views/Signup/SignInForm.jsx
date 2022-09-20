@@ -72,7 +72,7 @@ export const SignInForm = () => {
               <Alert severity={"error"}>{errors.password.message}</Alert>
             ) : null}
           </FormControl>
-          <Button type={"submit"}>Submit</Button>
+          <Button type={"submit"}>Login</Button>
         </Stack>
       </CardContent>
     </Card>
