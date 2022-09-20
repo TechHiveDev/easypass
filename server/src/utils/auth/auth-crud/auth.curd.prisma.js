@@ -67,6 +67,7 @@ export const createUserAndAddress = async (payload) => {
     streetName,
     blockNumber,
     unitNumber,
+    active = false,
   } = payload;
 
   const compound = await prisma.compound.findFirst({
@@ -112,6 +113,7 @@ export const createUserAndAddress = async (payload) => {
       email,
       phone,
       type,
+      active,
       password: hash({ password }),
       ...compundUserPayload,
     },
