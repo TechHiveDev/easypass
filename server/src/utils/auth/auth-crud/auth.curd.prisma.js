@@ -69,7 +69,6 @@ export const createUserAndAddress = async (payload) => {
     email,
     name,
     phone,
-    active = false,
     password,
     compoundName,
     streetName,
