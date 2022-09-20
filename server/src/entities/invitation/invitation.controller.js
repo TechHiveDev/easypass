@@ -104,13 +104,12 @@
 // ------------------------------------------------------------------
 
 import { crud, prismaCrud } from "../../utils/crud/express-crud-router";
-import invitationService from "./invitation.service";
 
 // ------------------------------------------------------------------
 
 const crudController = {
   ...prismaCrud("invitation"),
-  create: invitationService.create,
+  create: null,
 };
 
 // ------------------------------------------------------------------
