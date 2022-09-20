@@ -13,6 +13,7 @@ import CardContent from "@mui/material/CardContent";
 import { useLogin, useNotify } from "react-admin";
 import { queryAuth } from "../../reactAdmin/providers/auth.provider.hook";
 import config from "../../configs/config";
+import cardStyles from "./cardStyles";
 
 export const SignUpForm = () => {
   const {
@@ -40,9 +41,9 @@ export const SignUpForm = () => {
   };
 
   return (
-    <Card sx={{ width: "20vw", minWidth: "200px", marginTop: "5vh" }}>
+    <Card sx={cardStyles}>
       <CardContent>
-        <h2>SignUp</h2>
+        <h2>Sign-Up</h2>
         <Stack spacing={2} as={"form"} onSubmit={handleSubmit(onSubmit)}>
           <FormControl fullWidth>
             <InputLabel id="Name-label">Name</InputLabel>
@@ -101,7 +102,6 @@ export const SignUpForm = () => {
               id={"Password"}
               labelId="Password-label"
               type="password"
-              placeholder="Password"
               {...register("password", {
                 required: { value: true, message: "Password is required" },
                 minLength: {
@@ -123,7 +123,6 @@ export const SignUpForm = () => {
             <Input
               type="password"
               label-id={"ConfirmPassword-label"}
-              placeholder="Confirm Password"
               {...register("ConfirmPassword", {
                 validate: (val) => {
                   if (watch("password") !== val) {

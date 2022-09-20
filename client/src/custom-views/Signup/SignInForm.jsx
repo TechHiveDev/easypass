@@ -9,6 +9,7 @@ import { useLogin, useNotify } from "react-admin";
 import Stack from "@mui/material/Stack";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
+import cardStyles from "./cardStyles";
 export const SignInForm = () => {
   const {
     register,
@@ -26,9 +27,9 @@ export const SignInForm = () => {
   };
 
   return (
-    <Card sx={{ width: "20vw", minWidth: "200px", marginTop: "5vh" }}>
+    <Card sx={cardStyles}>
       <CardContent>
-        <h2>SignIn</h2>
+        <h2>Sign-In</h2>
         <Stack spacing={2} as={"form"} onSubmit={handleSubmit(onSubmit)}>
           <FormControl fullWidth>
             <InputLabel id="Email-label">Email</InputLabel>
