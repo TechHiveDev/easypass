@@ -171,7 +171,10 @@ export const findOrCreateGithubUser = async (payload) => {
  * @returns  user , services , accessToken
  */
 export const login = async ({ email, password }) => {
-  const user = await prisma.user.findUnique({ where: { email } });
+  const user = await prisma.user.findUnique({
+    where: { email },
+    include: { userCompound: true },
+  });
 
   // Handle errors ( will be catched by error handler)
   if (!user) throw { status: 404, message: "User Not Found" };

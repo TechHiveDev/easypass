@@ -25,6 +25,7 @@ import userController from "./src/entities/user/user.controller.js";
 import userCompoundController from "./src/entities/userCompound/userCompound.controller.js";
 import invitationController from "./src/entities/invitation/invitation.controller.js";
 import scanController from "./src/entities/scan/scan.controller.js";
+import scanUnprotectedController from "./src/entities/scan/scan.unprotected.controller";
 import deviceController from "./src/entities/device/device.controller.js";
 
 // ------------------------------------------------------
@@ -65,6 +66,7 @@ app.use("/api-docs", swagger.server, swagger.setup); // Docs
 // Un-Protected Route
 app.use(compoundUnprotectedController);
 app.use(scanController);
+app.use(scanUnprotectedController);
 
 // ------------------------------------------------------
 
