@@ -110,6 +110,18 @@ const endpoints = (builder) => ({
   }),
 
   // ------------------------------------------------
+  getCompounds: builder.query({
+    query: () => ({
+      url: `/compounds`,
+      method: "GET",
+    }),
+  }),
+  getMyCompounds: builder.query({
+    query: (id) => ({
+      url: `/compound`,
+      method: "GET",
+    }),
+  }),
 });
 
 // =============================================================

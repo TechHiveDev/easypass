@@ -17,6 +17,7 @@ export default function Select({
   placeholder = "Choose Option",
   getValues,
   setValue,
+  ...rest
 }) {
   // --------------------------------
 
@@ -51,6 +52,7 @@ export default function Select({
             />
           );
         }}
+        {...rest}
       />
     </View>
   );

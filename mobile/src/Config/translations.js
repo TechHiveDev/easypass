@@ -1,5 +1,6 @@
 export default {
   en: {
+    selectCompound: "Select Compound",
     welcome: "Hello",
     Tabs: "Centers",
     home: "Home",
@@ -102,6 +103,7 @@ export default {
   },
   // =================================================================
   ar: {
+    selectCompound: "اختار ال compound",
     welcome: "أهلاً بك",
     Tabs: "سنترس",
     home: "الرئيسية",
