@@ -16,6 +16,7 @@ import {
 import theme from "../../Theme/paper.theme";
 import { useAppDispatch } from "../../Store/redux.hooks";
 import { setCompountId } from "../../Store/Slices/auth.slice";
+import { useGetCompoundsQuery } from "../../API/api";
 
 const compounds = [
   {
@@ -42,6 +43,8 @@ const compounds = [
 ];
 export default function UserCompounds({ navigation }) {
   const dispatch = useAppDispatch();
+  const { data } = useGetCompoundsQuery();
+  console.log(data);
 
   // handleCompound
   const handleCompoundClicked = (id) => {
@@ -76,7 +79,7 @@ export default function UserCompounds({ navigation }) {
 
       <FlatList
         numColumns={2}
-        data={compounds}
+        data={data}
         renderItem={({ item }) => {
           return (
             <TouchableOpacity
@@ -87,10 +90,10 @@ export default function UserCompounds({ navigation }) {
             >
               <View style={styles.innerChild}>
                 <Text style={{ fontSize: 20, color: theme.colors.placeholder }}>
-                  {item.compoundName}
+                  {item.name}
                 </Text>
                 <Text style={{ color: theme.colors.white, fontSize: 14 }}>
-                  {item.compoundDescription}
+                  {/*{item.compoundDescription}*/}
                 </Text>
               </View>
             </TouchableOpacity>

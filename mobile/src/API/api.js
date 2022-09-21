@@ -68,4 +68,5 @@ export const {
   useLazyMeQuery,
   useSearchQuery,
   useGetMyGroupsQuery,
+  useGetCompoundsQuery,
 } = apiSlice;
