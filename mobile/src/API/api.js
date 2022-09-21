@@ -69,4 +69,5 @@ export const {
   useSearchQuery,
   useGetMyGroupsQuery,
   useGetCompoundsQuery,
+  useGetMyCompoundsQuery,
 } = apiSlice;

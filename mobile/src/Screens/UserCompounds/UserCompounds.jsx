@@ -14,9 +14,9 @@ import {
   widthPercentageToDP as wp,
 } from "react-native-responsive-screen";
 import theme from "../../Theme/paper.theme";
-import { useAppDispatch } from "../../Store/redux.hooks";
+import { useAppDispatch, useAppSelector } from "../../Store/redux.hooks";
 import { setCompountId } from "../../Store/Slices/auth.slice";
-import { useGetCompoundsQuery } from "../../API/api";
+import { useGetCompoundsQuery, useGetMyCompoundsQuery } from "../../API/api";
 
 const compounds = [
   {
@@ -43,8 +43,8 @@ const compounds = [
 ];
 export default function UserCompounds({ navigation }) {
   const dispatch = useAppDispatch();
-  const { data } = useGetCompoundsQuery();
-  console.log(data);
+  const { id } = useAppSelector((state) => state?.auth?.user);
+  const { data, isLoading } = useGetMyCompoundsQuery(id);
 
   // handleCompound
   const handleCompoundClicked = (id) => {
@@ -53,15 +53,6 @@ export default function UserCompounds({ navigation }) {
   };
   return (
     <View>
-      <View style={styles.header}>
-        <Text style={{ marginRight: 10, fontSize: 18 }}>Operator 1</Text>
-        <MaterialCommunityIcons
-          name="home-plus"
-          size={35}
-          color={theme.colors.primary}
-        />
-      </View>
-
       {/* The Title  */}
       <View>
         <Text
