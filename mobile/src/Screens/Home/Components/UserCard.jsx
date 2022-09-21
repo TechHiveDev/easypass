@@ -9,8 +9,7 @@ import { useAppSelector } from "../../../Store/redux.hooks";
 // ====================================================================
 
 export default function UserCard({ entity, keys, row }) {
-  const { name, type } = useAppSelector((state) => state?.auth?.user);
-
+  const { name, type, photoUrl } = useAppSelector((state) => state?.auth?.user);
   // -------------------------------
 
   return (
@@ -21,7 +20,11 @@ export default function UserCard({ entity, keys, row }) {
             {...props}
             size={50}
             style={styles.image}
-            source={require("../../../../assets/logo.png")}
+            source={
+              photoUrl
+                ? { uri: photoUrl }
+                : require("../../../../assets/logo.png")
+            }
           />
         )}
         right={(props) => (

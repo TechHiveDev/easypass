@@ -22,6 +22,7 @@ import { Toast } from "react-native-toast-message/lib/src/Toast";
 import { setUser } from "../../Store/Slices/auth.slice";
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
+import config from "../../Config/config";
 // =================================================================
 
 export default function ProfileScreen() {
@@ -32,6 +33,7 @@ export default function ProfileScreen() {
   const { id, name, email, phone, type, photoUrl } = useAppSelector(
     (state) => state?.auth?.user
   );
+  const accessToken = useAppSelector((state) => state?.auth?.accessToken);
   const defaultValues = { email, name, phone, photoUrl };
 
   // ---------------------------------------------------
@@ -40,6 +42,7 @@ export default function ProfileScreen() {
 
   // ---------------------------------------------------
 
+  const [image, setImage] = useState(photoUrl);
   const onSubmit = async ({ email, name, phone }) => {
     if (
       defaultValues.email === email &&
@@ -50,18 +53,25 @@ export default function ProfileScreen() {
       return setHideSubmitButton(true);
     }
     const uploadResult = await FileSystem.uploadAsync(
-      "http://localhost:8000/upload/picture/1",
+      config.API_URL + "/api/upload?clientId=" + id,
       image,
       {
         httpMethod: "POST",
         uploadType: FileSystem.FileSystemUploadType.MULTIPART,
         fieldName: "demo_image",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
       }
     );
+    const res = JSON.parse(uploadResult.body);
+    if (res?.url) {
+      setImage(config.API_URL + res.url);
+    }
     const { data } = await updateMyProfile({
       entity: "user",
       id,
-      body: { email, name, phone },
+      body: { email, name, phone, photoUrl: config.API_URL + res.url },
     });
 
     if (data?.id) {
@@ -70,7 +80,6 @@ export default function ProfileScreen() {
     }
     setHideSubmitButton(true);
   };
-  const [image, setImage] = useState(photoUrl);
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
