@@ -10,6 +10,7 @@ import passport from "passport";
 import cookieSession from "cookie-session";
 import { cookiesConfigs, corsConfigs } from "./src/utils/configs/configs";
 import compoundUnprotectedController from "./src/entities/compound/compound.unprotected.controller";
+import uploadRouter from "./src/utils/media/upload.media";
 
 // ------------------------------------------------------
 
@@ -85,6 +86,11 @@ app.use(userCompoundController);
 app.use(invitationController);
 app.use(scanController);
 app.use(deviceController);
+
+// ------------------------------------------------------
+
+// Upload Media Files
+app.use(uploadRouter);
 
 // ------------------------------------------------------
 

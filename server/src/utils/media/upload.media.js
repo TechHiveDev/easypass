@@ -19,6 +19,12 @@ import multer from "multer";
 import fs from "fs";
 import path from "path";
 
+import { PrismaClient } from "@prisma/client";
+
+// ---------------------------------------------------------
+
+const prisma = new PrismaClient({ log: ["info" /* "query" */] });
+
 // --------------------------------------------------------
 
 const uploadRouter = Router();
@@ -29,7 +35,10 @@ const url = process.env.DOMAIN + process.env.PORT;
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     const { clientId } = req.query;
-    const filePath = path.join(__dirname, "../../../assets/client_" + clientId);
+    const filePath = path.join(
+      __dirname,
+      "../../../assets/avatars/client_" + clientId
+    );
 
     // Create folder if it doesn't exist'
     if (!fs.existsSync(filePath)) {
@@ -51,12 +60,19 @@ const uploadMiddleware = multer({ storage }).any();
 
 // --------------------------------------------------------
 
-const uploadController = (req, res) => {
+const uploadController = async (req, res) => {
   const { clientId } = req.query;
-  //return error if clientId = undefined
+  if (!clientId)
+    return { success: false, message: "Client Id is not supplied" };
   const filePath = req?.files[0]?.filename;
-  const url = `/assets/client_${clientId}/${filePath}`;
-  console.log({ url });
+  const url = `/assets/avatars/client_${clientId}/${filePath}`;
+  const findUser = await prisma.user.update({
+    where: { id: parseInt(clientId) },
+    data: {
+      photoUrl: url,
+    },
+  });
+
   res.json({ url });
 };
 
