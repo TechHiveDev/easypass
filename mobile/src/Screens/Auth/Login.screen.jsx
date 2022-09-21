@@ -27,7 +27,9 @@ export default function LoginScreen() {
 
   // -------------------------------------
 
-  const onSubmit = async (values) => await login(values);
+  const onSubmit = async (values) => {
+    const res = await login(values);
+  };
 
   // -------------------------------------
 

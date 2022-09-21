@@ -16,13 +16,11 @@ const endpoints = (builder) => ({
   // ------------------------------------------------
 
   registerCompound: builder.mutation({
-
     query: ({ userId, compoundId, streetName, blockNumber, unitNumber }) => ({
       url: "/userCompound",
       method: "POST",
       body: { userId, compoundId, streetName, blockNumber, unitNumber },
-
-    })
+    }),
   }),
   register: builder.mutation({
     query: (body) => ({

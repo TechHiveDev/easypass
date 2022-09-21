@@ -1,8 +1,7 @@
-import { StyleSheet, Text, View, SafeAreaView, FlatList } from "react-native";
-import { ActivityIndicator, Divider, RadioButton } from "react-native-paper";
-import React, { useState } from "react";
+import { StyleSheet, View } from "react-native";
+import { ActivityIndicator } from "react-native-paper";
+import React from "react";
 import { useGetCompoundsQuery } from "../../API/api";
-import globalStyles from "../../Theme/global.styles";
 import theme from "../../Theme/paper.theme";
 import { useRegisterCompoundMutation } from "../../API/api";
 
@@ -15,22 +14,40 @@ import Input from "../../Components/Form/Input";
 import SelectDropdown from "react-native-select-dropdown";
 import { Controller } from "react-hook-form";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { useAppSelector } from "../../Store/redux.hooks";
+import { useAppDispatch, useAppSelector } from "../../Store/redux.hooks";
+import { setCompountId } from "../../Store/Slices/auth.slice";
+import Toast from "react-native-toast-message";
+
 export default function CompoundList({ navigation }) {
+  const dispatch = useAppDispatch();
   const { data, isLoading } = useGetCompoundsQuery();
-  //   console.log(data);
-  const navigate = navigation;
-  const [register, result] = useRegisterCompoundMutation();
+  const [register] = useRegisterCompoundMutation();
   const { id } = useAppSelector((state) => state?.auth?.user);
   const onSubmit = async (values) => {
+    const newValues = {
+      userId: +id,
+      compoundId: +values.compoundId,
+      streetName: values.streetName,
+      blockNumber: +values.blockNumber,
+      unitNumber: +values.unitNumber,
+    };
     try {
-      const res = await register({ ...values, userId: id });
-      alert(res);
+      const res = await register(newValues);
+      if (res?.data?.id) {
+        dispatch(setCompountId(id));
+        navigation.navigate("HomeStackTabNavigator");
+        Toast.show({
+          type: "success",
+          text1: "Registered in compound successfully ",
+        });
+      }
     } catch (e) {
-      console.log(e);
+      Toast.show({
+        type: "error",
+        text1:
+          e.toString() || "error while registering. please try again later",
+      });
     }
-
-    alert(JSON.stringify(values));
   };
   return (
     <View style={{ flex: 1, paddingTop: hp(5) }}>

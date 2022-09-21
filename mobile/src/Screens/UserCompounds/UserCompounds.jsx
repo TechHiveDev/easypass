@@ -2,49 +2,22 @@ import {
   StyleSheet,
   Text,
   View,
-  SafeAreaView,
   FlatList,
   TouchableOpacity,
-  ScrollView,
 } from "react-native";
 import React from "react";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import {
-  heightPercentageToDP as hp,
   widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import theme from "../../Theme/paper.theme";
 import { useAppDispatch, useAppSelector } from "../../Store/redux.hooks";
 import { setCompountId } from "../../Store/Slices/auth.slice";
-import { useGetCompoundsQuery, useGetMyCompoundsQuery } from "../../API/api";
 
-const compounds = [
-  {
-    id: 1,
-    compoundName: "compound 1",
-    compoundDescription: "Desc 1",
-  },
-  {
-    id: 2,
-    compoundName: "compound 2",
-
-    compoundDescription: "Desc 2",
-  },
-  {
-    id: 3,
-    compoundName: "compound 3",
-    compoundDescription: "Desc 3",
-  },
-  {
-    id: 4,
-    compoundName: "compound 4",
-    compoundDescription: "Desc 4",
-  },
-];
 export default function UserCompounds({ navigation }) {
   const dispatch = useAppDispatch();
-  const { id } = useAppSelector((state) => state?.auth?.user);
-  const { data, isLoading } = useGetMyCompoundsQuery(id);
+  const { userCompound } = useAppSelector((state) => state?.auth?.user);
 
   // handleCompound
   const handleCompoundClicked = (id) => {
@@ -52,13 +25,16 @@ export default function UserCompounds({ navigation }) {
     navigation.navigate("HomeStackTabNavigator");
   };
   const navigateToCompoundList = () => {
-    console.log("function gets called");
     navigation.navigate("CompoundsList");
   };
   return (
     <View>
       {/* The Title  */}
-      <View>
+      <View
+        style={{
+          height: hp(10),
+        }}
+      >
         <Text
           style={{
             textAlign: "center",
@@ -70,11 +46,21 @@ export default function UserCompounds({ navigation }) {
           Choose Compound
         </Text>
       </View>
-      {/* Rendring The compounds as Grid View */}
-
       <FlatList
+        style={{
+          height: hp(80),
+        }}
+        keyExtractor={(item, index) => {
+          return (
+            item.compoundId +
+            item.streetName +
+            item.blockNumber +
+            item.unitNumber +
+            index
+          );
+        }}
         numColumns={2}
-        data={data}
+        data={userCompound}
         renderItem={({ item }) => {
           return (
             <TouchableOpacity
@@ -85,7 +71,8 @@ export default function UserCompounds({ navigation }) {
             >
               <View style={styles.innerChild}>
                 <Text style={{ fontSize: 20, color: theme.colors.placeholder }}>
-                  {item.name}
+                  compound {item.compoundId}, street {item.streetName} , block{" "}
+                  {item.blockNumber}, unit {item.unitNumber}
                 </Text>
                 <Text style={{ color: theme.colors.white, fontSize: 14 }}>
                   {/*{item.compoundDescription}*/}
@@ -95,8 +82,7 @@ export default function UserCompounds({ navigation }) {
           );
         }}
       />
-
-      <View style={[styles.centeredView, { marginVertical: 20 }]}>
+      <View style={[styles.centeredView]}>
         {/* Wrapper  */}
         <TouchableOpacity
           onPress={navigateToCompoundList}
@@ -123,11 +109,10 @@ const styles = StyleSheet.create({
   },
   childView: {
     backgroundColor: theme.colors.primary,
-
     width: wp(45),
     margin: wp(5),
     borderRadius: 6,
-    height: 140,
+    height: 160,
     justifyContent: "center",
     alignItems: "center",
     flex: 1,
@@ -141,7 +126,8 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.primary,
     width: wp(45),
     borderRadius: 6,
-    height: 140,
+    height: hp(7),
+    marginVertical: hp(1),
     justifyContent: "center",
     alignItems: "center",
   },
