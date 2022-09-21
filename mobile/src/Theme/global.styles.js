@@ -9,6 +9,7 @@ const globalStyles = StyleSheet.create({
   screen: {
     flex: 1,
     justifyContent: "flex-start",
+
     // alignItems: "center",
     backgroundColor: colors.background,
     width: wp(100),

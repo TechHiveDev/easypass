@@ -51,6 +51,10 @@ export default function UserCompounds({ navigation }) {
     dispatch(setCompountId(id));
     navigation.navigate("HomeStackTabNavigator");
   };
+  const navigateToCompoundList = () => {
+    console.log("function gets called");
+    navigation.navigate("CompoundsList");
+  };
   return (
     <View>
       {/* The Title  */}
@@ -95,7 +99,7 @@ export default function UserCompounds({ navigation }) {
       <View style={[styles.centeredView, { marginVertical: 20 }]}>
         {/* Wrapper  */}
         <TouchableOpacity
-          onPress={() => console.log("touchable opacity is been clicked")}
+          onPress={navigateToCompoundList}
           style={styles.addCompound}
         >
           <MaterialCommunityIcons name="plus" size={24} color="black" />

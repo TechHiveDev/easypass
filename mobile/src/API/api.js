@@ -70,4 +70,5 @@ export const {
   useGetMyGroupsQuery,
   useGetCompoundsQuery,
   useGetMyCompoundsQuery,
+  useRegisterCompoundMutation
 } = apiSlice;

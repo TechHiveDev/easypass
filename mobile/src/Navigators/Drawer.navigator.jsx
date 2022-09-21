@@ -6,6 +6,7 @@ import MyStatusBar from "../Components/MyStatusBar";
 import SideDrawer from "../Components/Drawer/Side.drawer";
 import TabNavigator from "./Tab.navigator";
 import UserCompounds from "../Screens/UserCompounds/UserCompounds";
+import CompoundList from "../Screens/CompoundsList/CompoundList";
 
 // ==============================================================
 
@@ -50,6 +51,7 @@ export default function DrawerNavigator() {
       drawerContent={(props) => <SideDrawer {...props} />}
     >
       <Drawer.Screen name="UserCompounds" component={UserCompounds} />
+      <Drawer.Screen name="CompoundsList" component={CompoundList} />
       <Drawer.Screen
         name="HomeStackTabNavigator"
         component={StackTabNavigator}
