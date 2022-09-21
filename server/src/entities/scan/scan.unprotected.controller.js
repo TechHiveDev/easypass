@@ -1,7 +1,6 @@
 import express from "express";
 import { scanQrCode } from "./services/scanQrCode.service";
 const router = express.Router();
-import { scanQrCode } from "./services/scanQrCode.service";
 
 //  =================================================================
 
