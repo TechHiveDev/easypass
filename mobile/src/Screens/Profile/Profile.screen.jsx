@@ -52,26 +52,28 @@ export default function ProfileScreen() {
     ) {
       return setHideSubmitButton(true);
     }
-    const uploadResult = await FileSystem.uploadAsync(
-      config.API_URL + "/api/upload?clientId=" + id,
-      image,
-      {
-        httpMethod: "POST",
-        uploadType: FileSystem.FileSystemUploadType.MULTIPART,
-        fieldName: "demo_image",
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
+    if (defaultValues.photoUrl !== image) {
+      const uploadResult = await FileSystem.uploadAsync(
+        config.API_URL + "/api/upload?clientId=" + id,
+        image,
+        {
+          httpMethod: "POST",
+          uploadType: FileSystem.FileSystemUploadType.MULTIPART,
+          fieldName: "demo_image",
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+      const res = JSON.parse(uploadResult.body);
+      if (res?.url) {
+        setImage(config.API_URL + res.url);
       }
-    );
-    const res = JSON.parse(uploadResult.body);
-    if (res?.url) {
-      setImage(config.API_URL + res.url);
     }
     const { data } = await updateMyProfile({
       entity: "user",
       id,
-      body: { email, name, phone, photoUrl: config.API_URL + res.url },
+      body: { email, name, phone, photoUrl: image },
     });
 
     if (data?.id) {
