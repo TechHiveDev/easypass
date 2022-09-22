@@ -57,7 +57,6 @@ export default function RegisterScreen() {
     if (values.confirmPassword !== values.password) {
       return Toast.show({ type: "error", text1: "passwords do not match" });
     }
-    alert(JSON.stringify(values));
     const { data } = await register(values);
     if (data?.user?.id) {
       Toast.show({ type: "success", text1: "Successfully registered" });

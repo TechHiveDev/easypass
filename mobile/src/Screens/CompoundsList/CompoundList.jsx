@@ -31,6 +31,30 @@ export default function CompoundList({ navigation }) {
       blockNumber: +values.blockNumber,
       unitNumber: +values.unitNumber,
     };
+    if (!values.compoundId) {
+      return Toast.show({
+        type: "error",
+        text1: "Select a compound",
+      });
+    }
+    if (!values.streetName) {
+      return Toast.show({
+        type: "error",
+        text1: "Enter a street name",
+      });
+    }
+    if (!values.blockNumber) {
+      return Toast.show({
+        type: "error",
+        text1: "Enter a block number",
+      });
+    }
+    if (!values.unitNumber) {
+      return Toast.show({
+        type: "error",
+        text1: "Enter a unit number",
+      });
+    }
     try {
       const res = await register(newValues);
       if (res?.data?.id) {
