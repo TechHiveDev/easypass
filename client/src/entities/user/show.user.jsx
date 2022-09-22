@@ -4,7 +4,6 @@ import {
   TextField,
   NumberField,
   BooleanField,
-  DateField,
 } from "react-admin";
 
 // ------------------------------------------------
@@ -18,6 +17,7 @@ export default function ShowUser(props) {
         <TextField variant="outlined" source="name" />
         {/*<TextField variant="outlined" source="password" />*/}
         <TextField variant="outlined" source="photoUrl" />
+        <BooleanField variant="outlined" source="active" />
         <TextField variant="outlined" source="phone" />
       </SimpleShowLayout>
     </Show>
