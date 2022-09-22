@@ -21,19 +21,19 @@ export default function ListCompound(props) {
         <TextField variant="outlined" source="name" />
         <TextField variant="outlined" source="logoUrl" />
         <TextField variant="outlined" source="location" />
-        {isLoading ? (
-          <h3>Loading</h3>
-        ) : (
-          <Actions label="">
-            <ShowButton label="ra.action.show" />
-            {permissions === "SuperAdmin" ? (
-              <>
-                <EditButton label="ra.action.edit" />
-                <DeleteButton label="ra.action.delete" />
-              </>
-            ) : null}
-          </Actions>
-        )}
+        <div
+          style={{
+            display: "flex",
+          }}
+        >
+          <ShowButton label="ra.action.show" />
+          {!isLoading && permissions === "SuperAdmin" ? (
+            <>
+              <EditButton label="ra.action.edit" />
+              <DeleteButton label="ra.action.delete" />
+            </>
+          ) : null}
+        </div>
       </Datagrid>
     </List>
   );
