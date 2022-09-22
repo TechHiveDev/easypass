@@ -21,7 +21,7 @@ import {
   widthPercentageToDP as wp,
 } from "react-native-responsive-screen";
 import theme from "../../Theme/paper.theme";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { MaterialCommunityIcons, AntDesign } from "@expo/vector-icons";
 import { ActivityIndicator } from "react-native-paper";
 
 // =================================================================
@@ -48,6 +48,7 @@ export default function RegisterScreen() {
     blockNumber: "12",
     unitNumber: "23",
     compoundId: 0,
+    active: false,
   };
 
   // ------------------------------
@@ -56,7 +57,7 @@ export default function RegisterScreen() {
     if (values.confirmPassword !== values.password) {
       return Toast.show({ type: "error", text1: "passwords do not match" });
     }
-
+    alert(JSON.stringify(values));
     const { data } = await register(values);
     if (data?.user?.id) {
       Toast.show({ type: "success", text1: "Successfully registered" });
@@ -134,9 +135,9 @@ export default function RegisterScreen() {
               );
             }}
           />
-          <Input name="streetName" label="streetName" icon="home" />
+          <Input name="streetName" label="streetName" icon="home-group" />
           <Input name="blockNumber" label="blockNumber" icon="home" />
-          <Input name="unitNumber" label="unitNumber" icon="home" />
+          <Input name="unitNumber" label="unitNumber" icon="key" />
           {/* <Select name="level" placeholder="level" choices={levels} /> */}
           {/* <Depend /> */}
         </Form>
