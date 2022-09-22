@@ -4,12 +4,8 @@ import {
   TextField,
   NumberField,
   BooleanField,
-  DateField,
   ShowButton,
-  EditButton,
   DeleteButton,
-  useAuthState,
-  useGetIdentity,
 } from "react-admin";
 import Actions from "../../reactAdmin/components/Actions";
 
@@ -25,6 +21,7 @@ export default function ListUser(props) {
         {/*<TextField variant="outlined" source="password" />*/}
         <TextField variant="outlined" source="photoUrl" />
         <TextField variant="outlined" source="phone" />
+        <BooleanField variant="outlined" source="active" />
 
         <Actions label="">
           <ShowButton label="ra.action.show" />
