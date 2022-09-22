@@ -1,4 +1,11 @@
-import { Create, SimpleForm, SelectInput, TextInput } from "react-admin";
+import {
+  Create,
+  SimpleForm,
+  SelectInput,
+  TextInput,
+  BooleanInput,
+  usePermissions,
+} from "react-admin";
 // ------------------------------------------------
 const validate = (values) => {
   const errors = {};
@@ -20,27 +27,42 @@ const validate = (values) => {
   return errors;
 };
 export default function CreateUser(props) {
+  const { isLoading, permissions } = usePermissions();
   return (
     <Create
       resource={"oauth/register"}
       redirect={"/user"}
       title={"Create user"}
     >
-      <SimpleForm validate={validate}>
-        <TextInput variant="outlined" source="email" required />
-        <TextInput variant="outlined" source="name" required />
-        <TextInput variant="outlined" source="password" required />
-        <TextInput variant="outlined" source="photoUrl" />
-        <TextInput variant="outlined" source="phone" required />
-        <SelectInput
-          source="type"
-          required
-          choices={[
-            { id: "Security", name: "Security" },
-            { id: "Resident", name: " Resident" },
-          ]}
-        />
-      </SimpleForm>
+      {isLoading ? (
+        <h3>Loading</h3>
+      ) : (
+        <SimpleForm validate={validate}>
+          <TextInput variant="outlined" source="email" required />
+          <TextInput variant="outlined" source="name" required />
+          <TextInput variant="outlined" source="password" required />
+          <TextInput variant="outlined" source="photoUrl" />
+          <TextInput variant="outlined" source="phone" required />
+          <BooleanInput variant={"outlined"} source={"active"} />
+          <SelectInput
+            source="type"
+            required
+            choices={
+              permissions === "SuperAdmin"
+                ? [
+                    { id: "SuperAdmin", name: "SuperAdmin" },
+                    { id: "Admin", name: "Admin" },
+                    { id: "Resident", name: "Resident" },
+                    { id: "Security", name: "Security" },
+                  ]
+                : [
+                    { id: "Resident", name: "Resident" },
+                    { id: "Security", name: "Security" },
+                  ]
+            }
+          />
+        </SimpleForm>
+      )}
     </Create>
   );
 }

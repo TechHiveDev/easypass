@@ -38,6 +38,7 @@ export const queryAuth = async (
 };
 
 // =====================================================================
+const event = new Event("login");
 
 export const authProvider = {
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
@@ -48,6 +49,11 @@ export const authProvider = {
     if (data?.accessToken && data?.user?.id) {
       localStorage.setItem("user", JSON.stringify(data?.user));
       localStorage.setItem("accessToken", data?.accessToken);
+      if (data?.user?.type !== "Admin" && data?.user?.type !== "SuperAdmin") {
+        alert("You're not admin");
+        return Promise.reject();
+      }
+      window.dispatchEvent(event);
       return Promise.resolve();
     }
     return Promise.reject();

@@ -22,6 +22,7 @@ export default function ListUser(props) {
         <TextField variant="outlined" source="photoUrl" />
         <TextField variant="outlined" source="phone" />
         <BooleanField variant="outlined" source="active" />
+        <TextField variant="outlined" source="type" />
 
         <Actions label="">
           <ShowButton label="ra.action.show" />
