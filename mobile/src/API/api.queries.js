@@ -129,6 +129,13 @@ const endpoints = (builder) => ({
       method: "GET",
     }),
   }),
+  scanQrCode: builder.mutation({
+    query: (body) => ({
+      url: `/scan-qrcode`,
+      method: "POST",
+      body,
+    }),
+  }),
 });
 
 // =============================================================

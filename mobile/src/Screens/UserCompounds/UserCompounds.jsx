@@ -13,7 +13,7 @@ import {
 } from "react-native-responsive-screen";
 import theme from "../../Theme/paper.theme";
 import { useAppDispatch, useAppSelector } from "../../Store/redux.hooks";
-import { setCompountId } from "../../Store/Slices/auth.slice";
+import { setCurrentCompound } from "../../Store/Slices/auth.slice";
 
 export default function UserCompounds({ navigation }) {
   const dispatch = useAppDispatch();
@@ -21,7 +21,7 @@ export default function UserCompounds({ navigation }) {
 
   // handleCompound
   const handleCompoundClicked = (id) => {
-    dispatch(setCompountId(id));
+    dispatch(setCurrentCompound(id));
     navigation.navigate("HomeStackTabNavigator");
   };
   const navigateToCompoundList = () => {
@@ -66,7 +66,7 @@ export default function UserCompounds({ navigation }) {
             <TouchableOpacity
               style={styles.childView}
               onPress={() => {
-                handleCompoundClicked(item.id);
+                handleCompoundClicked(item);
               }}
             >
               <View style={styles.innerChild}>

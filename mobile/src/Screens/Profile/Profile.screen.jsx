@@ -30,12 +30,22 @@ export default function ProfileScreen() {
 
   const [hideSubmitButton, setHideSubmitButton] = useState(true);
   const dispatch = useAppDispatch();
-  const { id, name, email, phone, type, photoUrl } = useAppSelector(
+  const { id, name, email, phone, type, photoUrl, ...rest } = useAppSelector(
     (state) => state?.auth?.user
   );
   const accessToken = useAppSelector((state) => state?.auth?.accessToken);
-  const defaultValues = { email, name, phone, photoUrl };
-
+  const currentCompound = useAppSelector(
+    (state) => state?.auth?.currentCompound
+  );
+  const defaultValues = {
+    email,
+    name,
+    phone,
+    photoUrl,
+    compoundId: `${currentCompound.compoundId}`,
+    streetName: `${currentCompound.streetName}`,
+    unitNumber: `${currentCompound.unitNumber}`,
+  };
   // ---------------------------------------------------
 
   const [updateMyProfile, { isLoading, error }] = useUpdateMutation();
@@ -98,49 +108,68 @@ export default function ProfileScreen() {
 
   return (
     <SafeAreaView style={globalStyles.screen}>
-      <ScrollView>
-        <View style={styles.container}>
-          <TouchableOpacity disabled={hideSubmitButton} onPress={pickImage}>
-            <PaperAvatar.Image
-              size={95}
-              source={
-                image ? { uri: image } : require("../../../assets/logo.png")
-              }
-              style={styles.image}
-            />
-          </TouchableOpacity>
-          <View style={styles.icon}>
-            <IconButton
-              icon="pencil-box-outline"
-              size={20}
-              color={theme.colors.primary}
-              onPress={() => setHideSubmitButton(!hideSubmitButton)}
-            />
-          </View>
-          <MyText text={name} style={styles.name} />
-          <MyText text={type} style={styles.type} />
-          {/* <MyText text={address} style={styles.address} /> */}
-          <Form
-            {...{
-              defaultValues,
-              isLoading,
-              error,
-              onSubmit,
-              cancelButton: false,
-              btnsColumn: false,
-              title: "",
-              submitText: "save",
-              submitIcon: "check",
-              hideSubmitButton,
-              disabled: hideSubmitButton,
-            }}
-          >
-            <Input name="name" label="name" icon="account" />
-            <Input name="email" label="email" icon="email" />
-            <Input name="phone" label="phone" icon="cellphone" />
-          </Form>
+      <View style={styles.container}>
+        <TouchableOpacity disabled={hideSubmitButton} onPress={pickImage}>
+          <PaperAvatar.Image
+            size={95}
+            source={
+              image ? { uri: image } : require("../../../assets/profile.png")
+            }
+            style={styles.image}
+          />
+        </TouchableOpacity>
+        <View style={styles.icon}>
+          <IconButton
+            icon="pencil-box-outline"
+            size={20}
+            color={theme.colors.primary}
+            onPress={() => setHideSubmitButton(!hideSubmitButton)}
+          />
         </View>
-      </ScrollView>
+        <MyText text={name} style={styles.name} />
+        <MyText text={type} style={styles.type} />
+        {/* <MyText text={address} style={styles.address} /> */}
+        <Form
+          {...{
+            defaultValues,
+            isLoading,
+            error,
+            onSubmit,
+            cancelButton: false,
+            btnsColumn: false,
+            title: "",
+            submitText: "save",
+            submitIcon: "check",
+            hideSubmitButton,
+            disabled: hideSubmitButton,
+          }}
+        >
+          <Input name="name" label="name" icon="account" />
+          <Input name="email" label="email" icon="email" />
+          <Input name="phone" label="phone" icon="cellphone" />
+          <Input
+            name="compoundId"
+            label="compound"
+            icon="home-group"
+            disabled
+            editable={false}
+          />
+          <Input
+            name="streetName"
+            label="street name"
+            icon="home"
+            disabled
+            editable={false}
+          />
+          <Input
+            name="unitNumber"
+            label="unit number"
+            icon="key"
+            disabled
+            editable={false}
+          />
+        </Form>
+      </View>
     </SafeAreaView>
   );
 }

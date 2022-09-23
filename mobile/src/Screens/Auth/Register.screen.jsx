@@ -22,7 +22,7 @@ import {
 } from "react-native-responsive-screen";
 import theme from "../../Theme/paper.theme";
 import { MaterialCommunityIcons, AntDesign } from "@expo/vector-icons";
-import { ActivityIndicator } from "react-native-paper";
+import { ActivityIndicator, HelperText } from "react-native-paper";
 
 // =================================================================
 
@@ -54,6 +54,9 @@ export default function RegisterScreen() {
   // ------------------------------
 
   const onSubmit = async (values) => {
+    if (values.compoundId === 0) {
+      return Toast.show({ type: "error", text1: "Please select a compound" });
+    }
     if (values.confirmPassword !== values.password) {
       return Toast.show({ type: "error", text1: "passwords do not match" });
     }
@@ -109,34 +112,77 @@ export default function RegisterScreen() {
             secureTextEntry
             icon="lock-check"
           />
-          <Input name="phone" label="phone" icon="cellphone" />
+          <Input
+            name="phone"
+            label="phone"
+            icon="cellphone"
+            rules={{
+              validate: {
+                phoneMustBeNumber: (v) => parseInt(v) > 0,
+              },
+            }}
+          />
           <Controller
             name={"compoundId"}
-            render={({ field: { onChange, onBlur, value } }) => {
+            rules={{
+              validate: {
+                required: (v) => parseInt(v) > 0,
+              },
+            }}
+            render={({ field: { onChange, value } }) => {
               return (
-                <SelectDropdown
-                  data={compounds}
-                  onSelect={(c) => {
-                    onChange(c.id);
-                  }}
-                  buttonTextAfterSelection={(c) => c.name}
-                  rowTextForSelection={(c) => c.name}
-                  buttonStyle={styles.buttonStyle}
-                  renderDropdownIcon={(isOpened) => {
-                    return (
-                      <MaterialCommunityIcons
-                        name={isOpened ? "chevron-up" : "chevron-down"}
-                        size={30}
-                      />
-                    );
-                  }}
-                />
+                <>
+                  <SelectDropdown
+                    data={compounds}
+                    onSelect={(c) => {
+                      onChange(c.id);
+                    }}
+                    buttonTextAfterSelection={(c) => c.name}
+                    rowTextForSelection={(c) => c.name}
+                    buttonStyle={styles.buttonStyle}
+                    renderDropdownIcon={(isOpened) => {
+                      return (
+                        <MaterialCommunityIcons
+                          name={isOpened ? "chevron-up" : "chevron-down"}
+                          size={30}
+                        />
+                      );
+                    }}
+                  />
+                  {value === 0 ? (
+                    <HelperText
+                      type="error"
+                      visible={true}
+                      style={{ textAlign: "right" }}
+                    >
+                      compound {i18n.t("required")}
+                    </HelperText>
+                  ) : null}
+                </>
               );
             }}
           />
           <Input name="streetName" label="streetName" icon="home-group" />
-          <Input name="blockNumber" label="blockNumber" icon="home" />
-          <Input name="unitNumber" label="unitNumber" icon="key" />
+          <Input
+            name="blockNumber"
+            label="blockNumber"
+            icon="home"
+            rules={{
+              validate: {
+                positiveNumberIsRequired: (v) => parseInt(v) > 0,
+              },
+            }}
+          />
+          <Input
+            name="unitNumber"
+            label="unitNumber"
+            icon="key"
+            rules={{
+              validate: {
+                positiveNumberIsRequired: (v) => parseInt(v) > 0,
+              },
+            }}
+          />
           {/* <Select name="level" placeholder="level" choices={levels} /> */}
           {/* <Depend /> */}
         </Form>

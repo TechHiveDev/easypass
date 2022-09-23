@@ -10,6 +10,9 @@ import { useAppSelector } from "../../../Store/redux.hooks";
 
 export default function UserCard({ entity, keys, row }) {
   const { name, type, photoUrl } = useAppSelector((state) => state?.auth?.user);
+  const currentCompound = useAppSelector(
+    (state) => state?.auth?.currentCompound
+  );
   // -------------------------------
 
   return (
@@ -23,7 +26,7 @@ export default function UserCard({ entity, keys, row }) {
             source={
               photoUrl
                 ? { uri: photoUrl }
-                : require("../../../../assets/logo.png")
+                : require("../../../../assets/profile.png")
             }
           />
         )}
@@ -31,6 +34,19 @@ export default function UserCard({ entity, keys, row }) {
           <View style={styles.content}>
             <Text style={styles.name}>{name}</Text>
             <Text style={styles.address}>{type}</Text>
+            {type === "Security" ? (
+              <>
+                <Text style={styles.address}>
+                  compound: {currentCompound.compoundId}
+                </Text>
+                <Text style={styles.address}>
+                  street name: {currentCompound.streetName}
+                </Text>
+                <Text style={styles.address}>
+                  unit number: {currentCompound.unitNumber}
+                </Text>
+              </>
+            ) : null}
           </View>
         )}
       />

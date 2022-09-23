@@ -8,7 +8,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useAppDispatch, useAppSelector } from "../../Store/redux.hooks";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import { useIsFocused } from "@react-navigation/native";
-// import { useScanQrCodeMutation } from "../../API/api";
+import { useScanQrCodeMutation } from "../../API/api";
 import LoadingScreen from "../../Components/GenericScreens/Loading.screen";
 import Toast from "react-native-toast-message";
 // import theme from "../../Theme/paper.theme";
@@ -24,7 +24,7 @@ export default function ScanQrCode() {
 
   // -----------------------------------------
 
-  // const [scanQrCode, { isLoading }] = useScanQrCodeMutation();
+  const [scanQrCode, { isLoading }] = useScanQrCodeMutation();
 
   // -----------------------------------------
 
@@ -64,18 +64,21 @@ export default function ScanQrCode() {
   // -----------------------------------------
 
   const handleSuccess = async ({ data }) => {
-    // const res = await scanQrCode({ ticket_number: data });
-    // let scanned;
-    // if (res?.data?.status) {
-    //   scanned = res?.data?.message;
-    //   Toast.show({ type: "success", text1: scanned });
-    // }
-    // if (res?.error?.data?.error) {
-    //   scanned = res?.error?.data?.error?.message;
-    //   Toast.show({ type: "info", text1: scanned });
-    // }
-    // setScannedData(scanned);
-    // setActive(!active);
+    alert(data);
+    return setActive(!active);
+    // console.log(data);
+    const res = await scanQrCode({ encryptedQrcode: data });
+    let scanned;
+    if (res?.data?.status) {
+      scanned = res?.data?.message;
+      Toast.show({ type: "success", text1: scanned });
+    }
+    if (res?.error?.data?.error) {
+      scanned = res?.error?.data?.error?.message;
+      Toast.show({ type: "info", text1: scanned });
+    }
+    setScannedData(scanned);
+    setActive(!active);
   };
 
   // -----------------------------------------
