@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { SafeAreaView, StyleSheet, Share } from "react-native";
 import {
   widthPercentageToDP as wp,
@@ -10,21 +10,26 @@ import Input from "../../Components/Form/Input";
 import Radios from "../../Components/Form/Radios";
 import { useCreateMutation } from "../../API/api";
 import { useAppSelector } from "../../Store/redux.hooks";
+import { useFocusEffect } from "@react-navigation/native";
 
 // =================================================================
 
 export default function InviteGuest({}) {
   // ---------------------------------------------------
 
+  const [sharing, setSharing] = useState(false);
+  useFocusEffect(() => {
+    setTimeout(() => {
+      setSharing(false);
+    }, 1000);
+  });
   const [generateInviteLink, { isLoading, error }] = useCreateMutation();
   const defaultValues = { name: "", phone: "", type: "Delivery", notes: "" };
 
   // ---------------------------------------------------
-
-  const {
-    currentCompoundId: compoundId,
-    user: { id: userId },
-  } = useAppSelector((s) => s?.auth);
+  const { compoundId, userId } = useAppSelector(
+    (s) => s?.auth?.currentCompound
+  );
 
   // ---------------------------------------------------
 
@@ -34,6 +39,7 @@ export default function InviteGuest({}) {
     type,
     notes,
   }) => {
+    setSharing(true);
     try {
       // const { data } = await generateInviteLink({
       //   entity: "generate-guest-link",
@@ -61,6 +67,8 @@ export default function InviteGuest({}) {
       }
     } catch (e) {
       console.error(error.message);
+    } finally {
+      // setSharing(false);
     }
   };
 
@@ -81,9 +89,21 @@ export default function InviteGuest({}) {
           submitIcon: "qrcode",
         }}
       >
-        <Input name="name" label="name" icon="account" required={false} />
+        <Input
+          name="name"
+          label="name"
+          icon="account"
+          required={false}
+          noLabel={sharing}
+        />
         {/* <Input name="phone" label="phone" icon="cellphone" required={false} /> */}
-        <Input name="notes" label="notes" icon="pen" required={false} />
+        <Input
+          name="notes"
+          label="notes"
+          icon="pen"
+          required={false}
+          noLabel={sharing}
+        />
         <Radios
           name="type"
           placeholder="invitationType"
