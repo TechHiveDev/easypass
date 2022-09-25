@@ -89,8 +89,8 @@ export const generateGuestQrCodeInvitationLink = async ({
   );
 
   return {
-    // link: `https://easypass-api.techhive.dev/${path}`,
-    link: `http://localhost:5000/${path}`,
+    link: `https://easypass-api.techhive.dev/${path}`,
+    // link: `http://localhost:5000/${path}`,
     qrcode: encryptedQrcode,
   };
 };
