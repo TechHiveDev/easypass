@@ -1,9 +1,5 @@
 import React, { useState } from "react";
-import { SafeAreaView, StyleSheet, Share } from "react-native";
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from "react-native-responsive-screen";
+import { SafeAreaView, Share } from "react-native";
 import globalStyles from "../../Theme/global.styles";
 import Form from "../../Components/Form/Form";
 import Input from "../../Components/Form/Input";
@@ -11,12 +7,9 @@ import Radios from "../../Components/Form/Radios";
 import { useCreateMutation } from "../../API/api";
 import { useAppSelector } from "../../Store/redux.hooks";
 import { useFocusEffect } from "@react-navigation/native";
-
-// =================================================================
+import Toast from "react-native-toast-message";
 
 export default function InviteGuest({}) {
-  // ---------------------------------------------------
-
   const [sharing, setSharing] = useState(false);
   useFocusEffect(() => {
     setTimeout(() => {
@@ -25,50 +18,38 @@ export default function InviteGuest({}) {
   });
   const [generateInviteLink, { isLoading, error }] = useCreateMutation();
   const defaultValues = { name: "", phone: "", type: "Delivery", notes: "" };
-
-  // ---------------------------------------------------
   const { compoundId, userId } = useAppSelector(
     (s) => s?.auth?.currentCompound
   );
 
-  // ---------------------------------------------------
-
-  const onSubmit = async ({
-    name,
-    // phone,
-    type,
-    notes,
-  }) => {
+  const onSubmit = async ({ name, type, notes }) => {
     setSharing(true);
+    if (type === "Visitor" && name === "") {
+      return Toast.show({
+        type: "error",
+        text1: "name is required for visitors",
+      });
+    }
     try {
-      // const { data } = await generateInviteLink({
-      //   entity: "generate-guest-link",
-      //   body: {
-      //     userId,
-      //     compoundId,
-      //     name,
-      //     //   phone,
-      //     type,
-      //   },
-      // });
-
-      if (true) {
-        // let message = data?.link;
-        const result = await Share.share({ message: "mario" });
-        if (result.action === Share.sharedAction) {
-          if (result.activityType) {
-            // shared with activity type of result.activityType
-          } else {
-            // shared
-          }
-        } else if (result.action === Share.dismissedAction) {
-          // dismissed
-        }
+      const { data } = await generateInviteLink({
+        entity: "generate-guest-link",
+        body: {
+          userId,
+          compoundId,
+          name,
+          type,
+          notes,
+        },
+      });
+      const url = data?.qrcode?.["link"];
+      if (url) {
+        await Share.share({ message: url });
       }
     } catch (e) {
-      console.error(error.message);
-    } finally {
-      // setSharing(false);
+      Toast.show({
+        type: "error",
+        text1: "error while generating invitation",
+      });
     }
   };
 
@@ -79,7 +60,6 @@ export default function InviteGuest({}) {
       <Form
         {...{
           isLoading,
-          onCancel: () => navigate("register"),
           defaultValues,
           onSubmit,
           cancelButton: false,
@@ -96,7 +76,6 @@ export default function InviteGuest({}) {
           required={false}
           noLabel={sharing}
         />
-        {/* <Input name="phone" label="phone" icon="cellphone" required={false} /> */}
         <Input
           name="notes"
           label="notes"
@@ -123,35 +102,3 @@ export default function InviteGuest({}) {
     </SafeAreaView>
   );
 }
-
-// =================================================================
-
-const styles = StyleSheet.create({
-  container: {
-    alignItems: "center",
-    height: hp(80),
-  },
-  image: {
-    marginBottom: hp(1),
-  },
-  icon: {
-    marginTop: -hp(5),
-    marginLeft: wp(23),
-    // top: hp(1),
-  },
-  name: {
-    fontSize: wp(6),
-    fontWeight: "bold",
-  },
-  type: {
-    fontSize: wp(4.5),
-    marginVertical: hp(1),
-    color: "grey",
-    fontWeight: "bold",
-  },
-  address: {
-    color: "grey",
-    fontSize: wp(4),
-    marginBottom: hp(2),
-  },
-});

@@ -8,6 +8,11 @@ import {
 import { Controller } from "react-hook-form";
 import theme from "../../Theme/paper.theme";
 import i18n from "i18n-js";
+import Animated, {
+  LightSpeedInLeft,
+  LightSpeedOutLeft,
+  Layout,
+} from "react-native-reanimated";
 
 // ========================================================
 const toReadableText = (text) =>
@@ -31,8 +36,8 @@ export default function Input(props) {
     label,
     rules = {},
     noLabel = false,
+    animate = false,
   } = props;
-  console.log(name + " " + noLabel);
   // --------------------------------------------
 
   const [passwordVisible, setPasswordVisible] = useState(true);
@@ -91,7 +96,12 @@ export default function Input(props) {
 
   // --------------------------------------------
   return (
-    <View style={{ ...styles.inputContainer, ...widthStyle }}>
+    <Animated.View
+      entering={animate ? LightSpeedInLeft.delay(props.delay) : undefined}
+      exiting={animate ? LightSpeedOutLeft.delay(props.delay) : undefined}
+      layout={animate ? Layout.springify() : undefined}
+      style={{ ...styles.inputContainer, ...widthStyle }}
+    >
       <Controller
         {...{ name, control, render }}
         rules={{ required, ...rules }}
@@ -107,7 +117,7 @@ export default function Input(props) {
             : toReadableText(errors[name]["type"])}
         </HelperText>
       ) : null}
-    </View>
+    </Animated.View>
   );
 }
 

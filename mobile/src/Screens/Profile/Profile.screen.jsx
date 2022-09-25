@@ -1,11 +1,5 @@
-import React, { useState } from "react";
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  TouchableOpacity,
-} from "react-native";
+import React, { useMemo, useState } from "react";
+import { SafeAreaView, StyleSheet, View, TouchableOpacity } from "react-native";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -26,30 +20,29 @@ import config from "../../Config/config";
 // =================================================================
 
 export default function ProfileScreen() {
-  // ---------------------------------------------------
-
+  const [uploadingImage, setUploadingImage] = useState(false);
   const [hideSubmitButton, setHideSubmitButton] = useState(true);
   const dispatch = useAppDispatch();
-  const { id, name, email, phone, type, photoUrl, ...rest } = useAppSelector(
+  const { id, name, email, phone, type, photoUrl } = useAppSelector(
     (state) => state?.auth?.user
   );
   const accessToken = useAppSelector((state) => state?.auth?.accessToken);
   const currentCompound = useAppSelector(
     (state) => state?.auth?.currentCompound
   );
-  const defaultValues = {
-    email,
-    name,
-    phone,
-    photoUrl,
-    compoundId: `${currentCompound.compoundId}`,
-    streetName: `${currentCompound.streetName}`,
-    unitNumber: `${currentCompound.unitNumber}`,
-  };
-  // ---------------------------------------------------
-
+  const defaultValues = useMemo(
+    () => ({
+      email,
+      name,
+      phone,
+      photoUrl,
+      compoundName: `${currentCompound?.compoundName}`,
+      streetName: `${currentCompound?.streetName}`,
+      unitNumber: `${currentCompound?.unitNumber}`,
+    }),
+    [email, name, phone, photoUrl, currentCompound]
+  );
   const [updateMyProfile, { isLoading, error }] = useUpdateMutation();
-
   // ---------------------------------------------------
 
   const [image, setImage] = useState(photoUrl);
@@ -63,6 +56,7 @@ export default function ProfileScreen() {
       return setHideSubmitButton(true);
     }
     if (defaultValues.photoUrl !== image) {
+      setUploadingImage(true);
       const uploadResult = await FileSystem.uploadAsync(
         config.API_URL + "/api/upload?clientId=" + id,
         image,
@@ -90,6 +84,7 @@ export default function ProfileScreen() {
       Toast.show({ type: "success", text1: "Updated Successfully" });
       dispatch(setUser(data));
     }
+    setUploadingImage(false);
     setHideSubmitButton(true);
   };
   const pickImage = async () => {
@@ -132,7 +127,7 @@ export default function ProfileScreen() {
         <Form
           {...{
             defaultValues,
-            isLoading,
+            isLoading: isLoading || uploadingImage,
             error,
             onSubmit,
             cancelButton: false,
@@ -148,7 +143,7 @@ export default function ProfileScreen() {
           <Input name="email" label="email" icon="email" />
           <Input name="phone" label="phone" icon="cellphone" />
           <Input
-            name="compoundId"
+            name="compoundName"
             label="compound"
             icon="home-group"
             disabled
@@ -187,7 +182,6 @@ const styles = StyleSheet.create({
   icon: {
     marginTop: -hp(5),
     marginLeft: wp(23),
-    // top: hp(1),
   },
   name: {
     fontSize: wp(6),

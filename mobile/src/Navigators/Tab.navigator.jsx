@@ -47,7 +47,6 @@ const screenOptions = ({ route: { name } }) => ({
   tabBarInactiveTintColor: "gray",
   tabBarStyle: { height: hp(9) },
   tabBarItemStyle: { paddingTop: hp(0.5), paddingBottom: hp(1.5) },
-  swipeEnabled: true,
   tabBarHideOnKeyboard: true,
 });
 

@@ -1,17 +1,11 @@
-import React from "react";
-import { SafeAreaView, View, Text, StyleSheet } from "react-native";
+import React, { useState } from "react";
+
+import { SafeAreaView, View, StyleSheet, Text } from "react-native";
 import globalStyles from "../../Theme/global.styles";
-import Logo from "../../Components/Logo";
 import Form from "../../Components/Form/Form";
 import Input from "../../Components/Form/Input";
-import Select from "../../Components/Form/Select";
 import SelectDropdown from "react-native-select-dropdown";
-import { userTypes, levels } from "../../Config/constants";
-import {
-  useGetListQuery,
-  useRegisterMutation,
-  useGetCompoundsQuery,
-} from "../../API/api";
+import { useRegisterMutation, useGetCompoundsQuery } from "../../API/api";
 import { Controller } from "react-hook-form";
 import { useNavigation } from "@react-navigation/native";
 import Toast from "react-native-toast-message";
@@ -21,48 +15,46 @@ import {
   widthPercentageToDP as wp,
 } from "react-native-responsive-screen";
 import theme from "../../Theme/paper.theme";
-import { MaterialCommunityIcons, AntDesign } from "@expo/vector-icons";
-import { ActivityIndicator, HelperText } from "react-native-paper";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { ActivityIndicator, HelperText, RadioButton } from "react-native-paper";
 
 // =================================================================
-
+const randomNumber = Math.round(Math.random() * 100);
+const defaultValues = {
+  name: "mario",
+  email: `mario${randomNumber}@mario.com`,
+  password: "mario",
+  confirmPassword: "mario",
+  phone: `0120120${randomNumber}777`,
+  streetName: "mario",
+  blockNumber: "12",
+  unitNumber: "23",
+  compoundName: "",
+  active: false,
+};
 export default function RegisterScreen() {
   // ------------------------------
 
   const { navigate } = useNavigation();
-  const [register] = useRegisterMutation();
-
+  const [register, { isLoading: registering }] = useRegisterMutation();
   const { data: compounds, isLoading } = useGetCompoundsQuery();
-  // console.log({ data });
-
-  // ------------------------------
-
-  const defaultValues = {
-    name: "mario",
-    email: "mario@mario.com",
-    password: "mario",
-    confirmPassword: "mario",
-    type: "Resident",
-    phone: "01201200777",
-    streetName: "mario",
-    blockNumber: "12",
-    unitNumber: "23",
-    compoundId: 0,
-    active: false,
-  };
+  const [userType, setUserType] = useState("Resident");
 
   // ------------------------------
 
   const onSubmit = async (values) => {
-    if (values.compoundId === 0) {
+    if (values.compoundName === "") {
       return Toast.show({ type: "error", text1: "Please select a compound" });
     }
     if (values.confirmPassword !== values.password) {
       return Toast.show({ type: "error", text1: "passwords do not match" });
     }
-    const { data } = await register(values);
+    const { data } = await register({ ...values, type: userType });
     if (data?.user?.id) {
-      Toast.show({ type: "success", text1: "Successfully registered" });
+      Toast.show({
+        type: "success",
+        text1: "Successfully registered. wait for admin confirmation.",
+      });
       return navigate("login");
     }
   };
@@ -101,6 +93,7 @@ export default function RegisterScreen() {
             cancelButton: false,
             submitText: "register",
             submitIcon: "account-plus",
+            isLoading: registering,
           }}
         >
           <Input name="name" label="name" icon="account" />
@@ -123,10 +116,10 @@ export default function RegisterScreen() {
             }}
           />
           <Controller
-            name={"compoundId"}
+            name={"compoundName"}
             rules={{
               validate: {
-                required: (v) => parseInt(v) > 0,
+                required: (v) => v !== "",
               },
             }}
             render={({ field: { onChange, value } }) => {
@@ -135,7 +128,7 @@ export default function RegisterScreen() {
                   <SelectDropdown
                     data={compounds}
                     onSelect={(c) => {
-                      onChange(c.id);
+                      onChange(c.name);
                     }}
                     buttonTextAfterSelection={(c) => c.name}
                     rowTextForSelection={(c) => c.name}
@@ -149,7 +142,7 @@ export default function RegisterScreen() {
                       );
                     }}
                   />
-                  {value === 0 ? (
+                  {value === "" ? (
                     <HelperText
                       type="error"
                       visible={true}
@@ -162,27 +155,62 @@ export default function RegisterScreen() {
               );
             }}
           />
-          <Input name="streetName" label="streetName" icon="home-group" />
-          <Input
-            name="blockNumber"
-            label="blockNumber"
-            icon="home"
-            rules={{
-              validate: {
-                positiveNumberIsRequired: (v) => parseInt(v) > 0,
-              },
-            }}
-          />
-          <Input
-            name="unitNumber"
-            label="unitNumber"
-            icon="key"
-            rules={{
-              validate: {
-                positiveNumberIsRequired: (v) => parseInt(v) > 0,
-              },
-            }}
-          />
+          {userType === "Resident" ? (
+            <Input
+              animate
+              name="streetName"
+              label="streetName"
+              icon="home-group"
+            />
+          ) : null}
+          {userType === "Resident" ? (
+            <Input
+              animate
+              delay={100}
+              name="blockNumber"
+              label="blockNumber"
+              icon="home"
+              rules={{
+                validate: {
+                  positiveNumberIsRequired: (v) => parseInt(v) > 0,
+                },
+              }}
+            />
+          ) : null}
+          {userType === "Resident" ? (
+            <Input
+              animate
+              delay={200}
+              name="unitNumber"
+              label="unitNumber"
+              icon="key"
+              rules={{
+                validate: {
+                  positiveNumberIsRequired: (v) => parseInt(v) > 0,
+                },
+              }}
+            />
+          ) : null}
+          <View style={styles.row}>
+            <RadioButton
+              color={theme.colors.primary}
+              value={"Resident"}
+              status={userType === "Resident" ? "checked" : "unchecked"}
+              onPress={() => {
+                setUserType("Resident");
+              }}
+            />
+            <Text>Resident</Text>
+            <RadioButton
+              color={theme.colors.primary}
+              value={"Security"}
+              status={userType === "Security" ? "checked" : "unchecked"}
+              onPress={() => {
+                setUserType("Security");
+              }}
+            />
+            <Text>Security</Text>
+          </View>
           {/* <Select name="level" placeholder="level" choices={levels} /> */}
           {/* <Depend /> */}
         </Form>
@@ -199,5 +227,10 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     borderColor: theme.colors.placeholder,
     backgroundColor: "#f2f2f2",
+  },
+  row: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
   },
 });
