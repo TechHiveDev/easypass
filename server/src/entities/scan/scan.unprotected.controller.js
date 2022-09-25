@@ -8,7 +8,7 @@ const guestController = async (req, res, next) => {
   try {
     const { encryptedQrcode } = req?.body;
     // let { success, qrcode } =
-    res.send(await scanQrCode({ encryptedQrcode }));
+    res.send(await scanQrCode({ encryptedQrcode, deviceId }));
     // res.send({ success });
     // return res.render("QRCode", { qrcode });
   } catch (error) {
