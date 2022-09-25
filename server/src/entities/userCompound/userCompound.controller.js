@@ -100,24 +100,5 @@
 import { crud, prismaCrud } from "../../utils/crud/express-crud-router";
 import { getUserCompounds } from "./userCompound.service";
 
-// ------------------------------------------------------------------
-const crudController = {
-  ...prismaCrud("userCompound"),
-  getList: null,
-};
 
-const customRoutesController = [
-  {
-    method: "get",
-    path: "/userCompounds",
-    controller: async (req, res, next) => {
-      try {
-        const userCompounds = await getUserCompounds(req.user.id);
-        return res.status(202).json(userCompounds);
-      } catch (err) {
-        next(err);
-      }
-    },
-  },
-];
-export default crud("/userCompound", crudController, customRoutesController);
+export default crud("/userCompound", prismaCrud("userCompound"));

@@ -97,8 +97,8 @@ model Scan {
   invitationId Int
   invitation   Invitation @relation(fields: [invitationId], references: [id])
 
-  deviceId Int
-  device   Device @relation(fields: [deviceId], references: [id])
+  deviceId Int?
+  device   Device? @relation(fields: [deviceId], references: [id])
 
   success Boolean
 

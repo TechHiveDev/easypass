@@ -6,9 +6,11 @@ const router = express.Router();
 
 const guestController = async (req, res, next) => {
   try {
-    const { encryptedQrcode } = req?.params;
-    let { success, qrcode } = await scanQrCode({ encryptedQrcode });
-    return res.render("QRCode", { qrcode });
+    const { encryptedQrcode } = req?.body;
+    // let { success, qrcode } =
+    res.send(await scanQrCode({ encryptedQrcode }));
+    // res.send({ success });
+    // return res.render("QRCode", { qrcode });
   } catch (error) {
     next(error);
   }
@@ -16,7 +18,7 @@ const guestController = async (req, res, next) => {
 
 //  =================================================================
 
-router.route("/guest/:encryptedQrCode").get(guestController);
+router.route("/guest/").post(guestController);
 
 //  =================================================================
 

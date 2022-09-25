@@ -80,10 +80,17 @@ export const generateGuestQrCodeInvitationLink = async ({
     })
   );
 
-  const link = await qrcode.toDataURL(encryptedQrcode);
+  const fileName = Date.now() + "_" + userId + ".png";
+  const path = "assets/qrcodes/" + fileName;
+
+  const image = await qrcode.toFile(
+    "assets/qrcodes/" + fileName,
+    encryptedQrcode
+  );
 
   return {
-    link: `https://easypass-api.techhive.dev/guest/${link}`,
+    // link: `https://easypass-api.techhive.dev/${path}`,
+    link: `http://localhost:5000/${path}`,
     qrcode: encryptedQrcode,
   };
 };

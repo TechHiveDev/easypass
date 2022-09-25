@@ -51,9 +51,19 @@ const prisma = new PrismaClient({
 // }
 // ===============================================================
 
-export const scanQrCode = async ({ encryptedQrcode }) => {
+export const scanQrCode = async ({ encryptedQrcode, deviceId }) => {
   const qrcode = await verifyEncryptedQrCode(encryptedQrcode);
-  const { type, expiresAt, invitaion, success } = qrcode;
+  const { type, expiresAt, invitationId, success } = qrcode;
+  console.log(success)
+
+  if (!success) {
+    return qrcode;
+  }
+  const scan = await prisma.scan.findFirst({ where: { invitationId } });
+  console.log(scan)
+  if (scan) {
+    return { success: false, message: "Invitation already Used" };
+  }
 
   return await prisma.scan.create({
     data: {
