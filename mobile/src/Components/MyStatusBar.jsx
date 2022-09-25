@@ -2,7 +2,7 @@ import { StyleSheet } from "react-native";
 import { Appbar } from "react-native-paper";
 import i18n from "i18n-js";
 import theme from "../Theme/paper.theme";
-
+import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 // ========================================================
 
 const hiddenStatusBar = ["login"];
@@ -70,5 +70,6 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     alignSelf: "center",
     color: theme.colors.primary,
+    marginLeft: -wp(14),
   },
 });

@@ -13,15 +13,13 @@ import {
 } from "react-native-responsive-screen";
 import theme from "../../Theme/paper.theme";
 import { useAppDispatch, useAppSelector } from "../../Store/redux.hooks";
-import { setCompountId } from "../../Store/Slices/auth.slice";
+import { setCurrentCompound } from "../../Store/Slices/auth.slice";
 
 export default function UserCompounds({ navigation }) {
   const dispatch = useAppDispatch();
-  const { userCompound } = useAppSelector((state) => state?.auth?.user);
-
-  // handleCompound
+  const { userCompound, type } = useAppSelector((state) => state?.auth?.user);
   const handleCompoundClicked = (id) => {
-    dispatch(setCompountId(id));
+    dispatch(setCurrentCompound(id));
     navigation.navigate("HomeStackTabNavigator");
   };
   const navigateToCompoundList = () => {
@@ -66,13 +64,23 @@ export default function UserCompounds({ navigation }) {
             <TouchableOpacity
               style={styles.childView}
               onPress={() => {
-                handleCompoundClicked(item.id);
+                handleCompoundClicked(item);
               }}
             >
               <View style={styles.innerChild}>
                 <Text style={{ fontSize: 20, color: theme.colors.placeholder }}>
-                  compound {item.compoundId}, street {item.streetName} , block{" "}
-                  {item.blockNumber}, unit {item.unitNumber}
+                  {item?.compoundName} compound
+                  {type !== "Security" ? (
+                    <>
+                      {item?.streetName
+                        ? `, street ${item?.streetName} ,`
+                        : null}
+                      {item?.blockNumber
+                        ? `block ${item?.blockNumber} ,`
+                        : null}
+                      {item?.unitNumber ? `unit ${item?.unitNumber} ,` : null}
+                    </>
+                  ) : null}
                 </Text>
                 <Text style={{ color: theme.colors.white, fontSize: 14 }}>
                   {/*{item.compoundDescription}*/}
@@ -112,7 +120,7 @@ const styles = StyleSheet.create({
     width: wp(45),
     margin: wp(5),
     borderRadius: 6,
-    height: 160,
+    height: hp(25),
     justifyContent: "center",
     alignItems: "center",
     flex: 1,

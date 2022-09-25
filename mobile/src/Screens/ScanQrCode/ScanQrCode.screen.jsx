@@ -8,33 +8,26 @@ import { useNavigation } from "@react-navigation/native";
 import { useAppDispatch, useAppSelector } from "../../Store/redux.hooks";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import { useIsFocused } from "@react-navigation/native";
-// import { useScanQrCodeMutation } from "../../API/api";
-import LoadingScreen from "../../Components/GenericScreens/Loading.screen";
+import { useScanQrCodeMutation } from "../../API/api";
 import Toast from "react-native-toast-message";
-// import theme from "../../Theme/paper.theme";
 import Button from "../../Components/Form/Button";
 import theme from "../../Theme/paper.theme";
+import LoadingScreen from "../../Components/GenericScreens/Loading.screen";
 
 // ======================================================================
 
 export default function ScanQrCode() {
   const isFocused = useIsFocused();
-  const dispatch = useAppDispatch();
-  const { navigate } = useNavigation();
 
   // -----------------------------------------
 
-  // const [scanQrCode, { isLoading }] = useScanQrCodeMutation();
-
-  // -----------------------------------------
-
-  const user = useAppSelector((state) => state?.auth?.user);
+  const [scanQrCode, { isLoading }] = useScanQrCodeMutation();
 
   // -----------------------------------------
 
   const [hasPermission, setHasPermission] = useState(null);
   const [active, setActive] = useState(false);
-  const [scannedData, setScannedData] = useState(false);
+  const [scannedData, setScannedData] = useState(undefined);
 
   // -----------------------------------------
 
@@ -53,29 +46,19 @@ export default function ScanQrCode() {
       setActive(false);
     }
   });
-
-  // -----------------------------------------
-
-  const logoutHandler = async () => {
-    // await setAsyncStorageUser(null);
-    // dispatch(resetUser());
-  };
-
   // -----------------------------------------
 
   const handleSuccess = async ({ data }) => {
-    // const res = await scanQrCode({ ticket_number: data });
-    // let scanned;
-    // if (res?.data?.status) {
-    //   scanned = res?.data?.message;
-    //   Toast.show({ type: "success", text1: scanned });
-    // }
-    // if (res?.error?.data?.error) {
-    //   scanned = res?.error?.data?.error?.message;
-    //   Toast.show({ type: "info", text1: scanned });
-    // }
-    // setScannedData(scanned);
-    // setActive(!active);
+    setActive(!active);
+    const res = await scanQrCode({ encryptedQrcode: data, deviceId: 1 });
+    if (res?.data?.success) {
+      Toast.show({ type: "success", text1: "accepted invitation" });
+      setScannedData("Success ! let guest or delivery in");
+    } else {
+      Toast.show({ type: "error", text1: res?.data?.message });
+      setScannedData("Failed ! don't let the guest or delivery in");
+    }
+    setActive(!active);
   };
 
   // -----------------------------------------
@@ -114,7 +97,6 @@ export default function ScanQrCode() {
         {!active && scannedData ? (
           <Text style={styles.txt}>{scannedData}</Text>
         ) : null}
-
         {!active ? <Button onPress={clickToScan} text="scanQrCode" /> : null}
       </View>
     </View>
@@ -154,7 +136,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   tools: {
-    alignSelf: "center",
     width: wp(88.5),
     flexDirection: "row-reverse",
     alignSelf: "flex-end",

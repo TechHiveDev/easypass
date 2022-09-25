@@ -5,7 +5,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   accessToken: null,
   refreshToken: null,
-  currentCompoundId: 1,
+  currentCompound: null,
   user: {
     email: null,
     id: null,
@@ -36,8 +36,8 @@ const reducers = {
 
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
-  setCompountId: (state, action) => {
-    state.currentCompoundId = action.payload;
+  setCurrentCompound: (state, action) => {
+    state.currentCompound = action.payload;
   },
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
@@ -57,7 +57,7 @@ export const {
   setAccesToken,
   setUser,
   resetAuthUser,
-  setCompountId,
+  setCurrentCompound,
 } = auhthSlice.actions;
 
 // =====================================================================

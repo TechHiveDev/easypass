@@ -10,12 +10,13 @@ import { setAuthUser } from "../../Store/Slices/auth.slice";
 import Logo from "../../Components/Logo";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import theme from "../../Theme/paper.theme";
+import Toast from "react-native-toast-message";
 
 // =================================================================
 
 export default function LoginScreen() {
   const { navigate } = useNavigation();
-  const [login, { data, isLoading, error }] = useLoginMutation();
+  const [login, { isLoading, error }] = useLoginMutation();
   const dispatch = useAppDispatch();
 
   // -------------------------------------
@@ -28,19 +29,18 @@ export default function LoginScreen() {
   // -------------------------------------
 
   const onSubmit = async (values) => {
-    const res = await login(values);
-  };
-
-  // -------------------------------------
-
-  useEffect(() => {
-    (async () => {
-      if (data && data?.user && data?.accessToken) {
-        await AsyncStorage.setItem("accessToken", data?.accessToken);
-        dispatch(setAuthUser(data));
+    try {
+      const res = await login(values);
+      if (res?.data?.user?.id && res?.data?.accessToken) {
+        AsyncStorage.setItem("accessToken", res.data.accessToken);
+        dispatch(setAuthUser({ user: res.data.user }));
+      } else {
+        Toast.show({ type: "error", text1: "error while logging in." });
       }
-    })();
-  }, [data]);
+    } catch (e) {
+      Toast.show({ type: "error", text1: e.message });
+    }
+  };
 
   // -------------------------------------
 

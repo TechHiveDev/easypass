@@ -8,9 +8,18 @@ import {
 import { Controller } from "react-hook-form";
 import theme from "../../Theme/paper.theme";
 import i18n from "i18n-js";
+import Animated, {
+  LightSpeedInLeft,
+  LightSpeedOutLeft,
+  Layout,
+} from "react-native-reanimated";
 
 // ========================================================
-
+const toReadableText = (text) =>
+  text
+    .replace(/([A-Z]+)/g, " $1")
+    .replace(/([A-Z][a-z])/g, " $1")
+    .toLowerCase();
 export default function Input(props) {
   const {
     name,
@@ -25,8 +34,10 @@ export default function Input(props) {
     autoCapitalize = "none",
     secureTextEntry = null,
     label,
+    rules = {},
+    noLabel = false,
+    animate = false,
   } = props;
-
   // --------------------------------------------
 
   const [passwordVisible, setPasswordVisible] = useState(true);
@@ -62,7 +73,11 @@ export default function Input(props) {
         outlineColor: requiredBorder,
         ...props,
         secureTextEntry: secureTextEntry ? passwordVisible : null,
-        label: i18n.t(label || name),
+        label: noLabel
+          ? false
+          : i18n.t(label || name).startsWith("[missing")
+          ? label
+          : i18n.t(label || name),
       }}
       // theme={{ roundness: 15 }}
       placeholderTextColor={theme.colors.accent}
@@ -80,20 +95,29 @@ export default function Input(props) {
   );
 
   // --------------------------------------------
-
   return (
-    <View style={{ ...styles.inputContainer, ...widthStyle }}>
-      <Controller {...{ name, control, render }} rules={{ required }} />
+    <Animated.View
+      entering={animate ? LightSpeedInLeft.delay(props.delay) : undefined}
+      exiting={animate ? LightSpeedOutLeft.delay(props.delay) : undefined}
+      layout={animate ? Layout.springify() : undefined}
+      style={{ ...styles.inputContainer, ...widthStyle }}
+    >
+      <Controller
+        {...{ name, control, render }}
+        rules={{ required, ...rules }}
+      />
       {errors && errors[name] ? (
         <HelperText
           type="error"
           visible={errors[name]}
           style={{ textAlign: "right" }}
         >
-          {i18n.t("required")}
+          {errors[name]["type"] === "required"
+            ? toReadableText(name) + " " + i18n.t("required")
+            : toReadableText(errors[name]["type"])}
         </HelperText>
       ) : null}
-    </View>
+    </Animated.View>
   );
 }
 

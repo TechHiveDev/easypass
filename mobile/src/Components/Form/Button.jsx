@@ -32,7 +32,7 @@ export default function Button({
       }}
       labelStyle={{ ...styles.labelStyle, ...color }}
     >
-      {i18n.t(text)}
+      {i18n.t(text).startsWith("[missing") ? text : i18n.t(text)}
     </PaperButton>
   );
 }
@@ -42,13 +42,11 @@ export default function Button({
 const styles = StyleSheet.create({
   container: {
     alignSelf: "center",
-    // paddingHorizontal: wp(1.5),
     margin: wp(1),
     borderColor: theme.colors.primary,
     borderWidth: 1,
   },
   labelStyle: {
     fontSize: 16,
-    // fontWeight: "bold",
   },
 });
