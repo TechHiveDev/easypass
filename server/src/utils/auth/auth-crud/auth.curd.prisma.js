@@ -35,7 +35,7 @@ export const createUserAndAddress = async (payload) => {
     "password",
     "phone",
     "type",
-    "active",
+    // "active",
   ];
 
   const expectedResiendtBody = [
@@ -190,6 +190,15 @@ export const login = async ({ email, password }) => {
   const accessToken = jwt.sign(user, process.env.jwtSecret, {
     expiresIn: process.env.jwtExpires,
   });
+  for (let index = 0; index < user.userCompound.length; index++) {
+    const compound = await prisma.compound.findUnique({
+      where: { id: user.userCompound[index].compoundId },
+    });
+    user.userCompound[index] = {
+      ...user.userCompound[index],
+      compoundName: compound.name,
+    };
+  }
 
   return { user, accessToken };
 };

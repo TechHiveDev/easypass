@@ -64,6 +64,19 @@ app.use("/api-docs", swagger.server, swagger.setup); // Docs
 
 // ------------------------------------------------------
 
+// Custom Middleware to remove null values on the requst body
+// TODO: Refactor
+app.use((req, res, next) => {
+  for (var key in req.body) {
+    if (req.body.hasOwnProperty(key)) {
+      if (req.body[key] == null) delete req.body[key];
+    }
+  }
+  next();
+});
+
+// ------------------------------------------------------
+
 // Un-Protected Route
 app.use(compoundUnprotectedController);
 app.use(scanController);
