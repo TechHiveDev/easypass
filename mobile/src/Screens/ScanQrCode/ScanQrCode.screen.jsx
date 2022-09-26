@@ -51,12 +51,14 @@ export default function ScanQrCode() {
   const handleSuccess = async ({ data }) => {
     setActive(!active);
     const res = await scanQrCode({ encryptedQrcode: data, deviceId: 1 });
+    console.log(res);
     if (res?.data?.success) {
       Toast.show({ type: "success", text1: "accepted invitation" });
       setScannedData("Success ! let guest or delivery in");
-    } else {
-      Toast.show({ type: "error", text1: res?.data?.message });
-      setScannedData("Failed ! don't let the guest or delivery in");
+    }
+    if (res?.error?.data) {
+      Toast.show({ type: "error", text1: res?.error?.data?.message });
+      setScannedData(res?.error?.data?.message);
     }
     setActive(!active);
   };
