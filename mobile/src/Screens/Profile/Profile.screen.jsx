@@ -38,6 +38,7 @@ export default function ProfileScreen() {
       photoUrl,
       compoundName: `${currentCompound?.compoundName}`,
       streetName: `${currentCompound?.streetName}`,
+      blockNumber: `${currentCompound?.blockNumber}`,
       unitNumber: `${currentCompound?.unitNumber}`,
     }),
     [email, name, phone, photoUrl, currentCompound]
@@ -145,13 +146,20 @@ export default function ProfileScreen() {
           <Input
             name="compoundName"
             label="compound"
-            icon="home-group"
+            icon="office-building"
             disabled
             editable={false}
           />
           <Input
             name="streetName"
             label="street name"
+            icon="home-group"
+            disabled
+            editable={false}
+          />
+          <Input
+            name="blockNumber"
+            label="block number"
             icon="home"
             disabled
             editable={false}
