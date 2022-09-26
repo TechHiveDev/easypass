@@ -37,39 +37,19 @@ export default function CompoundList({ navigation }) {
         text1: "Select a compound",
       });
     }
-    if (!values.streetName) {
-      return Toast.show({
-        type: "error",
-        text1: "Enter a street name",
+    const res = await register(newValues);
+    console.log(res);
+    if (res?.data?.id) {
+      dispatch(setCompountId(id));
+      navigation.navigate("HomeStackTabNavigator");
+      Toast.show({
+        type: "success",
+        text1: "Registered in compound successfully ",
       });
-    }
-    if (!values.blockNumber) {
-      return Toast.show({
-        type: "error",
-        text1: "Enter a block number",
-      });
-    }
-    if (!values.unitNumber) {
-      return Toast.show({
-        type: "error",
-        text1: "Enter a unit number",
-      });
-    }
-    try {
-      const res = await register(newValues);
-      if (res?.data?.id) {
-        dispatch(setCompountId(id));
-        navigation.navigate("HomeStackTabNavigator");
-        Toast.show({
-          type: "success",
-          text1: "Registered in compound successfully ",
-        });
-      }
-    } catch (e) {
+    } else {
       Toast.show({
         type: "error",
-        text1:
-          e.toString() || "error while registering. please try again later",
+        text1: "error while registering. please try again later",
       });
     }
   };
@@ -111,9 +91,27 @@ export default function CompoundList({ navigation }) {
               );
             }}
           />
-          <Input name="streetName" label="streetName" icon="home" />
-          <Input name="blockNumber" label="blockNumber" icon="home" />
-          <Input name="unitNumber" label="unitNumber" icon="home" />
+          <Input name="streetName" label="streetName" icon="home-group" />
+          <Input
+            name="blockNumber"
+            label="blockNumber"
+            icon="home"
+            rules={{
+              validate: {
+                positiveNumberIsRequired: (v) => parseInt(v) > 0,
+              },
+            }}
+          />
+          <Input
+            name="unitNumber"
+            label="unitNumber"
+            icon="key"
+            rules={{
+              validate: {
+                positiveNumberIsRequired: (v) => parseInt(v) > 0,
+              },
+            }}
+          />
           {/* <Select name="level" placeholder="level" choices={levels} /> */}
           {/* <Depend /> */}
         </Form>
