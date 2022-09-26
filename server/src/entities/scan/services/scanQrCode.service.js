@@ -68,7 +68,5 @@ export const scanQrCode = async ({ encryptedQrcode, deviceId }) => {
     })),
   };
 
-  console.log(result);
-
   return result;
 };

@@ -15,9 +15,6 @@ export const verifyEncryptedQrCode = async (encryptedQrcode) => {
   const decryptedObject = JSON.parse(decryptedString);
 
   const { userId, compoundId, type, expiresAt } = decryptedObject;
-  console.log("decryptedObject");
-  console.log({ decryptedObject });
-  console.log("==================================");
 
   if (!userId || !compoundId || !type || !expiresAt) {
     return { success: false, message: "Invalid QrCode Payload" };

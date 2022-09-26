@@ -56,7 +56,7 @@ const prisma = new PrismaClient({ log: ["info", "query"] });
                 password:
                   "pbkdf2:sha256:150000$eb677977$204a8e45b57abd97e11bea7c49d7fd223a32e8b2976c677e5b74e444bad16003",
                 type: "Resident",
-                phone: "01201200333",
+                phone: "01201200343",
                 active: true,
               },
             },
