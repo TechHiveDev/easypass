@@ -75,7 +75,7 @@ export const generateGuestQrCodeInvitationLink = async ({
       userId,
       compoundId,
       invitationId: invitation?.id,
-      type: userCompound?.user?.type,
+      type,
       expiresAt: addMinutesToDate(new Date(), 1),
     })
   );

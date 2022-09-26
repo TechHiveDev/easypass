@@ -38,7 +38,7 @@ export const verifyEncryptedQrCode = async (encryptedQrcode) => {
  */
 export const verifyResidentQrCode = async ({ expiresAt, ...rest }) => {
   if (new Date(expiresAt) < new Date()) {
-    return { success: false, message: "Expired QrCode" };
+    return { ...rest, success: false, message: "Expired QrCode" };
   }
   return { ...rest, success: true, message: "QrCode Accepted" };
 };
@@ -56,30 +56,44 @@ export const verifyResidentQrCode = async ({ expiresAt, ...rest }) => {
 export const verifyGuestQrCode = async ({
   expiresAt,
   invitationId,
+  compoundId,
   userId,
+  type,
   ...rest
 }) => {
   if (!userId || !compoundId || !type || !invitationId) {
     return { success: false, message: "Invalid QrCode Payload" };
   }
 
-  const invitation = await prisma.invitation.findUnique({
+  const invitation = await prisma.invitation.findFirst({
     where: { id: invitationId, userId },
   });
   // console.log(invitation)
-  if (!invitation) return { success: false, message: "Invalid QrCode" };
-
-  // TODO : check user id , is the user id thas owns the invitation
-
-  // if userid not the owner of the invitation or any thing wrong return Invalid QrCode
+  if (!invitation)
+    return {
+      ...rest,
+      invitationId,
+      userId,
+      type,
+      success: false,
+      message: "Invalid QrCode",
+    };
 
   if (new Date(expiresAt) < new Date()) {
-    return { success: false, message: "Expired QrCode" };
+    return {
+      ...rest,
+      invitationId,
+      userId,
+      type,
+      success: false,
+      message: "Expired QrCode",
+    };
   }
   return {
     ...rest,
     invitationId,
     userId,
+    type, 
     success: true,
     message: "QrCode Accepted",
   };

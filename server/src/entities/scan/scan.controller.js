@@ -153,7 +153,7 @@ const customRoutesController = [
     controller: async (req, res, next) => {
       try {
         const encryptedQrcode = await scanQrCode(req.body);
-        return res.status(202).json({ encryptedQrcode });
+        return res.status(202).json(encryptedQrcode);
       } catch (err) {
         next(err);
       }

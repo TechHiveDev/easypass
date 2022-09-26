@@ -27,6 +27,7 @@ model User {
   active       Boolean        @default(false)
   userCompound UserCompound[]
   Invitation   Invitation[]
+  scan         Scan[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -94,13 +95,17 @@ model Invitation {
 model Scan {
   id Int @id @default(autoincrement())
 
-  invitationId Int
-  invitation   Invitation @relation(fields: [invitationId], references: [id])
+  invitationId Int?
+  invitation   Invitation? @relation(fields: [invitationId], references: [id])
 
   deviceId Int?
   device   Device? @relation(fields: [deviceId], references: [id])
 
   success Boolean
+
+  userId Int
+  user   User     @relation(fields: [userId], references: [id])
+  type   ScanType
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -134,6 +139,12 @@ enum UserType {
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
 enum InvitationType {
+  Visitor
+  Delivery
+}
+
+enum ScanType {
+  Resident
   Visitor
   Delivery
 }
