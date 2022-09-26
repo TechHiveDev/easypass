@@ -55,20 +55,7 @@ export const scanQrCode = async ({ encryptedQrcode, deviceId }) => {
   const qrcode = await verifyEncryptedQrCode(encryptedQrcode);
   const { type, expiresAt, invitationId, success, userId, message } = qrcode;
 
-  console.log(
-    message,
-    ...(await prisma.scan.create({
-      data: {
-        type,
-        deviceId,
-        invitationId,
-        success,
-        userId,
-      },
-    }))
-  );
-
-  return {
+  const result = {
     message,
     ...(await prisma.scan.create({
       data: {
@@ -80,4 +67,8 @@ export const scanQrCode = async ({ encryptedQrcode, deviceId }) => {
       },
     })),
   };
+
+  console.log(result);
+
+  return result;
 };
