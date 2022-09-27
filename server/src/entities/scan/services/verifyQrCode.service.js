@@ -82,8 +82,9 @@ export const verifyGuestQrCode = async ({
   if (new Date(expiresAt) < new Date()) {
     return {
       ...rest,
-      invitationId,
+      invitation,
       userId,
+      expiresAt,
       type,
       success: false,
       message: "Expired QrCode",
@@ -91,9 +92,10 @@ export const verifyGuestQrCode = async ({
   }
   return {
     ...rest,
-    invitationId,
+    invitation,
     userId,
-    type, 
+    type,
+    expiresAt,
     success: true,
     message: "QrCode Accepted",
   };
