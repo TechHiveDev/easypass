@@ -18,16 +18,19 @@ import { setCurrentCompound } from "../../Store/Slices/auth.slice";
 export default function UserCompounds({ navigation }) {
   const dispatch = useAppDispatch();
   const { userCompound, type } = useAppSelector((state) => state?.auth?.user);
-  const handleCompoundClicked = (id) => {
-    dispatch(setCurrentCompound(id));
+  const handleCompoundClicked = (c) => {
+    dispatch(setCurrentCompound(c));
     navigation.navigate("HomeStackTabNavigator");
   };
   const navigateToCompoundList = () => {
-    navigation.navigate("CompoundsList");
+    navigation.navigate("AddCompound");
   };
+  if (userCompound.length === 1) {
+    dispatch(setCurrentCompound(userCompound[0]));
+    navigation.navigate("HomeStackTabNavigator");
+  }
   return (
     <View>
-      {/* The Title  */}
       <View
         style={{
           height: hp(10),
@@ -90,15 +93,17 @@ export default function UserCompounds({ navigation }) {
           );
         }}
       />
-      <View style={[styles.centeredView]}>
-        {/* Wrapper  */}
-        <TouchableOpacity
-          onPress={navigateToCompoundList}
-          style={styles.addCompound}
-        >
-          <MaterialCommunityIcons name="plus" size={24} color="black" />
-        </TouchableOpacity>
-      </View>
+      {type === "Resident" ? (
+        <View style={[styles.centeredView]}>
+          {/* Wrapper  */}
+          <TouchableOpacity
+            onPress={navigateToCompoundList}
+            style={styles.addCompound}
+          >
+            <MaterialCommunityIcons name="plus" size={24} color="black" />
+          </TouchableOpacity>
+        </View>
+      ) : null}
     </View>
   );
 }

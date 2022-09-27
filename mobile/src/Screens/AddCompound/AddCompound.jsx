@@ -18,7 +18,7 @@ import { useAppDispatch, useAppSelector } from "../../Store/redux.hooks";
 import { setCurrentCompound } from "../../Store/Slices/auth.slice";
 import Toast from "react-native-toast-message";
 
-export default function CompoundList({ navigation }) {
+export default function AddCompound({ navigation }) {
   const dispatch = useAppDispatch();
   const { data, isLoading } = useGetCompoundsQuery();
   const [register] = useRegisterCompoundMutation();

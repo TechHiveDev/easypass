@@ -4,15 +4,12 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
-import { useNavigation } from "@react-navigation/native";
-import { useAppDispatch, useAppSelector } from "../../Store/redux.hooks";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import { useIsFocused } from "@react-navigation/native";
 import { useScanQrCodeMutation } from "../../API/api";
 import Toast from "react-native-toast-message";
 import Button from "../../Components/Form/Button";
 import theme from "../../Theme/paper.theme";
-import LoadingScreen from "../../Components/GenericScreens/Loading.screen";
 
 // ======================================================================
 
@@ -21,13 +18,13 @@ export default function ScanQrCode() {
 
   // -----------------------------------------
 
-  const [scanQrCode, { isLoading }] = useScanQrCodeMutation();
-
-  // -----------------------------------------
-
+  const [scanQrCode, { data }] = useScanQrCodeMutation();
+  const success = data?.scan?.success;
+  const message = data?.message;
+  const invitationData = data?.invitation;
+  const invitationUser = invitationData?.user;
   const [hasPermission, setHasPermission] = useState(null);
   const [active, setActive] = useState(false);
-  const [scannedData, setScannedData] = useState(undefined);
 
   // -----------------------------------------
 
@@ -51,13 +48,10 @@ export default function ScanQrCode() {
   const handleSuccess = async ({ data }) => {
     setActive(!active);
     const res = await scanQrCode({ encryptedQrcode: data, deviceId: 1 });
-    if (res?.data?.success) {
+    if (res?.data?.scan?.success) {
       Toast.show({ type: "success", text1: "accepted invitation" });
-      setScannedData("Success ! let the person in");
-    }
-    if (res?.error?.data) {
-      Toast.show({ type: "error", text1: res?.error?.data?.message });
-      setScannedData(res?.error?.data?.message);
+    } else {
+      Toast.show({ type: "error", text1: res?.data?.message });
     }
     setActive(!active);
   };
@@ -94,9 +88,36 @@ export default function ScanQrCode() {
           style={active ? { height: hp(75) } : { height: 0 }}
           onBarCodeScanned={active ? handleSuccess : undefined}
         />
-
-        {!active && scannedData ? (
-          <Text style={styles.txt}>{scannedData}</Text>
+        {!active && data ? (
+          <>
+            {!success ? (
+              <Text>{message}</Text>
+            ) : (
+              <>
+                <Text style={styles.txt}>{message}</Text>
+                <Text style={styles.txt}>
+                  visitor name: {invitationData?.name}
+                </Text>
+                <Text style={styles.txt}>notes: {invitationData?.notes}</Text>
+                <Text style={styles.txt}>
+                  resident name: {invitationUser?.name}
+                </Text>
+                <Text style={styles.txt}>
+                  resident phone: {invitationUser?.phone}
+                </Text>
+                <Text style={styles.txt}>
+                  invite creation time :{" "}
+                  {new Date(invitationData?.createdAt)
+                    .toLocaleString("en-us", {
+                      year: "numeric",
+                      month: "2-digit",
+                      day: "2-digit",
+                    })
+                    .replace(/(\d+)\/(\d+)\/(\d+)/, "$3-$1-$2")}
+                </Text>
+              </>
+            )}
+          </>
         ) : null}
         {!active ? <Button onPress={clickToScan} text="scanQrCode" /> : null}
       </View>
