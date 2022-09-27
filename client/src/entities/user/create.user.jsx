@@ -2,9 +2,13 @@ import {
   Create,
   SimpleForm,
   SelectInput,
+  NumberInput,
   TextInput,
   BooleanInput,
   usePermissions,
+  ReferenceInput,
+  ReferenceField,
+  TextField,
 } from "react-admin";
 // ------------------------------------------------
 const validate = (values) => {
@@ -61,6 +65,20 @@ export default function CreateUser(props) {
                   ]
             }
           />
+          <ReferenceInput
+            source="compoundId"
+            reference="compound"
+            label={"compound"}
+            name={"compoundId"}
+          >
+            <SelectInput optionText={"name"} />
+          </ReferenceInput>
+          <TextInput variant="outlined" source="streetName" required />
+          <NumberInput variant="outlined" source={"blockNumber"} required />
+          <NumberInput variant="outlined" source={"unitNumber"} required />
+          {/*<ReferenceField source="id" reference="compound" label="Author name">*/}
+          {/*  <TextField source={"name"} />*/}
+          {/*</ReferenceField>*/}
         </SimpleForm>
       )}
     </Create>
