@@ -79,6 +79,19 @@ export const generateGuestQrCodeInvitationLink = async ({
       expiresAt: addMinutesToDate(new Date(), 1),
     })
   );
+  // allowd 8194 characters
+  // we generate 16066
+  // console.log({
+  //   payload: JSON.stringify({
+  //     userId,
+  //     compoundId,
+  //     invitationId: invitation?.id,
+  //     type,
+  //     expiresAt: addMinutesToDate(new Date(), 1),
+  //   }),
+  //   encryptedQrcode,
+  //   qrcode: await qrcode.toDataURL(encryptedQrcode),
+  // });
 
   const fileName = Date.now() + "_" + userId + ".png";
   const path = "assets/qrcodes/" + fileName;
