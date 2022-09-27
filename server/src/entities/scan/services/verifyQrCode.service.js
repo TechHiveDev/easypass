@@ -68,7 +68,11 @@ export const verifyGuestQrCode = async ({
   const invitation = await prisma.invitation.findFirst({
     where: { id: invitationId, userId },
     include: {
-      user: true,
+      user: {
+        include: {
+          userCompound: true,
+        },
+      },
     },
   });
   // console.log(invitation)

@@ -61,7 +61,6 @@ export const scanQrCode = async ({ encryptedQrcode, deviceId }) => {
       where: { id: userId },
       include: { userCompound: true },
     });
-    console.log(user);
   }
 
   const scan = await prisma.scan.create({
