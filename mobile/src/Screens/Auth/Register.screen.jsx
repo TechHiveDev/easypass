@@ -29,7 +29,7 @@ const defaultValues = {
   streetName: "mario",
   blockNumber: "12",
   unitNumber: "23",
-  compoundName: "",
+  compoundId: "",
   active: false,
 };
 export default function RegisterScreen() {
@@ -43,7 +43,7 @@ export default function RegisterScreen() {
   // ------------------------------
 
   const onSubmit = async (values) => {
-    if (values.compoundName === "") {
+    if (values.compoundId === "") {
       return Toast.show({ type: "error", text1: "Please select a compound" });
     }
     if (values.confirmPassword !== values.password) {
@@ -71,10 +71,9 @@ export default function RegisterScreen() {
   */
 
   // ------------------------------
-
-  return (
-    <SafeAreaView style={globalStyles.screen}>
-      {isLoading ? (
+  if (isLoading)
+    return (
+      <SafeAreaView style={globalStyles.screen}>
         <View
           style={{
             flex: 1,
@@ -82,139 +81,141 @@ export default function RegisterScreen() {
             alignItems: "center",
           }}
         >
-          <ActivityIndicator animating={true} size={50} />
+          {isLoading ? <ActivityIndicator animating={true} size={50} /> : null}
         </View>
-      ) : (
-        <Form
-          title=""
-          {...{
-            defaultValues,
-            onSubmit,
-            cancelButton: false,
-            submitText: "register",
-            submitIcon: "account-plus",
-            isLoading: registering,
+      </SafeAreaView>
+    );
+  return (
+    <SafeAreaView style={globalStyles.screen}>
+      <Form
+        title=""
+        {...{
+          defaultValues,
+          onSubmit,
+          cancelButton: false,
+          submitText: "register",
+          submitIcon: "account-plus",
+          isLoading: registering,
+        }}
+      >
+        <Input name="name" label="name" icon="account" />
+        <Input name="email" label="email" icon="email" />
+        <Input name="password" label="password" secureTextEntry />
+        <Input
+          name="confirmPassword"
+          label="confirmPassword"
+          secureTextEntry
+          icon="lock-check"
+        />
+        <Input
+          name="phone"
+          label="phone"
+          icon="cellphone"
+          rules={{
+            validate: {
+              phoneMustBeNumber: (v) => parseInt(v) > 0,
+            },
           }}
-        >
-          <Input name="name" label="name" icon="account" />
-          <Input name="email" label="email" icon="email" />
-          <Input name="password" label="password" secureTextEntry />
+        />
+        <Controller
+          name={"compoundId"}
+          rules={{
+            validate: {
+              required: (v) => v !== "",
+            },
+          }}
+          render={({ field: { onChange, value } }) => {
+            return (
+              <>
+                <SelectDropdown
+                  data={compounds}
+                  onSelect={(c) => {
+                    onChange(c.id);
+                  }}
+                  buttonTextAfterSelection={(c) => c.name}
+                  rowTextForSelection={(c) => c.name}
+                  buttonStyle={styles.buttonStyle}
+                  renderDropdownIcon={(isOpened) => {
+                    return (
+                      <MaterialCommunityIcons
+                        name={isOpened ? "chevron-up" : "chevron-down"}
+                        size={30}
+                      />
+                    );
+                  }}
+                />
+                {value === "" ? (
+                  <HelperText
+                    type="error"
+                    visible={true}
+                    style={{ textAlign: "right" }}
+                  >
+                    compound {i18n.t("required")}
+                  </HelperText>
+                ) : null}
+              </>
+            );
+          }}
+        />
+        {userType === "Resident" ? (
           <Input
-            name="confirmPassword"
-            label="confirmPassword"
-            secureTextEntry
-            icon="lock-check"
+            animate
+            name="streetName"
+            label="streetName"
+            icon="home-group"
           />
+        ) : null}
+        {userType === "Resident" ? (
           <Input
-            name="phone"
-            label="phone"
-            icon="cellphone"
+            animate
+            delay={100}
+            name="blockNumber"
+            label="blockNumber"
+            icon="home"
             rules={{
               validate: {
-                phoneMustBeNumber: (v) => parseInt(v) > 0,
+                positiveNumberIsRequired: (v) => parseInt(v) > 0,
               },
             }}
           />
-          <Controller
-            name={"compoundName"}
+        ) : null}
+        {userType === "Resident" ? (
+          <Input
+            animate
+            delay={200}
+            name="unitNumber"
+            label="unitNumber"
+            icon="key"
             rules={{
               validate: {
-                required: (v) => v !== "",
+                positiveNumberIsRequired: (v) => parseInt(v) > 0,
               },
             }}
-            render={({ field: { onChange, value } }) => {
-              return (
-                <>
-                  <SelectDropdown
-                    data={compounds}
-                    onSelect={(c) => {
-                      onChange(c.name);
-                    }}
-                    buttonTextAfterSelection={(c) => c.name}
-                    rowTextForSelection={(c) => c.name}
-                    buttonStyle={styles.buttonStyle}
-                    renderDropdownIcon={(isOpened) => {
-                      return (
-                        <MaterialCommunityIcons
-                          name={isOpened ? "chevron-up" : "chevron-down"}
-                          size={30}
-                        />
-                      );
-                    }}
-                  />
-                  {value === "" ? (
-                    <HelperText
-                      type="error"
-                      visible={true}
-                      style={{ textAlign: "right" }}
-                    >
-                      compound {i18n.t("required")}
-                    </HelperText>
-                  ) : null}
-                </>
-              );
+          />
+        ) : null}
+        <View style={styles.row}>
+          <RadioButton
+            color={theme.colors.primary}
+            value={"Resident"}
+            status={userType === "Resident" ? "checked" : "unchecked"}
+            onPress={() => {
+              setUserType("Resident");
             }}
           />
-          {userType === "Resident" ? (
-            <Input
-              animate
-              name="streetName"
-              label="streetName"
-              icon="home-group"
-            />
-          ) : null}
-          {userType === "Resident" ? (
-            <Input
-              animate
-              delay={100}
-              name="blockNumber"
-              label="blockNumber"
-              icon="home"
-              rules={{
-                validate: {
-                  positiveNumberIsRequired: (v) => parseInt(v) > 0,
-                },
-              }}
-            />
-          ) : null}
-          {userType === "Resident" ? (
-            <Input
-              animate
-              delay={200}
-              name="unitNumber"
-              label="unitNumber"
-              icon="key"
-              rules={{
-                validate: {
-                  positiveNumberIsRequired: (v) => parseInt(v) > 0,
-                },
-              }}
-            />
-          ) : null}
-          <View style={styles.row}>
-            <RadioButton
-              color={theme.colors.primary}
-              value={"Resident"}
-              status={userType === "Resident" ? "checked" : "unchecked"}
-              onPress={() => {
-                setUserType("Resident");
-              }}
-            />
-            <Text>Resident</Text>
-            <RadioButton
-              color={theme.colors.primary}
-              value={"Security"}
-              status={userType === "Security" ? "checked" : "unchecked"}
-              onPress={() => {
-                setUserType("Security");
-              }}
-            />
-            <Text>Security</Text>
-          </View>
-          {/* <Select name="level" placeholder="level" choices={levels} /> */}
-          {/* <Depend /> */}
-        </Form>
-      )}
+          <Text>Resident</Text>
+          <RadioButton
+            color={theme.colors.primary}
+            value={"Security"}
+            status={userType === "Security" ? "checked" : "unchecked"}
+            onPress={() => {
+              setUserType("Security");
+            }}
+          />
+          <Text>Security</Text>
+        </View>
+        {/* <Select name="level" placeholder="level" choices={levels} /> */}
+        {/* <Depend /> */}
+      </Form>
     </SafeAreaView>
   );
 }

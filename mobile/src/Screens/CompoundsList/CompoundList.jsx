@@ -15,7 +15,7 @@ import SelectDropdown from "react-native-select-dropdown";
 import { Controller } from "react-hook-form";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useAppDispatch, useAppSelector } from "../../Store/redux.hooks";
-import { setCompountId } from "../../Store/Slices/auth.slice";
+import { setCurrentCompound } from "../../Store/Slices/auth.slice";
 import Toast from "react-native-toast-message";
 
 export default function CompoundList({ navigation }) {
@@ -38,9 +38,13 @@ export default function CompoundList({ navigation }) {
       });
     }
     const res = await register(newValues);
-    console.log(res);
     if (res?.data?.id) {
-      dispatch(setCompountId(id));
+      dispatch(
+        setCurrentCompound({
+          ...res.data,
+          compoundName: data.find((c) => c.id === res.data.compoundId)?.name,
+        })
+      );
       navigation.navigate("HomeStackTabNavigator");
       Toast.show({
         type: "success",
