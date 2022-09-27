@@ -39,7 +39,8 @@ export const createUserAndAddress = async (payload) => {
   ];
 
   const expectedResiendtBody = [
-    "compoundName",
+    // "compoundName",
+    "compoundId",
     "streetName",
     "blockNumber",
     "unitNumber",
@@ -70,7 +71,8 @@ export const createUserAndAddress = async (payload) => {
     name,
     phone,
     password,
-    compoundName,
+    // compoundName,
+    compoundId,
     streetName,
     blockNumber,
     unitNumber,
@@ -79,7 +81,8 @@ export const createUserAndAddress = async (payload) => {
 
   const compound = await prisma.compound.findFirst({
     where: {
-      name: compoundName,
+      // name: compoundName,
+      id: +compoundId,
     },
   });
 
