@@ -63,7 +63,7 @@ export default function LoginScreen() {
             cancelButton: true,
             cancelText: "register",
             cancelIcon: "account-plus-outline",
-            title: "Easy Pass",
+            title: "Pyramid Heights",
             submitText: "login",
             submitIcon: "login",
           }}

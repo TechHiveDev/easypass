@@ -25,7 +25,7 @@ export default function MyStatusBar({
     title = `${i18n.t(title)} ${params?.id ? " - " + params?.id : ""}`;
   }
 
-  if (name === "home" || name == "HomeTabNavigator") title = "Easy Pass";
+  if (name === "home" || name == "HomeTabNavigator") title = "Pyramid Heights";
 
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
