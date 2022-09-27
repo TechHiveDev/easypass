@@ -6,7 +6,7 @@ import { SafeAreaView, View, StyleSheet, StatusBar } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useLoginMutation } from "../../API/api";
 import { useAppDispatch } from "../../Store/redux.hooks";
-import { setAuthUser } from "../../Store/Slices/auth.slice";
+import { setAccesToken, setAuthUser } from "../../Store/Slices/auth.slice";
 import Logo from "../../Components/Logo";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import theme from "../../Theme/paper.theme";
@@ -33,6 +33,7 @@ export default function LoginScreen() {
       const res = await login(values);
       if (res?.data?.user?.id && res?.data?.accessToken) {
         AsyncStorage.setItem("accessToken", res.data.accessToken);
+        dispatch(setAccesToken(res?.data?.accessToken));
         dispatch(setAuthUser({ user: res.data.user }));
       } else {
         Toast.show({ type: "error", text1: "error while logging in." });

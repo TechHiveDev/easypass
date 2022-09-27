@@ -75,12 +75,14 @@ export default function ProfileScreen() {
         setImage(config.API_URL + res.url);
       }
     }
-    const { data } = await updateMyProfile({
+    const res = await updateMyProfile({
       entity: "user",
       id,
       body: { email, name, phone, photoUrl: image },
     });
-
+    console.log(res);
+    const data = res.data;
+    console.log(data);
     if (data?.id) {
       Toast.show({ type: "success", text1: "Updated Successfully" });
       dispatch(setUser(data));
@@ -131,46 +133,56 @@ export default function ProfileScreen() {
             isLoading: isLoading || uploadingImage,
             error,
             onSubmit,
-            cancelButton: false,
+            cancelButton: true,
             btnsColumn: false,
             title: "",
             submitText: "save",
             submitIcon: "check",
             hideSubmitButton,
             disabled: hideSubmitButton,
+            onCancel: () => setHideSubmitButton(!hideSubmitButton),
           }}
         >
           <Input name="name" label="name" icon="account" />
           <Input name="email" label="email" icon="email" />
           <Input name="phone" label="phone" icon="cellphone" />
-          <Input
-            name="compoundName"
-            label="compound"
-            icon="office-building"
-            disabled
-            editable={false}
-          />
-          <Input
-            name="streetName"
-            label="street name"
-            icon="home-group"
-            disabled
-            editable={false}
-          />
-          <Input
-            name="blockNumber"
-            label="block number"
-            icon="home"
-            disabled
-            editable={false}
-          />
-          <Input
-            name="unitNumber"
-            label="unit number"
-            icon="key"
-            disabled
-            editable={false}
-          />
+          {type === "Resident" ? (
+            <Input
+              name="compoundName"
+              label="compound"
+              icon="office-building"
+              disabled
+              editable={false}
+            />
+          ) : null}
+
+          {type === "Resident" ? (
+            <Input
+              name="streetName"
+              label="street name"
+              icon="home-group"
+              disabled
+              editable={false}
+            />
+          ) : null}
+          {type === "Resident" ? (
+            <Input
+              name="blockNumber"
+              label="block number"
+              icon="home"
+              disabled
+              editable={false}
+            />
+          ) : null}
+          {type === "Resident" ? (
+            <Input
+              name="unitNumber"
+              label="unit number"
+              icon="key"
+              disabled
+              editable={false}
+            />
+          ) : null}
         </Form>
       </View>
     </SafeAreaView>

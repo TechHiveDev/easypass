@@ -10,6 +10,7 @@ import { useScanQrCodeMutation } from "../../API/api";
 import Toast from "react-native-toast-message";
 import Button from "../../Components/Form/Button";
 import theme from "../../Theme/paper.theme";
+import { useAppSelector } from "../../Store/redux.hooks";
 
 // ======================================================================
 
@@ -18,14 +19,20 @@ export default function ScanQrCode() {
 
   // -----------------------------------------
 
-  const [scanQrCode, { data }] = useScanQrCodeMutation();
+  const [scanQrCode, { data, isLoading }] = useScanQrCodeMutation();
   const success = data?.scan?.success;
   const message = data?.message;
   const invitationData = data?.invitation;
-  const invitationUser = invitationData?.user;
+  const invitationUser = invitationData?.user || data?.user;
   const [hasPermission, setHasPermission] = useState(null);
   const [active, setActive] = useState(false);
-
+  const currentCompound = useAppSelector(
+    (state) => state?.auth?.currentCompound
+  );
+  const currentAddresses = invitationUser?.userCompound?.filter(
+    (c) => currentCompound?.compoundId === c?.compoundId
+  );
+  console.log({ cid: currentCompound.compoundId, invitationUser, data });
   // -----------------------------------------
 
   useEffect(() => {
@@ -48,6 +55,7 @@ export default function ScanQrCode() {
   const handleSuccess = async ({ data }) => {
     setActive(!active);
     const res = await scanQrCode({ encryptedQrcode: data, deviceId: 1 });
+    console.log(res);
     if (res?.data?.scan?.success) {
       Toast.show({ type: "success", text1: "accepted invitation" });
     } else {
@@ -91,35 +99,95 @@ export default function ScanQrCode() {
         {!active && data ? (
           <>
             {!success ? (
-              <Text>{message}</Text>
+              <Text
+                style={{
+                  color: "red",
+                }}
+              >
+                {message}
+              </Text>
             ) : (
               <>
-                <Text style={styles.txt}>{message}</Text>
-                <Text style={styles.txt}>
-                  visitor name: {invitationData?.name}
+                <Text
+                  style={[
+                    styles.txt,
+                    {
+                      color: "green",
+                    },
+                  ]}
+                >
+                  {message?.replace("QrCode", "QR Code")}
                 </Text>
-                <Text style={styles.txt}>notes: {invitationData?.notes}</Text>
+                {invitationData ? (
+                  <>
+                    <Text style={styles.txt}>
+                      Visitor name: {invitationData?.name}
+                    </Text>
+                    <Text style={styles.txt}>
+                      Notes: {invitationData?.notes}
+                    </Text>
+                  </>
+                ) : null}
+
                 <Text style={styles.txt}>
-                  resident name: {invitationUser?.name}
+                  Resident name: {invitationUser?.name}
                 </Text>
                 <Text style={styles.txt}>
-                  resident phone: {invitationUser?.phone}
+                  Resident phone: {invitationUser?.phone}
                 </Text>
                 <Text style={styles.txt}>
-                  invite creation time :{" "}
-                  {new Date(invitationData?.createdAt)
-                    .toLocaleString("en-us", {
-                      year: "numeric",
-                      month: "2-digit",
-                      day: "2-digit",
-                    })
-                    .replace(/(\d+)\/(\d+)\/(\d+)/, "$3-$1-$2")}
+                  Resident ِAddress{currentAddresses?.length === 1 ? "" : "es"}:{" "}
                 </Text>
+                <Text>
+                  {currentAddresses?.length === 1 ? (
+                    currentAddresses[0].streetName +
+                    " " +
+                    currentAddresses[0].blockNumber +
+                    " " +
+                    currentAddresses[0].unitNumber
+                  ) : (
+                    <View
+                      style={{
+                        display: "flex",
+                        flex: 1,
+                        flexDirection: "column",
+                      }}
+                    >
+                      {currentAddresses?.map((a) => {
+                        return (
+                          <View key={a.id}>
+                            <Text style={styles.txt}>
+                              {a.streetName +
+                                " - " +
+                                a.blockNumber +
+                                " - " +
+                                a.unitNumber}
+                            </Text>
+                          </View>
+                        );
+                      })}
+                    </View>
+                  )}
+                </Text>
+                {invitationData ? (
+                  <Text style={styles.txt}>
+                    invite creation time :{" "}
+                    {new Date(invitationData?.createdAt)
+                      .toLocaleString("en-us", {
+                        year: "numeric",
+                        month: "2-digit",
+                        day: "2-digit",
+                      })
+                      .replace(/(\d+)\/(\d+)\/(\d+)/, "$3-$1-$2")}
+                  </Text>
+                ) : null}
               </>
             )}
           </>
         ) : null}
-        {!active ? <Button onPress={clickToScan} text="scanQrCode" /> : null}
+        {!active ? (
+          <Button onPress={clickToScan} text="scanQrCode" loading={isLoading} />
+        ) : null}
       </View>
     </View>
   );
@@ -194,6 +262,6 @@ const styles = StyleSheet.create({
   },
   txt: {
     fontSize: 20,
-    textAlign: "center",
+    textAlign: "left",
   },
 });

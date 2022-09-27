@@ -7,7 +7,7 @@ import Button from "../Form/Button";
 
 const btns = [
   {
-    name: "my compounds",
+    name: "My Compounds",
     icon: "home-group",
     route: "UserCompounds",
   },
@@ -28,7 +28,7 @@ export default function SideDrawer({ navigation: { closeDrawer, navigate } }) {
         />
       ))}
       <Button
-        text={"logout"}
+        text={"Logout"}
         icon={"logout"}
         onPress={() => logout()}
         width={wp(50)}

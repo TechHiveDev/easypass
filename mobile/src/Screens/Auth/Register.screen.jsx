@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { SafeAreaView, View, StyleSheet, Text } from "react-native";
 import globalStyles from "../../Theme/global.styles";
@@ -37,8 +37,9 @@ export default function RegisterScreen() {
 
   const { navigate } = useNavigation();
   const [register, { isLoading: registering }] = useRegisterMutation();
-  const { data: compounds, isLoading } = useGetCompoundsQuery();
+  const { data: compounds } = useGetCompoundsQuery();
   const [userType, setUserType] = useState("Resident");
+  const [loading, setLoading] = useState(false);
 
   // ------------------------------
 
@@ -61,7 +62,13 @@ export default function RegisterScreen() {
   };
 
   // ------------------------------
-
+  useEffect(() => {
+    if (compounds) {
+      setLoading(false);
+    } else {
+      setLoading(true);
+    }
+  }, [compounds]);
   // Dont Delete Commented Parts
   /*
   const Depend = (props) => {
@@ -72,7 +79,7 @@ export default function RegisterScreen() {
   */
 
   // ------------------------------
-  if (isLoading)
+  if (loading)
     return (
       <SafeAreaView style={globalStyles.screen}>
         <View
@@ -82,7 +89,7 @@ export default function RegisterScreen() {
             alignItems: "center",
           }}
         >
-          {isLoading ? <ActivityIndicator animating={true} size={50} /> : null}
+          <ActivityIndicator animating={true} size={50} />
         </View>
       </SafeAreaView>
     );
@@ -93,10 +100,10 @@ export default function RegisterScreen() {
         {...{
           defaultValues,
           onSubmit,
-          cancelButton: false,
           submitText: "register",
           submitIcon: "account-plus",
           isLoading: registering,
+          cancelButton: false,
         }}
       >
         <Input name="name" label="name" icon="account" />
@@ -133,6 +140,7 @@ export default function RegisterScreen() {
                   onSelect={(c) => {
                     onChange(c.id);
                   }}
+                  defaultButtonText={"Choose a compound"}
                   buttonTextAfterSelection={(c) => c.name}
                   rowTextForSelection={(c) => c.name}
                   buttonStyle={styles.buttonStyle}

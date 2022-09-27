@@ -37,6 +37,7 @@ export default function Input(props) {
     rules = {},
     noLabel = false,
     animate = false,
+    editable = true,
   } = props;
   // --------------------------------------------
 
@@ -58,11 +59,19 @@ export default function Input(props) {
 
   const render = ({ field: { onChange: onChangeText, onBlur, value } }) => (
     <TextInput
-      style={{
-        ...styles.input,
-        ...styleTextArea,
-        // borderRaduis: 20,
-      }}
+      style={
+        props.editable !== false
+          ? {
+              ...styles.input,
+              ...styleTextArea,
+              // borderRaduis: 20,
+            }
+          : {
+              ...styles.input,
+              ...styleTextArea,
+              ...styles.disabled,
+            }
+      }
       {...{
         mode,
         autoCorrect,
@@ -72,6 +81,7 @@ export default function Input(props) {
         onBlur,
         outlineColor: requiredBorder,
         ...props,
+        disabled: !editable || props.disabled,
         secureTextEntry: secureTextEntry ? passwordVisible : null,
         label: noLabel
           ? false
@@ -133,6 +143,9 @@ const styles = StyleSheet.create({
   },
   input: {
     backgroundColor: "transparent",
+  },
+  disabled: {
+    color: "red",
   },
   error: {},
   requiredBorder: {

@@ -22,9 +22,6 @@ export default function UserCompounds({ navigation }) {
     dispatch(setCurrentCompound(c));
     navigation.navigate("HomeStackTabNavigator");
   };
-  const navigateToCompoundList = () => {
-    navigation.navigate("AddCompound");
-  };
   if (userCompound.length === 1) {
     dispatch(setCurrentCompound(userCompound[0]));
     navigation.navigate("HomeStackTabNavigator");
@@ -49,7 +46,7 @@ export default function UserCompounds({ navigation }) {
       </View>
       <FlatList
         style={{
-          height: hp(80),
+          height: hp(90),
         }}
         keyExtractor={(item, index) => {
           return (
@@ -71,20 +68,47 @@ export default function UserCompounds({ navigation }) {
               }}
             >
               <View style={styles.innerChild}>
-                <Text style={{ fontSize: 20, color: theme.colors.placeholder }}>
-                  {item?.compoundName} compound
-                  {type !== "Security" ? (
-                    <>
-                      {item?.streetName
-                        ? `, street ${item?.streetName} ,`
-                        : null}
+                <Text
+                  style={{
+                    fontSize: 20,
+                    fontWeight: "bold",
+                    color: theme.colors.placeholder,
+                  }}
+                >
+                  {item?.compoundName}
+                </Text>
+
+                {type !== "Security" ? (
+                  <>
+                    <Text
+                      style={{
+                        fontSize: 16,
+                        color: theme.colors.placeholder,
+                        textAlign: "left",
+                      }}
+                    >
+                      {item?.streetName ? `${item?.streetName} street,` : null}
+                    </Text>
+                    <Text
+                      style={{
+                        fontSize: 16,
+                        color: theme.colors.placeholder,
+                      }}
+                    >
                       {item?.blockNumber
                         ? `block ${item?.blockNumber} ,`
                         : null}
-                      {item?.unitNumber ? `unit ${item?.unitNumber} ,` : null}
-                    </>
-                  ) : null}
-                </Text>
+                    </Text>
+                    <Text
+                      style={{
+                        fontSize: 16,
+                        color: theme.colors.placeholder,
+                      }}
+                    >
+                      {item?.unitNumber ? `unit ${item?.unitNumber}` : null}
+                    </Text>
+                  </>
+                ) : null}
                 <Text style={{ color: theme.colors.white, fontSize: 14 }}>
                   {/*{item.compoundDescription}*/}
                 </Text>
@@ -93,17 +117,6 @@ export default function UserCompounds({ navigation }) {
           );
         }}
       />
-      {type === "Resident" ? (
-        <View style={[styles.centeredView]}>
-          {/* Wrapper  */}
-          <TouchableOpacity
-            onPress={navigateToCompoundList}
-            style={styles.addCompound}
-          >
-            <MaterialCommunityIcons name="plus" size={24} color="black" />
-          </TouchableOpacity>
-        </View>
-      ) : null}
     </View>
   );
 }
@@ -126,14 +139,12 @@ const styles = StyleSheet.create({
     margin: wp(5),
     borderRadius: 6,
     height: hp(25),
-    justifyContent: "center",
-    alignItems: "center",
     flex: 1,
   },
   innerChild: {
-    textAlign: "center",
-    justifyContent: "center",
-    alignItems: "center",
+    textAlign: "left",
+    padding: 10,
+    paddingLeft: 15,
   },
   addCompound: {
     backgroundColor: theme.colors.primary,

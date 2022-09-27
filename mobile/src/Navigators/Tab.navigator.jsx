@@ -34,6 +34,8 @@ const screenOptions = ({ route: { name } }) => ({
       iconName = "message-arrow-right-outline";
     } else if (name === "qrcode") {
       iconName = "qrcode-scan";
+    } else if (name === "scan") {
+      iconName = "qrcode-scan";
     } else if (name === "profile") {
       iconName = "account";
     } else if (name === "facilities") {
@@ -61,8 +63,9 @@ export default function TabNavigator() {
 
   return userType === "Security" ? (
     <Tab.Navigator screenOptions={screenOptions}>
-      <Tab.Screen name={"home"} component={HomeScreen} />
-      <Tab.Screen name={"qrcode"} component={ScanQrCode} />
+      {/*<Tab.Screen name={"home"} component={HomeScreen} />*/}
+      <Tab.Screen name={"profile"} component={Profile} />
+      <Tab.Screen name={"scan"} component={ScanQrCode} />
     </Tab.Navigator>
   ) : (
     <Tab.Navigator screenOptions={screenOptions}>

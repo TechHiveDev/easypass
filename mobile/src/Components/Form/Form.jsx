@@ -40,7 +40,7 @@ export default function Form({
   ...reset
 }) {
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-
+  console.log(cancelButton);
   const {
     control,
     handleSubmit,
@@ -53,7 +53,6 @@ export default function Form({
   });
 
   useValues = getValues;
-
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
   /** Dont remove this section  */
