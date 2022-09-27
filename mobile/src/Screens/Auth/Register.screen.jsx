@@ -53,7 +53,8 @@ export default function RegisterScreen() {
     if (data?.user?.id) {
       Toast.show({
         type: "success",
-        text1: "Successfully registered. wait for admin confirmation.",
+        text1:
+          "Successfully registered. Waiting for admin activation or approval.",
       });
       return navigate("login");
     }
