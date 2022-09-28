@@ -1,10 +1,12 @@
 import express from "express";
 import { scanQrCode } from "./services/scanQrCode.service";
 const router = express.Router();
+import { name } from "../../../../configs";
+import qrcode from "qrcode";
 
 //  =================================================================
 
-const guestController = async (req, res, next) => {
+const scanGuestController = async (req, res, next) => {
   try {
     const { encryptedQrcode, deviceId } = req?.body;
     // let { success, qrcode } =
@@ -16,9 +18,27 @@ const guestController = async (req, res, next) => {
   }
 };
 
+//  ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+const guestController = async (req, res, next) => {
+  try {
+    const encryptedQrcode = await scanQrCode({
+      encryptedQrcode: req.params.encryptedQrcode,
+    });
+    console.log(encryptedQrcode);
+    res.render("qrcode", {
+      qr_code: await qrcode.toDataURL(req.params.encryptedQrcode),
+      title: name,
+      message: encryptedQrcode.message,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
 //  =================================================================
 
-router.route("/guest/").post(guestController);
+router.route("/guest/").post(scanGuestController);
+
+router.route("/guest/:encryptedQrcode").get(guestController);
 
 //  =================================================================
 

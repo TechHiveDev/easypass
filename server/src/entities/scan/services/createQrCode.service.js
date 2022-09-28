@@ -2,7 +2,7 @@ import qrcode from "qrcode";
 import { encryptWithPublicKey } from "../../../utils/cryptography/cryptography";
 import invitationService from "../../invitation/invitation.service";
 import { isUserBelongsToCompound } from "../../userCompound/userCompound.service";
-
+import { API_URL } from "../../../../../configs";
 // ===============================================================
 
 const addHoursToDate = (date = new Date(), hours = 3) => {
@@ -102,8 +102,8 @@ export const generateGuestQrCodeInvitationLink = async ({
   );
 
   return {
-    link: `https://easypass-api.techhive.dev/${path}`,
-    // link: `http://localhost:5000/${path}`,
+    link: `${API_URL}/${path}`,
+    newLink: `${API_URL}/guest/${encryptedQrcode}`,
     qrcode: encryptedQrcode,
   };
 };
