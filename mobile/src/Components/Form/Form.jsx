@@ -13,8 +13,6 @@ import { Text, StyleSheet, SafeAreaView, ScrollView, View } from "react-native";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { useForm } from "react-hook-form";
 import SubmitOrCancel from "./SubmitOrCancel";
-import Toast from "react-native-toast-message";
-import i18n from "i18n-js";
 import theme from "../../Theme/paper.theme";
 
 // ----------------------------------------------------------------
@@ -37,16 +35,16 @@ export default function Form({
   btnsColumn,
   hideSubmitButton = false,
   disabled = false,
-  ...reset
+  ...rest
 }) {
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-  console.log(cancelButton);
   const {
     control,
     handleSubmit,
     getValues,
     setValue,
     formState,
+    reset,
     formState: { isValid, errors, isSubmitted },
   } = useForm({
     defaultValues,
@@ -117,7 +115,10 @@ export default function Form({
               cancelButton,
               cancelText,
               cancelIcon,
-              onCancel,
+              onCancel: () => {
+                reset();
+                onCancel && onCancel();
+              },
               btnsColumn,
             }}
           />
@@ -138,11 +139,5 @@ const styles = StyleSheet.create({
   body: {
     justifyContent: "space-between",
     flex: 1,
-    // height: hp(85),
-  },
-  scroll: {
-    // alignSelf: "center",
-    // textAlign: "center",
-    // width: wp(100),
   },
 });

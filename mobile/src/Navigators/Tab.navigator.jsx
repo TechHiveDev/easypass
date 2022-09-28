@@ -28,17 +28,19 @@ const screenOptions = ({ route: { name } }) => ({
   tabBarIcon: ({ focused, color, size }) => {
     let iconName = "home";
 
-    if (name === "home") {
+    if (name === "Home") {
       iconName = "home";
-    } else if (name === "invite") {
+    } else if (name === "Invite") {
       iconName = "message-arrow-right-outline";
-    } else if (name === "qrcode") {
+    } else if (name === "Qrcode") {
       iconName = "qrcode-scan";
-    } else if (name === "scan") {
+    } else if (name === "QR Code") {
       iconName = "qrcode-scan";
-    } else if (name === "profile") {
+    } else if (name === "Scan") {
+      iconName = "qrcode-scan";
+    } else if (name === "Profile") {
       iconName = "account";
-    } else if (name === "facilities") {
+    } else if (name === "Facilities") {
       iconName = "tools";
     } else {
       iconName = "book";
@@ -64,16 +66,16 @@ export default function TabNavigator() {
   return userType === "Security" ? (
     <Tab.Navigator screenOptions={screenOptions}>
       {/*<Tab.Screen name={"home"} component={HomeScreen} />*/}
-      <Tab.Screen name={"profile"} component={Profile} />
-      <Tab.Screen name={"scan"} component={ScanQrCode} />
+      <Tab.Screen name={"Profile"} component={Profile} />
+      <Tab.Screen name={"Scan"} component={ScanQrCode} />
     </Tab.Navigator>
   ) : (
     <Tab.Navigator screenOptions={screenOptions}>
-      <Tab.Screen name={"home"} component={HomeScreen} />
-      <Tab.Screen name={"invite"} component={InviteGuesst} />
-      <Tab.Screen name={"qrcode"} component={QrCode} />
-      <Tab.Screen name={"facilities"} component={Facilities} />
-      <Tab.Screen name={"profile"} component={Profile} />
+      <Tab.Screen name={"Home"} component={HomeScreen} />
+      <Tab.Screen name={"Invite"} component={InviteGuesst} />
+      <Tab.Screen name={"QR Code"} component={QrCode} />
+      <Tab.Screen name={"Facilities"} component={Facilities} />
+      <Tab.Screen name={"Profile"} component={Profile} />
     </Tab.Navigator>
   );
 }

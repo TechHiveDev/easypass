@@ -59,7 +59,10 @@ export default function ScanQrCode() {
     if (res?.data?.scan?.success) {
       Toast.show({ type: "success", text1: "accepted invitation" });
     } else {
-      Toast.show({ type: "error", text1: res?.data?.message });
+      Toast.show({
+        type: "error",
+        text1: res?.data?.message?.replace("QrCode", "QR Code"),
+      });
     }
     setActive(!active);
   };
@@ -104,7 +107,7 @@ export default function ScanQrCode() {
                   color: "red",
                 }}
               >
-                {message}
+                {message?.replace("QrCode", "QR Code")}
               </Text>
             ) : (
               <>
@@ -138,7 +141,7 @@ export default function ScanQrCode() {
                 <Text style={styles.txt}>
                   Resident ِAddress{currentAddresses?.length === 1 ? "" : "es"}:{" "}
                 </Text>
-                <Text>
+                <Text style={styles.txt}>
                   {currentAddresses?.length === 1 ? (
                     currentAddresses[0].streetName +
                     " " +
@@ -158,9 +161,9 @@ export default function ScanQrCode() {
                           <View key={a.id}>
                             <Text style={styles.txt}>
                               {a.streetName +
-                                " - " +
+                                " street - block " +
                                 a.blockNumber +
-                                " - " +
+                                " - unit " +
                                 a.unitNumber}
                             </Text>
                           </View>

@@ -26,7 +26,7 @@ const actions = [
     icon: facilities,
   },
   {
-    title: "qrcode",
+    title: "QR Code",
     navigateTo: "qrcode",
     icon: qrcode,
   },
@@ -65,7 +65,9 @@ function Action({ title, navigateTo, icon }) {
           )}
         />
       </View>
-      <MyText text={i18n.t(title)} />
+      <MyText
+        text={i18n.t(title).startsWith("[miss") ? title : i18n.t(title)}
+      />
     </TouchableOpacity>
   );
 }

@@ -11,6 +11,7 @@ import Logo from "../../Components/Logo";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import theme from "../../Theme/paper.theme";
 import Toast from "react-native-toast-message";
+import config from "../../Config/config";
 
 // =================================================================
 
@@ -63,7 +64,7 @@ export default function LoginScreen() {
             cancelButton: true,
             cancelText: "register",
             cancelIcon: "account-plus-outline",
-            title: "Pyramid Heights",
+            title: config.name,
             submitText: "login",
             submitIcon: "login",
           }}

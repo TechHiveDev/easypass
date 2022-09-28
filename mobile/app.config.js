@@ -1,0 +1,49 @@
+const config = require("./src/Config/config");
+module.exports = {
+  name: config.name,
+  slug: config.slug,
+  version: "1.0.0",
+  orientation: "portrait",
+  icon: "./assets/icon.png",
+  splash: {
+    image: "./assets/splash.png",
+    resizeMode: "contain",
+    backgroundColor: "#ffffff",
+  },
+  plugins: [
+    [
+      "expo-image-picker",
+      {
+        photosPermission:
+          "The app accesses your photos to upload profile photo.",
+      },
+    ],
+  ],
+  updates: {
+    fallbackToCacheTimeout: 0,
+  },
+  assetBundlePatterns: ["**/*"],
+  ios: {
+    bundleIdentifier: "com.techhive.easypass",
+    buildNumber: "1.0.0",
+    supportsTablet: true,
+    infoPlist: {
+      CFBundleAllowMixedLocalizations: true,
+    },
+  },
+  android: {
+    adaptiveIcon: {
+      foregroundImage: "./assets/adaptive-icon.png",
+      backgroundColor: "#FFFFFF",
+    },
+    package: "com.techhive.easypass",
+  },
+  web: {
+    favicon: "./assets/favicon.png",
+  },
+  extra: {
+    eas: {
+      projectId: "0c592c54-0431-4e9c-927c-6abc6bae7ef7",
+    },
+  },
+};
