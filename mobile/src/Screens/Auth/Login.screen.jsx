@@ -36,8 +36,15 @@ export default function LoginScreen() {
         AsyncStorage.setItem("accessToken", res.data.accessToken);
         dispatch(setAccesToken(res?.data?.accessToken));
         dispatch(setAuthUser({ user: res.data.user }));
+        return;
+      }
+      if (res?.error?.data?.message) {
+        return Toast.show({
+          type: "error",
+          text1: res.error.data.message,
+        });
       } else {
-        Toast.show({ type: "error", text1: "error while logging in." });
+        return Toast.show({ type: "error", text1: "error while logging in." });
       }
     } catch (e) {
       Toast.show({ type: "error", text1: e.message });

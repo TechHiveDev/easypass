@@ -93,7 +93,7 @@ export default function ScanQrCode() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Scan Qr Code</Text>
+      <Text style={styles.title}>Scan QR Code</Text>
       <View style={styles.barcodeContainer}>
         <BarCodeScanner
           style={active ? { height: hp(75) } : { height: 0 }}
@@ -105,6 +105,7 @@ export default function ScanQrCode() {
               <Text
                 style={{
                   color: "red",
+                  fontSize: 24,
                 }}
               >
                 {message?.replace("QrCode", "QR Code")}
@@ -116,6 +117,7 @@ export default function ScanQrCode() {
                     styles.txt,
                     {
                       color: "green",
+                      fontSize: 24,
                     },
                   ]}
                 >
@@ -144,9 +146,9 @@ export default function ScanQrCode() {
                 <Text style={styles.txt}>
                   {currentAddresses?.length === 1 ? (
                     currentAddresses[0].streetName +
-                    " " +
+                    " street - block " +
                     currentAddresses[0].blockNumber +
-                    " " +
+                    " - unit " +
                     currentAddresses[0].unitNumber
                   ) : (
                     <View

@@ -80,11 +80,12 @@ export default function ProfileScreen() {
       id,
       body: { email, name, phone, photoUrl: image },
     });
-    console.log(res);
     const data = res.data;
-    console.log(data);
     if (data?.id) {
-      Toast.show({ type: "success", text1: "Updated Successfully" });
+      Toast.show({
+        type: "success",
+        text1: "Profile details are updated successfully",
+      });
       dispatch(setUser(data));
     }
     setUploadingImage(false);
@@ -140,7 +141,10 @@ export default function ProfileScreen() {
             submitIcon: "check",
             hideSubmitButton,
             disabled: hideSubmitButton,
-            onCancel: () => setHideSubmitButton(!hideSubmitButton),
+            onCancel: () => {
+              setImage(photoUrl);
+              setHideSubmitButton(!hideSubmitButton);
+            },
           }}
         >
           <Input name="name" label="name" icon="account" />

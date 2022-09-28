@@ -50,14 +50,37 @@ export default function RegisterScreen() {
     if (values.confirmPassword !== values.password) {
       return Toast.show({ type: "error", text1: "passwords do not match" });
     }
-    const { data } = await register({ ...values, type: userType });
-    if (data?.user?.id) {
+    const res = await register({ ...values, type: userType });
+    if (
+      res?.error?.data?.message ===
+      " Unique Constraint Violation on : User_email_key"
+    ) {
+      return Toast.show({
+        type: "error",
+        text1: "User already exists with this email.",
+      });
+    }
+    if (
+      res?.error?.data?.message ===
+      " Unique Constraint Violation on : User_phone_key"
+    ) {
+      return Toast.show({
+        type: "error",
+        text1: "User already exists with this phone number.",
+      });
+    }
+    if (res?.data?.user?.id) {
       Toast.show({
         type: "success",
         text1:
           "Successfully registered. Waiting for admin activation or approval.",
       });
       return navigate("login");
+    } else {
+      return Toast.show({
+        type: "error",
+        text1: res.error.data.message || "error while logging in",
+      });
     }
   };
 
