@@ -45,7 +45,7 @@ function Facility({ image, title, description }) {
 
   return (
     <Card style={styles.card}>
-      <Card.Cover source={{ uri: image }} style={styles.image} />
+      <Card.Cover source={image} style={styles.image} />
       <Card.Content>
         <View style={styles.row}>
           <View style={styles.col}>
