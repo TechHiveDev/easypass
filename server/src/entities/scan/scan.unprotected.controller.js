@@ -24,7 +24,6 @@ const guestController = async (req, res, next) => {
     const encryptedQrcode = await scanQrCode({
       encryptedQrcode: req.params.encryptedQrcode,
     });
-    console.log(encryptedQrcode);
     res.render("qrcode", {
       qr_code: await qrcode.toDataURL(req.params.encryptedQrcode),
       title: name,

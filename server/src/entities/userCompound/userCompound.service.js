@@ -41,6 +41,5 @@ export const getUserCompounds = async (userId) => {
       compoundName: compound.name,
     });
   }
-  console.log(arr);
   return arr;
 };

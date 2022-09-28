@@ -75,7 +75,7 @@ export const verifyGuestQrCode = async ({
       },
     },
   });
-  // console.log(invitation)
+  
   if (!invitation)
     return {
       ...rest,
