@@ -22,17 +22,17 @@ import qrcode from "../../../../assets/qrcode.png";
 const actions = [
   {
     title: "facilities",
-    navigateTo: "facilities",
+    navigateTo: "Facilities",
     icon: facilities,
   },
   {
     title: "QR Code",
-    navigateTo: "qrcode",
+    navigateTo: "QR Code",
     icon: qrcode,
   },
   {
     title: "invite",
-    navigateTo: "invite",
+    navigateTo: "Invite",
     icon: invite,
   },
   // {
