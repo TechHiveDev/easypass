@@ -1,6 +1,7 @@
 import {
   SafeAreaView,
   View,
+  Image,
   StyleSheet,
   FlatList,
   TouchableOpacity,
@@ -9,7 +10,8 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
-import { Card } from "react-native-paper";
+import { Button, Paragraph, Dialog, Portal, Card } from "react-native-paper";
+import { useState } from "react";
 import MyText from "../../../Components/MyText";
 import i18n from "i18n-js";
 
@@ -18,16 +20,21 @@ import i18n from "i18n-js";
 // Dummy Data
 const announcements = [
   {
-    title: "Announcement 1",
-    description: "Feature announcements is Comming soon",
+    title: "30% Sale H&M.",
+    description: "30% Summer Sale on H&M.",
+    image:
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/H%26M-Logo.svg/640px-H%26M-Logo.svg.png",
   },
   {
-    title: "The Marios",
-    description: "mario announcements for announcements and any shit",
+    title: "Golden Gym Discount",
+    description: "10% discount for Golden Gym -Limited Offer",
+    image: "https://www.egypttoday.com/siteimages/Larg/202008211123482348.jpg",
   },
   {
-    title: "mario announcements",
-    description: "mario announcements for announcements and any shit",
+    title: "Papa Johns",
+    description: "Papa Johns is opening Soon on Pyramids Heights.",
+    image:
+      "https://images.deliveryhero.io/image/talabat/restaurants/logo_(1)_637038116180008094.jpg",
   },
 ];
 
@@ -36,8 +43,14 @@ const announcements = [
 function Announcement({
   item: { title = "", description = "", image = "https://picsum.photos/700" },
 }) {
+  const [visible, setVisible] = useState(false);
   return (
-    <TouchableOpacity>
+    <TouchableOpacity
+      onPress={() => {
+        setVisible(true);
+        console.log("E");
+      }}
+    >
       <Card style={styles.card}>
         <Card.Cover style={{ height: hp(15) }} source={{ uri: image }} />
         <Card.Title
@@ -47,6 +60,22 @@ function Announcement({
           subtitle={description}
         />
       </Card>
+      <Portal>
+        <Dialog visible={visible} onDismiss={() => setVisible(false)}>
+          <Dialog.Title>{title}</Dialog.Title>
+          <Dialog.Content>
+            <Paragraph>{description}</Paragraph>
+            <Image
+              style={{ height: hp(30) }}
+              resizeMode="contain"
+              source={{ uri: image }}
+            />
+          </Dialog.Content>
+          <Dialog.Actions>
+            <Button onPress={() => setVisible(false)}>Close</Button>
+          </Dialog.Actions>
+        </Dialog>
+      </Portal>
     </TouchableOpacity>
   );
 }

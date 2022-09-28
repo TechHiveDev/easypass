@@ -6,26 +6,26 @@ import {
 } from "react-native-responsive-screen";
 import Button from "../../Components/Form/Button";
 import globalStyles from "../../Theme/global.styles";
-import i18n from "i18n-js";
+import Toast from "react-native-toast-message";
 
 // =================================================================
 
 // dummy data
 const facilities = [
   {
-    title: "Samasemo",
-    description: "You are doing so well",
-    image: "https://picsum.photos/700",
+    title: "Electricity",
+    description: "50 EG",
+    image: require("../../../assets/Electronic.png"),
   },
   {
-    title: "Samasemo",
-    description: "You are doing so well",
-    image: "https://picsum.photos/700",
+    title: "Plumber",
+    description: "100 EG",
+    image: require("../../../assets/Plumbers.png"),
   },
   {
-    title: "Samasemo",
-    description: "You are doing so well",
-    image: "https://picsum.photos/700",
+    title: "Car Wash",
+    description: "30 EG",
+    image: require("../../../assets/Car.png"),
   },
 ];
 
@@ -34,7 +34,12 @@ const facilities = [
 function Facility({ image, title, description }) {
   // ------------------------------
 
-  const requestFacility = () => {};
+  const requestFacility = () => {
+    Toast.show({
+      type: "success",
+      text1: "Request sent and technician will contact you soon",
+    });
+  };
 
   // ------------------------------
 
@@ -47,12 +52,19 @@ function Facility({ image, title, description }) {
             {/* <Title>{i18n.t(title)}</Title> */}
             <Title>{title}</Title>
             {/* <Paragraph>{i18n.t(description)}</Paragraph> */}
-            <Paragraph>{description}</Paragraph>
+            <Paragraph
+              style={{
+                color: "red",
+                fontWeight: "bold",
+              }}
+            >
+              {description}
+            </Paragraph>
           </View>
           <View>
             <Button
-              mode="outlined"
-              text={"request"}
+              // mode="outlined"
+              text={"Send Request"}
               icon={false}
               onPress={requestFacility}
               width={wp(20)}
