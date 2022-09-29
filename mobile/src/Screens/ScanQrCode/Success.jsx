@@ -11,7 +11,6 @@ const Success = ({
   currentAddresses,
   message,
 }) => {
-  console.log(invitationData);
   return (
     <View
       style={{
