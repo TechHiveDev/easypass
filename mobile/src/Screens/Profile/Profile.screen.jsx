@@ -56,6 +56,7 @@ export default function ProfileScreen() {
     ) {
       return setHideSubmitButton(true);
     }
+    let tempImage = image;
     if (defaultValues.photoUrl !== image) {
       setUploadingImage(true);
       const uploadResult = await FileSystem.uploadAsync(
@@ -71,15 +72,18 @@ export default function ProfileScreen() {
         }
       );
       const res = JSON.parse(uploadResult.body);
+      console.log(res);
       if (res?.url) {
         setImage(config.API_URL + res.url);
+        tempImage = config.API_URL + res.url;
       }
     }
     const res = await updateMyProfile({
       entity: "user",
       id,
-      body: { email, name, phone, photoUrl: image },
+      body: { email, name, phone, photoUrl: tempImage },
     });
+    console.log(res.data);
     const data = res.data;
     if (data?.id) {
       Toast.show({

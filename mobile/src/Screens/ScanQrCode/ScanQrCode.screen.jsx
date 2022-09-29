@@ -11,9 +11,48 @@ import Toast from "react-native-toast-message";
 import Button from "../../Components/Form/Button";
 import theme from "../../Theme/paper.theme";
 import { useAppSelector } from "../../Store/redux.hooks";
+import Success from "./Success";
 
 // ======================================================================
 
+// dummy data
+// const invitationUser = {
+//   name: "Jan Karam",
+//   phone: "4545454545",
+//   photoUrl: "https://picsum.photos/900",
+//   type: "Resident",
+//   userCompound: [
+//     {
+//       id: 1,
+//       streetName: "haga",
+//       blockNumber: 89,
+//       unitNumber: 20,
+//       compoundId: 1,
+//     },
+//     {
+//       id: 2,
+//       streetName: "haga",
+//       blockNumber: 89,
+//       unitNumber: 250,
+//       compoundId: 1,
+//     },
+//     {
+//       id: 3,
+//       streetName: "haga",
+//       blockNumber: 89,
+//       unitNumber: 420,
+//       compoundId: 1,
+//     },
+//   ],
+// };
+// const currentCompoundId = 1;
+// const isLoading = false;
+// const data = {
+//   scan: {
+//     success: true,
+//   },
+//   message: "yeahhhhhhhhh",
+// };
 export default function ScanQrCode() {
   const isFocused = useIsFocused();
 
@@ -26,11 +65,11 @@ export default function ScanQrCode() {
   const invitationUser = invitationData?.user || data?.user;
   const [hasPermission, setHasPermission] = useState(null);
   const [active, setActive] = useState(false);
-  const currentCompound = useAppSelector(
-    (state) => state?.auth?.currentCompound
+  const currentCompoundId = useAppSelector(
+    (state) => state?.auth?.currentCompound?.compoundId
   );
   const currentAddresses = invitationUser?.userCompound?.filter(
-    (c) => currentCompound?.compoundId === c?.compoundId
+    (c) => currentCompoundId === c?.compoundId
   );
   // -----------------------------------------
 
@@ -55,7 +94,10 @@ export default function ScanQrCode() {
     setActive(!active);
     const res = await scanQrCode({ encryptedQrcode: data, deviceId: 1 });
     if (res?.data?.scan?.success) {
-      Toast.show({ type: "success", text1: "accepted invitation" });
+      Toast.show({
+        type: "success",
+        text1: invitationData ? "accepted invitation" : "accepted resident",
+      });
     } else {
       Toast.show({
         type: "error",
@@ -91,12 +133,15 @@ export default function ScanQrCode() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Scan QR Code</Text>
-      <View style={styles.barcodeContainer}>
-        <BarCodeScanner
-          style={active ? { height: hp(75) } : { height: 0 }}
-          onBarCodeScanned={active ? handleSuccess : undefined}
-        />
+      {active ? (
+        <View style={styles.barcodeContainer}>
+          <BarCodeScanner
+            style={active ? { height: hp(75) } : { height: 0 }}
+            onBarCodeScanned={active ? handleSuccess : undefined}
+          />
+        </View>
+      ) : null}
+      <View>
         {!active && data ? (
           <>
             {!success ? (
@@ -109,87 +154,25 @@ export default function ScanQrCode() {
                 {message?.replace("QrCode", "QR Code")}
               </Text>
             ) : (
-              <>
-                <Text
-                  style={[
-                    styles.txt,
-                    {
-                      color: "green",
-                      fontSize: 24,
-                    },
-                  ]}
-                >
-                  {message?.replace("QrCode", "QR Code")}
-                </Text>
-                {invitationData ? (
-                  <>
-                    <Text style={styles.txt}>
-                      Visitor name: {invitationData?.name}
-                    </Text>
-                    <Text style={styles.txt}>
-                      Notes: {invitationData?.notes}
-                    </Text>
-                  </>
-                ) : null}
-
-                <Text style={styles.txt}>
-                  Resident name: {invitationUser?.name}
-                </Text>
-                <Text style={styles.txt}>
-                  Resident phone: {invitationUser?.phone}
-                </Text>
-                <Text style={styles.txt}>
-                  Resident ِAddress{currentAddresses?.length === 1 ? "" : "es"}:{" "}
-                </Text>
-                <Text style={styles.txt}>
-                  {currentAddresses?.length === 1 ? (
-                    currentAddresses[0].streetName +
-                    " street - block " +
-                    currentAddresses[0].blockNumber +
-                    " - unit " +
-                    currentAddresses[0].unitNumber
-                  ) : (
-                    <View
-                      style={{
-                        display: "flex",
-                        flex: 1,
-                        flexDirection: "column",
-                      }}
-                    >
-                      {currentAddresses?.map((a) => {
-                        return (
-                          <View key={a.id}>
-                            <Text style={styles.txt}>
-                              {a.streetName +
-                                " street - block " +
-                                a.blockNumber +
-                                " - unit " +
-                                a.unitNumber}
-                            </Text>
-                          </View>
-                        );
-                      })}
-                    </View>
-                  )}
-                </Text>
-                {invitationData ? (
-                  <Text style={styles.txt}>
-                    invite creation time :{" "}
-                    {new Date(invitationData?.createdAt)
-                      .toLocaleString("en-us", {
-                        year: "numeric",
-                        month: "2-digit",
-                        day: "2-digit",
-                      })
-                      .replace(/(\d+)\/(\d+)\/(\d+)/, "$3-$1-$2")}
-                  </Text>
-                ) : null}
-              </>
+              <Success
+                invitationUser={invitationUser}
+                currentAddresses={currentAddresses}
+                message={message}
+                invitationData={invitationData}
+              />
             )}
           </>
         ) : null}
         {!active ? (
-          <Button onPress={clickToScan} text="scanQrCode" loading={isLoading} />
+          <Button
+            onPress={clickToScan}
+            text="scanQrCode"
+            loading={isLoading}
+            width={wp(85)}
+            customStyle={{
+              marginTop: data ? hp(1) : hp(30),
+            }}
+          />
         ) : null}
       </View>
     </View>

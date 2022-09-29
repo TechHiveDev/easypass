@@ -17,6 +17,7 @@ export default function Button({
   maxWidth = wp(95),
   disabled = false,
   paddingVertical = wp(0.9),
+  customStyle = {},
   ...props
 }) {
   const color = mode === "contained" ? { color: "white" } : null;
@@ -29,6 +30,7 @@ export default function Button({
         minWidth: width,
         maxWidth,
         paddingVertical,
+        ...customStyle,
       }}
       labelStyle={{ ...styles.labelStyle, ...color }}
     >

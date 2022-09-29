@@ -1,3 +1,4 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   StyleSheet,
   Text,
@@ -19,6 +20,7 @@ export default function UserCompounds({ navigation }) {
   const dispatch = useAppDispatch();
   const { userCompound, type } = useAppSelector((state) => state?.auth?.user);
   const handleCompoundClicked = (c) => {
+    AsyncStorage.setItem("currentCompound", JSON.stringify(c.id));
     dispatch(setCurrentCompound(c));
     navigation.navigate("HomeStackTabNavigator");
   };
