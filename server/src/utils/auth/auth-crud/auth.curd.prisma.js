@@ -151,6 +151,8 @@ export const findOrCreateGoogleUser = async (payload) => {
   return user;
 };
 
+// ---------------------------------------------------------------
+
 export const findOrCreateGithubUser = async (payload) => {
   let user = await prisma.user.findUnique({
     where: { githubId: payload?.githubId },
@@ -206,6 +208,24 @@ export const login = async ({ email, password }) => {
   return { user, accessToken };
 };
 
+export const getUserCompounds = async (user) => {
+  user = await prisma.user.findUnique({
+    where: { id: user.id },
+    include: { userCompound: true },
+  });
+
+  for (let index = 0; index < user.userCompound.length; index++) {
+    const compound = await prisma.compound.findUnique({
+      where: { id: user.userCompound[index].compoundId },
+    });
+    user.userCompound[index] = {
+      ...user.userCompound[index],
+      compoundName: compound.name,
+    };
+  }
+  return user;
+};
+
 // ---------------------------------------------------------
 
 // reset password
@@ -235,6 +255,7 @@ export const softDelete = (id) =>
     where: { id: id },
     data: { deleted: true },
   });
+
 // --------------------------------------------------------
 
 export const sendOtp = ({
@@ -307,6 +328,8 @@ export const changePasswordOTP = async (email, password, otp) => {
     data: { password: hash({ password }) },
   });
 };
+
+// ---------------------------------------------------------------
 
 export const isThirdPartyUser = async ({ email, id, phone }) => {
   const user = email
