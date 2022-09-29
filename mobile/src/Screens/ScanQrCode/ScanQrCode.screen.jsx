@@ -32,7 +32,6 @@ export default function ScanQrCode() {
   const currentAddresses = invitationUser?.userCompound?.filter(
     (c) => currentCompound?.compoundId === c?.compoundId
   );
-  console.log({ cid: currentCompound.compoundId, invitationUser, data });
   // -----------------------------------------
 
   useEffect(() => {
@@ -55,7 +54,6 @@ export default function ScanQrCode() {
   const handleSuccess = async ({ data }) => {
     setActive(!active);
     const res = await scanQrCode({ encryptedQrcode: data, deviceId: 1 });
-    console.log(res);
     if (res?.data?.scan?.success) {
       Toast.show({ type: "success", text1: "accepted invitation" });
     } else {

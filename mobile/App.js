@@ -24,16 +24,16 @@ const isRTL = i18n.locale === "ar";
 // -----------------------------------------------------
 
 export default function App() {
-    I18nManager.allowRTL(isRTL);
-    I18nManager.forceRTL(isRTL);
-    return (
-        <>
-            <Provider store={store}>
-                <PaperProvider theme={theme}>
-                    <AppNavigator />
-                </PaperProvider>
-            </Provider>
-            <Toast config={toastConfig} />
-        </>
-    );
+  I18nManager.allowRTL(isRTL);
+  I18nManager.forceRTL(isRTL);
+  return (
+    <>
+      <Provider store={store}>
+        <PaperProvider theme={theme}>
+          <AppNavigator />
+        </PaperProvider>
+      </Provider>
+      <Toast config={toastConfig} />
+    </>
+  );
 }

@@ -129,6 +129,8 @@ export default function ProfileScreen() {
         <MyText text={type} style={styles.type} />
         {/* <MyText text={address} style={styles.address} /> */}
         <Form
+          /* to update the form when the current compound change*/
+          key={currentCompound?.id}
           {...{
             defaultValues,
             isLoading: isLoading || uploadingImage,

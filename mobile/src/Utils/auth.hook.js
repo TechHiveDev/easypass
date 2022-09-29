@@ -35,16 +35,17 @@ export const useAuthMe = () => {
     }
 
     // Get Me and put my new access token in async storage
-    getMe()
-      .unwrap()
-      .then(async (data) => {
-        if (data?.user && data?.accessToken) {
-          const { user, accessToken } = data;
-          await AsyncStorage.setItem("accessToken", accessToken);
-          dispatch(setAuthUser({ accessToken, user }));
-        }
-      })
-      .finally(() => setLoading(false));
+    if (savedAccessToken) {
+      getMe()
+        .unwrap()
+        .then(async (data) => {
+          if (data?.id) {
+            // await AsyncStorage.setItem("accessToken", accessToken);
+            dispatch(setAuthUser({ user: data }));
+          }
+        })
+        .finally(() => setLoading(false));
+    }
   };
 
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~

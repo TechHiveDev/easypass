@@ -48,7 +48,6 @@ function Announcement({
     <TouchableOpacity
       onPress={() => {
         setVisible(true);
-        console.log("E");
       }}
     >
       <Card style={styles.card}>

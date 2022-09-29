@@ -4,9 +4,9 @@ import {
   View,
   FlatList,
   TouchableOpacity,
+  SafeAreaView,
 } from "react-native";
 import React from "react";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -22,28 +22,19 @@ export default function UserCompounds({ navigation }) {
     dispatch(setCurrentCompound(c));
     navigation.navigate("HomeStackTabNavigator");
   };
-  if (userCompound.length === 1) {
-    dispatch(setCurrentCompound(userCompound[0]));
-    navigation.navigate("HomeStackTabNavigator");
-  }
   return (
-    <View>
-      <View
+    <SafeAreaView>
+      <Text
         style={{
           height: hp(10),
+          textAlign: "center",
+          paddingTop: hp(5),
+          fontSize: 20,
+          color: theme.colors.primary,
         }}
       >
-        <Text
-          style={{
-            textAlign: "center",
-            fontSize: 20,
-            marginVertical: 20,
-            color: theme.colors.primary,
-          }}
-        >
-          Choose Compound
-        </Text>
-      </View>
+        Choose Compound
+      </Text>
       <FlatList
         style={{
           height: hp(90),
@@ -117,7 +108,7 @@ export default function UserCompounds({ navigation }) {
           );
         }}
       />
-    </View>
+    </SafeAreaView>
   );
 }
 
