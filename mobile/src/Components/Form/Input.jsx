@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import { TextInput, HelperText } from "react-native-paper";
 import {
   widthPercentageToDP as wp,
@@ -13,13 +13,8 @@ import Animated, {
   LightSpeedOutLeft,
   Layout,
 } from "react-native-reanimated";
-
+import { toReadableText } from "../../Utils/string.util";
 // ========================================================
-const toReadableText = (text) =>
-  text
-    .replace(/([A-Z]+)/g, " $1")
-    .replace(/([A-Z][a-z])/g, " $1")
-    .toLowerCase();
 export default function Input(props) {
   const {
     name,

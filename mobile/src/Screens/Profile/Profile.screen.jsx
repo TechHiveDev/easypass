@@ -17,6 +17,7 @@ import { setUser } from "../../Store/Slices/auth.slice";
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
 import config from "../../Config/config";
+import { onlyNumbersCheck } from "../../Utils/string.util";
 // =================================================================
 
 export default function ProfileScreen() {
@@ -151,13 +152,23 @@ export default function ProfileScreen() {
             },
           }}
         >
-          <Input name="name" label="name" icon="account" />
-          <Input name="email" label="email" icon="email" />
-          <Input name="phone" label="phone" icon="cellphone" />
+          <Input name="name" label="Name" icon="account" />
+          <Input name="email" label="Email" icon="email" />
+          <Input
+            name="phone"
+            label="Phone"
+            icon="cellphone"
+            rules={{
+              validate: {
+                phoneMustBeANumberOnly: (v) => onlyNumbersCheck(v),
+                positiveNumberIsRequiredForPhone: (v) => parseInt(v) > 0,
+              },
+            }}
+          />
           {type === "Resident" ? (
             <Input
               name="compoundName"
-              label="compound"
+              label="Compound"
               icon="office-building"
               disabled
               editable={false}
@@ -167,7 +178,7 @@ export default function ProfileScreen() {
           {type === "Resident" ? (
             <Input
               name="streetName"
-              label="street name"
+              label="Street Name"
               icon="home-group"
               disabled
               editable={false}
@@ -176,7 +187,7 @@ export default function ProfileScreen() {
           {type === "Resident" ? (
             <Input
               name="blockNumber"
-              label="block number"
+              label="Block number"
               icon="home"
               disabled
               editable={false}
@@ -185,7 +196,7 @@ export default function ProfileScreen() {
           {type === "Resident" ? (
             <Input
               name="unitNumber"
-              label="unit number"
+              label="Unit Number"
               icon="key"
               disabled
               editable={false}

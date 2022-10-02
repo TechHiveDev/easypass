@@ -6,6 +6,7 @@ import {
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import { Shadow } from "react-native-shadow-2";
+
 const Success = ({ invitationData, invitationUser, currentAddresses }) => {
   return (
     <View
@@ -50,34 +51,39 @@ const Success = ({ invitationData, invitationUser, currentAddresses }) => {
         style={{
           position: "relative",
           marginTop: hp(9),
+          width: wp(85),
         }}
       >
         <View
           style={{
-            borderColor: "#ffffff",
-            borderWidth: 5,
-            borderRadius: 100,
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
             position: "absolute",
             top: -65,
-            right: 90,
-            zIndex: 2,
+            zIndex: 3,
+            width: "100%",
+            elevation: 1,
           }}
         >
           <Shadow
             style={{
+              borderColor: "#ffffff",
+              borderWidth: 5,
               borderRadius: 100,
             }}
           >
             <Avatar.Image
-              size={140}
+              size={wp(35)}
               source={{ uri: invitationUser.photoUrl }}
             />
           </Shadow>
         </View>
-        <Shadow>
+        <Shadow
+          style={{
+            width: "100%",
+          }}
+        >
           <View
             style={{
               // borderColor: "#bebebe",
@@ -88,7 +94,7 @@ const Success = ({ invitationData, invitationUser, currentAddresses }) => {
               alignItems: "center",
               padding: 20,
               paddingTop: 80,
-              width: wp(85),
+              width: "100%",
               backgroundColor: "rgba(255,255,255,0.8)",
             }}
           >

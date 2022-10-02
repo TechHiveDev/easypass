@@ -17,6 +17,7 @@ import {
 import theme from "../../Theme/paper.theme";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { ActivityIndicator, HelperText, RadioButton } from "react-native-paper";
+import { onlyNumbersCheck } from "../../Utils/string.util";
 
 // =================================================================
 const randomNumber = Math.round(Math.random() * 100);
@@ -140,11 +141,12 @@ export default function RegisterScreen() {
         />
         <Input
           name="phone"
-          label="phone"
+          label="Phone"
           icon="cellphone"
           rules={{
             validate: {
-              phoneMustBeNumber: (v) => parseInt(v) > 0,
+              phoneMustBeANumberOnly: (v) => onlyNumbersCheck(v),
+              positiveNumberIsRequiredForPhone: (v) => parseInt(v) > 0,
             },
           }}
         />
@@ -182,7 +184,7 @@ export default function RegisterScreen() {
                     visible={true}
                     style={{ textAlign: "right" }}
                   >
-                    compound {i18n.t("required")}
+                    Compound {i18n.t("required")}
                   </HelperText>
                 ) : null}
               </>
@@ -206,7 +208,8 @@ export default function RegisterScreen() {
             icon="home"
             rules={{
               validate: {
-                positiveNumberIsRequired: (v) => parseInt(v) > 0,
+                blockNumberMustBeANumberOnly: (v) => onlyNumbersCheck(v),
+                positiveNumberIsRequiredForBlockNumber: (v) => parseInt(v) > 0,
               },
             }}
           />
@@ -220,7 +223,8 @@ export default function RegisterScreen() {
             icon="key"
             rules={{
               validate: {
-                positiveNumberIsRequired: (v) => parseInt(v) > 0,
+                unitNumberMustBeANumberOnly: (v) => onlyNumbersCheck(v),
+                positiveNumberIsRequiredForUnitNumber: (v) => parseInt(v) > 0,
               },
             }}
           />

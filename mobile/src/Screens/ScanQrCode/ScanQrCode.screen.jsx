@@ -13,7 +13,7 @@ import theme from "../../Theme/paper.theme";
 import { useAppSelector } from "../../Store/redux.hooks";
 import Success from "./Success";
 import { LinearGradient } from "expo-linear-gradient";
-
+import { capitalize } from "../../Utils/string.util";
 // ======================================================================
 
 // dummy data
@@ -59,7 +59,7 @@ export default function ScanQrCode() {
 
   // -----------------------------------------
 
-  const [scanQrCode, { data, isLoading }] = useScanQrCodeMutation();
+  const [scanQrCode, { data, isLoading, reset }] = useScanQrCodeMutation();
   const success = data?.scan?.success;
   const message = data?.message;
   const invitationData = data?.invitation;
@@ -86,9 +86,14 @@ export default function ScanQrCode() {
 
   useEffect(() => {
     if (!isFocused) {
+      reset();
       setActive(false);
     }
   });
+  // useFocusEffect(() => {
+  //   setActive(true);
+  //   return setActive(false);
+  // });
   // -----------------------------------------
 
   const handleSuccess = async ({ data }) => {
@@ -97,12 +102,14 @@ export default function ScanQrCode() {
     if (res?.data?.scan?.success) {
       Toast.show({
         type: "success",
-        text1: invitationData ? "accepted invitation" : "accepted resident",
+        text1: invitationData ? "Accepted invitation" : "Accepted resident",
       });
     } else {
       Toast.show({
         type: "error",
-        text1: res?.data?.message?.replace("QrCode", "QR Code"),
+        text1: capitalize(
+          res?.data?.message?.replace("QrCode", "QR Code") || ""
+        ),
       });
     }
     setActive(!active);
@@ -152,7 +159,7 @@ export default function ScanQrCode() {
             {!success ? (
               <Text
                 style={{
-                  color: "red",
+                  color: theme.colors.primary,
                   fontSize: 24,
                 }}
               >
