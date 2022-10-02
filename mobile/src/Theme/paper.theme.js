@@ -1,28 +1,4 @@
-import { DefaultTheme, configureFonts } from "react-native-paper";
-
-// -------------------------------------------------
-const fonts = {
-  fontFamily: "sans-serif",
-  fontWeight: "normal",
-};
-
-// -------------------------------------------------
-
-const fontSizes = {
-  regular: fonts,
-  medium: fonts,
-  light: fonts,
-  thin: fonts,
-};
-
-// -------------------------------------------------
-
-const fontConfig = {
-  web: fontSizes,
-  ios: fontSizes,
-  android: fontSizes,
-};
-
+import { DefaultTheme } from "react-native-paper";
 // -------------------------------------------------
 
 const theme = {
@@ -31,14 +7,12 @@ const theme = {
   colors: {
     ...DefaultTheme.colors,
     primary: "#f28482",
-    accent: "green",
     accent: "#0AA1DD",
     white: "#FFFFFF",
     black: "black",
     grey: "rgb(180, 180, 184)",
     lightgrey: "rgb(199, 199, 204)",
   },
-  // fonts: configureFonts(fontConfig),
 };
 
 // -------------------------------------------------

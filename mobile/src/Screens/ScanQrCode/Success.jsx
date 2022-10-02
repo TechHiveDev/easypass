@@ -5,12 +5,8 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
-const Success = ({
-  invitationData,
-  invitationUser,
-  currentAddresses,
-  message,
-}) => {
+import { Shadow } from "react-native-shadow-2";
+const Success = ({ invitationData, invitationUser, currentAddresses }) => {
   return (
     <View
       style={{
@@ -20,17 +16,6 @@ const Success = ({
         flexDirection: "column",
       }}
     >
-      <Text
-        style={[
-          styles.txt,
-          {
-            color: "green",
-            fontSize: 24,
-          },
-        ]}
-      >
-        {message?.replace("QrCode", "QR Code")}
-      </Text>
       {invitationData ? (
         <View
           style={{
@@ -41,14 +26,14 @@ const Success = ({
           }}
         >
           {invitationData?.name ? (
-            <Text style={styles.txt}>Name: {invitationData?.name}</Text>
+            <Text style={styles.whiteTxt}>Name: {invitationData?.name}</Text>
           ) : null}
-          <Text style={styles.txt}>Type: {invitationData?.type}</Text>
+          <Text style={styles.whiteTxt}>Type: {invitationData?.type}</Text>
           {invitationData?.notes ? (
-            <Text style={styles.txt}>Notes: {invitationData?.notes}</Text>
+            <Text style={styles.whiteTxt}>Notes: {invitationData?.notes}</Text>
           ) : null}
           {invitationData?.createdAt ? (
-            <Text style={styles.txt}>
+            <Text style={styles.whiteTxt}>
               Time Of Invite :{" "}
               {new Date(invitationData?.createdAt)
                 .toLocaleString("en-us", {
@@ -69,7 +54,7 @@ const Success = ({
       >
         <View
           style={{
-            borderColor: "#bebebe",
+            borderColor: "#ffffff",
             borderWidth: 5,
             borderRadius: 100,
             display: "flex",
@@ -81,75 +66,86 @@ const Success = ({
             zIndex: 2,
           }}
         >
-          <Avatar.Image size={140} source={{ uri: invitationUser.photoUrl }} />
-        </View>
-        <View
-          style={{
-            borderColor: "#bebebe",
-            borderWidth: 5,
-            borderRadius: 20,
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            padding: 20,
-            paddingTop: 80,
-            width: wp(85),
-            backgroundColor: "rgba(159,159,159,0.1)",
-          }}
-        >
-          <Text
-            style={[
-              styles.txt,
-              {
-                fontSize: 30,
-                color: "black",
-                fontWeight: "bold",
-              },
-            ]}
+          <Shadow
+            style={{
+              borderRadius: 100,
+            }}
           >
-            {invitationUser?.name}
-          </Text>
-          <Text style={styles.txt}>{invitationUser?.phone}</Text>
-          <Text style={styles.txt}>{invitationUser?.type}</Text>
-          <Text style={styles.txt}>
-            {currentAddresses?.length === 1 ? (
-              currentAddresses[0].streetName +
-              " street - block " +
-              currentAddresses[0].blockNumber +
-              " - unit " +
-              currentAddresses[0].unitNumber
-            ) : (
-              <View
-                style={{
-                  display: "flex",
-                  flex: 1,
-                  flexDirection: "column",
-                }}
-              >
-                {currentAddresses?.map((a) => {
-                  return (
-                    <View key={a.id}>
-                      <Text
-                        style={[
-                          styles.txt,
-                          {
-                            fontSize: 16,
-                          },
-                        ]}
-                      >
-                        {a.streetName +
-                          " street - block " +
-                          a.blockNumber +
-                          " - unit " +
-                          a.unitNumber}
-                      </Text>
-                    </View>
-                  );
-                })}
-              </View>
-            )}
-          </Text>
+            <Avatar.Image
+              size={140}
+              source={{ uri: invitationUser.photoUrl }}
+            />
+          </Shadow>
         </View>
+        <Shadow>
+          <View
+            style={{
+              // borderColor: "#bebebe",
+              // borderWidth: 5,
+              borderRadius: 20,
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              padding: 20,
+              paddingTop: 80,
+              width: wp(85),
+              backgroundColor: "rgba(255,255,255,0.8)",
+            }}
+          >
+            <Text
+              style={[
+                styles.txt,
+                {
+                  fontSize: 30,
+                  color: "black",
+                  fontWeight: "bold",
+                },
+              ]}
+            >
+              {invitationUser?.name}
+            </Text>
+            <Text style={styles.txt}>{invitationUser?.phone}</Text>
+            <Text style={styles.txt}>{invitationUser?.type}</Text>
+            <Text style={styles.txt}>
+              {currentAddresses?.length === 1 ? (
+                currentAddresses[0].streetName +
+                " street - block " +
+                currentAddresses[0].blockNumber +
+                " - unit " +
+                currentAddresses[0].unitNumber
+              ) : (
+                <View
+                  style={{
+                    display: "flex",
+                    flex: 1,
+                    flexDirection: "column",
+                  }}
+                >
+                  {currentAddresses?.map((a) => {
+                    return (
+                      <View key={a.id}>
+                        <Text
+                          style={[
+                            styles.txt,
+                            {
+                              fontSize: 16,
+                            },
+                          ]}
+                        >
+                          {a.streetName +
+                            " street - block " +
+                            a.blockNumber +
+                            " - unit " +
+                            a.unitNumber}
+                        </Text>
+                      </View>
+                    );
+                  })}
+                </View>
+              )}
+            </Text>
+          </View>
+        </Shadow>
       </View>
     </View>
   );
@@ -159,6 +155,11 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: "left",
     color: "gray",
+  },
+  whiteTxt: {
+    fontSize: 20,
+    textAlign: "left",
+    color: "rgb(238,238,238)",
   },
 });
 export default Success;

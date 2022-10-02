@@ -12,6 +12,7 @@ import Button from "../../Components/Form/Button";
 import theme from "../../Theme/paper.theme";
 import { useAppSelector } from "../../Store/redux.hooks";
 import Success from "./Success";
+import { LinearGradient } from "expo-linear-gradient";
 
 // ======================================================================
 
@@ -132,7 +133,11 @@ export default function ScanQrCode() {
   // -----------------------------------------
 
   return (
-    <View style={styles.container}>
+    <LinearGradient
+      colors={["#4387D2", "#2F37A3"]}
+      style={styles.container}
+      // colors={[theme.colors.primary, "transparent"]}
+    >
       {active ? (
         <View style={styles.barcodeContainer}>
           <BarCodeScanner
@@ -175,7 +180,7 @@ export default function ScanQrCode() {
           />
         ) : null}
       </View>
-    </View>
+    </LinearGradient>
   );
 }
 
@@ -185,7 +190,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingVertical: hp("5%"),
-    backgroundColor: theme.colors.white,
     paddingHorizontal: wp("5%"),
     justifyContent: "space-between",
   },
@@ -234,11 +238,6 @@ const styles = StyleSheet.create({
     borderColor: "grey",
     textAlign: "center",
     alignItems: "center",
-    shadowColor: theme.colors.black,
-    shadowRadius: 10,
-    shadowOpacity: 0.23,
-    shadowOffset: { width: 0, height: 2 },
-    elevation: 20,
   },
   logout: {
     fontSize: 15,
