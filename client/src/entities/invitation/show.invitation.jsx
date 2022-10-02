@@ -6,12 +6,13 @@ import {
   BooleanField,
   DateField,
 } from "react-admin";
+import InvitationTitle from "./title";
 
 // ------------------------------------------------
 
 export default function ShowInvitation(props) {
   return (
-    <Show>
+    <Show title={<InvitationTitle />}>
       <SimpleShowLayout>
         <NumberField variant="outlined" source="id" />
         <TextField variant="outlined" source="name" />

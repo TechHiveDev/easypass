@@ -6,13 +6,14 @@ import {
   SelectInput,
   usePermissions,
 } from "react-admin";
+import UserTitle from "./title";
 
 // ------------------------------------------------
 
 export default function EditUser(props) {
   const { isLoading, permissions } = usePermissions();
   return (
-    <Edit {...props}>
+    <Edit title={<UserTitle />}>
       {isLoading ? (
         <h3>Loading</h3>
       ) : (

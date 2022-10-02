@@ -5,13 +5,15 @@ import {
   NumberField,
   BooleanField,
   DateField,
+  useRecordContext,
 } from "react-admin";
+import UserCompoundTitle from "./title";
 
 // ------------------------------------------------
 
 export default function ShowUserCompound(props) {
   return (
-    <Show>
+    <Show title={<UserCompoundTitle />}>
       <SimpleShowLayout>
         <NumberField variant="outlined" source="id" />
         <NumberField variant="outlined" source="userId" />

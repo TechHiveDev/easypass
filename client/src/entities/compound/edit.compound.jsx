@@ -6,12 +6,13 @@ import {
   BooleanInput,
   DateInput,
 } from "react-admin";
+import CompoundTitle from "./title";
 
 // ------------------------------------------------
 
 export default function EditCompound(props) {
   return (
-    <Edit>
+    <Edit title={<CompoundTitle />}>
       <SimpleForm redirect="list">
         <NumberInput variant="outlined" source="id" />
         <TextInput variant="outlined" source="name" />

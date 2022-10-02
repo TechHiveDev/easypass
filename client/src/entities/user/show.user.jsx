@@ -4,13 +4,14 @@ import {
   TextField,
   NumberField,
   BooleanField,
+  useRecordContext,
 } from "react-admin";
+import UserTitle from "./title";
 
 // ------------------------------------------------
-
 export default function ShowUser(props) {
   return (
-    <Show>
+    <Show title={<UserTitle />}>
       <SimpleShowLayout>
         <NumberField variant="outlined" source="id" />
         <TextField variant="outlined" source="email" />

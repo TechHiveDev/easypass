@@ -6,12 +6,13 @@ import {
   BooleanField,
   DateField,
 } from "react-admin";
+import CompoundTitle from "./title";
 
 // ------------------------------------------------
 
 export default function ShowCompound(props) {
   return (
-    <Show>
+    <Show title={<CompoundTitle />}>
       <SimpleShowLayout>
         <NumberField variant="outlined" source="id" />
         <TextField variant="outlined" source="name" />
