@@ -2,7 +2,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   StyleSheet,
   Text,
-  View,
   FlatList,
   TouchableOpacity,
   SafeAreaView,
@@ -15,6 +14,7 @@ import {
 import theme from "../../Theme/paper.theme";
 import { useAppDispatch, useAppSelector } from "../../Store/redux.hooks";
 import { setCurrentCompound } from "../../Store/Slices/auth.slice";
+import { Card } from "react-native-paper";
 
 export default function UserCompounds({ navigation }) {
   const dispatch = useAppDispatch();
@@ -50,62 +50,47 @@ export default function UserCompounds({ navigation }) {
             index
           );
         }}
-        numColumns={2}
         data={userCompound}
         renderItem={({ item }) => {
           return (
             <TouchableOpacity
-              style={styles.childView}
+              activeOpacity={0.75}
               onPress={() => {
                 handleCompoundClicked(item);
               }}
             >
-              <View style={styles.innerChild}>
-                <Text
-                  style={{
-                    fontSize: 20,
-                    fontWeight: "bold",
-                    color: theme.colors.placeholder,
+              <Card style={styles.childView}>
+                <Card.Cover
+                  style={{ height: hp(15) }}
+                  source={{ uri: item.logoUrl }}
+                  resizeMode={"cover"}
+                />
+                <Card.Title
+                  title={item?.compoundName}
+                  titleStyle={{
+                    fontSize: item?.compoundName?.length > 25 ? 18 : 22,
                   }}
-                >
-                  {item?.compoundName}
-                </Text>
-
-                {type !== "Security" ? (
-                  <>
-                    <Text
-                      style={{
-                        fontSize: 16,
-                        color: theme.colors.placeholder,
-                        textAlign: "left",
-                      }}
-                    >
-                      {item?.streetName ? `${item?.streetName} street,` : null}
-                    </Text>
-                    <Text
-                      style={{
-                        fontSize: 16,
-                        color: theme.colors.placeholder,
-                      }}
-                    >
-                      {item?.blockNumber
-                        ? `block ${item?.blockNumber} ,`
-                        : null}
-                    </Text>
-                    <Text
-                      style={{
-                        fontSize: 16,
-                        color: theme.colors.placeholder,
-                      }}
-                    >
-                      {item?.unitNumber ? `unit ${item?.unitNumber}` : null}
-                    </Text>
-                  </>
-                ) : null}
-                <Text style={{ color: theme.colors.white, fontSize: 14 }}>
-                  {/*{item.compoundDescription}*/}
-                </Text>
-              </View>
+                  subtitle={
+                    type !== "Security"
+                      ? `${
+                          item?.streetName
+                            ? `${item?.streetName} street${
+                                item?.blockNumber || item?.unitNumber ? "," : ""
+                              }`
+                            : ""
+                        } ${
+                          item?.blockNumber
+                            ? `block ${item?.blockNumber}${
+                                item?.unitNumber ? "," : ""
+                              }`
+                            : ""
+                        } ${
+                          item?.unitNumber ? `unit ${item?.unitNumber}.` : ""
+                        }`
+                      : ""
+                  }
+                />
+              </Card>
             </TouchableOpacity>
           );
         }}
@@ -115,6 +100,17 @@ export default function UserCompounds({ navigation }) {
 }
 
 const styles = StyleSheet.create({
+  card: {
+    width: wp(65),
+    flexDirection: "row",
+    borderWidth: 1,
+    marginRight: wp(2),
+  },
+  title: {
+    paddingVertical: hp(1),
+    paddingHorizontal: wp(2),
+    fontWeight: "bold",
+  },
   container: {},
   header: {
     flexDirection: "row",
@@ -126,13 +122,15 @@ const styles = StyleSheet.create({
   Title: {
     textAlign: "center",
   },
+  shadow: {
+    flex: 1,
+  },
   childView: {
-    backgroundColor: theme.colors.primary,
-    width: wp(45),
+    // width: wp(80),
     margin: wp(5),
-    borderRadius: 6,
     height: hp(25),
     flex: 1,
+    elevation: 10,
   },
   innerChild: {
     textAlign: "left",

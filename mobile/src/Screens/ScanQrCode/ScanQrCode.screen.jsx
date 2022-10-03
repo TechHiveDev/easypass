@@ -56,9 +56,6 @@ import { capitalize } from "../../Utils/string.util";
 // };
 export default function ScanQrCode() {
   const isFocused = useIsFocused();
-
-  // -----------------------------------------
-
   const [scanQrCode, { data, isLoading, reset }] = useScanQrCodeMutation();
   const success = data?.scan?.success;
   const message = data?.message;
@@ -73,7 +70,8 @@ export default function ScanQrCode() {
     (c) => currentCompoundId === c?.compoundId
   );
   // -----------------------------------------
-
+  const clickToScan = () => setActive(!active);
+  // -----------------------------------------
   useEffect(() => {
     const requestCameraPermission = async () => {
       const { status } = await BarCodeScanner.requestPermissionsAsync();
@@ -90,11 +88,6 @@ export default function ScanQrCode() {
       setActive(false);
     }
   });
-  // useFocusEffect(() => {
-  //   setActive(true);
-  //   return setActive(false);
-  // });
-  // -----------------------------------------
 
   const handleSuccess = async ({ data }) => {
     setActive(!active);
@@ -117,10 +110,6 @@ export default function ScanQrCode() {
 
   // -----------------------------------------
 
-  const clickToScan = () => setActive(!active);
-
-  // -----------------------------------------
-
   if (!hasPermission) {
     return (
       <View style={styles.noPermission}>
@@ -135,57 +124,44 @@ export default function ScanQrCode() {
 
   if (!isFocused) return <View></View>;
 
-  // if (isLoading) return <LoadingScreen />;
-
   // -----------------------------------------
 
-  return (
-    <LinearGradient
-      colors={["#4387D2", "#2F37A3"]}
-      style={styles.container}
-      // colors={[theme.colors.primary, "transparent"]}
-    >
-      {active ? (
-        <View style={styles.barcodeContainer}>
-          <BarCodeScanner
-            style={active ? { height: hp(75) } : { height: 0 }}
-            onBarCodeScanned={active ? handleSuccess : undefined}
-          />
-        </View>
-      ) : null}
+  return active ? (
+    <BarCodeScanner
+      style={active ? { height: hp(88) } : { height: 0 }}
+      onBarCodeScanned={active ? handleSuccess : undefined}
+    />
+  ) : (
+    <LinearGradient colors={["#4387D2", "#2F37A3"]} style={styles.container}>
       <View>
-        {!active && data ? (
-          <>
-            {!success ? (
-              <Text
-                style={{
-                  color: theme.colors.primary,
-                  fontSize: 24,
-                }}
-              >
-                {message?.replace("QrCode", "QR Code")}
-              </Text>
-            ) : (
-              <Success
-                invitationUser={invitationUser}
-                currentAddresses={currentAddresses}
-                message={message}
-                invitationData={invitationData}
-              />
-            )}
-          </>
+        {data ? (
+          !success ? (
+            <Text
+              style={{
+                color: theme.colors.primary,
+                fontSize: 24,
+              }}
+            >
+              {message?.replace("QrCode", "QR Code")}
+            </Text>
+          ) : (
+            <Success
+              invitationUser={invitationUser}
+              currentAddresses={currentAddresses}
+              message={message}
+              invitationData={invitationData}
+            />
+          )
         ) : null}
-        {!active ? (
-          <Button
-            onPress={clickToScan}
-            text="scanQrCode"
-            loading={isLoading}
-            width={wp(85)}
-            customStyle={{
-              marginTop: data ? hp(1) : hp(30),
-            }}
-          />
-        ) : null}
+        <Button
+          onPress={clickToScan}
+          text="scanQrCode"
+          loading={isLoading}
+          width={wp(85)}
+          customStyle={{
+            marginTop: data ? hp(1) : hp(30),
+          }}
+        />
       </View>
     </LinearGradient>
   );
@@ -219,7 +195,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   barcodeContainer: {
-    height: hp(85),
+    height: hp(95),
     justifyContent: "center",
   },
   tools: {
