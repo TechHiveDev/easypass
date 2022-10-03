@@ -7,8 +7,7 @@ import {
   BooleanInput,
   usePermissions,
   ReferenceInput,
-  ReferenceField,
-  TextField,
+  ImageInput,
 } from "react-admin";
 // ------------------------------------------------
 const validate = (values) => {

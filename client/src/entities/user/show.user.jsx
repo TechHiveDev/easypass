@@ -5,6 +5,10 @@ import {
   NumberField,
   BooleanField,
   useRecordContext,
+  ImageField,
+  ReferenceManyField,
+  Datagrid,
+  ReferenceField,
 } from "react-admin";
 import UserTitle from "./title";
 
@@ -17,10 +21,23 @@ export default function ShowUser(props) {
         <TextField variant="outlined" source="email" />
         <TextField variant="outlined" source="name" />
         <TextField variant="outlined" source="type" />
-        {/*<TextField variant="outlined" source="password" />*/}
-        <TextField variant="outlined" source="photoUrl" />
+        <ImageField source="photoUrl" title="photo" />
         <BooleanField variant="outlined" source="active" />
         <TextField variant="outlined" source="phone" />
+        <ReferenceManyField
+          label="Properties"
+          reference="userCompound"
+          target="userId"
+        >
+          <Datagrid>
+            <ReferenceField source="compoundId" reference="compound">
+              <TextField source="name" />
+            </ReferenceField>
+            <TextField variant="outlined" source="streetName" />
+            <NumberField variant="outlined" source={"blockNumber"} />
+            <NumberField variant="outlined" source={"unitNumber"} />
+          </Datagrid>
+        </ReferenceManyField>
       </SimpleShowLayout>
     </Show>
   );

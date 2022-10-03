@@ -5,6 +5,7 @@ import {
   NumberField,
   BooleanField,
   DateField,
+  ReferenceField,
 } from "react-admin";
 import DeviceTitle from "./title";
 
@@ -16,7 +17,9 @@ export default function ShowDevice(props) {
       <SimpleShowLayout>
         <NumberField variant="outlined" source="id" />
         <TextField variant="outlined" source="ip" />
-        <NumberField variant="outlined" source="compoundId" />
+        <ReferenceField source="compoundId" reference="compound">
+          <TextField source="name" />
+        </ReferenceField>
       </SimpleShowLayout>
     </Show>
   );

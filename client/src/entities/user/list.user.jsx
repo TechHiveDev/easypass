@@ -7,6 +7,7 @@ import {
   ShowButton,
   EditButton,
   DeleteButton,
+  ImageField,
 } from "react-admin";
 import Actions from "../../reactAdmin/components/Actions";
 
@@ -20,7 +21,8 @@ export default function ListUser(props) {
         <TextField variant="outlined" source="email" />
         <TextField variant="outlined" source="name" />
         {/*<TextField variant="outlined" source="password" />*/}
-        <TextField variant="outlined" source="photoUrl" />
+        {/*<TextField variant="outlined" source="photoUrl" />*/}
+        {/*<ImageField source="photoUrl" title="photo" />*/}
         <TextField variant="outlined" source="phone" />
         <BooleanField variant="outlined" source="active" />
         <TextField variant="outlined" source="type" />
