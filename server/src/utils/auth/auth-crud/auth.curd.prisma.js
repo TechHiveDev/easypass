@@ -202,6 +202,7 @@ export const login = async ({ email, password }) => {
     user.userCompound[index] = {
       ...user.userCompound[index],
       compoundName: compound.name,
+      logoUrl: compound.logoUrl,
     };
   }
 
