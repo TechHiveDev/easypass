@@ -87,7 +87,7 @@ export const createUserAndAddress = async (payload) => {
   });
 
   if (!compound?.id) {
-    throw { status: 400, message: "No Compound with this name" };
+    throw { status: 400, message: "No Compound with this id" };
   }
 
   let compundUserPayload = {};
