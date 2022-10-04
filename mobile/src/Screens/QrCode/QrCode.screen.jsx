@@ -12,6 +12,8 @@ import { useTimer } from "react-timer-hook";
 import { useCreateMutation } from "../../API/api";
 import { useAppSelector } from "../../Store/redux.hooks";
 import { useIsFocused } from "@react-navigation/native";
+import { Circle } from "react-native-progress";
+import { interpolate } from "react-native-reanimated";
 
 // =================================================================
 
@@ -20,8 +22,9 @@ export default function QrCodeScreen() {
 
   const [qrCode, setQrCode] = useState(new Date());
   const { seconds, restart, pause, isRunning } = useTimer({
-    expiryTimestamp: futureDate({ oldDate: new Date() }),
+    expiryTimestamp: futureDate({ date: new Date() }),
   });
+  console.log(seconds);
   const { compoundId, userId } = useAppSelector(
     (s) => s?.auth?.currentCompound
   );
@@ -56,15 +59,15 @@ export default function QrCodeScreen() {
     if (seconds === 10 && !isFocused) return;
 
     if (seconds <= 10 && isFocused && !isRunning) {
-      return restart(futureDate({ oldDate: new Date() }));
+      return restart(futureDate({ date: new Date() }));
     }
 
     if (seconds === 0 && isFocused && isRunning) {
-      return restart(futureDate({ oldDate: new Date() }));
+      return restart(futureDate({ date: new Date() }));
     }
 
     if (seconds === 10 && isFocused) {
-      restart(futureDate({ oldDate: new Date(), seconds: 9 }));
+      restart(futureDate({ date: new Date(), seconds: 9 }));
       return await fetchQrCode();
     }
 
@@ -73,14 +76,31 @@ export default function QrCodeScreen() {
 
   // ---------------------------------------------------
 
-  useEffect(() => updateQrCodeHandler());
+  useEffect(() => {
+    updateQrCodeHandler();
+  }, [seconds, isFocused, isRunning]);
 
   // ---------------------------------------------------
-
+  const animationValue = interpolate(seconds, [0, 9], [0, 1]);
   return (
     <SafeAreaView style={{ ...globalStyles.screen, ...styles.container }}>
-      <View style={styles.square}>
-        <SvgQRCode size={250} value={qrCode.toString()} />
+      <View
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Circle
+          progress={animationValue}
+          size={wp(80)}
+          color={theme.colors.primary}
+          style={{
+            position: "absolute",
+            top: -55,
+          }}
+        />
+        <SvgQRCode size={wp(50)} value={qrCode.toString()} />
       </View>
       <View>
         <Text>{seconds}</Text>
@@ -94,6 +114,7 @@ export default function QrCodeScreen() {
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
+    justifyContent: "center",
     width: wp(100),
   },
   square: {
