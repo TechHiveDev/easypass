@@ -28,6 +28,7 @@ import invitationController from "./src/entities/invitation/invitation.controlle
 import scanController from "./src/entities/scan/scan.controller.js";
 import scanUnprotectedController from "./src/entities/scan/scan.unprotected.controller";
 import deviceController from "./src/entities/device/device.controller.js";
+import announcementController from "./src/entities/announcement/announcement.controller";
 
 // ------------------------------------------------------
 
@@ -97,6 +98,7 @@ app.use(userCompoundController);
 app.use(invitationController);
 app.use(scanController);
 app.use(deviceController);
+app.use(announcementController);
 
 // ------------------------------------------------------
 

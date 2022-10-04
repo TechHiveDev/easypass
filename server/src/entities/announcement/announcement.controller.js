@@ -19,48 +19,45 @@
  *     user:
  *       type: object
  *       properties:
- *         email:
+ *         title:
  *           type: string
- *         name:
- *           type: string
- *         password:
+ *         description:
  *           type: string
  *         photoUrl:
  *           type: string
- *         phone:
- *           type: string
+ *
  *
  * tags:
- *   name: user
+ *   name: announcement
  *
- * /user:
+ * /announcement:
  *   get:
- *    summary: Get all users
- *    tags: [user]
+ *    summary: Get all announcements
+ *    tags: [announcement]
  *    responses:
  *      200:
  *       schema:
- *         $ref: '#/components/schemas/user'
+ *         $ref: '#/components/schemas/announcement'
  *
  *   post:
- *     summary: Create user
- *     tags: [user]
+ *     summary: Create announcement
+ *     tags: [announcement]
  *     requestBody:
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/user'
+ *             $ref: '#/components/schemas/announcement'
  *     responses:
  *       201:
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/user'
+ *               $ref: '#/components/schemas/announcement'
  *
- * /user/{id}:
+ * /announcement/{id}:
  *   get:
- *     summary: Get user by id
- *     tags: [user]
+ *     summary: Get announcement by id
+ *     tags: [announcement]
  *     parameters:
  *       - in: path
  *         name: id
@@ -69,11 +66,11 @@
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/user'
+ *               $ref: '#/components/schemas/announcement'
  *
  *   put:
- *     summary: Edit user
- *     tags: [user]
+ *     summary: Edit announcement
+ *     tags: [announcement]
  *     parameters:
  *       - in: path
  *         name: id
@@ -82,16 +79,16 @@
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/user'
+ *               $ref: '#/components/schemas/announcement'
  *     requestBody:
  *       content:
  *           application/json:
  *             schema:
- *              $ref: '#/components/schemas/user'
+ *              $ref: '#/components/schemas/announcement'
  *
  *   delete:
- *     summary: Delete user
- *     tags: [user]
+ *     summary: Delete announcement
+ *     tags: [announcement]
  *     parameters:
  *       - in: path
  *         name: id
@@ -100,7 +97,7 @@
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/user'
+ *               $ref: '#/components/schemas/announcement'
  *
  *
  */
@@ -108,8 +105,27 @@
 // ------------------------------------------------------------------
 
 import { crud, prismaCrud } from "../../utils/crud/express-crud-router";
+import { getAnnouncementByCompound } from "./announcement.service";
 
 // ------------------------------------------------------------------
+const customRoutesController = [
+  {
+    method: "get", // get, post, put, delete  (from express router)
+    path: "/announcement/compound/:id",
+    controller: async (req, res, next) => {
+      try {
+        let announcements = await getAnnouncementByCompound(+req.params.id);
+        res.status(202).json(announcements);
+      } catch (err) {
+        next(err);
+      }
+    },
+  },
+];
 // ------------------------------------------------------------------
 
-export default crud("/user", prismaCrud("user"));
+export default crud(
+  "/announcement",
+  prismaCrud("announcement"),
+  customRoutesController
+);
