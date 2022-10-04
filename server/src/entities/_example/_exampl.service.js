@@ -20,22 +20,20 @@
  *
  */
 
- import { PrismaClient } from "@prisma/client";
- const prisma = new PrismaClient();gg
+import { PrismaClient } from "@prisma/client";
+const prisma = new PrismaClient();
 // ------------------------------------------------------------
 
 const exampleService = {
-    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-  
-    create: async (body) => prisma.user.create({ ...body }),
-  
-    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-  
-    mario: () => "mario example for custom route ",
-  
-    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-  };
-  
-  // ------------------------------------------------------------------
-  
-  e
+  // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+  create: async (body) => prisma.user.create({ ...body }),
+
+  // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+  mario: () => "mario example for custom route ",
+
+  // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+};
+
+// ------------------------------------------------------------------

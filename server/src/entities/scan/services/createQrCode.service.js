@@ -80,17 +80,17 @@ export const generateGuestQrCodeInvitationLink = async ({
     })
   );
 
-  const fileName = Date.now() + "_" + userId + ".png";
-  const path = "assets/qrcodes/" + fileName;
+  // const fileName = Date.now() + "_" + userId + ".png";
+  // const path = "assets/qrcodes/" + fileName;
 
-  const image = await qrcode.toFile(
-    "assets/qrcodes/" + fileName,
-    encryptedQrcode
-  );
+  // const image = await qrcode.toFile(
+  //   "assets/qrcodes/" + fileName,
+  //   encryptedQrcode
+  // );
 
   return {
-    link: `${API_URL}/${path}`,
-    newLink: `${API_URL}/guest/${encryptedQrcode}`,
+    // link: `${API_URL}/${path}`,
+    link: `${API_URL}/guest/${encryptedQrcode}`,
     qrcode: encryptedQrcode,
   };
 };

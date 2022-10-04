@@ -16,9 +16,9 @@
  *    update: (id, body) => Promise,
  *    destroy: id => Promise ,
  * },
- * 
+ *
  * // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
- * 
+ *
  * // Custom Routes
  * [
  *  {
@@ -52,7 +52,6 @@ import exampleService from "./_example.service";
 const crudController = {
   ...prismaCrud("example"),
   getList: exampleService.getList,
-
 };
 
 // ------------------------------------------------------------------

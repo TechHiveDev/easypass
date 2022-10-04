@@ -28,17 +28,25 @@ const prisma = new PrismaClient({ log: ["info" /* "query" */] });
 // --------------------------------------------------------
 
 const uploadRouter = Router();
-const url = process.env.DOMAIN + process.env.PORT;
+const baseUrl = process.env.DOMAIN + process.env.PORT;
 
 // --------------------------------------------------------
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const { clientId } = req.query;
+    const { id } = req.query;
+    const { entity } = req.params;
+
     const filePath = path.join(
       __dirname,
-      "../../../assets/avatars/client_" + clientId
+      `../../../assets/${entity}/${entity}_${id}`
     );
+
+    // Create containing folder if it doesn't exist'
+    const folderPath = path.join(__dirname, `../../../assets/${entity}`);
+    if (!fs.existsSync(folderPath)) {
+      fs.mkdirSync(folderPath);
+    }
 
     // Create folder if it doesn't exist'
     if (!fs.existsSync(filePath)) {
@@ -60,25 +68,25 @@ const uploadMiddleware = multer({ storage }).any();
 
 // --------------------------------------------------------
 
-const uploadController = async (req, res) => {
-  const { clientId } = req.query;
-  if (!clientId)
-    return { success: false, message: "Client Id is not supplied" };
-  const filePath = req?.files[0]?.filename;
-  const url = `/assets/avatars/client_${clientId}/${filePath}`;
-  const findUser = await prisma.user.update({
-    where: { id: parseInt(clientId) },
-    data: {
-      photoUrl: url,
-    },
-  });
+const uploadController = async (req, res, next) => {
+  const { id } = req.query;
+  const { entity } = req.params;
 
-  res.json({ url });
+  if (!id)
+    return res
+      .status(400)
+      .send({ success: false, message: "Id and entity are not supplied" });
+
+  const filePath = req?.files[0]?.filename;
+  const url = baseUrl + `/assets/${entity}/${entity}_${id}/${filePath}`;
+  res.status(202).json({ url });
 };
 
 // --------------------------------------------------------
 
-uploadRouter.route("/api/upload").post(uploadMiddleware, uploadController);
+uploadRouter
+  .route("/api/upload/:entity")
+  .post(uploadMiddleware, uploadController);
 
 // --------------------------------------------------------
 
