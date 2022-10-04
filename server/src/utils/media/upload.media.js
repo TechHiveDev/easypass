@@ -28,7 +28,14 @@ const prisma = new PrismaClient({ log: ["info" /* "query" */] });
 // --------------------------------------------------------
 
 const uploadRouter = Router();
-const baseUrl = process.env.DOMAIN + process.env.PORT;
+
+let baseUrl;
+
+if (process.env.NODE_ENV === "development") {
+  baseUrl = process.env.DOMAIN + process.env.PORT;
+} else {
+  baseUrl = process.env.DOMAIN;
+}
 
 // --------------------------------------------------------
 
