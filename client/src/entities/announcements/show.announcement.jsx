@@ -19,7 +19,7 @@ export default function ShowAnnouncement(props) {
     <Show title={<DeviceTitle />}>
       <SimpleShowLayout>
         <TextField variant="outlined" source="title" />
-        <TextField variant="outlined" source="description" />
+        <TextField variant="outlined" source="description" multiline={true} />
         <TextField variant="outlined" source="photoUrl" />
         <ReferenceField
           source="compoundId"

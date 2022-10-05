@@ -15,7 +15,7 @@ export default function CreateAnnouncement(props) {
     >
       <SimpleForm redirect="list">
         <TextInput variant="outlined" source="title" />
-        <TextInput variant="outlined" source="description" />
+        <TextInput variant="outlined" source="description" multiline={true} />
         <TextInput variant="outlined" source="photoUrl" />
         <ReferenceInput
           source="compoundId"
