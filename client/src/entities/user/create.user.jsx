@@ -8,6 +8,7 @@ import {
   usePermissions,
   ReferenceInput,
   ImageInput,
+  ImageField,
 } from "react-admin";
 // ------------------------------------------------
 const validate = (values) => {
@@ -44,7 +45,9 @@ export default function CreateUser(props) {
           <TextInput variant="outlined" source="email" required />
           <TextInput variant="outlined" source="name" required />
           <TextInput variant="outlined" source="password" required />
-          <TextInput variant="outlined" source="photoUrl" />
+          <ImageInput source="photoUrl" label="logo" accept="image/*">
+            <ImageField source="src" title="title" />
+          </ImageInput>
           <TextInput variant="outlined" source="phone" required />
           <BooleanInput variant={"outlined"} source={"active"} />
           <SelectInput

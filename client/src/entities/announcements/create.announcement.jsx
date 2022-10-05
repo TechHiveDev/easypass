@@ -4,6 +4,8 @@ import {
   TextInput,
   ReferenceInput,
   SelectInput,
+  ImageInput,
+  ImageField,
 } from "react-admin";
 
 export default function CreateAnnouncement(props) {
@@ -16,7 +18,9 @@ export default function CreateAnnouncement(props) {
       <SimpleForm redirect="list">
         <TextInput variant="outlined" source="title" />
         <TextInput variant="outlined" source="description" multiline={true} />
-        <TextInput variant="outlined" source="photoUrl" />
+        <ImageInput source="photoUrl" label="logo" accept="image/*">
+          <ImageField source="src" title="title" />
+        </ImageInput>
         <ReferenceInput
           source="compoundId"
           reference="compound"

@@ -42,7 +42,8 @@ export default function ShowCompound(props) {
           <Datagrid>
             <TextField variant="outlined" source="title" />
             <TextField variant="outlined" source="description" />
-            <TextField variant="outlined" source="photoUrl" />
+            <TextField variant="outlined" source="logoUrl" />
+            <ImageField source="logoUrl" title="title" />
           </Datagrid>
         </ReferenceManyField>
       </SimpleShowLayout>
