@@ -79,13 +79,13 @@ const uploadController = async (req, res, next) => {
   const { id } = req.query;
   const { entity } = req.params;
 
-  if (!id)
-    return res
-      .status(400)
-      .send({ success: false, message: "Id and entity are not supplied" });
+  // if (!id)
+  //   return res
+  //     .status(400)
+  //     .send({ success: false, message: "Id and entity are not supplied" });
 
   const filePath = req?.files[0]?.filename;
-  const url = baseUrl + `/assets/${entity}/${entity}_${id}/${filePath}`;
+  const url = baseUrl + `/assets/${entity}/${entity}_${id?id:""}/${filePath}`;
   res.status(202).json({ url });
 };
 
