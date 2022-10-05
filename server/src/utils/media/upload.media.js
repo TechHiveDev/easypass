@@ -19,17 +19,16 @@ import { PrismaClient } from "@prisma/client";
 // ---------------------------------------------------------
 
 const prisma = new PrismaClient({ log: ["info" /* "query" */] });
+import { API_URL } from "../../../../configs";
 
 // --------------------------------------------------------
 
 const uploadRouter = Router();
 
-let baseUrl;
+let baseUrl = API_URL;
 
 if (process.env.NODE_ENV === "development") {
-  baseUrl = process.env.DOMAIN + process.env.PORT;
-} else {
-  baseUrl = process.env.DOMAIN;
+  baseUrl += `:${process.env.PORT}`;
 }
 
 // --------------------------------------------------------
@@ -41,7 +40,7 @@ const storage = multer.diskStorage({
 
     const filePath = path.join(
       __dirname,
-      `../../../assets/${entity}/${entity}_${id?id:""}`
+      `../../../assets/${entity}/${entity}_${id ? id : ""}`
     );
 
     // Create containing folder if it doesn't exist'
@@ -80,7 +79,8 @@ const uploadController = async (req, res, next) => {
   //     .send({ success: false, message: "Id and entity are not supplied" });
 
   const filePath = req?.files[0]?.filename;
-  const url = baseUrl + `/assets/${entity}/${entity}_${id?id:""}/${filePath}`;
+  const url =
+    baseUrl + `/assets/${entity}/${entity}_${id ? id : ""}/${filePath}`;
   res.status(202).json({ url });
 };
 

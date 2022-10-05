@@ -1,4 +1,3 @@
-import qrcode from "qrcode";
 import { encryptWithPublicKey } from "../../../utils/cryptography/cryptography";
 import invitationService from "../../invitation/invitation.service";
 import { isUserBelongsToCompound } from "../../userCompound/userCompound.service";
