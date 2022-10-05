@@ -22,10 +22,18 @@
 
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
+
 // ------------------------------------------------------------
 
 export const getAnnouncementByCompound = async (compoundId) => {
   return await prisma.announcement.findMany({ where: { compoundId } });
 };
 
+// ------------------------------------------------------------------
+
+export const createAnnouncement = async (adminId, data) => {
+  return await prisma.announcement.create({
+    data: { ...data, userId: adminId },
+  });
+};
 // ------------------------------------------------------------------
