@@ -102,6 +102,7 @@ import {
   generateGuestQrCodeInvitationLink,
   generateResidentQrCode,
 } from "./services/createQrCode.service";
+import { scanReport } from "./services/scan.analysis.service";
 import { scanQrCode } from "./services/scanQrCode.service";
 // ------------------------------------------------------------------
 
@@ -154,6 +155,23 @@ const customRoutesController = [
       try {
         const encryptedQrcode = await scanQrCode(req.body);
         return res.status(202).json(encryptedQrcode);
+      } catch (err) {
+        next(err);
+      }
+    },
+  },
+
+  //  ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+  {
+    method: "get",
+    path: "/scan-report",
+    controller: async (req, res, next) => {
+      try {
+        console.log(typeof(req.query.compoundId));
+        const report = await scanReport();
+        return res.status(202).json(report);
+        // res.send("sad")
       } catch (err) {
         next(err);
       }

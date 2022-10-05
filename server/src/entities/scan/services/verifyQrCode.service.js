@@ -45,11 +45,6 @@ export const verifyResidentQrCode = async ({ expiresAt, ...rest }) => {
 
 // ===============================================================
 
-// TODO : VERIFY QR CODE FOR GUEST ( Delivery or Vistor )
-/**
- * 1 -
- */
-
 /**
  * Verify Scan QrCode for Guest ( delivery or guest )
  */
