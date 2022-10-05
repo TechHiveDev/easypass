@@ -1,8 +1,8 @@
 import simpleRestProvider from "ra-data-simple-rest";
 import { fetchUtils } from "react-admin";
 import config from "../../configs/config";
-
 // =================================================================
+
 const httpClient = (url, options = {}) => {
   if (!options.headers) {
     options.headers = new Headers({ Accept: "application/json" });
