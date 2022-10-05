@@ -34,6 +34,17 @@ export default function ShowCompound(props) {
             <NumberField variant="outlined" source={"unitNumber"} />
           </Datagrid>
         </ReferenceManyField>
+        <ReferenceManyField
+          label="Announcements"
+          reference="announcement"
+          target="compoundId"
+        >
+          <Datagrid>
+            <TextField variant="outlined" source="title" />
+            <TextField variant="outlined" source="description" />
+            <TextField variant="outlined" source="photoUrl" />
+          </Datagrid>
+        </ReferenceManyField>
       </SimpleShowLayout>
     </Show>
   );

@@ -5,7 +5,15 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
+    <style>
+        .container {
+            display: flex;
+            justify-content:center;
+            align-items:center;
+            flex-direction:column;
+            padding:10px;
+        }
+    </style>
     <title>
 
         <% if(title){ %>
@@ -16,10 +24,9 @@
     </title>
 </head>
 
-<body>
-<div style="display: flex; justify-content:center; align-items:center; flex-direction:column;">
+<body class="container">
 
-    <% if(qr_code){ %>
+    <% if(qr_code && message === "QrCode Accepted"){ %>
     <div>
         <img src="<%=qr_code %>" alt="QR Code" />
     </div>
@@ -30,7 +37,7 @@
         <h1><%=message %></h1>
     </div>
     <% } %>
-</div>
+
 </body>
 
 </html>
