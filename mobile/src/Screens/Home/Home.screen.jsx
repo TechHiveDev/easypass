@@ -1,7 +1,7 @@
 import { SafeAreaView, ScrollView } from "react-native";
 import globalStyles from "../../Theme/global.styles";
 import UserCard from "./Components/UserCard";
-import Announcements from "./Components/Announcements";
+import Announcements from "./Components/Annoucements";
 import Actions from "./Components/Actions";
 import { useAppSelector } from "../../Store/redux.hooks";
 

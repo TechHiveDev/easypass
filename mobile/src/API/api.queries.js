@@ -136,6 +136,12 @@ const endpoints = (builder) => ({
       body,
     }),
   }),
+  getCompoundAnnouncements: builder.query({
+    query: (compoundId) => ({
+      url: `/announcement/compound/${compoundId}`,
+      method: "GET",
+    }),
+  }),
 });
 
 // =============================================================
