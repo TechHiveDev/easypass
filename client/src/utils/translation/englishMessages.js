@@ -50,6 +50,7 @@ const allEnglishMessages = {
     Invitation: "Invitation",
     Scan: "Scan",
     Device: "Device",
+    Announcement: "Announcement",
   },
 
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
