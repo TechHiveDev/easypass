@@ -12,31 +12,37 @@ const prisma = new PrismaClient({
  * report Scan Report
  */
 export const scanReport = async ({ compoundId, start, end, interval }) => {
+  // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+  // Step up some variables for later
+  // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   end = new Date(+end);
   start = new Date(+start);
 
-  if (typeof compoundId != "object") {
+  let diff = (end.getTime() - start.getTime()) / interval;
+
+  if (!start || !start || !end || !interval)
+    throw {
+      status: 400,
+      message: "start date, end date, interval are required",
+    };
+
+  if (!compoundId) {
+    let compoundIds = await prisma.compound.findMany({ select: { id: true } });
+    compoundId = compoundIds.map(({ id }) => id);
+  } else if (typeof compoundId != "object") {
     compoundId = [compoundId];
   }
   let res = [];
+  // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+  // for a compound get 1- scans between specificed period
+  //                    2- compound id, name
+  // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
   for await (let id of compoundId) {
     const component = await prisma.compound.findFirst({ where: { id: +id } });
+    if (!component) continue;
 
-    // const sucessfulScans = await prisma.scan.findMany({
-    //   where: { success: true, compoundId: +id },
-    //   select: { createdAt: true },
-    // });
-    // const failedScans = await prisma.scan.findMany({
-    //   where: { success: false, compoundId: +id },
-    //   select: { createdAt: true },
-    // });
-    // res.push({
-    //   compound: { id: component.id, name: component.name },
-    //   success: sucessfulScans,
-    //   fail: failedScans,
-    // });
-    console.log({ from: new Date(+start), to: new Date(+end) });
+    // console.log({ from: start, to: end });
     const scans = await prisma.scan.findMany({
       where: {
         compoundId: +id,
@@ -46,20 +52,44 @@ export const scanReport = async ({ compoundId, start, end, interval }) => {
         },
       },
     });
-    console.log(scans);
 
-    let success = Array(interval).fill(0);
-    let fail = Array(interval).fill(0);
+    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+    // initiate success and fail with 0'z
+    // generate dates intervals based on start and end date
+    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+    let success = [];
+    let fail = [];
+    let dates = [];
+    let tempDate = start;
+    for (let index = 0; index < interval; index++) {
+      success[index] = 0;
+      fail[index] = 0;
+
+      tempDate = new Date(+(tempDate.getTime() + diff));
+      dates.push(tempDate);
+    }
 
     scans.forEach((scan) => {
-      if (scan.success) {
-        // let diff = Number(scan.createdAt.getTime() - start.getTime());
-        console.log(scan.createdAt.getTime());
-        // console.log(diff / interval);
-        // success[  ]+=1
-      }
+      // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+      // fill in the success/fail with their relavent data
+      // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+      let index = Math.floor(
+        (scan.createdAt.getTime() - start.getTime()) / diff
+      );
+      if (!success[index]) success[index] = 0;
+      if (!fail[index]) fail[index] = 0;
+      if (scan.success) success[index] += 1;
+      else fail[index] += 1;
+    });
+
+    res.push({
+      component: { name: component.name, id: component.id },
+      report: { success, fail, dates },
     });
   }
+
+  // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   return res;
 };
 
