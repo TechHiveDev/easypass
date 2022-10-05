@@ -168,10 +168,8 @@ const customRoutesController = [
     path: "/scan-report",
     controller: async (req, res, next) => {
       try {
-        console.log(typeof(req.query.compoundId));
-        const report = await scanReport();
+        const report = await scanReport(req.query);
         return res.status(202).json(report);
-        // res.send("sad")
       } catch (err) {
         next(err);
       }
