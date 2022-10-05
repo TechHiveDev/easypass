@@ -76,6 +76,7 @@ export const createUserAndAddress = async (payload) => {
     streetName,
     blockNumber,
     unitNumber,
+    photoUrl,
     active = false,
   } = payload;
 
@@ -120,6 +121,7 @@ export const createUserAndAddress = async (payload) => {
   return prisma.user.create({
     data: {
       name,
+      photoUrl,
       email,
       phone,
       type,
