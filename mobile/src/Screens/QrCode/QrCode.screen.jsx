@@ -24,7 +24,6 @@ export default function QrCodeScreen() {
   const { seconds, restart, pause, isRunning } = useTimer({
     expiryTimestamp: futureDate({ date: new Date() }),
   });
-  console.log(seconds);
   const { compoundId, userId } = useAppSelector(
     (s) => s?.auth?.currentCompound
   );
@@ -56,19 +55,17 @@ export default function QrCodeScreen() {
 
     if (seconds < 10 && seconds > 0 && isRunning) return;
 
-    if (seconds === 10 && !isFocused) return;
-
-    if (seconds <= 10 && isFocused && !isRunning) {
+    if (seconds <= 10 && !isRunning) {
       return restart(futureDate({ date: new Date() }));
     }
 
-    if (seconds === 0 && isFocused && isRunning) {
+    if (seconds === 0 && isRunning) {
       return restart(futureDate({ date: new Date() }));
     }
 
-    if (seconds === 10 && isFocused) {
-      restart(futureDate({ date: new Date(), seconds: 9 }));
-      return await fetchQrCode();
+    if (seconds === 10) {
+      await fetchQrCode();
+      return restart(futureDate({ date: new Date(), seconds: 9 }));
     }
 
     return true;
