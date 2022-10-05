@@ -105,7 +105,12 @@
 // ------------------------------------------------------------------
 
 import { crud, prismaCrud } from "../../utils/crud/express-crud-router";
-import { getAnnouncementByCompound } from "./announcement.service";
+import { getAnnouncementByCompound, createAnnouncement } from "./announcement.service";
+
+// ==================================================================
+const crudController = {
+  ...prismaCrud("announcement"),
+};
 
 // ------------------------------------------------------------------
 const customRoutesController = [
@@ -121,11 +126,21 @@ const customRoutesController = [
       }
     },
   },
+
+  // ------------------------------------------------------------------
+
+  {
+    method: "post",
+    path: "/announcement/create",
+    controller: async (req, res, next) => {
+      try {
+        let announcements = await createAnnouncement(req.user.id, req.body);
+        res.status(202).json(announcements);
+      } catch (err) {
+        next(err);
+      }
+    },
+  },
 ];
 // ------------------------------------------------------------------
-
-export default crud(
-  "/announcement",
-  prismaCrud("announcement"),
-  customRoutesController
-);
+export default crud("/announcement", crudController, customRoutesController);
