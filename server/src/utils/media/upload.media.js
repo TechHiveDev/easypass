@@ -9,11 +9,6 @@
 
 // --------------------------------------------------------
 
-// TODO :
-// folder for profiles photo
-// folder for compound images
-// folder for compounds facilities
-
 import { Router } from "express";
 import multer from "multer";
 import fs from "fs";
@@ -46,7 +41,7 @@ const storage = multer.diskStorage({
 
     const filePath = path.join(
       __dirname,
-      `../../../assets/${entity}/${entity}_${id}`
+      `../../../assets/${entity}/${entity}_${id?id:""}`
     );
 
     // Create containing folder if it doesn't exist'

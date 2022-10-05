@@ -3,7 +3,7 @@ node_modules
 
 # exclude everything inside assets
 
-assets/user/*
+assets/*
 
 # exception to the rule
-!assets/user/.gitkeep
+# !assets/user/.gitkeep
