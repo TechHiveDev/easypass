@@ -108,7 +108,6 @@ import { scanQrCode } from "./services/scanQrCode.service";
 
 const crudController = {
   ...prismaCrud("scan"),
-  getOne: null,
   create: null,
   update: null,
   destroy: null,
