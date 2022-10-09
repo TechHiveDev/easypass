@@ -31,13 +31,12 @@ export default function MySideMenu(props) {
             />
           );
         })}
-
-      {/*<MenuItemLink*/}
-      {/*  key={"asd"}*/}
-      {/*  to={`/asd`}*/}
-      {/*  primaryText={"custom route"}*/}
-      {/*  leftIcon={<GroupIcon />}*/}
-      {/*/>*/}
+      <MenuItemLink
+        key={"reports"}
+        to={`/reports`}
+        primaryText={"Reports"}
+        leftIcon={<GroupIcon />}
+      />
     </Sidebar>
   );
 }

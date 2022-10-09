@@ -1,4 +1,4 @@
-import { Admin, Resource, usePermissions } from "react-admin";
+import { Admin, Resource, usePermissions, CustomRoutes } from "react-admin";
 import entities from "../../entities/entities";
 import i18nProvider from "../../utils/translation/i18nProvider";
 import { authProvider } from "../providers/auth.provider.hook";
@@ -6,7 +6,8 @@ import { dataProvider } from "../providers/data.provider.hook";
 import MyLayout from "./MyLayout";
 import SignUp from "../../custom-views/Signup";
 import { useEffect, useState } from "react";
-
+import { Route } from "react-router-dom";
+import Reports from "../../custom-views/Reports/Reports";
 // =======================================================
 export default function MyAdmin() {
   const [type, setType] = useState(
@@ -42,6 +43,9 @@ export default function MyAdmin() {
         }
         return <Resource key={label} option={{ label }} {...rest} />;
       })}
+      <CustomRoutes>
+        <Route path="/reports" element={<Reports />} />
+      </CustomRoutes>
     </Admin>
   );
 }
