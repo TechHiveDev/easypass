@@ -4,4 +4,13 @@ import UserCompound from "./userCompound/ui.userCompound.js";
 import Invitation from "./invitation/ui.invitation.js";
 import Device from "./device/ui.device.js";
 import Announcement from "./announcements/ui.announcement";
-export default [Compound, User, UserCompound, Invitation, Device, Announcement];
+import Scan from "./scan/ui.scan";
+export default [
+  Compound,
+  User,
+  UserCompound,
+  Invitation,
+  Device,
+  Announcement,
+  Scan,
+];
