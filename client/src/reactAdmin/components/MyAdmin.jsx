@@ -7,7 +7,8 @@ import MyLayout from "./MyLayout";
 import SignUp from "../../custom-views/Signup";
 import { useEffect, useState } from "react";
 import { Route } from "react-router-dom";
-import Reports from "../../custom-views/Reports/Reports";
+import Scan from "../../custom-views/Reports/Scan";
+import Invite from "../../custom-views/Reports/Invite";
 // =======================================================
 export default function MyAdmin() {
   const [type, setType] = useState(
@@ -44,7 +45,8 @@ export default function MyAdmin() {
         return <Resource key={label} option={{ label }} {...rest} />;
       })}
       <CustomRoutes>
-        <Route path="/reports" element={<Reports />} />
+        <Route path="/reports/scan" element={<Scan />} />
+        <Route path="/reports/invite" element={<Invite />} />
       </CustomRoutes>
     </Admin>
   );
