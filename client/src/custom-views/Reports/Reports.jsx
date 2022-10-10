@@ -9,12 +9,7 @@ import {
   Legend,
   ArcElement,
 } from "chart.js";
-import {
-  Bar,
-  Pie,
-  getDatasetAtEvent,
-  getElementAtEvent,
-} from "react-chartjs-2";
+import { Bar, Pie, getElementAtEvent } from "react-chartjs-2";
 import { useQuery } from "react-query";
 import { Loading, Error } from "react-admin";
 import customFetch from "../../utils/customFetch";
@@ -22,7 +17,8 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-
+import Button from "@mui/material/Button";
+import { Link } from "react-router-dom";
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -32,16 +28,32 @@ ChartJS.register(
   Legend,
   ArcElement
 );
-export const options = {
+const options = {
   responsive: true,
+  title: {
+    display: true,
+    text: "Scans",
+  },
   plugins: {
     legend: {
       position: "top",
     },
   },
+  scales: {
+    y: {
+      ticks: {
+        // remove fractions from graph
+        callback: function (value, index, ticks) {
+          const isInteger = Number.isInteger(value);
+          return isInteger ? value : "";
+        },
+      },
+    },
+  },
 };
 
 const Reports = () => {
+  const [compound, setCompound] = useState("");
   const {
     data: compounds,
     compoundsLoading,
@@ -54,8 +66,9 @@ const Reports = () => {
     to: "2022-10-30",
     interval: 7,
   });
+  const [filterParams, setFilterParams] = useState({});
   const chartRef = useRef();
-  const [compound, setCompound] = useState(compounds?.[0]?.id || "");
+
   const [chart, setChart] = useState(0);
   const { data, isLoading, error } = useQuery(
     ["report", from, to, interval, compound],
@@ -67,16 +80,15 @@ const Reports = () => {
           compound ? "&compoundId=" + compound : ""
         }`,
         {}
-      )
+      ),
+    {
+      enabled: !!compound,
+    }
   );
-
-  if (isLoading || compoundsLoading) return <Loading />;
-  if (error || compoundsError) return <Error error={error || compoundsError} />;
-  if (!data || !compounds) return null;
   const graphData =
     chart === 0
       ? {
-          labels: data?.[0]?.report?.dates.map((d) => d.substring(0, 10)),
+          labels: data?.[0]?.report?.dates?.map((d) => d.substring(0, 10)),
           datasets: [
             {
               label: "Fail",
@@ -117,23 +129,44 @@ const Reports = () => {
         };
   const onClick = (event) => {
     const elementAtEvent = getElementAtEvent(chartRef.current, event);
+    const { datasetIndex, index: dataIndex } = elementAtEvent[0];
+    let success = false;
     if (chart === 1) {
-      if (elementAtEvent?.[0]?.index === 1) {
-        console.log("suc");
+      if (dataIndex === 1) {
+        success = true;
       }
-      if (elementAtEvent?.[0]?.index === 0) {
-        console.log("fail");
+      if (dataIndex === 0) {
+        success = false;
       }
     }
     if (chart === 0) {
-      if (elementAtEvent?.[0]?.datasetIndex === 1) {
-        console.log("suc");
+      if (datasetIndex === 1) {
+        success = true;
       }
-      if (elementAtEvent?.[0]?.datasetIndex === 0) {
-        console.log("fail");
+      if (datasetIndex === 0) {
+        success = false;
       }
     }
+    setFilterParams({
+      createdAt: {
+        gte:
+          chart === 0
+            ? data?.[0]?.report?.dates[dataIndex].substring(0, 10) +
+              "T10:00:00.000Z"
+            : from + "T10:00:00.000Z",
+        lte:
+          chart === 0
+            ? data?.[0]?.report?.dates[dataIndex + 1].substring(0, 10) +
+              "T10:00:00.000Z"
+            : to + "T10:00:00.000Z",
+      },
+      success,
+      compoundId: compound,
+    });
   };
+  if (isLoading || compoundsLoading) return <Loading />;
+  if (error || compoundsError) return <Error error={error || compoundsError} />;
+  if (!compounds || (!compounds && !compound)) return null;
   return (
     <div>
       <h1>Reports</h1>
@@ -222,29 +255,51 @@ const Reports = () => {
         </FormControl>
       </div>
       {!compound ? (
-        <h2>Select a compound</h2>
-      ) : chart === 0 ? (
-        <Bar
-          options={options}
-          data={graphData}
-          ref={chartRef}
-          onClick={onClick}
-          style={{
-            maxWidth: "80vw",
-            maxHeight: "70vh",
-          }}
-        />
+        <h2 style={{ textAlign: "center" }}>Select a compound</h2>
       ) : (
-        <Pie
-          data={graphData}
-          ref={chartRef}
-          onClick={onClick}
-          style={{
-            maxWidth: "80vw",
-            maxHeight: "70vh",
-          }}
-        />
+        <>
+          <h2 style={{ textAlign: "center", marginLeft: "-5vw" }}>Scans</h2>
+          {chart === 0 ? (
+            <Bar
+              options={options}
+              data={graphData}
+              ref={chartRef}
+              onClick={onClick}
+              style={{
+                maxWidth: "80vw",
+                maxHeight: "70vh",
+              }}
+            />
+          ) : (
+            <Pie
+              data={graphData}
+              ref={chartRef}
+              onClick={onClick}
+              style={{
+                maxWidth: "80vw",
+                maxHeight: "70vh",
+              }}
+            />
+          )}
+        </>
       )}
+      {filterParams?.createdAt ? (
+        <Button
+          color="primary"
+          component={Link}
+          to={{
+            pathname: "/scan",
+            search: `filter=${JSON.stringify(filterParams)}`,
+          }}
+          style={{
+            textTransform: "none",
+          }}
+        >
+          All {filterParams?.success ? "successful" : "failed"} scans from&nbsp;
+          {filterParams.createdAt.gte.substring(0, 10)} to&nbsp;
+          {filterParams.createdAt.lte.substring(0, 10)}
+        </Button>
+      ) : null}
     </div>
   );
 };
