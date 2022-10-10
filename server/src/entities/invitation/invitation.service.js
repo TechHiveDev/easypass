@@ -47,11 +47,24 @@ export const invitationReport = async ({
   end,
   interval,
 }) => {
+  //NOTE: interval is enum (1=>day)
+  //                       (7=>week)
+  //                       (30=>month)
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   // Step up some variables for later
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
   end = new Date(+end);
   start = new Date(+start);
+
+  let newInterval =
+    interval == 30
+      ? 60 * 60 * 1000 * 24 * 32
+      : interval == 7
+      ? 60 * 60 * 1000 * 24 * 8
+      : 60 * 60 * 1000 * 24 * 1;
+
+  interval = Math.ceil((end.getTime() - start.getTime()) / newInterval);
 
   let diff = (end.getTime() - start.getTime()) / interval;
 
@@ -94,15 +107,17 @@ export const invitationReport = async ({
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
     let visitor = [];
+    let all = [];
     let delivery = [];
     let dates = [];
     let tempDate = start;
     for (let index = 0; index < interval; index++) {
       visitor[index] = 0;
       delivery[index] = 0;
+      all[index] = 0;
 
-      tempDate = new Date(+(tempDate.getTime() + diff));
       dates.push(tempDate);
+      tempDate = new Date(+(tempDate.getTime() + diff));
     }
 
     invitations.forEach((invitation) => {
@@ -114,13 +129,15 @@ export const invitationReport = async ({
       );
       if (!visitor[index]) visitor[index] = 0;
       if (!delivery[index]) delivery[index] = 0;
+      if (!all[index]) all[index] = 0;
       if (invitation.type == "Visitor") visitor[index] += 1;
       else delivery[index] += 1;
+      all[index] += 1;
     });
 
     res.push({
       component: { name: component.name, id: component.id },
-      report: { visitor, delivery, dates },
+      report: { visitor, delivery, all, dates },
     });
   }
 
