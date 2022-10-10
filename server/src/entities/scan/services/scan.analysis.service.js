@@ -79,8 +79,8 @@ export const scanReport = async ({ compoundId, start, end, interval }) => {
       success[index] = 0;
       fail[index] = 0;
 
-      tempDate = new Date(+(tempDate.getTime() + diff));
       dates.push(tempDate);
+      tempDate = new Date(+(tempDate.getTime() + diff));
     }
 
     scans.forEach((scan) => {
