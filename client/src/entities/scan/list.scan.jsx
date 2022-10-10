@@ -5,16 +5,26 @@ import {
   NumberField,
   ShowButton,
   ReferenceField,
-  TextInput,
   DateTimeInput,
-  DateInput,
+  BooleanInput,
+  ReferenceInput,
+  SelectInput,
 } from "react-admin";
 import Actions from "../../reactAdmin/components/Actions";
 
 // ------------------------------------------------
 const scanFilters = [
-  <DateTimeInput label="from" source="createdAt.gte" alwaysOn />,
-  <DateTimeInput label="to" source="createdAt.lte" alwaysOn />,
+  <DateTimeInput label="from" source="createdAt.gte" />,
+  <DateTimeInput label="to" source="createdAt.lte" />,
+  <BooleanInput label="success" source="success" />,
+  <ReferenceInput
+    source="compoundId"
+    reference="compound"
+    label={"compound"}
+    name={"compoundId"}
+  >
+    <SelectInput optionText={"name"} />
+  </ReferenceInput>,
 ];
 export default function ListScan(props) {
   return (
