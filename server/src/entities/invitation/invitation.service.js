@@ -41,17 +41,25 @@ export default invitationService;
 /**
  * report invitation Report
  */
-export const invitationReport = async ({
-  compoundId,
-  start,
-  end,
-  interval,
-}) => {
+export const invitationReport = async ({ compoundId, start, end, interval }) => {
+  //NOTE: interval is enum (1=>day)
+  //                       (7=>week)
+  //                       (30=>month)
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   // Step up some variables for later
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
   end = new Date(+end);
   start = new Date(+start);
+
+  let newInterval =
+    interval == 30
+      ? 60 * 60 * 1000 * 24 * 32
+      : interval == 7
+      ? 60 * 60 * 1000 * 24 * 8
+      : 60 * 60 * 1000 * 24 * 1;
+
+  interval = Math.ceil((end.getTime() - start.getTime()) / newInterval);
 
   let diff = (end.getTime() - start.getTime()) / interval;
 
@@ -101,8 +109,8 @@ export const invitationReport = async ({
       visitor[index] = 0;
       delivery[index] = 0;
 
-      tempDate = new Date(+(tempDate.getTime() + diff));
       dates.push(tempDate);
+      tempDate = new Date(+(tempDate.getTime() + diff));
     }
 
     invitations.forEach((invitation) => {
