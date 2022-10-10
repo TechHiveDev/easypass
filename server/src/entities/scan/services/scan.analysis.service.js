@@ -19,13 +19,15 @@ export const scanReport = async ({ compoundId, start, end, interval }) => {
   // Step up some variables for later
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   end = new Date(+end);
-  start = new Date(+start);
+  start = new Date(+(start));
+
+  console.log(start)
 
   let newInterval =
     interval == 30
       ? 60 * 60 * 1000 * 24 * 30
       : interval == 7
-      ? 604800000
+      ? 691200000
       : 86400000;
 
   interval = Math.ceil((end.getTime() - start.getTime()) / newInterval)
