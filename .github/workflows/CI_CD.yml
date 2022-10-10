@@ -67,7 +67,7 @@ jobs:
         run: |
           yarn install
           yarn build
-          zip -r build.zip build
+          zip -r dist.zip dist
         working-directory: ./client
 
       # - - - - - - - - - - - - - - - - - - - - - - - - -
