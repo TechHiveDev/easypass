@@ -12,15 +12,13 @@ import {
 import Actions from "../../reactAdmin/components/Actions";
 
 // ------------------------------------------------
-// const scanFilters = [
-//   <DateInput label="from" source="createdAt_gte" alwaysOn />,
-//   <DateInput label="to" source="createdAt_lte" alwaysOn />,
-// ];
+const scanFilters = [
+  <DateTimeInput label="from" source="createdAt.gte" alwaysOn />,
+  <DateTimeInput label="to" source="createdAt.lte" alwaysOn />,
+];
 export default function ListScan(props) {
   return (
-    <List
-    // filters={scanFilters}
-    >
+    <List filters={scanFilters}>
       <Datagrid>
         <NumberField variant="outlined" source="id" />
         <TextField variant="outlined" source="invitationId" />
