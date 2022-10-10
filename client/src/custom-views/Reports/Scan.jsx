@@ -52,7 +52,7 @@ const options = {
   },
 };
 
-const Reports = () => {
+const Scan = () => {
   const [compound, setCompound] = useState("");
   const {
     data: compounds,
@@ -88,7 +88,16 @@ const Reports = () => {
   const graphData =
     chart === 0
       ? {
-          labels: data?.[0]?.report?.dates?.map((d) => d.substring(0, 10)),
+          labels: data?.[0]?.report?.dates?.map((d, i) => {
+            const currentDate = new Date(d);
+            const nextDay = data?.[0]?.report?.dates?.[i + 1];
+            currentDate.setDate(currentDate.getDate() + interval);
+            return `${d?.substring(0, 10)} / ${
+              nextDay
+                ? nextDay.substring(0, 10)
+                : currentDate.toISOString().substring(0, 10)
+            }`;
+          }),
           datasets: [
             {
               label: "Fail",
@@ -169,7 +178,6 @@ const Reports = () => {
   if (!compounds || (!compounds && !compound)) return null;
   return (
     <div>
-      <h1>Reports</h1>
       <div
         style={{
           display: "flex",
@@ -305,4 +313,4 @@ const Reports = () => {
   );
 };
 
-export default Reports;
+export default Scan;
