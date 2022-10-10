@@ -71,7 +71,7 @@ const Scan = () => {
 
   const [chart, setChart] = useState(0);
   const { data, isLoading, error } = useQuery(
-    ["report", from, to, interval, compound],
+    ["scan-report", from, to, interval, compound],
     () =>
       customFetch(
         `/scan-report/?start=${new Date(from).getTime()}&end=${new Date(
@@ -88,16 +88,19 @@ const Scan = () => {
   const graphData =
     chart === 0
       ? {
-          labels: data?.[0]?.report?.dates?.map((d, i) => {
-            const currentDate = new Date(d);
-            const nextDay = data?.[0]?.report?.dates?.[i + 1];
-            currentDate.setDate(currentDate.getDate() + interval);
-            return `${d?.substring(0, 10)} / ${
-              nextDay
-                ? nextDay.substring(0, 10)
-                : currentDate.toISOString().substring(0, 10)
-            }`;
-          }),
+          labels:
+            interval === 1
+              ? data?.[0]?.report?.dates?.map((d) => d?.substring(0, 10))
+              : data?.[0]?.report?.dates?.map((d, i) => {
+                  const currentDate = new Date(d);
+                  const nextDay = data?.[0]?.report?.dates?.[i + 1];
+                  currentDate.setDate(currentDate.getDate() + interval);
+                  return `${d?.substring(0, 10)} / ${
+                    nextDay
+                      ? nextDay.substring(0, 10)
+                      : currentDate.toISOString().substring(0, 10)
+                  }`;
+                }),
           datasets: [
             {
               label: "Fail",
@@ -138,6 +141,7 @@ const Scan = () => {
         };
   const onClick = (event) => {
     const elementAtEvent = getElementAtEvent(chartRef.current, event);
+    if (!elementAtEvent?.[0]) return;
     const { datasetIndex, index: dataIndex } = elementAtEvent[0];
     let success = false;
     if (chart === 1) {

@@ -23,7 +23,6 @@ const icons = {
 // ------------------------------------------------
 
 export default function MySideMenu(props) {
-  console.log(props);
   const translate = useTranslate();
   const [checked, setChecked] = useState(false);
   const [open] = useSidebarState();
@@ -71,7 +70,7 @@ export default function MySideMenu(props) {
           />{" "}
           <MenuItemLink
             to={`/reports/invite`}
-            primaryText={"invite"}
+            primaryText={"Invite"}
             leftIcon={<GroupIcon />}
           />
         </div>
