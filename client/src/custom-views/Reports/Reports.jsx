@@ -218,8 +218,9 @@ const Reports = () => {
               setFromToInterval((p) => ({ ...p, interval: e.target.value }));
             }}
           >
+            <MenuItem value={1}>Day</MenuItem>
             <MenuItem value={7}>Week</MenuItem>
-            <MenuItem value={4}>Month</MenuItem>
+            <MenuItem value={30}>Month</MenuItem>
           </Select>
         </FormControl>
         <FormControl fullWidth>
