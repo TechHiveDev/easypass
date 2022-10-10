@@ -7,6 +7,7 @@ import {
   EditButton,
   DeleteButton,
   usePermissions,
+  ImageField,
 } from "react-admin";
 import Actions from "../../reactAdmin/components/Actions";
 
@@ -19,7 +20,6 @@ export default function ListCompound(props) {
       <Datagrid>
         <NumberField variant="outlined" source="id" />
         <TextField variant="outlined" source="name" />
-        <TextField variant="outlined" source="logoUrl" />
         <TextField variant="outlined" source="location" />
         <div
           style={{

@@ -3,6 +3,7 @@ import { Appbar } from "react-native-paper";
 import i18n from "i18n-js";
 import theme from "../Theme/paper.theme";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
+import config from "../Config/config";
 // ========================================================
 
 const hiddenStatusBar = ["login"];
@@ -25,7 +26,7 @@ export default function MyStatusBar({
     title = `${i18n.t(title)} ${params?.id ? " - " + params?.id : ""}`;
   }
 
-  if (name === "home" || name == "HomeTabNavigator") title = "Easy Pass";
+  if (name === "home" || name == "HomeTabNavigator") title = config.name;
 
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 

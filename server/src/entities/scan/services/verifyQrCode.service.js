@@ -38,17 +38,12 @@ export const verifyEncryptedQrCode = async (encryptedQrcode) => {
  */
 export const verifyResidentQrCode = async ({ expiresAt, ...rest }) => {
   if (new Date(expiresAt) < new Date()) {
-    return { success: false, message: "Expired QrCode" };
+    return { ...rest, success: false, message: "Expired QrCode" };
   }
   return { ...rest, success: true, message: "QrCode Accepted" };
 };
 
 // ===============================================================
-
-// TODO : VERIFY QR CODE FOR GUEST ( Delivery or Vistor )
-/**
- * 1 -
- */
 
 /**
  * Verify Scan QrCode for Guest ( delivery or guest )
@@ -56,24 +51,57 @@ export const verifyResidentQrCode = async ({ expiresAt, ...rest }) => {
 export const verifyGuestQrCode = async ({
   expiresAt,
   invitationId,
+  compoundId,
   userId,
+  type,
+  ...rest
 }) => {
   if (!userId || !compoundId || !type || !invitationId) {
     return { success: false, message: "Invalid QrCode Payload" };
   }
 
-  const invitation = await prisma.invitation.findUnique({
+  const invitation = await prisma.invitation.findFirst({
     where: { id: invitationId, userId },
+    include: {
+      user: {
+        include: {
+          userCompound: true,
+        },
+      },
+    },
   });
-  // console.log(invitation)
-  if (!invitation) return { success: false, message: "Invalid QrCode" };
-
-  // TODO : check user id , is the user id thas owns the invitation
-
-  // if userid not the owner of the invitation or any thing wrong return Invalid QrCode
+  
+  if (!invitation)
+    return {
+      ...rest,
+      invitationId,
+      userId,
+      compoundId,
+      type,
+      success: false,
+      message: "Invalid QrCode",
+    };
 
   if (new Date(expiresAt) < new Date()) {
-    return { success: false, message: "Expired QrCode" };
+    return {
+      ...rest,
+      invitation,
+      userId,
+      compoundId,
+      expiresAt,
+      type,
+      success: false,
+      message: "Expired QrCode",
+    };
   }
-  return { ...rest, success: true, message: "QrCode Accepted" };
+  return {
+    ...rest,
+    invitation,
+    userId,
+    compoundId,
+    type,
+    expiresAt,
+    success: true,
+    message: "QrCode Accepted",
+  };
 };

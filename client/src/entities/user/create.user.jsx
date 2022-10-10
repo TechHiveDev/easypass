@@ -2,9 +2,13 @@ import {
   Create,
   SimpleForm,
   SelectInput,
+  NumberInput,
   TextInput,
   BooleanInput,
   usePermissions,
+  ReferenceInput,
+  ImageInput,
+  ImageField,
 } from "react-admin";
 // ------------------------------------------------
 const validate = (values) => {
@@ -41,7 +45,9 @@ export default function CreateUser(props) {
           <TextInput variant="outlined" source="email" required />
           <TextInput variant="outlined" source="name" required />
           <TextInput variant="outlined" source="password" required />
-          <TextInput variant="outlined" source="photoUrl" />
+          <ImageInput source="photoUrl" label="logo" accept="image/*">
+            <ImageField source="src" title="title" />
+          </ImageInput>
           <TextInput variant="outlined" source="phone" required />
           <BooleanInput variant={"outlined"} source={"active"} />
           <SelectInput
@@ -61,6 +67,20 @@ export default function CreateUser(props) {
                   ]
             }
           />
+          <ReferenceInput
+            source="compoundId"
+            reference="compound"
+            label={"compound"}
+            name={"compoundId"}
+          >
+            <SelectInput optionText={"name"} />
+          </ReferenceInput>
+          <TextInput variant="outlined" source="streetName" required />
+          <NumberInput variant="outlined" source={"blockNumber"} required />
+          <NumberInput variant="outlined" source={"unitNumber"} required />
+          {/*<ReferenceField source="id" reference="compound" label="Author name">*/}
+          {/*  <TextField source={"name"} />*/}
+          {/*</ReferenceField>*/}
         </SimpleForm>
       )}
     </Create>

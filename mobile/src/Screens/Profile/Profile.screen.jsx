@@ -17,6 +17,7 @@ import { setUser } from "../../Store/Slices/auth.slice";
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
 import config from "../../Config/config";
+import { onlyNumbersCheck } from "../../Utils/string.util";
 // =================================================================
 
 export default function ProfileScreen() {
@@ -38,6 +39,7 @@ export default function ProfileScreen() {
       photoUrl,
       compoundName: `${currentCompound?.compoundName}`,
       streetName: `${currentCompound?.streetName}`,
+      blockNumber: `${currentCompound?.blockNumber}`,
       unitNumber: `${currentCompound?.unitNumber}`,
     }),
     [email, name, phone, photoUrl, currentCompound]
@@ -55,6 +57,7 @@ export default function ProfileScreen() {
     ) {
       return setHideSubmitButton(true);
     }
+    let tempImage = image;
     if (defaultValues.photoUrl !== image) {
       setUploadingImage(true);
       const uploadResult = await FileSystem.uploadAsync(
@@ -72,16 +75,20 @@ export default function ProfileScreen() {
       const res = JSON.parse(uploadResult.body);
       if (res?.url) {
         setImage(config.API_URL + res.url);
+        tempImage = config.API_URL + res.url;
       }
     }
-    const { data } = await updateMyProfile({
+    const res = await updateMyProfile({
       entity: "user",
       id,
-      body: { email, name, phone, photoUrl: image },
+      body: { email, name, phone, photoUrl: tempImage },
     });
-
+    const data = res.data;
     if (data?.id) {
-      Toast.show({ type: "success", text1: "Updated Successfully" });
+      Toast.show({
+        type: "success",
+        text1: "Profile details are updated successfully",
+      });
       dispatch(setUser(data));
     }
     setUploadingImage(false);
@@ -125,44 +132,76 @@ export default function ProfileScreen() {
         <MyText text={type} style={styles.type} />
         {/* <MyText text={address} style={styles.address} /> */}
         <Form
+          /* to update the form when the current compound change*/
+          key={currentCompound?.id}
           {...{
             defaultValues,
             isLoading: isLoading || uploadingImage,
             error,
             onSubmit,
-            cancelButton: false,
+            cancelButton: true,
             btnsColumn: false,
             title: "",
             submitText: "save",
             submitIcon: "check",
             hideSubmitButton,
             disabled: hideSubmitButton,
+            onCancel: () => {
+              setImage(photoUrl);
+              setHideSubmitButton(!hideSubmitButton);
+            },
           }}
         >
-          <Input name="name" label="name" icon="account" />
-          <Input name="email" label="email" icon="email" />
-          <Input name="phone" label="phone" icon="cellphone" />
+          <Input name="name" label="Name" icon="account" />
+          <Input name="email" label="Email" icon="email" />
           <Input
-            name="compoundName"
-            label="compound"
-            icon="home-group"
-            disabled
-            editable={false}
+            name="phone"
+            label="Phone"
+            icon="cellphone"
+            rules={{
+              validate: {
+                phoneMustBeANumberOnly: (v) => onlyNumbersCheck(v),
+                positiveNumberIsRequiredForPhone: (v) => parseInt(v) > 0,
+              },
+            }}
           />
-          <Input
-            name="streetName"
-            label="street name"
-            icon="home"
-            disabled
-            editable={false}
-          />
-          <Input
-            name="unitNumber"
-            label="unit number"
-            icon="key"
-            disabled
-            editable={false}
-          />
+          {type === "Resident" ? (
+            <Input
+              name="compoundName"
+              label="Compound"
+              icon="office-building"
+              disabled
+              editable={false}
+            />
+          ) : null}
+
+          {type === "Resident" ? (
+            <Input
+              name="streetName"
+              label="Street Name"
+              icon="home-group"
+              disabled
+              editable={false}
+            />
+          ) : null}
+          {type === "Resident" ? (
+            <Input
+              name="blockNumber"
+              label="Block number"
+              icon="home"
+              disabled
+              editable={false}
+            />
+          ) : null}
+          {type === "Resident" ? (
+            <Input
+              name="unitNumber"
+              label="Unit Number"
+              icon="key"
+              disabled
+              editable={false}
+            />
+          ) : null}
         </Form>
       </View>
     </SafeAreaView>

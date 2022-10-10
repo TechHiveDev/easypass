@@ -13,10 +13,17 @@ import {
   softDelete,
   changePasswordOTP,
   isThirdPartyUser,
+  getUserCompounds,
 } from "../auth-crud/auth.curd.prisma";
 
 // /oauth/me
-export const me = (req, res, next) => res.status(200).json(req.user);
+export const me = async (req, res, next) => {
+  try {
+    res.status(200).json(await getUserCompounds(req.user));
+  } catch (error) {
+    next(error);
+  }
+};
 
 // -------------------------------------------------------------
 

@@ -102,13 +102,12 @@ import {
   generateGuestQrCodeInvitationLink,
   generateResidentQrCode,
 } from "./services/createQrCode.service";
+import { scanReport } from "./services/scan.analysis.service";
 import { scanQrCode } from "./services/scanQrCode.service";
 // ------------------------------------------------------------------
 
 const crudController = {
   ...prismaCrud("scan"),
-  getList: null,
-  getOne: null,
   create: null,
   update: null,
   destroy: null,
@@ -153,7 +152,22 @@ const customRoutesController = [
     controller: async (req, res, next) => {
       try {
         const encryptedQrcode = await scanQrCode(req.body);
-        return res.status(202).json({ encryptedQrcode });
+        return res.status(202).json(encryptedQrcode);
+      } catch (err) {
+        next(err);
+      }
+    },
+  },
+
+  //  ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+  {
+    method: "get",
+    path: "/scan-report",
+    controller: async (req, res, next) => {
+      try {
+        const report = await scanReport(req.query);
+        return res.status(202).json(report);
       } catch (err) {
         next(err);
       }

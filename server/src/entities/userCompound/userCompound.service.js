@@ -22,3 +22,24 @@ export const isUserBelongsToCompound = async ({ userId, compoundId }) => {
 
   return userCompound;
 };
+
+export const getUserCompounds = async (userId) => {
+  if (!userId) {
+    throw { status: 400, message: "userId is required" };
+  }
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    include: { userCompound: true },
+  });
+  let arr = [];
+  for (let index = 0; index < user.userCompound.length; index++) {
+    const compound = await prisma.compound.findUnique({
+      where: { id: user.userCompound[index].compoundId },
+    });
+    arr.push({
+      ...user.userCompound[index],
+      compoundName: compound.name,
+    });
+  }
+  return arr;
+};

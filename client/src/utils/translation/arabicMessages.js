@@ -46,6 +46,7 @@ const arabicMessages = {
     Invitation: "الدعوات",
     Scan: "الكشوف",
     Device: "الاجهزة",
+    Announcement: "الاعلانات",
   },
 
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
@@ -58,6 +59,16 @@ const arabicMessages = {
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
   resources: {
+    announcement: {
+      name: "اعلانات |||| اعلان",
+      fields: {
+        id: "الكود",
+        photoUrl: "الصورة",
+        compound: "المجمع",
+        title: "العنوان",
+        description: "الوصف",
+      },
+    },
     user: {
       name: "مستخدمين |||| مستخدم",
       fields: {
@@ -72,6 +83,7 @@ const arabicMessages = {
         updatedAt: "تاريخ التعديل",
         phone: "رقم الهاتف",
         photoUrl: "الصورة",
+        compound: "المجمع",
       },
     },
     compound: {

@@ -8,6 +8,7 @@ import {
   ShowButton,
   EditButton,
   DeleteButton,
+  ReferenceField,
 } from "react-admin";
 import Actions from "../../reactAdmin/components/Actions";
 
@@ -19,7 +20,9 @@ export default function ListDevice(props) {
       <Datagrid>
         <NumberField variant="outlined" source="id" />
         <TextField variant="outlined" source="ip" />
-        <NumberField variant="outlined" source="compoundId" />
+        <ReferenceField source="compoundId" reference="compound">
+          <TextField source="name" />
+        </ReferenceField>
 
         <Actions label="">
           <ShowButton label="ra.action.show" />

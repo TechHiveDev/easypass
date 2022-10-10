@@ -3,8 +3,8 @@ import {
   SimpleForm,
   TextInput,
   NumberInput,
-  BooleanInput,
-  DateInput,
+  ReferenceInput,
+  SelectInput,
 } from "react-admin";
 
 // ------------------------------------------------
@@ -13,10 +13,27 @@ export default function CreateUserCompound(props) {
   return (
     <Create>
       <SimpleForm redirect="list">
-        <NumberInput variant="outlined" source="id" />
-        <NumberInput variant="outlined" source="userId" />
-
-        <NumberInput variant="outlined" source="compoundId" />
+        <ReferenceInput
+          required
+          source="compoundId"
+          reference="compound"
+          label={"compound"}
+          name={"compoundId"}
+        >
+          <SelectInput optionText={"name"} required />
+        </ReferenceInput>
+        <ReferenceInput
+          required
+          source="userId"
+          reference="user"
+          label={"user"}
+          name={"user"}
+        >
+          <SelectInput optionText={"name"} required />
+        </ReferenceInput>
+        <TextInput variant="outlined" source="streetName" required />
+        <NumberInput variant="outlined" source={"blockNumber"} required />
+        <NumberInput variant="outlined" source={"unitNumber"} required />
       </SimpleForm>
     </Create>
   );

@@ -2,9 +2,8 @@ import {
   Create,
   SimpleForm,
   TextInput,
-  NumberInput,
-  BooleanInput,
-  DateInput,
+  ImageInput,
+  ImageField,
 } from "react-admin";
 
 // ------------------------------------------------
@@ -13,9 +12,10 @@ export default function CreateCompound(props) {
   return (
     <Create>
       <SimpleForm redirect="list">
-        <NumberInput variant="outlined" source="id" />
         <TextInput variant="outlined" source="name" />
-        <TextInput variant="outlined" source="logoUrl" />
+        <ImageInput source="logoUrl" label="logo" accept="image/*">
+          <ImageField source="src" title="title" />
+        </ImageInput>
         <TextInput variant="outlined" source="location" />
       </SimpleForm>
     </Create>

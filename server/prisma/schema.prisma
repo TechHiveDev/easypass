@@ -27,9 +27,11 @@ model User {
   active       Boolean        @default(false)
   userCompound UserCompound[]
   Invitation   Invitation[]
+  scan         Scan[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  Announcement Announcement[]
 }
 
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
@@ -45,8 +47,10 @@ model Compound {
   invitations Invitation[]
   Device      Device[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  Announcement Announcement[]
+  Scan         Scan[]
 }
 
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
@@ -58,10 +62,10 @@ model UserCompound {
   unitNumber  Int?
 
   userId Int
-  user   User @relation(fields: [userId], references: [id])
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   compoundId Int
-  compound   Compound @relation(fields: [compoundId], references: [id])
+  compound   Compound @relation(fields: [compoundId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -78,10 +82,10 @@ model Invitation {
   expiresAt DateTime?
 
   compoundId Int
-  compound   Compound @relation(fields: [compoundId], references: [id])
+  compound   Compound @relation(fields: [compoundId], references: [id], onDelete: Cascade)
 
   userId Int
-  user   User @relation(fields: [userId], references: [id])
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   Scan Scan[]
 
@@ -94,13 +98,20 @@ model Invitation {
 model Scan {
   id Int @id @default(autoincrement())
 
-  invitationId Int
-  invitation   Invitation @relation(fields: [invitationId], references: [id])
+  invitationId Int?
+  invitation   Invitation? @relation(fields: [invitationId], references: [id])
 
-  deviceId Int
-  device   Device @relation(fields: [deviceId], references: [id])
+  deviceId Int?
+  device   Device? @relation(fields: [deviceId], references: [id])
 
   success Boolean
+
+  compoundId Int
+  compound   Compound @relation(fields: [compoundId], references: [id], onDelete: NoAction)
+
+  userId Int
+  user   User     @relation(fields: [userId], references: [id], onDelete: NoAction)
+  type   ScanType
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -114,9 +125,26 @@ model Device {
   ip   String?
 
   compoundId Int
-  compound   Compound? @relation(fields: [compoundId], references: [id])
+  compound   Compound? @relation(fields: [compoundId], references: [id], onDelete: Cascade)
 
   Scan Scan[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+model Announcement {
+  id          Int     @id @default(autoincrement())
+  title       String?
+  description String?
+  photoUrl    String?
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id], onDelete: NoAction)
+
+  compoundId Int
+  compound   Compound @relation(fields: [compoundId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -134,6 +162,12 @@ enum UserType {
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
 enum InvitationType {
+  Visitor
+  Delivery
+}
+
+enum ScanType {
+  Resident
   Visitor
   Delivery
 }

@@ -2,25 +2,37 @@ import {
   Edit,
   SimpleForm,
   TextInput,
-  NumberInput,
-  BooleanInput,
-  DateInput,
+  ReferenceInput,
+  SelectInput,
 } from "react-admin";
+import InvitationTitle from "./title";
 
 // ------------------------------------------------
 
 export default function EditInvitation(props) {
   return (
-    <Edit>
+    <Edit title={<InvitationTitle />}>
       <SimpleForm redirect="list">
-        <NumberInput variant="outlined" source="id" />
         <TextInput variant="outlined" source="name" />
 
         <TextInput variant="outlined" source="type" />
         <TextInput variant="outlined" source="notes" />
-        <NumberInput variant="outlined" source="compoundId" />
-
-        <NumberInput variant="outlined" source="userId" />
+        <ReferenceInput
+          source="compoundId"
+          reference="compound"
+          label={"compound"}
+          name={"compoundId"}
+        >
+          <SelectInput optionText={"name"} />
+        </ReferenceInput>
+        <ReferenceInput
+          source="userId"
+          reference="user"
+          label={"user"}
+          name={"user"}
+        >
+          <SelectInput optionText={"name"} />
+        </ReferenceInput>
       </SimpleForm>
     </Edit>
   );

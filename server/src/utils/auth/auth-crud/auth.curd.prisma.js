@@ -35,11 +35,12 @@ export const createUserAndAddress = async (payload) => {
     "password",
     "phone",
     "type",
-    "active",
+    // "active",
   ];
 
   const expectedResiendtBody = [
-    "compoundName",
+    // "compoundName",
+    "compoundId",
     "streetName",
     "blockNumber",
     "unitNumber",
@@ -70,21 +71,24 @@ export const createUserAndAddress = async (payload) => {
     name,
     phone,
     password,
-    compoundName,
+    // compoundName,
+    compoundId,
     streetName,
     blockNumber,
     unitNumber,
+    photoUrl,
     active = false,
   } = payload;
 
   const compound = await prisma.compound.findFirst({
     where: {
-      name: compoundName,
+      // name: compoundName,
+      id: +compoundId,
     },
   });
 
   if (!compound?.id) {
-    throw { status: 400, message: "No Compound with this name" };
+    throw { status: 400, message: "No Compound with this id" };
   }
 
   let compundUserPayload = {};
@@ -117,6 +121,7 @@ export const createUserAndAddress = async (payload) => {
   return prisma.user.create({
     data: {
       name,
+      photoUrl,
       email,
       phone,
       type,
@@ -148,6 +153,8 @@ export const findOrCreateGoogleUser = async (payload) => {
   return user;
 };
 
+// ---------------------------------------------------------------
+
 export const findOrCreateGithubUser = async (payload) => {
   let user = await prisma.user.findUnique({
     where: { githubId: payload?.githubId },
@@ -177,21 +184,49 @@ export const login = async ({ email, password }) => {
   });
 
   // Handle errors ( will be catched by error handler)
-  if (!user) throw { status: 404, message: "User Not Found" };
+  if (!user) throw { status: 404, message: "No user found with this email" };
 
   if (user?.deleted) throw { status: 403, message: "User has been deleted" };
 
-  if (!user?.active) throw { status: 403, message: "User is not active" };
-
   if (!verifyHash({ password, hashed: user.password })) {
-    throw { status: 401, message: "Un-Authenticated" };
+    throw { status: 401, message: "the user credentials are incorrect" };
   }
+  if (!user?.active)
+    throw { status: 403, message: "Waiting for admin activation or approval." };
 
   const accessToken = jwt.sign(user, process.env.jwtSecret, {
     expiresIn: process.env.jwtExpires,
   });
+  for (let index = 0; index < user.userCompound.length; index++) {
+    const compound = await prisma.compound.findUnique({
+      where: { id: user.userCompound[index].compoundId },
+    });
+    user.userCompound[index] = {
+      ...user.userCompound[index],
+      compoundName: compound.name,
+      logoUrl: compound.logoUrl,
+    };
+  }
 
   return { user, accessToken };
+};
+
+export const getUserCompounds = async (user) => {
+  user = await prisma.user.findUnique({
+    where: { id: user.id },
+    include: { userCompound: true },
+  });
+
+  for (let index = 0; index < user.userCompound.length; index++) {
+    const compound = await prisma.compound.findUnique({
+      where: { id: user.userCompound[index].compoundId },
+    });
+    user.userCompound[index] = {
+      ...user.userCompound[index],
+      compoundName: compound.name,
+    };
+  }
+  return user;
 };
 
 // ---------------------------------------------------------
@@ -223,6 +258,7 @@ export const softDelete = (id) =>
     where: { id: id },
     data: { deleted: true },
   });
+
 // --------------------------------------------------------
 
 export const sendOtp = ({
@@ -295,6 +331,8 @@ export const changePasswordOTP = async (email, password, otp) => {
     data: { password: hash({ password }) },
   });
 };
+
+// ---------------------------------------------------------------
 
 export const isThirdPartyUser = async ({ email, id, phone }) => {
   const user = email

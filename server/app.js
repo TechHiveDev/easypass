@@ -28,6 +28,7 @@ import invitationController from "./src/entities/invitation/invitation.controlle
 import scanController from "./src/entities/scan/scan.controller.js";
 import scanUnprotectedController from "./src/entities/scan/scan.unprotected.controller";
 import deviceController from "./src/entities/device/device.controller.js";
+import announcementController from "./src/entities/announcement/announcement.controller";
 
 // ------------------------------------------------------
 
@@ -48,11 +49,9 @@ app.use(passport.session());
 
 // ------------------------------------------------------
 
-// TODO : path of ejs is not true
-
 // set ejs engine
-// app.set("view engine", "ejs");
-// app.set("views", path.join(__dirname, "./src/entitites/qrcode"));
+app.set("views", path.join(__dirname, "./src/entities/scan"));
+app.set("view engine", "ejs");
 
 // Static Files ( Uploaded Images )
 app.use("/assets", express.static(path.join(__dirname, "/assets")));
@@ -61,6 +60,19 @@ app.use("/assets", express.static(path.join(__dirname, "/assets")));
 
 // Swagger Documentaion Middleware
 app.use("/api-docs", swagger.server, swagger.setup); // Docs
+
+// ------------------------------------------------------
+
+// Custom Middleware to remove null values on the requst body
+// TODO: Refactor
+app.use((req, res, next) => {
+  for (var key in req.body) {
+    if (req.body.hasOwnProperty(key)) {
+      if (req.body[key] == null) delete req.body[key];
+    }
+  }
+  next();
+});
 
 // ------------------------------------------------------
 
@@ -86,6 +98,7 @@ app.use(userCompoundController);
 app.use(invitationController);
 app.use(scanController);
 app.use(deviceController);
+app.use(announcementController);
 
 // ------------------------------------------------------
 

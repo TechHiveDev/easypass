@@ -13,7 +13,9 @@ export default function AppNavigator() {
 
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
-  useEffect(() => authMe(), []);
+  useEffect(() => {
+    authMe();
+  }, []);
 
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 

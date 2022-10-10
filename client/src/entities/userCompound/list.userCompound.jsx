@@ -8,6 +8,7 @@ import {
   ShowButton,
   EditButton,
   DeleteButton,
+  ReferenceField,
 } from "react-admin";
 import Actions from "../../reactAdmin/components/Actions";
 
@@ -18,10 +19,16 @@ export default function ListUserCompound(props) {
     <List>
       <Datagrid>
         <NumberField variant="outlined" source="id" />
-        <NumberField variant="outlined" source="userId" />
 
-        <NumberField variant="outlined" source="compoundId" />
-
+        <ReferenceField source="userId" reference="user">
+          <TextField source="name" />
+        </ReferenceField>
+        <ReferenceField source="compoundId" reference="compound">
+          <TextField source="name" />
+        </ReferenceField>
+        <TextField variant="outlined" source="streetName" />
+        <NumberField variant="outlined" source={"blockNumber"} />
+        <NumberField variant="outlined" source={"unitNumber"} />
         <Actions label="">
           <ShowButton label="ra.action.show" />
           <EditButton label="ra.action.edit" />

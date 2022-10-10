@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { SafeAreaView, View, StyleSheet, Text } from "react-native";
 import globalStyles from "../../Theme/global.styles";
@@ -17,6 +17,7 @@ import {
 import theme from "../../Theme/paper.theme";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { ActivityIndicator, HelperText, RadioButton } from "react-native-paper";
+import { onlyNumbersCheck } from "../../Utils/string.util";
 
 // =================================================================
 const randomNumber = Math.round(Math.random() * 100);
@@ -29,7 +30,7 @@ const defaultValues = {
   streetName: "mario",
   blockNumber: "12",
   unitNumber: "23",
-  compoundName: "",
+  compoundId: "",
   active: false,
 };
 export default function RegisterScreen() {
@@ -37,30 +38,61 @@ export default function RegisterScreen() {
 
   const { navigate } = useNavigation();
   const [register, { isLoading: registering }] = useRegisterMutation();
-  const { data: compounds, isLoading } = useGetCompoundsQuery();
+  const { data: compounds } = useGetCompoundsQuery();
   const [userType, setUserType] = useState("Resident");
+  const [loading, setLoading] = useState(false);
 
   // ------------------------------
 
   const onSubmit = async (values) => {
-    if (values.compoundName === "") {
+    if (values.compoundId === "") {
       return Toast.show({ type: "error", text1: "Please select a compound" });
     }
     if (values.confirmPassword !== values.password) {
       return Toast.show({ type: "error", text1: "passwords do not match" });
     }
-    const { data } = await register({ ...values, type: userType });
-    if (data?.user?.id) {
+    const res = await register({ ...values, type: userType });
+    if (
+      res?.error?.data?.message ===
+      " Unique Constraint Violation on : User_email_key"
+    ) {
+      return Toast.show({
+        type: "error",
+        text1: "User already exists with this email.",
+      });
+    }
+    if (
+      res?.error?.data?.message ===
+      " Unique Constraint Violation on : User_phone_key"
+    ) {
+      return Toast.show({
+        type: "error",
+        text1: "User already exists with this phone number.",
+      });
+    }
+    if (res?.data?.user?.id) {
       Toast.show({
         type: "success",
-        text1: "Successfully registered. wait for admin confirmation.",
+        text1:
+          "Successfully registered. Waiting for admin activation or approval.",
       });
       return navigate("login");
+    } else {
+      return Toast.show({
+        type: "error",
+        text1: res.error.data.message || "error while logging in",
+      });
     }
   };
 
   // ------------------------------
-
+  useEffect(() => {
+    if (compounds) {
+      setLoading(false);
+    } else {
+      setLoading(true);
+    }
+  }, [compounds]);
   // Dont Delete Commented Parts
   /*
   const Depend = (props) => {
@@ -71,10 +103,9 @@ export default function RegisterScreen() {
   */
 
   // ------------------------------
-
-  return (
-    <SafeAreaView style={globalStyles.screen}>
-      {isLoading ? (
+  if (loading)
+    return (
+      <SafeAreaView style={globalStyles.screen}>
         <View
           style={{
             flex: 1,
@@ -84,137 +115,143 @@ export default function RegisterScreen() {
         >
           <ActivityIndicator animating={true} size={50} />
         </View>
-      ) : (
-        <Form
-          title=""
-          {...{
-            defaultValues,
-            onSubmit,
-            cancelButton: false,
-            submitText: "register",
-            submitIcon: "account-plus",
-            isLoading: registering,
+      </SafeAreaView>
+    );
+  return (
+    <SafeAreaView style={globalStyles.screen}>
+      <Form
+        title=""
+        {...{
+          defaultValues,
+          onSubmit,
+          submitText: "register",
+          submitIcon: "account-plus",
+          isLoading: registering,
+          cancelButton: false,
+        }}
+      >
+        <Input name="name" label="name" icon="account" />
+        <Input name="email" label="email" icon="email" />
+        <Input name="password" label="password" secureTextEntry />
+        <Input
+          name="confirmPassword"
+          label="confirmPassword"
+          secureTextEntry
+          icon="lock-check"
+        />
+        <Input
+          name="phone"
+          label="Phone"
+          icon="cellphone"
+          rules={{
+            validate: {
+              phoneMustBeANumberOnly: (v) => onlyNumbersCheck(v),
+              positiveNumberIsRequiredForPhone: (v) => parseInt(v) > 0,
+            },
           }}
-        >
-          <Input name="name" label="name" icon="account" />
-          <Input name="email" label="email" icon="email" />
-          <Input name="password" label="password" secureTextEntry />
+        />
+        <Controller
+          name={"compoundId"}
+          rules={{
+            validate: {
+              required: (v) => v !== "",
+            },
+          }}
+          render={({ field: { onChange, value } }) => {
+            return (
+              <>
+                <SelectDropdown
+                  data={compounds}
+                  onSelect={(c) => {
+                    onChange(c.id);
+                  }}
+                  defaultButtonText={"Choose a compound"}
+                  buttonTextAfterSelection={(c) => c.name}
+                  rowTextForSelection={(c) => c.name}
+                  buttonStyle={styles.buttonStyle}
+                  renderDropdownIcon={(isOpened) => {
+                    return (
+                      <MaterialCommunityIcons
+                        name={isOpened ? "chevron-up" : "chevron-down"}
+                        size={30}
+                      />
+                    );
+                  }}
+                />
+                {value === "" ? (
+                  <HelperText
+                    type="error"
+                    visible={true}
+                    style={{ textAlign: "right" }}
+                  >
+                    Compound {i18n.t("required")}
+                  </HelperText>
+                ) : null}
+              </>
+            );
+          }}
+        />
+        {userType === "Resident" ? (
           <Input
-            name="confirmPassword"
-            label="confirmPassword"
-            secureTextEntry
-            icon="lock-check"
+            animate
+            name="streetName"
+            label="streetName"
+            icon="home-group"
           />
+        ) : null}
+        {userType === "Resident" ? (
           <Input
-            name="phone"
-            label="phone"
-            icon="cellphone"
+            animate
+            delay={100}
+            name="blockNumber"
+            label="blockNumber"
+            icon="home"
             rules={{
               validate: {
-                phoneMustBeNumber: (v) => parseInt(v) > 0,
+                blockNumberMustBeANumberOnly: (v) => onlyNumbersCheck(v),
+                positiveNumberIsRequiredForBlockNumber: (v) => parseInt(v) > 0,
               },
             }}
           />
-          <Controller
-            name={"compoundName"}
+        ) : null}
+        {userType === "Resident" ? (
+          <Input
+            animate
+            delay={200}
+            name="unitNumber"
+            label="unitNumber"
+            icon="key"
             rules={{
               validate: {
-                required: (v) => v !== "",
+                unitNumberMustBeANumberOnly: (v) => onlyNumbersCheck(v),
+                positiveNumberIsRequiredForUnitNumber: (v) => parseInt(v) > 0,
               },
             }}
-            render={({ field: { onChange, value } }) => {
-              return (
-                <>
-                  <SelectDropdown
-                    data={compounds}
-                    onSelect={(c) => {
-                      onChange(c.name);
-                    }}
-                    buttonTextAfterSelection={(c) => c.name}
-                    rowTextForSelection={(c) => c.name}
-                    buttonStyle={styles.buttonStyle}
-                    renderDropdownIcon={(isOpened) => {
-                      return (
-                        <MaterialCommunityIcons
-                          name={isOpened ? "chevron-up" : "chevron-down"}
-                          size={30}
-                        />
-                      );
-                    }}
-                  />
-                  {value === "" ? (
-                    <HelperText
-                      type="error"
-                      visible={true}
-                      style={{ textAlign: "right" }}
-                    >
-                      compound {i18n.t("required")}
-                    </HelperText>
-                  ) : null}
-                </>
-              );
+          />
+        ) : null}
+        <View style={styles.row}>
+          <RadioButton
+            color={theme.colors.primary}
+            value={"Resident"}
+            status={userType === "Resident" ? "checked" : "unchecked"}
+            onPress={() => {
+              setUserType("Resident");
             }}
           />
-          {userType === "Resident" ? (
-            <Input
-              animate
-              name="streetName"
-              label="streetName"
-              icon="home-group"
-            />
-          ) : null}
-          {userType === "Resident" ? (
-            <Input
-              animate
-              delay={100}
-              name="blockNumber"
-              label="blockNumber"
-              icon="home"
-              rules={{
-                validate: {
-                  positiveNumberIsRequired: (v) => parseInt(v) > 0,
-                },
-              }}
-            />
-          ) : null}
-          {userType === "Resident" ? (
-            <Input
-              animate
-              delay={200}
-              name="unitNumber"
-              label="unitNumber"
-              icon="key"
-              rules={{
-                validate: {
-                  positiveNumberIsRequired: (v) => parseInt(v) > 0,
-                },
-              }}
-            />
-          ) : null}
-          <View style={styles.row}>
-            <RadioButton
-              color={theme.colors.primary}
-              value={"Resident"}
-              status={userType === "Resident" ? "checked" : "unchecked"}
-              onPress={() => {
-                setUserType("Resident");
-              }}
-            />
-            <Text>Resident</Text>
-            <RadioButton
-              color={theme.colors.primary}
-              value={"Security"}
-              status={userType === "Security" ? "checked" : "unchecked"}
-              onPress={() => {
-                setUserType("Security");
-              }}
-            />
-            <Text>Security</Text>
-          </View>
-          {/* <Select name="level" placeholder="level" choices={levels} /> */}
-          {/* <Depend /> */}
-        </Form>
-      )}
+          <Text>Resident</Text>
+          <RadioButton
+            color={theme.colors.primary}
+            value={"Security"}
+            status={userType === "Security" ? "checked" : "unchecked"}
+            onPress={() => {
+              setUserType("Security");
+            }}
+          />
+          <Text>Security</Text>
+        </View>
+        {/* <Select name="level" placeholder="level" choices={levels} /> */}
+        {/* <Depend /> */}
+      </Form>
     </SafeAreaView>
   );
 }

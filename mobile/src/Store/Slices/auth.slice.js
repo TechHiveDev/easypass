@@ -32,7 +32,10 @@ const reducers = {
 
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
-  setUser: (state, action) => ({ ...state, user: { ...action.payload } }),
+  setUser: (state, action) => ({
+    ...state,
+    user: { ...state.user, ...action.payload },
+  }),
 
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 

@@ -22,17 +22,17 @@ import qrcode from "../../../../assets/qrcode.png";
 const actions = [
   {
     title: "facilities",
-    navigateTo: "facilities",
+    navigateTo: "Facilities",
     icon: facilities,
   },
   {
-    title: "qrcode",
-    navigateTo: "qrcode",
+    title: "QR Code",
+    navigateTo: "QR Code",
     icon: qrcode,
   },
   {
     title: "invite",
-    navigateTo: "invite",
+    navigateTo: "Invite",
     icon: invite,
   },
   // {
@@ -65,7 +65,9 @@ function Action({ title, navigateTo, icon }) {
           )}
         />
       </View>
-      <MyText text={i18n.t(title)} />
+      <MyText
+        text={i18n.t(title).startsWith("[miss") ? title : i18n.t(title)}
+      />
     </TouchableOpacity>
   );
 }

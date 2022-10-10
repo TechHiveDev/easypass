@@ -104,6 +104,7 @@
 // ------------------------------------------------------------------
 
 import { crud, prismaCrud } from "../../utils/crud/express-crud-router";
+import { invitationReport } from "./invitation.service";
 
 // ------------------------------------------------------------------
 
@@ -112,6 +113,20 @@ const crudController = {
   create: null,
 };
 
+const customRoutesController = [
+  {
+    method: "get",
+    path: "/invitation-report",
+    controller: async (req, res, next) => {
+      try {
+        const report = await invitationReport(req.query);
+        return res.status(202).json(report);
+      } catch (err) {
+        next(err);
+      }
+    },
+  },
+];
 // ------------------------------------------------------------------
 
-export default crud("/invitation", crudController);
+export default crud("/invitation", crudController,customRoutesController);

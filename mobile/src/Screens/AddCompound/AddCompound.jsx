@@ -15,10 +15,10 @@ import SelectDropdown from "react-native-select-dropdown";
 import { Controller } from "react-hook-form";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useAppDispatch, useAppSelector } from "../../Store/redux.hooks";
-import { setCompountId } from "../../Store/Slices/auth.slice";
+import { setCurrentCompound } from "../../Store/Slices/auth.slice";
 import Toast from "react-native-toast-message";
 
-export default function CompoundList({ navigation }) {
+export default function AddCompound({ navigation }) {
   const dispatch = useAppDispatch();
   const { data, isLoading } = useGetCompoundsQuery();
   const [register] = useRegisterCompoundMutation();
@@ -37,39 +37,23 @@ export default function CompoundList({ navigation }) {
         text1: "Select a compound",
       });
     }
-    if (!values.streetName) {
-      return Toast.show({
-        type: "error",
-        text1: "Enter a street name",
+    const res = await register(newValues);
+    if (res?.data?.id) {
+      dispatch(
+        setCurrentCompound({
+          ...res.data,
+          compoundName: data.find((c) => c.id === res.data.compoundId)?.name,
+        })
+      );
+      navigation.navigate("HomeStackTabNavigator");
+      Toast.show({
+        type: "success",
+        text1: "Registered in compound successfully ",
       });
-    }
-    if (!values.blockNumber) {
-      return Toast.show({
-        type: "error",
-        text1: "Enter a block number",
-      });
-    }
-    if (!values.unitNumber) {
-      return Toast.show({
-        type: "error",
-        text1: "Enter a unit number",
-      });
-    }
-    try {
-      const res = await register(newValues);
-      if (res?.data?.id) {
-        dispatch(setCompountId(id));
-        navigation.navigate("HomeStackTabNavigator");
-        Toast.show({
-          type: "success",
-          text1: "Registered in compound successfully ",
-        });
-      }
-    } catch (e) {
+    } else {
       Toast.show({
         type: "error",
-        text1:
-          e.toString() || "error while registering. please try again later",
+        text1: "error while registering. please try again later",
       });
     }
   };
@@ -111,9 +95,27 @@ export default function CompoundList({ navigation }) {
               );
             }}
           />
-          <Input name="streetName" label="streetName" icon="home" />
-          <Input name="blockNumber" label="blockNumber" icon="home" />
-          <Input name="unitNumber" label="unitNumber" icon="home" />
+          <Input name="streetName" label="streetName" icon="home-group" />
+          <Input
+            name="blockNumber"
+            label="blockNumber"
+            icon="home"
+            rules={{
+              validate: {
+                positiveNumberIsRequired: (v) => parseInt(v) > 0,
+              },
+            }}
+          />
+          <Input
+            name="unitNumber"
+            label="unitNumber"
+            icon="key"
+            rules={{
+              validate: {
+                positiveNumberIsRequired: (v) => parseInt(v) > 0,
+              },
+            }}
+          />
           {/* <Select name="level" placeholder="level" choices={levels} /> */}
           {/* <Depend /> */}
         </Form>

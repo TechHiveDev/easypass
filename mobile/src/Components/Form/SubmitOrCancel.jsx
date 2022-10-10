@@ -22,7 +22,7 @@ export default function SubmitOrCancel({
 }) {
   return (
     <View style={btnsColumn ? styles.container2 : styles.container1}>
-      {cancelButton && (
+      {cancelButton ? (
         <Button
           icon={cancelIcon}
           text={cancelText}
@@ -30,8 +30,8 @@ export default function SubmitOrCancel({
           onPress={onCancel}
           width={btnsColumn ? wp(90) : wp(40)}
         />
-      )}
-      {submitButton && (
+      ) : null}
+      {submitButton ? (
         <Button
           loading={isLoading}
           text={submitText}
@@ -39,7 +39,7 @@ export default function SubmitOrCancel({
           onPress={handleSubmit(onSubmit)}
           width={btnsColumn ? wp(90) : wp(40)}
         />
-      )}
+      ) : null}
     </View>
   );
 }

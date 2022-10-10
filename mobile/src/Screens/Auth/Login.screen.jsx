@@ -6,11 +6,12 @@ import { SafeAreaView, View, StyleSheet, StatusBar } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useLoginMutation } from "../../API/api";
 import { useAppDispatch } from "../../Store/redux.hooks";
-import { setAuthUser } from "../../Store/Slices/auth.slice";
+import { setAccesToken, setAuthUser } from "../../Store/Slices/auth.slice";
 import Logo from "../../Components/Logo";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import theme from "../../Theme/paper.theme";
 import Toast from "react-native-toast-message";
+import config from "../../Config/config";
 
 // =================================================================
 
@@ -33,9 +34,17 @@ export default function LoginScreen() {
       const res = await login(values);
       if (res?.data?.user?.id && res?.data?.accessToken) {
         AsyncStorage.setItem("accessToken", res.data.accessToken);
+        dispatch(setAccesToken(res?.data?.accessToken));
         dispatch(setAuthUser({ user: res.data.user }));
+        return;
+      }
+      if (res?.error?.data?.message) {
+        return Toast.show({
+          type: "error",
+          text1: res.error.data.message,
+        });
       } else {
-        Toast.show({ type: "error", text1: "error while logging in." });
+        return Toast.show({ type: "error", text1: "error while logging in." });
       }
     } catch (e) {
       Toast.show({ type: "error", text1: e.message });
@@ -62,7 +71,7 @@ export default function LoginScreen() {
             cancelButton: true,
             cancelText: "register",
             cancelIcon: "account-plus-outline",
-            title: "Easy Pass",
+            title: config.name,
             submitText: "login",
             submitIcon: "login",
           }}

@@ -4,33 +4,74 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
-import { useNavigation } from "@react-navigation/native";
-import { useAppDispatch, useAppSelector } from "../../Store/redux.hooks";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import { useIsFocused } from "@react-navigation/native";
 import { useScanQrCodeMutation } from "../../API/api";
 import Toast from "react-native-toast-message";
 import Button from "../../Components/Form/Button";
 import theme from "../../Theme/paper.theme";
-import LoadingScreen from "../../Components/GenericScreens/Loading.screen";
-
+import { useAppSelector } from "../../Store/redux.hooks";
+import Success from "./Success";
+import { LinearGradient } from "expo-linear-gradient";
+import { capitalize } from "../../Utils/string.util";
 // ======================================================================
 
+// dummy data
+// const invitationUser = {
+//   name: "Jan Karam",
+//   phone: "4545454545",
+//   photoUrl: "https://picsum.photos/900",
+//   type: "Resident",
+//   userCompound: [
+//     {
+//       id: 1,
+//       streetName: "haga",
+//       blockNumber: 89,
+//       unitNumber: 20,
+//       compoundId: 1,
+//     },
+//     {
+//       id: 2,
+//       streetName: "haga",
+//       blockNumber: 89,
+//       unitNumber: 250,
+//       compoundId: 1,
+//     },
+//     {
+//       id: 3,
+//       streetName: "haga",
+//       blockNumber: 89,
+//       unitNumber: 420,
+//       compoundId: 1,
+//     },
+//   ],
+// };
+// const currentCompoundId = 1;
+// const isLoading = false;
+// const data = {
+//   scan: {
+//     success: true,
+//   },
+//   message: "yeahhhhhhhhh",
+// };
 export default function ScanQrCode() {
   const isFocused = useIsFocused();
-
-  // -----------------------------------------
-
-  const [scanQrCode, { isLoading }] = useScanQrCodeMutation();
-
-  // -----------------------------------------
-
+  const [scanQrCode, { data, isLoading, reset }] = useScanQrCodeMutation();
+  const success = data?.scan?.success;
+  const message = data?.message;
+  const invitationData = data?.invitation;
+  const invitationUser = invitationData?.user || data?.user;
   const [hasPermission, setHasPermission] = useState(null);
   const [active, setActive] = useState(false);
-  const [scannedData, setScannedData] = useState(undefined);
-
+  const currentCompoundId = useAppSelector(
+    (state) => state?.auth?.currentCompound?.compoundId
+  );
+  const currentAddresses = invitationUser?.userCompound?.filter(
+    (c) => currentCompoundId === c?.compoundId
+  );
   // -----------------------------------------
-
+  const clickToScan = () => setActive(!active);
+  // -----------------------------------------
   useEffect(() => {
     const requestCameraPermission = async () => {
       const { status } = await BarCodeScanner.requestPermissionsAsync();
@@ -43,27 +84,29 @@ export default function ScanQrCode() {
 
   useEffect(() => {
     if (!isFocused) {
+      reset();
       setActive(false);
     }
   });
-  // -----------------------------------------
 
   const handleSuccess = async ({ data }) => {
     setActive(!active);
     const res = await scanQrCode({ encryptedQrcode: data, deviceId: 1 });
-    if (res?.data?.success) {
-      Toast.show({ type: "success", text1: "accepted invitation" });
-      setScannedData("Success ! let guest or delivery in");
+    if (res?.data?.scan?.success) {
+      Toast.show({
+        type: "success",
+        text1: invitationData ? "Accepted invitation" : "Accepted resident",
+      });
     } else {
-      Toast.show({ type: "error", text1: res?.data?.message });
-      setScannedData("Failed ! don't let the guest or delivery in");
+      Toast.show({
+        type: "error",
+        text1: capitalize(
+          res?.data?.message?.replace("QrCode", "QR Code") || ""
+        ),
+      });
     }
     setActive(!active);
   };
-
-  // -----------------------------------------
-
-  const clickToScan = () => setActive(!active);
 
   // -----------------------------------------
 
@@ -81,25 +124,46 @@ export default function ScanQrCode() {
 
   if (!isFocused) return <View></View>;
 
-  // if (isLoading) return <LoadingScreen />;
-
   // -----------------------------------------
 
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Scan Qr Code</Text>
-      <View style={styles.barcodeContainer}>
-        <BarCodeScanner
-          style={active ? { height: hp(75) } : { height: 0 }}
-          onBarCodeScanned={active ? handleSuccess : undefined}
-        />
-
-        {!active && scannedData ? (
-          <Text style={styles.txt}>{scannedData}</Text>
+  return active ? (
+    <BarCodeScanner
+      style={active ? { height: hp(88) } : { height: 0 }}
+      onBarCodeScanned={active ? handleSuccess : undefined}
+    />
+  ) : (
+    <LinearGradient colors={["#4387D2", "#2F37A3"]} style={styles.container}>
+      <View>
+        {data ? (
+          !success ? (
+            <Text
+              style={{
+                color: theme.colors.primary,
+                fontSize: 24,
+              }}
+            >
+              {message?.replace("QrCode", "QR Code")}
+            </Text>
+          ) : (
+            <Success
+              invitationUser={invitationUser}
+              currentAddresses={currentAddresses}
+              message={message}
+              invitationData={invitationData}
+            />
+          )
         ) : null}
-        {!active ? <Button onPress={clickToScan} text="scanQrCode" /> : null}
+        <Button
+          onPress={clickToScan}
+          text="scanQrCode"
+          loading={isLoading}
+          width={wp(85)}
+          customStyle={{
+            marginTop: data ? hp(1) : hp(30),
+          }}
+        />
       </View>
-    </View>
+    </LinearGradient>
   );
 }
 
@@ -109,7 +173,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingVertical: hp("5%"),
-    backgroundColor: theme.colors.white,
     paddingHorizontal: wp("5%"),
     justifyContent: "space-between",
   },
@@ -132,7 +195,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   barcodeContainer: {
-    height: hp(85),
+    height: hp(95),
     justifyContent: "center",
   },
   tools: {
@@ -158,11 +221,6 @@ const styles = StyleSheet.create({
     borderColor: "grey",
     textAlign: "center",
     alignItems: "center",
-    shadowColor: theme.colors.black,
-    shadowRadius: 10,
-    shadowOpacity: 0.23,
-    shadowOffset: { width: 0, height: 2 },
-    elevation: 20,
   },
   logout: {
     fontSize: 15,
@@ -172,6 +230,6 @@ const styles = StyleSheet.create({
   },
   txt: {
     fontSize: 20,
-    textAlign: "center",
+    textAlign: "left",
   },
 });

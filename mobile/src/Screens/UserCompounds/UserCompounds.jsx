@@ -1,12 +1,12 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   StyleSheet,
   Text,
-  View,
   FlatList,
   TouchableOpacity,
+  SafeAreaView,
 } from "react-native";
 import React from "react";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -14,39 +14,32 @@ import {
 import theme from "../../Theme/paper.theme";
 import { useAppDispatch, useAppSelector } from "../../Store/redux.hooks";
 import { setCurrentCompound } from "../../Store/Slices/auth.slice";
+import { Card } from "react-native-paper";
 
 export default function UserCompounds({ navigation }) {
   const dispatch = useAppDispatch();
   const { userCompound, type } = useAppSelector((state) => state?.auth?.user);
-  const handleCompoundClicked = (id) => {
-    dispatch(setCurrentCompound(id));
+  const handleCompoundClicked = (c) => {
+    AsyncStorage.setItem("currentCompound", JSON.stringify(c.id));
+    dispatch(setCurrentCompound(c));
     navigation.navigate("HomeStackTabNavigator");
   };
-  const navigateToCompoundList = () => {
-    navigation.navigate("CompoundsList");
-  };
   return (
-    <View>
-      {/* The Title  */}
-      <View
+    <SafeAreaView>
+      <Text
         style={{
           height: hp(10),
+          textAlign: "center",
+          paddingTop: hp(5),
+          fontSize: 20,
+          color: theme.colors.primary,
         }}
       >
-        <Text
-          style={{
-            textAlign: "center",
-            fontSize: 20,
-            marginVertical: 20,
-            color: theme.colors.primary,
-          }}
-        >
-          Choose Compound
-        </Text>
-      </View>
+        Choose Compound
+      </Text>
       <FlatList
         style={{
-          height: hp(80),
+          height: hp(90),
         }}
         keyExtractor={(item, index) => {
           return (
@@ -57,53 +50,67 @@ export default function UserCompounds({ navigation }) {
             index
           );
         }}
-        numColumns={2}
         data={userCompound}
         renderItem={({ item }) => {
           return (
             <TouchableOpacity
-              style={styles.childView}
+              activeOpacity={0.75}
               onPress={() => {
                 handleCompoundClicked(item);
               }}
             >
-              <View style={styles.innerChild}>
-                <Text style={{ fontSize: 20, color: theme.colors.placeholder }}>
-                  {item?.compoundName} compound
-                  {type !== "Security" ? (
-                    <>
-                      {item?.streetName
-                        ? `, street ${item?.streetName} ,`
-                        : null}
-                      {item?.blockNumber
-                        ? `block ${item?.blockNumber} ,`
-                        : null}
-                      {item?.unitNumber ? `unit ${item?.unitNumber} ,` : null}
-                    </>
-                  ) : null}
-                </Text>
-                <Text style={{ color: theme.colors.white, fontSize: 14 }}>
-                  {/*{item.compoundDescription}*/}
-                </Text>
-              </View>
+              <Card style={styles.childView}>
+                <Card.Cover
+                  style={{ height: hp(15) }}
+                  source={{ uri: item.logoUrl }}
+                  resizeMode={"cover"}
+                />
+                <Card.Title
+                  title={item?.compoundName}
+                  titleStyle={{
+                    fontSize: item?.compoundName?.length > 25 ? 18 : 22,
+                  }}
+                  subtitle={
+                    type !== "Security"
+                      ? `${
+                          item?.streetName
+                            ? `${item?.streetName} street${
+                                item?.blockNumber || item?.unitNumber ? "," : ""
+                              }`
+                            : ""
+                        } ${
+                          item?.blockNumber
+                            ? `block ${item?.blockNumber}${
+                                item?.unitNumber ? "," : ""
+                              }`
+                            : ""
+                        } ${
+                          item?.unitNumber ? `unit ${item?.unitNumber}.` : ""
+                        }`
+                      : ""
+                  }
+                />
+              </Card>
             </TouchableOpacity>
           );
         }}
       />
-      <View style={[styles.centeredView]}>
-        {/* Wrapper  */}
-        <TouchableOpacity
-          onPress={navigateToCompoundList}
-          style={styles.addCompound}
-        >
-          <MaterialCommunityIcons name="plus" size={24} color="black" />
-        </TouchableOpacity>
-      </View>
-    </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+  card: {
+    width: wp(65),
+    flexDirection: "row",
+    borderWidth: 1,
+    marginRight: wp(2),
+  },
+  title: {
+    paddingVertical: hp(1),
+    paddingHorizontal: wp(2),
+    fontWeight: "bold",
+  },
   container: {},
   header: {
     flexDirection: "row",
@@ -115,20 +122,20 @@ const styles = StyleSheet.create({
   Title: {
     textAlign: "center",
   },
-  childView: {
-    backgroundColor: theme.colors.primary,
-    width: wp(45),
-    margin: wp(5),
-    borderRadius: 6,
-    height: hp(25),
-    justifyContent: "center",
-    alignItems: "center",
+  shadow: {
     flex: 1,
   },
+  childView: {
+    // width: wp(80),
+    margin: wp(5),
+    height: hp(25),
+    flex: 1,
+    elevation: 10,
+  },
   innerChild: {
-    textAlign: "center",
-    justifyContent: "center",
-    alignItems: "center",
+    textAlign: "left",
+    padding: 10,
+    paddingLeft: 15,
   },
   addCompound: {
     backgroundColor: theme.colors.primary,

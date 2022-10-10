@@ -1,8 +1,7 @@
-import qrcode from "qrcode";
 import { encryptWithPublicKey } from "../../../utils/cryptography/cryptography";
 import invitationService from "../../invitation/invitation.service";
 import { isUserBelongsToCompound } from "../../userCompound/userCompound.service";
-
+import { API_URL } from "../../../../../configs";
 // ===============================================================
 
 const addHoursToDate = (date = new Date(), hours = 3) => {
@@ -75,15 +74,22 @@ export const generateGuestQrCodeInvitationLink = async ({
       userId,
       compoundId,
       invitationId: invitation?.id,
-      type: userCompound?.user?.type,
+      type,
       expiresAt: addMinutesToDate(new Date(), 1),
     })
   );
 
-  const link = await qrcode.toDataURL(encryptedQrcode);
+  // const fileName = Date.now() + "_" + userId + ".png";
+  // const path = "assets/qrcodes/" + fileName;
+
+  // const image = await qrcode.toFile(
+  //   "assets/qrcodes/" + fileName,
+  //   encryptedQrcode
+  // );
 
   return {
-    link: `https://easypass-api.techhive.dev/guest/${link}`,
+    // link: `${API_URL}/${path}`,
+    link: `${API_URL}/guest/${encryptedQrcode}`,
     qrcode: encryptedQrcode,
   };
 };

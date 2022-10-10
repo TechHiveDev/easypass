@@ -2,7 +2,8 @@ node_modules
 .env
 
 # exclude everything inside assets
-assets/avatars/*
+
+assets/*
 
 # exception to the rule
-!assets/avatars/.gitkeep
+# !assets/user/.gitkeep

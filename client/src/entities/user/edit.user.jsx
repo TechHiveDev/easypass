@@ -5,14 +5,17 @@ import {
   BooleanInput,
   SelectInput,
   usePermissions,
+  ImageInput,
+  ImageField,
 } from "react-admin";
+import UserTitle from "./title";
 
 // ------------------------------------------------
 
 export default function EditUser(props) {
   const { isLoading, permissions } = usePermissions();
   return (
-    <Edit {...props}>
+    <Edit title={<UserTitle />}>
       {isLoading ? (
         <h3>Loading</h3>
       ) : (
@@ -22,7 +25,16 @@ export default function EditUser(props) {
           <TextInput variant="outlined" source="name" />
           {/*<TextInput variant="outlined" source="password" />*/}
           <BooleanInput name={"active"} source={"active"} />
-          <TextInput variant="outlined" source="photoUrl" />
+          <ImageInput source="photoUrl" label="new logo" accept="image/*">
+            <ImageField source="src" title="title" />
+          </ImageInput>
+          <p>old logo</p>
+          <ImageField
+            source="photoUrl"
+            title="title"
+            label={"old image"}
+            displayName={"old image"}
+          />
           <TextInput variant="outlined" source="phone" />
           <TextInput variant="outlined" source="docs" />
           <SelectInput

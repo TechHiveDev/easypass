@@ -8,6 +8,7 @@ import {
   ShowButton,
   EditButton,
   DeleteButton,
+  ReferenceField,
 } from "react-admin";
 import Actions from "../../reactAdmin/components/Actions";
 
@@ -22,9 +23,12 @@ export default function ListInvitation(props) {
 
         <TextField variant="outlined" source="type" />
         <TextField variant="outlined" source="notes" />
-        <NumberField variant="outlined" source="compoundId" />
-
-        <NumberField variant="outlined" source="userId" />
+        <ReferenceField source="userId" reference="user">
+          <TextField source="name" />
+        </ReferenceField>
+        <ReferenceField source="compoundId" reference="compound">
+          <TextField source="name" />
+        </ReferenceField>
 
         <Actions label="">
           <ShowButton label="ra.action.show" />
