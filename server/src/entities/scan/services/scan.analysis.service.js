@@ -12,13 +12,20 @@ const prisma = new PrismaClient({
  * report Scan Report
  */
 export const scanReport = async ({ compoundId, start, end, interval }) => {
+  //NOTE: interval is enum (1=>day)
+  //                       (7=>week)
+  //                       (30=>month)
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   // Step up some variables for later
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   end = new Date(+end);
   start = new Date(+start);
 
-  let diff = (end.getTime() - start.getTime()) / interval;
+  let newInterval = (interval==30)? (60*60*1000*24*30):(interval==7)?604800000:86400000
+  
+  console.log((end.getTime() - start.getTime())%86400000)
+
+  let diff = (end.getTime() - start.getTime()) / newInterval;
 
   if (!start || !start || !end || !interval)
     throw {
