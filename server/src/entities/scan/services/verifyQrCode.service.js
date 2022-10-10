@@ -70,7 +70,7 @@ export const verifyGuestQrCode = async ({
       },
     },
   });
-  
+
   if (!invitation)
     return {
       ...rest,
