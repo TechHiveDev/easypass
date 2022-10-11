@@ -19,6 +19,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
+import useLocalStorage from "../../utils/useLocalStorage";
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -53,7 +54,7 @@ const options = {
 };
 
 const Scan = () => {
-  const [compound, setCompound] = useState("");
+  const [compound, setCompound] = useLocalStorage("reportCompoundScan", "");
   const {
     data: compounds,
     compoundsLoading,
@@ -61,15 +62,21 @@ const Scan = () => {
   } = useQuery(["compound", "getAll"], () => customFetch("/compound", {}), {
     staleTime: Infinity,
   });
-  const [{ from, to, interval }, setFromToInterval] = useState({
-    from: "2022-10-01",
-    to: "2022-10-30",
-    interval: 7,
-  });
-  const [filterParams, setFilterParams] = useState({});
+  const [{ from, to, interval }, setFromToInterval] = useLocalStorage(
+    "fromToIntervalScan",
+    {
+      from: "2022-10-01",
+      to: "2022-10-30",
+      interval: 7,
+    }
+  );
+  const [filterParams, setFilterParams] = useLocalStorage(
+    "reportFilterParamsScan",
+    {}
+  );
   const chartRef = useRef();
 
-  const [chart, setChart] = useState(0);
+  const [chart, setChart] = useLocalStorage("reportChartScan", 0);
   const { data, isLoading, error } = useQuery(
     ["scan-report", from, to, interval, compound],
     () =>
