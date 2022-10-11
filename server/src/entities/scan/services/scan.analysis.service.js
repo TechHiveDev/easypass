@@ -22,6 +22,16 @@ export const scanReport = async ({ compoundId, start, end, interval }) => {
   end = new Date(+end);
   start = new Date(+start);
 
+  let typeOfInterval = interval;
+
+  if (interval == 30) {
+    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+    // if it's by month round the start day to the first day of the month and the end day to the end of the month
+    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+    start = new Date(start.getFullYear(), start.getMonth(), 1);
+    end = new Date(end.getFullYear(), end.getMonth() + 1, 0);
+  }
+
   let newInterval =
     interval == 30
       ? 60 * 60 * 1000 * 24 * 32
@@ -55,7 +65,6 @@ export const scanReport = async ({ compoundId, start, end, interval }) => {
     const component = await prisma.compound.findFirst({ where: { id: +id } });
     if (!component) continue;
 
-    // console.log({ from: start, to: end });
     const scans = await prisma.scan.findMany({
       where: {
         compoundId: +id,
@@ -79,17 +88,28 @@ export const scanReport = async ({ compoundId, start, end, interval }) => {
       success[index] = 0;
       fail[index] = 0;
 
-      dates.push(tempDate);
-      tempDate = new Date(+(tempDate.getTime() + diff));
+      dates.push(tempDate.toISOString());
+      if (typeOfInterval == 30) {
+        tempDate = new Date(tempDate.setMonth(tempDate.getMonth() + 1));
+        // new Date(tempDate.setMonth(tempDate.getMonth() + 1))
+      } else {
+        tempDate = new Date(+(tempDate.getTime() + diff));
+      }
     }
 
     scans.forEach((scan) => {
       // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
       // fill in the success/fail with their relavent data
       // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-      let index = Math.floor(
-        (scan.createdAt.getTime() - start.getTime()) / diff
-      );
+      let index = 0;
+
+      if (typeOfInterval == 30) {
+        let diffInMonth = scan.createdAt.getMonth() - start.getMonth() + 1;
+        index = diffInMonth < 0 ? diffInMonth + 12 : diffInMonth;
+      } else {
+        index = Math.floor((scan.createdAt.getTime() - start.getTime()) / diff);
+      }
+
       if (!success[index]) success[index] = 0;
       if (!fail[index]) fail[index] = 0;
       if (scan.success) success[index] += 1;

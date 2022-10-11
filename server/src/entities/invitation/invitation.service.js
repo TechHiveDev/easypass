@@ -57,6 +57,14 @@ export const invitationReport = async ({
   end = new Date(+end);
   start = new Date(+start);
 
+  if (interval == 30) {
+    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+    // if it's by month round the start day to the first day of the month and the end day to the end of the month
+    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+    start = new Date(start.getFullYear(), start.getMonth(), 1);
+    end = new Date(end.getFullYear(), end.getMonth() + 1, 0);
+  }
+
   let newInterval =
     interval == 30
       ? 60 * 60 * 1000 * 24 * 32
@@ -90,7 +98,6 @@ export const invitationReport = async ({
     const component = await prisma.compound.findFirst({ where: { id: +id } });
     if (!component) continue;
 
-    // console.log({ from: start, to: end });
     const invitations = await prisma.invitation.findMany({
       where: {
         compoundId: +id,
@@ -116,17 +123,29 @@ export const invitationReport = async ({
       delivery[index] = 0;
       all[index] = 0;
 
-      dates.push(tempDate);
-      tempDate = new Date(+(tempDate.getTime() + diff));
+      dates.push(tempDate.toISOString());
+      if (typeOfInterval == 30) {
+        tempDate = new Date(tempDate.setMonth(tempDate.getMonth() + 1));
+        // new Date(tempDate.setMonth(tempDate.getMonth() + 1))
+      } else {
+        tempDate = new Date(+(tempDate.getTime() + diff));
+      }
     }
 
     invitations.forEach((invitation) => {
       // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
       // fill in the visitor/delivery with their relavent data
       // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-      let index = Math.floor(
-        (invitation.createdAt.getTime() - start.getTime()) / diff
-      );
+      if (typeOfInterval == 30) {
+        let diffInMonth =
+          invitation.createdAt.getMonth() - start.getMonth() + 1;
+        index = diffInMonth < 0 ? diffInMonth + 12 : diffInMonth;
+      } else {
+        index = Math.floor(
+          (invitation.createdAt.getTime() - start.getTime()) / diff
+        );
+      }
+
       if (!visitor[index]) visitor[index] = 0;
       if (!delivery[index]) delivery[index] = 0;
       if (!all[index]) all[index] = 0;
