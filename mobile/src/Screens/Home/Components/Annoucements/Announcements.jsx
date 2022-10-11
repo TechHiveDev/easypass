@@ -8,19 +8,26 @@ import MyText from "../../../../Components/MyText";
 import i18n from "i18n-js";
 import { useGetCompoundAnnouncementsQuery } from "../../../../API/api";
 import { useAppSelector } from "../../../../Store/redux.hooks";
+import { useIsFocused } from "@react-navigation/native";
+import { useEffect } from "react";
 
 export default function Announcements() {
   const currentCompoundId = useAppSelector(
     (state) => state?.auth?.currentCompound?.compoundId
   );
+  const isFocused = useIsFocused();
   const {
     data: announcements,
     error,
     isLoading,
+    refetch,
   } = useGetCompoundAnnouncementsQuery(currentCompoundId);
-  if (isLoading || error || !announcements?.length) return null;
-
+  useEffect(() => {
+    if (isFocused) refetch();
+  }, [isFocused]);
   const renderItem = (props) => <Announcement {...props} />;
+
+  if (isLoading || error || !announcements?.length) return null;
 
   return (
     <View style={styles.slider}>
