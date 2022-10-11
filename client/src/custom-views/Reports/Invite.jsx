@@ -74,10 +74,7 @@ const Invite = () => {
       interval: 7,
     }
   );
-  const [filterParams, setFilterParams] = useLocalStorage(
-    "reportFilterParamsInvite",
-    {}
-  );
+  const [filterParams, setFilterParams] = useState({});
   const chartRef = useRef();
 
   const [chart, setChart] = useLocalStorage("reportChartInvite", 0);
