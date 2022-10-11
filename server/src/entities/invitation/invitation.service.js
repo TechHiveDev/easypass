@@ -57,6 +57,8 @@ export const invitationReport = async ({
   end = new Date(+end);
   start = new Date(+start);
 
+  let typeOfInterval = interval;
+
   if (interval == 30) {
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
     // if it's by month round the start day to the first day of the month and the end day to the end of the month
@@ -136,6 +138,8 @@ export const invitationReport = async ({
       // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
       // fill in the visitor/delivery with their relavent data
       // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+      let index = 0;
+      
       if (typeOfInterval == 30) {
         let diffInMonth =
           invitation.createdAt.getMonth() - start.getMonth() + 1;

@@ -1,1 +1,1 @@
-export {default} from './components/MyAdmin'
+export { default } from "./components/MyAdmin";

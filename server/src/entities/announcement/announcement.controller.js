@@ -105,7 +105,10 @@
 // ------------------------------------------------------------------
 
 import { crud, prismaCrud } from "../../utils/crud/express-crud-router";
-import { getAnnouncementByCompound, createAnnouncement } from "./announcement.service";
+import {
+  getAnnouncementByCompound,
+  createAnnouncement,
+} from "./announcement.service";
 
 // ==================================================================
 const crudController = {

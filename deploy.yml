@@ -1,0 +1,39 @@
+- name: Deploy on AWS techhive-master-server
+  hosts: all
+  become: true
+
+  # - - - - - - - - - - - - - - - - - -
+
+  vars:
+    project_name: "easypass"
+    project_path: "/home/ubuntu/easypass/"
+    project_repo: "git@github.com:TechHiveDev/{{ project_name }}.git"
+
+  # - - - - - - - - - - - - - - - - - -
+
+  tasks:
+    - name: Create an easypass directory if not exist
+      ansible.builtin.file:
+        path: "{{ project_path }}"
+        state: directory
+
+    - name: Pull / Clone Repo if not exist
+      ansible.builtin.git:
+        repo: "{{ project_repo }}"
+        dest: "{{ project_path }}{{ project_name }}"
+
+
+    - name: "Get sudo access"
+      ansible.builtin.shell: |
+        sudo su -
+    
+    - name: "Serve Node Processs by PM2 API"
+      ansible.builtin.shell: |
+        # Enter Project Path 
+        cd {{ project_path }}{{ project_name }}/server
+        # UnZip the build file 
+        # unzip -o build.zip
+
+        # Delete the server process if exist and start it 
+        pm2 delete -s {{ project_name }} || :
+        pm2 start "yarn serve" --name {{ project_name }}

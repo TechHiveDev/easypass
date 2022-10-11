@@ -129,4 +129,4 @@ const customRoutesController = [
 ];
 // ------------------------------------------------------------------
 
-export default crud("/invitation", crudController,customRoutesController);
+export default crud("/invitation", crudController, customRoutesController);

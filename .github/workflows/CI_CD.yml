@@ -1,0 +1,101 @@
+# CI / CD Pipeline
+
+# 1 - Prettify
+# 2 - Lint
+# 3 - Build
+# 4 - Zip Build to build.zip
+# 4 - Run Ansible deploy playbook
+
+# =================================================================
+
+name: Prettify => Lint => Build => Zip => Deploy
+
+# =================================================================
+
+on:
+  push:
+    branches: ["master"]
+  pull_request:
+    branches: ["master"]
+
+# =================================================================
+
+jobs:
+  pretty-lint-build-deploy:
+    # ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.x]
+
+    # ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      # - - - - - - - - - - - - - - - - - - - - - - - - -
+      - name: Prettify code
+        uses: creyD/prettier_action@v4.2
+        with:
+          prettier_options: --write **/*.{js,md,ts}
+
+      # - - - - - - - - - - - - - - - - - - - - - - - - -
+
+      #       - name: Lint Code Base
+      #         uses: github/super-linter@v4
+      #         env:
+      #           VALIDATE_ALL_CODEBASE: false
+      #           DEFAULT_BRANCH: "master"
+      #           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # - - - - - - - - - - - - - - - - - - - - - - - - -
+
+      - name: Yarn Install Node Modules api
+        # uses: borales/actions-yarn@v3.0.0
+        run: |
+          yarn install
+        working-directory: ./server
+
+      # - - - - - - - - - - - - - - - - - - - - - - - - -
+
+      - name: Yarn Install Node Modules client
+        # uses: borales/actions-yarn@v3.0.0
+        run: |
+          yarn install
+          yarn build
+          zip -r dist.zip dist
+        working-directory: ./client
+
+      # - - - - - - - - - - - - - - - - - - - - - - - - -
+
+      - name: Automated Commit files changes
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git commit -m "Automated Changes" -a
+
+      # - - - - - - - - - - - - - - - - - - - - - - - - -
+
+      - name: Automated Push file changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
+# - - - - - - - - - - - - - - - - - - - - - - - - -
+
+      # - name: Run Ansible Deploy playbook on aws
+      #   uses: dawidd6/action-ansible-playbook@v2
+      #   with:
+      #     directory: ./
+      #     playbook: deploy.yml
+      #     key: ${{secrets.TECHHIVE_DEVOPS_MASTER_PEM}}
+      #     inventory: |
+      #     [all]
+      #     Techive-Master ansible_host=35.180.192.89
+
+      #     [all:vars]
+      #     ansible_user=ubuntu
