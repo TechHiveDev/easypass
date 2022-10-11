@@ -138,6 +138,8 @@ export const invitationReport = async ({
       // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
       // fill in the visitor/delivery with their relavent data
       // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+      let index = 0;
+      
       if (typeOfInterval == 30) {
         let diffInMonth =
           invitation.createdAt.getMonth() - start.getMonth() + 1;
