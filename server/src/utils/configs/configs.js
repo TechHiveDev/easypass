@@ -28,7 +28,7 @@ export const cookiesConfigs = {
   maxAge: 24 * 60 * 60 * 100,
   keys: [process.env.COOKIE_KEY],
   // secure: true,
-  name: "session"
+  name: "session",
 };
 
 // ---------------------------------------------------

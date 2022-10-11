@@ -55,12 +55,9 @@ authRouter.route("/oauth/register").post(registerController);
 authRouter.route("/oauth/login").post(loginController);
 
 authRouter.route("/oauth/forgot-password").post(forgotPassword);
-authRouter.route("/oauth/confirm-otp").post(changePasswordOTPController); 
+authRouter.route("/oauth/confirm-otp").post(changePasswordOTPController);
 
-authRouter.use("/oauth/", [
-  passportAuthenticate(passport),
-  isAuthenticated,
-]);
+authRouter.use("/oauth/", [passportAuthenticate(passport), isAuthenticated]);
 
 authRouter.route("/oauth/me").get(me);
 authRouter.route("/oauth/reset-password").post(resetPasswordController);
