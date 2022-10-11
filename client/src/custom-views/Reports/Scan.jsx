@@ -70,10 +70,7 @@ const Scan = () => {
       interval: 7,
     }
   );
-  const [filterParams, setFilterParams] = useLocalStorage(
-    "reportFilterParamsScan",
-    {}
-  );
+  const [filterParams, setFilterParams] = useState({});
   const chartRef = useRef();
 
   const [chart, setChart] = useLocalStorage("reportChartScan", 0);
