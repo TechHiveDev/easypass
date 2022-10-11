@@ -98,7 +98,11 @@ const Scan = () => {
               : data?.[0]?.report?.dates?.map((d, i) => {
                   const currentDate = new Date(d);
                   const nextDay = data?.[0]?.report?.dates?.[i + 1];
-                  currentDate.setDate(currentDate.getDate() + interval);
+                  if (interval === 30) {
+                    currentDate.setMonth(currentDate.getMonth() + 1);
+                  } else {
+                    currentDate.setDate(currentDate.getDate() + interval);
+                  }
                   return `${d?.substring(0, 10)} / ${
                     nextDay
                       ? nextDay.substring(0, 10)
