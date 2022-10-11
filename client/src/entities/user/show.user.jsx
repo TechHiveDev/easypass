@@ -9,13 +9,18 @@ import {
   ReferenceManyField,
   Datagrid,
   ReferenceField,
+  ShowButton,
+  EditButton,
+  DeleteButton,
 } from "react-admin";
 import UserTitle from "./title";
+import ActionsShowUser from "./actions.show.user";
+import Actions from "../../reactAdmin/components/Actions";
 
 // ------------------------------------------------
 export default function ShowUser(props) {
   return (
-    <Show title={<UserTitle />}>
+    <Show title={<UserTitle />} actions={<ActionsShowUser />}>
       <SimpleShowLayout>
         <NumberField variant="outlined" source="id" />
         <TextField variant="outlined" source="email" />
@@ -36,6 +41,9 @@ export default function ShowUser(props) {
             <TextField variant="outlined" source="streetName" />
             <NumberField variant="outlined" source={"blockNumber"} />
             <NumberField variant="outlined" source={"unitNumber"} />
+            <Actions label="">
+              <EditButton label="ra.action.edit" />
+            </Actions>
           </Datagrid>
         </ReferenceManyField>
       </SimpleShowLayout>
