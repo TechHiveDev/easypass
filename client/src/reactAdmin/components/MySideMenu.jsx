@@ -24,7 +24,7 @@ const icons = {
 
 export default function MySideMenu(props) {
   const translate = useTranslate();
-  const [checked, setChecked] = useState(false);
+  const [checked, setChecked] = useState(true);
   const [open] = useSidebarState();
   return (
     <Sidebar {...props}>
