@@ -9,14 +9,30 @@ import {
   EditButton,
   DeleteButton,
   ReferenceField,
+  DateTimeInput,
+  TextInput,
+  ReferenceInput,
+  SelectInput,
 } from "react-admin";
 import Actions from "../../reactAdmin/components/Actions";
 
 // ------------------------------------------------
-
+const inviteFilters = [
+  <DateTimeInput label="from" source="createdAt.gte" />,
+  <DateTimeInput label="to" source="createdAt.lte" />,
+  <TextInput label="type" source="type" />,
+  <ReferenceInput
+    source="compoundId"
+    reference="compound"
+    label={"compound"}
+    name={"compoundId"}
+  >
+    <SelectInput optionText={"name"} />
+  </ReferenceInput>,
+];
 export default function ListInvitation(props) {
   return (
-    <List>
+    <List filters={inviteFilters}>
       <Datagrid>
         <NumberField variant="outlined" source="id" />
         <TextField variant="outlined" source="name" />
