@@ -57,6 +57,8 @@ export const invitationReport = async ({
   end = new Date(+end);
   start = new Date(+start);
 
+  let typeOfInterval = interval;
+
   if (interval == 30) {
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
     // if it's by month round the start day to the first day of the month and the end day to the end of the month
