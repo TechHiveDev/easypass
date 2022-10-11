@@ -9,6 +9,7 @@
     "inital-migrate-database": "sudo rm -r -f ./prisma/migrations && npx prisma migrate dev",
     "migrate-database": "npx prisma migrate dev",
     "seed-database": "babel-node ./src/utils/database/seed.database.js",
+    "new-seed-database": "babel-node ./src/utils/database/new.seed.database.js",
     "generate-RSA-keys": "node ./src/utils/cryptography/test/generateRSAKeys.test.js",
     "prisma-studio": "npx prisma studio"
   },
