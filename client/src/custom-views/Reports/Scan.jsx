@@ -222,23 +222,24 @@ const Scan = () => {
             }}
           />
         </label>
-        <FormControl fullWidth>
-          <InputLabel id="interval">Interval</InputLabel>
-          <Select
-            labelId="interval"
-            id="interval-select"
-            label="Interval"
-            value={interval}
-            onChange={(e) => {
-              console.log(e.target);
-              setFromToInterval((p) => ({ ...p, interval: e.target.value }));
-            }}
-          >
-            <MenuItem value={1}>Day</MenuItem>
-            <MenuItem value={7}>Week</MenuItem>
-            <MenuItem value={30}>Month</MenuItem>
-          </Select>
-        </FormControl>
+        {chart === 0 ? (
+          <FormControl fullWidth>
+            <InputLabel id="interval">Interval</InputLabel>
+            <Select
+              labelId="interval"
+              id="interval-select"
+              label="Interval"
+              value={interval}
+              onChange={(e) => {
+                setFromToInterval((p) => ({ ...p, interval: e.target.value }));
+              }}
+            >
+              <MenuItem value={1}>Day</MenuItem>
+              <MenuItem value={7}>Week</MenuItem>
+              <MenuItem value={30}>Month</MenuItem>
+            </Select>
+          </FormControl>
+        ) : null}
         <FormControl fullWidth>
           <InputLabel id="compound">Compound</InputLabel>
           <Select
