@@ -5,7 +5,6 @@ const prisma = new PrismaClient({ log: ["info", "query"] });
 
 // ==========================================================
 
-
 const numScans = 20;
 const minDays = 1;
 const maxDays = 30;
