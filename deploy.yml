@@ -16,9 +16,6 @@
       ansible.builtin.file:
         path: "{{ project_path }}"
         state: directory
-      
-    - name: "Get sudo access"
-      ansible.builtin.shell: sudo su -
 
     - name: Pull / Clone Repo if not exist
       ansible.builtin.git:
