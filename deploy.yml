@@ -16,16 +16,15 @@
       ansible.builtin.file:
         path: "{{ project_path }}"
         state: directory
+      
+    - name: "Get sudo access"
+      ansible.builtin.shell: |
+        sudo su -
 
     - name: Pull / Clone Repo if not exist
       ansible.builtin.git:
         repo: "{{ project_repo }}"
         dest: "{{ project_path }}{{ project_name }}"
-
-
-    - name: "Get sudo access"
-      ansible.builtin.shell: |
-        sudo su -
     
     - name: "Serve Node Processs by PM2 API"
       ansible.builtin.shell: |
