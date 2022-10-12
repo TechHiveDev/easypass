@@ -1,13 +1,14 @@
 import { useRecordContext, useTranslate } from "react-admin";
 
-const AnnouncementTitle = () => {
+const AnnouncementTitle = ({ create = false }) => {
   const t = useTranslate();
   const record = useRecordContext();
   // the record can be empty while loading
-  if (!record) return null;
   return (
     <span>
-      {t("announcement")} {record.id}
+      {create ? t("create") : ""}{" "}
+      {create ? t("announcement").replace("ال", "") : t("announcement")}
+      {record ? record.id : ""}
     </span>
   );
 };

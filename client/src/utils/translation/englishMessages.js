@@ -70,6 +70,7 @@ const allEnglishMessages = {
   properties: "Properties",
   from: "From",
   to: "To",
+  type: "Type",
   interval: "Interval",
   compound: "Compound",
   compounds: "Compounds",
@@ -92,5 +93,6 @@ const allEnglishMessages = {
   device: "Device",
   scan: "Scan",
   add: "Add",
+  create: "Create",
 };
 export default allEnglishMessages;

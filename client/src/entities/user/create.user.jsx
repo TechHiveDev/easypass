@@ -10,6 +10,7 @@ import {
   ImageInput,
   ImageField,
 } from "react-admin";
+import Title from "./title";
 // ------------------------------------------------
 const validate = (values) => {
   const errors = {};
@@ -36,7 +37,7 @@ export default function CreateUser(props) {
     <Create
       resource={"oauth/register"}
       redirect={"/user"}
-      title={"Create user"}
+      title={<Title create={true} />}
     >
       {isLoading ? (
         <h3>Loading</h3>
@@ -78,9 +79,6 @@ export default function CreateUser(props) {
           <TextInput variant="outlined" source="streetName" required />
           <NumberInput variant="outlined" source={"blockNumber"} required />
           <NumberInput variant="outlined" source={"unitNumber"} required />
-          {/*<ReferenceField source="id" reference="compound" label="Author name">*/}
-          {/*  <TextField source={"name"} />*/}
-          {/*</ReferenceField>*/}
         </SimpleForm>
       )}
     </Create>

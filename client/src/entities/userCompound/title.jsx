@@ -6,7 +6,8 @@ const UserCompoundTitle = ({ create = false }) => {
   // the record can be empty while loading
   return (
     <span>
-      {create ? "create" : ""} {t("property").toLowerCase()}{" "}
+      {create ? t("create") : ""}{" "}
+      {create ? t("property").replace("ال", "") : t("property")}
       {record ? record.id : ""}
     </span>
   );
