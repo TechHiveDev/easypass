@@ -6,12 +6,13 @@ import {
   ReferenceInput,
   SelectInput,
 } from "react-admin";
+import Title from "./title";
 
 // ------------------------------------------------
 
 export default function CreateUserCompound(props) {
   return (
-    <Create>
+    <Create title={<Title create={true} />}>
       <SimpleForm redirect="list">
         <ReferenceInput
           required
