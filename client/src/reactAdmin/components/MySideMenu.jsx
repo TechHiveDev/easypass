@@ -3,6 +3,7 @@ import {
   MenuItemLink,
   useTranslate,
   useSidebarState,
+  useLocaleState,
 } from "react-admin";
 import GroupIcon from "@mui/icons-material/Group";
 import entities from "../../entities/entities";
@@ -26,6 +27,7 @@ export default function MySideMenu(props) {
   const translate = useTranslate();
   const [checked, setChecked] = useState(true);
   const [open] = useSidebarState();
+  const [locale] = useLocaleState();
   return (
     <Sidebar {...props}>
       {entities
@@ -55,22 +57,23 @@ export default function MySideMenu(props) {
         onClick={() => setChecked((p) => !p)}
         startIcon={<AssessmentIcon />}
       >
-        &nbsp; Reports
+        &nbsp; {translate("reports")}
       </Button>
       <Collapse in={open && checked}>
         <div
           style={{
-            marginLeft: "20px",
+            marginLeft: locale === "en" ? "20px" : null,
+            marginRight: locale === "ar" ? "20px" : null,
           }}
         >
           <MenuItemLink
             to={`/reports/scan`}
-            primaryText={"Scan"}
+            primaryText={translate("menu." + "Scan")}
             leftIcon={<GroupIcon />}
           />{" "}
           <MenuItemLink
             to={`/reports/invite`}
-            primaryText={"Invite"}
+            primaryText={translate("menu." + "Invitation")}
             leftIcon={<GroupIcon />}
           />
         </div>

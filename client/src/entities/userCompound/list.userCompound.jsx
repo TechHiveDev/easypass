@@ -9,14 +9,18 @@ import {
   EditButton,
   DeleteButton,
   ReferenceField,
+  useTranslate,
 } from "react-admin";
 import Actions from "../../reactAdmin/components/Actions";
 
 // ------------------------------------------------
-
+const Title = () => {
+  const translate = useTranslate();
+  return <span>{translate("properties")}</span>;
+};
 export default function ListUserCompound(props) {
   return (
-    <List>
+    <List title={<Title />}>
       <Datagrid>
         <NumberField variant="outlined" source="id" />
 

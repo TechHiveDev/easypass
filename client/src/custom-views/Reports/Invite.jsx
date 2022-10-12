@@ -11,7 +11,7 @@ import {
 } from "chart.js";
 import { Bar, Pie, getElementAtEvent } from "react-chartjs-2";
 import { useQuery } from "react-query";
-import { Loading, Error } from "react-admin";
+import { Loading, Error, useTranslate, useLocaleState } from "react-admin";
 import customFetch from "../../utils/customFetch";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -20,6 +20,7 @@ import Select from "@mui/material/Select";
 import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
 import useLocalStorage from "../../utils/useLocalStorage";
+
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -58,6 +59,8 @@ const options = {
 };
 
 const Invite = () => {
+  const [locale] = useLocaleState();
+  const translate = useTranslate();
   const [compound, setCompound] = useLocalStorage("reportCompoundInvite", "");
   const {
     data: compounds,
@@ -115,19 +118,19 @@ const Invite = () => {
                 }),
           datasets: [
             {
-              label: "Visitor",
+              label: translate("Visitor"),
               data: data?.[0]?.report?.visitor,
               backgroundColor: "rgba(255, 99, 132, 0.5)",
             },
             {
-              label: "Delivery",
+              label: translate("Delivery"),
               data: data?.[0]?.report?.delivery,
               backgroundColor: "rgba(53, 162, 235, 0.5)",
             },
           ],
         }
       : {
-          labels: ["Visitor", "Delivery"],
+          labels: [translate("Visitor"), translate("Delivery")],
           datasets: [
             {
               data: [
@@ -154,7 +157,13 @@ const Invite = () => {
   const onClick = (event) => {
     const elementAtEvent = getElementAtEvent(chartRef.current, event);
     if (!elementAtEvent?.[0]) return;
+
     const { datasetIndex, index: dataIndex } = elementAtEvent[0];
+    console.log({
+      data,
+      datasetIndex,
+      dataIndex,
+    });
     let type = "";
     if (chart === 1) {
       if (dataIndex === 0) {
@@ -175,6 +184,12 @@ const Invite = () => {
         type = "all";
       }
     }
+    const lastDate = new Date(data?.[0]?.report?.dates[dataIndex]);
+    if (interval === 30) {
+      lastDate.setMonth(lastDate.getMonth() + 1);
+    } else {
+      lastDate.setDate(lastDate.getDate() + interval);
+    }
     setFilterParams(
       type !== "all"
         ? {
@@ -186,8 +201,12 @@ const Invite = () => {
                   : from + "T10:00:00.000Z",
               lte:
                 chart === 0
-                  ? data?.[0]?.report?.dates[dataIndex + 1].substring(0, 10) +
-                    "T10:00:00.000Z"
+                  ? data?.[0]?.report?.dates[dataIndex + 1]
+                    ? `${data?.[0]?.report?.dates[dataIndex + 1].substring(
+                        0,
+                        10
+                      )}T10:00:00.000Z`
+                    : lastDate.toISOString().substring(0, 10) + "T10:00:00.000Z"
                   : to + "T10:00:00.000Z",
             },
             type,
@@ -222,7 +241,7 @@ const Invite = () => {
         }}
       >
         <label>
-          From{" "}
+          {translate("from")}
           <input
             id="from-select"
             type={"date"}
@@ -237,7 +256,7 @@ const Invite = () => {
           />
         </label>
         <label>
-          To
+          {translate("to")}
           <input
             id="to-select"
             type={"date"}
@@ -253,7 +272,7 @@ const Invite = () => {
         </label>
         {chart === 0 ? (
           <FormControl fullWidth>
-            <InputLabel id="interval">Interval</InputLabel>
+            <InputLabel id="interval"> {translate("interval")}</InputLabel>
             <Select
               labelId="interval"
               id="interval-select"
@@ -263,14 +282,14 @@ const Invite = () => {
                 setFromToInterval((p) => ({ ...p, interval: e.target.value }));
               }}
             >
-              <MenuItem value={1}>Day</MenuItem>
-              <MenuItem value={7}>Week</MenuItem>
-              <MenuItem value={30}>Month</MenuItem>
+              <MenuItem value={1}>{translate("day")}</MenuItem>
+              <MenuItem value={7}>{translate("week")}</MenuItem>
+              <MenuItem value={30}>{translate("month")}</MenuItem>
             </Select>
           </FormControl>
         ) : null}
         <FormControl fullWidth>
-          <InputLabel id="compound">Compound</InputLabel>
+          <InputLabel id="compound">{translate("compound")}</InputLabel>
           <Select
             labelId="compound"
             id="compound-select"
@@ -288,7 +307,7 @@ const Invite = () => {
           </Select>
         </FormControl>
         <FormControl fullWidth>
-          <InputLabel id="shape">Chart</InputLabel>
+          <InputLabel id="shape">{translate("chart")}</InputLabel>
           <Select
             labelId="shape"
             id="shape-select"
@@ -296,16 +315,20 @@ const Invite = () => {
             value={chart}
             onChange={(e) => setChart(e.target.value)}
           >
-            <MenuItem value={0}>Bar</MenuItem>
-            <MenuItem value={1}>Pie</MenuItem>
+            <MenuItem value={0}>{translate("bar")}</MenuItem>
+            <MenuItem value={1}>{translate("pie")}</MenuItem>
           </Select>
         </FormControl>
       </div>
       {!compound ? (
-        <h2 style={{ textAlign: "center" }}>Select a compound</h2>
+        <h2 style={{ textAlign: "center" }}>
+          {translate("selectA")} {translate("compound")}
+        </h2>
       ) : (
         <>
-          <h2 style={{ textAlign: "center", marginLeft: "-5vw" }}>Invites</h2>
+          <h2 style={{ textAlign: "center", marginLeft: "-5vw" }}>
+            {translate("menu.Invitation")}
+          </h2>
           {chart === 0 ? (
             <Bar
               options={options}
@@ -342,10 +365,16 @@ const Invite = () => {
             textTransform: "none",
           }}
         >
-          All {filterParams?.type === "all" ? "" : filterParams?.type} Invites
-          from&nbsp;
-          {filterParams.createdAt.gte.substring(0, 10)} to&nbsp;
-          {filterParams.createdAt.lte.substring(0, 10)}
+          {locale === "ar"
+            ? `كل دعوات ال${
+                filterParams?.type === "Visitor" ? "زوار" : "توصيل"
+              } من ${filterParams.createdAt.gte.substring(
+                0,
+                10
+              )} الي${filterParams.createdAt.lte.substring(0, 10)} `
+            : `All ${filterParams?.type} Invites from
+          ${filterParams.createdAt.gte.substring(0, 10)} to
+          ${filterParams.createdAt.lte.substring(0, 10)}`}
         </Button>
       ) : null}
     </div>

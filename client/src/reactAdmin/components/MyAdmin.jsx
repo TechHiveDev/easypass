@@ -1,4 +1,4 @@
-import { Admin, Resource, usePermissions, CustomRoutes } from "react-admin";
+import { Admin, Resource, Authenticated, CustomRoutes } from "react-admin";
 import entities from "../../entities/entities";
 import i18nProvider from "../../utils/translation/i18nProvider";
 import { authProvider } from "../providers/auth.provider.hook";
@@ -45,8 +45,23 @@ export default function MyAdmin() {
         return <Resource key={label} option={{ label }} {...rest} />;
       })}
       <CustomRoutes>
-        <Route path="/reports/scan" element={<Scan />} />
-        <Route path="/reports/invite" element={<Invite />} />
+        <Route
+          path="/reports/scan"
+          element={
+            <Authenticated>
+              <Scan />
+            </Authenticated>
+          }
+        />
+
+        <Route
+          path="/reports/invite"
+          element={
+            <Authenticated>
+              <Invite />{" "}
+            </Authenticated>
+          }
+        />
       </CustomRoutes>
     </Admin>
   );

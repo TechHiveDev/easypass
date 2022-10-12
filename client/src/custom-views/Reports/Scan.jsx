@@ -11,7 +11,7 @@ import {
 } from "chart.js";
 import { Bar, Pie, getElementAtEvent } from "react-chartjs-2";
 import { useQuery } from "react-query";
-import { Loading, Error } from "react-admin";
+import { Loading, Error, useTranslate, useLocaleState } from "react-admin";
 import customFetch from "../../utils/customFetch";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -54,6 +54,8 @@ const options = {
 };
 
 const Scan = () => {
+  const translate = useTranslate();
+  const [locale] = useLocaleState();
   const [compound, setCompound] = useLocalStorage("reportCompoundScan", "");
   const {
     data: compounds,
@@ -168,6 +170,12 @@ const Scan = () => {
         success = false;
       }
     }
+    const lastDate = new Date(data?.[0]?.report?.dates[dataIndex]);
+    if (interval === 30) {
+      lastDate.setMonth(lastDate.getMonth() + 1);
+    } else {
+      lastDate.setDate(lastDate.getDate() + interval);
+    }
     setFilterParams({
       createdAt: {
         gte:
@@ -177,8 +185,12 @@ const Scan = () => {
             : from + "T10:00:00.000Z",
         lte:
           chart === 0
-            ? data?.[0]?.report?.dates[dataIndex + 1].substring(0, 10) +
-              "T10:00:00.000Z"
+            ? data?.[0]?.report?.dates[dataIndex + 1]
+              ? `${data?.[0]?.report?.dates[dataIndex + 1].substring(
+                  0,
+                  10
+                )}T10:00:00.000Z`
+              : lastDate.toISOString().substring(0, 10) + "T10:00:00.000Z"
             : to + "T10:00:00.000Z",
       },
       success,
@@ -197,7 +209,7 @@ const Scan = () => {
         }}
       >
         <label>
-          From{" "}
+          {translate("from")}
           <input
             id="from-select"
             type={"date"}
@@ -212,7 +224,7 @@ const Scan = () => {
           />
         </label>
         <label>
-          To
+          {translate("to")}
           <input
             id="to-select"
             type={"date"}
@@ -228,7 +240,7 @@ const Scan = () => {
         </label>
         {chart === 0 ? (
           <FormControl fullWidth>
-            <InputLabel id="interval">Interval</InputLabel>
+            <InputLabel id="interval">{translate("interval")}</InputLabel>
             <Select
               labelId="interval"
               id="interval-select"
@@ -238,14 +250,14 @@ const Scan = () => {
                 setFromToInterval((p) => ({ ...p, interval: e.target.value }));
               }}
             >
-              <MenuItem value={1}>Day</MenuItem>
-              <MenuItem value={7}>Week</MenuItem>
-              <MenuItem value={30}>Month</MenuItem>
+              <MenuItem value={1}>{translate("day")}</MenuItem>
+              <MenuItem value={7}>{translate("week")}</MenuItem>
+              <MenuItem value={30}>{translate("month")}</MenuItem>
             </Select>
           </FormControl>
         ) : null}
         <FormControl fullWidth>
-          <InputLabel id="compound">Compound</InputLabel>
+          <InputLabel id="compound">{translate("compound")}</InputLabel>
           <Select
             labelId="compound"
             id="compound-select"
@@ -263,7 +275,7 @@ const Scan = () => {
           </Select>
         </FormControl>
         <FormControl fullWidth>
-          <InputLabel id="shape">Chart</InputLabel>
+          <InputLabel id="shape">{translate("chart")}</InputLabel>
           <Select
             labelId="shape"
             id="shape-select"
@@ -271,16 +283,20 @@ const Scan = () => {
             value={chart}
             onChange={(e) => setChart(e.target.value)}
           >
-            <MenuItem value={0}>Bar</MenuItem>
-            <MenuItem value={1}>Pie</MenuItem>
+            <MenuItem value={0}>{translate("bar")}</MenuItem>
+            <MenuItem value={1}>{translate("pie")}</MenuItem>
           </Select>
         </FormControl>
       </div>
       {!compound ? (
-        <h2 style={{ textAlign: "center" }}>Select a compound</h2>
+        <h2 style={{ textAlign: "center" }}>
+          {translate("selectA")} {translate("compound")}
+        </h2>
       ) : (
         <>
-          <h2 style={{ textAlign: "center", marginLeft: "-5vw" }}>Scans</h2>
+          <h2 style={{ textAlign: "center", marginLeft: "-5vw" }}>
+            {translate("menu.Scan")}
+          </h2>
           {chart === 0 ? (
             <Bar
               options={options}
@@ -317,9 +333,14 @@ const Scan = () => {
             textTransform: "none",
           }}
         >
-          All {filterParams?.success ? "successful" : "failed"} scans from&nbsp;
-          {filterParams.createdAt.gte.substring(0, 10)} to&nbsp;
-          {filterParams.createdAt.lte.substring(0, 10)}
+          {locale === "ar"
+            ? `كل الكشوف ال ${
+                filterParams?.success ? "ناجحة" : "غير ناجحة"
+              }  من${filterParams.createdAt.gte.substring(0, 10)}  الي` +
+              `${filterParams.createdAt.lte.substring(0, 10)}`
+            : ` ${filterParams?.success ? "successful" : "failed"} scans from
+          ${filterParams.createdAt.gte.substring(0, 10)} to
+          ${filterParams.createdAt.lte.substring(0, 10)}`}
         </Button>
       ) : null}
     </div>
