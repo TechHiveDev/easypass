@@ -23,7 +23,7 @@ export default function ShowCompound(props) {
         <ImageField source="logoUrl" title="logo" />
         <TextField variant="outlined" source="location" />
         <ReferenceManyField
-          label="Users"
+          label="users"
           reference="userCompound"
           target="compoundId"
         >
@@ -40,7 +40,7 @@ export default function ShowCompound(props) {
           </Datagrid>
         </ReferenceManyField>
         <ReferenceManyField
-          label="Announcements"
+          label="announcements"
           reference="announcement"
           target="compoundId"
         >

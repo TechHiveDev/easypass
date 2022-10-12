@@ -11,6 +11,7 @@ import {
   TopToolbar,
   useCreateController,
   useRefresh,
+  useTranslate,
 } from "react-admin";
 import Button from "@mui/material/Button";
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
@@ -20,6 +21,7 @@ import SaveToolbar from "../../utils/SaveToolbar";
 
 const initialState = { open: false, type: undefined };
 const CompoundShowActions = () => {
+  const t = useTranslate();
   const [{ open, type }, setOpen] = useState(initialState);
   const refresh = useRefresh();
   const { save: saveUser } = useCreateController({
@@ -78,7 +80,7 @@ const CompoundShowActions = () => {
         }}
         startIcon={<PersonAddAlt1Icon />}
       >
-        User
+        &nbsp;{t("add")} {t("user").replace("ال", "")}
       </Button>
       <Button
         size="small"
@@ -88,7 +90,7 @@ const CompoundShowActions = () => {
         }}
         startIcon={<AnnouncementIcon />}
       >
-        Announcement
+        &nbsp;{t("add")} {t("announcement").replace("ال", "")}
       </Button>
       <Dialog onClose={() => setOpen(initialState)} open={open}>
         <div>

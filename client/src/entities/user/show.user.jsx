@@ -30,7 +30,7 @@ export default function ShowUser(props) {
         <BooleanField variant="outlined" source="active" />
         <TextField variant="outlined" source="phone" />
         <ReferenceManyField
-          label="Properties"
+          label="properties"
           reference="userCompound"
           target="userId"
         >

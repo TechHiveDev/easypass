@@ -72,6 +72,7 @@ const allEnglishMessages = {
   to: "To",
   interval: "Interval",
   compound: "Compound",
+  compounds: "Compounds",
   chart: "Chart",
   bar: "Bar",
   pie: "Pie",
@@ -83,10 +84,13 @@ const allEnglishMessages = {
   Delivery: "Delivery",
   All: "All",
   announcement: "Announcement",
+  announcements: "Announcements",
   user: "User",
+  users: "Users",
   property: "Property",
   invite: "Invite",
   device: "Device",
   scan: "Scan",
+  add: "Add",
 };
 export default allEnglishMessages;

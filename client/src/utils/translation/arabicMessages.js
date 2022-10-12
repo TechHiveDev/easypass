@@ -288,6 +288,7 @@ const arabicMessages = {
   to: "الي",
   interval: "الوقت",
   compound: "المجمع",
+  compounds: "المجمعات",
   chart: "الرسم البياني",
   bar: "عمودي",
   pie: "دائري",
@@ -299,11 +300,14 @@ const arabicMessages = {
   Delivery: "توصيل",
   All: "كل",
   announcement: "الاعلان",
+  announcements: "الاعلانات",
   user: "المستخدم",
+  users: "المستخدمين",
   property: "العقار",
   invite: "الدعوة",
   device: "الجهاز",
   scan: "الكشف",
+  add: "اضافة",
 };
 
 export default arabicMessages;

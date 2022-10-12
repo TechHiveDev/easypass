@@ -9,12 +9,14 @@ import {
   TopToolbar,
   useCreateController,
   useRefresh,
+  useTranslate,
 } from "react-admin";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import HomeIcon from "@mui/icons-material/Home";
 import SaveToolbar from "../../utils/SaveToolbar";
 const UserShowActions = () => {
+  const t = useTranslate();
   const [open, setOpen] = useState(false);
   const refresh = useRefresh();
   const { save: saveUser } = useCreateController({
@@ -57,7 +59,7 @@ const UserShowActions = () => {
         }}
         startIcon={<HomeIcon />}
       >
-        Compound
+        &nbsp;{t("add")} {t("compound").replace("ال", "")}
       </Button>
       <Dialog onClose={() => setOpen(false)} open={open}>
         <div>
