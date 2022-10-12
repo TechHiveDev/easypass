@@ -94,6 +94,8 @@ jobs:
           playbook: deploy.yml
           key: ${{secrets.TECHHIVE_DEVOPS_MASTER_PEM}}
           inventory: |
-          [all]: Techive-Master ansible_host=35.180.192.89
+            [all]
+            Techive-Master ansible_host=35.180.192.89
           
-          [all:vars]: ansible_user=ubuntu
+            [all:vars]
+            ansible_user=ubuntu
