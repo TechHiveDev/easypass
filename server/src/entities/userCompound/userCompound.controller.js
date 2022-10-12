@@ -98,6 +98,5 @@
 // ------------------------------------------------------------------
 
 import { crud, prismaCrud } from "../../utils/crud/express-crud-router";
-import { getUserCompounds } from "./userCompound.service";
 
 export default crud("/userCompound", prismaCrud("userCompound"));

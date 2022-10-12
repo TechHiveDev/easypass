@@ -224,6 +224,7 @@ export const getUserCompounds = async (user) => {
     user.userCompound[index] = {
       ...user.userCompound[index],
       compoundName: compound.name,
+      logoUrl: compound.logoUrl,
     };
   }
   return user;
