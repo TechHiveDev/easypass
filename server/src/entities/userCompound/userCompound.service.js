@@ -39,6 +39,7 @@ export const getUserCompounds = async (userId) => {
     arr.push({
       ...user.userCompound[index],
       compoundName: compound.name,
+      logoUrl: compound.logoUrl,
     });
   }
   return arr;
