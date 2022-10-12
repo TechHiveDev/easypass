@@ -113,19 +113,19 @@ const Scan = () => {
                 }),
           datasets: [
             {
-              label: "Fail",
+              label: translate("fail"),
               data: data?.[0]?.report?.fail,
               backgroundColor: "rgba(255, 99, 132, 0.5)",
             },
             {
-              label: "Success",
+              label: translate("success"),
               data: data?.[0]?.report?.success,
               backgroundColor: "rgba(53, 162, 235, 0.5)",
             },
           ],
         }
       : {
-          labels: ["fail", "success"],
+          labels: [translate("fail"), translate("success")],
           datasets: [
             {
               data: [

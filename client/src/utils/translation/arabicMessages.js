@@ -345,6 +345,8 @@ const arabicMessages = {
   scan: "الكشف",
   add: "اضافة",
   create: "انشاء",
+  fail: "فشل",
+  success: "نجاح",
 };
 
 export default arabicMessages;
