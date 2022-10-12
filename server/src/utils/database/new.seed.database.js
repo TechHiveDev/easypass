@@ -13,10 +13,13 @@ const prisma = new PrismaClient({ log: ["info", "query"] });
 // assign security to compound
 // Create security user to compound
 
-const numScans = 5;
+const numScans = 20;
+const minDays = 1;
+const maxDays = 30;
 
-function dynamicInvitationScans(type, compoundId, userId) {
+function dynamicInvitationScans(type, compoundId, userId, invitationId) {
   return {
+    id: invitationId,
     name: "seeded invitation name",
     type,
     notes: "seeded invitation notes",
@@ -31,10 +34,17 @@ function arrayScans(type, compoundId, userId, deviceId, invitationId) {
       compoundId,
       userId,
       success: Math.random() < 0.5,
-      createdAt: new Date(new Date().valueOf() - 1000 * 60 * 60 * 24 * i),
+      createdAt: new Date(
+        new Date().valueOf() -
+          1000 *
+            60 *
+            60 *
+            24 *
+            Math.floor(Math.random() * (maxDays - minDays + 1) + minDays)
+      ),
       type,
       deviceId: deviceId ? deviceId : undefined,
-      invitationId: invitationId ? invitationId + i : undefined,
+      invitationId: invitationId ? invitationId : undefined,
     };
   });
 }
@@ -152,14 +162,14 @@ function arrayScans(type, compoundId, userId, deviceId, invitationId) {
   });
   await prisma.invitation.createMany({
     data: [
-      dynamicInvitationScans("Visitor", 1, 2),
-      dynamicInvitationScans("Delivery", 1, 2),
+      dynamicInvitationScans("Visitor", 1, 2, 1),
+      dynamicInvitationScans("Delivery", 1, 2, 2),
     ],
   });
   await prisma.scan.createMany({
     data: [
       ...arrayScans("Visitor", 1, 2, 1, 1),
-      // ...arrayScans("Delivery", 1, 2, 1, numScans + 1),
+      ...arrayScans("Delivery", 1, 2, 1, 2),
       ...arrayScans("Resident", 1, 2, 1),
     ],
   });
