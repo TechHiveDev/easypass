@@ -80,7 +80,7 @@ const CompoundShowActions = () => {
         }}
         startIcon={<PersonAddAlt1Icon />}
       >
-        &nbsp;{t("add")} {t("user").replace("ال", "")}
+        &nbsp;{t("add")} {t("property").replace("ال", "")}
       </Button>
       <Button
         size="small"

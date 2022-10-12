@@ -59,7 +59,7 @@ const UserShowActions = () => {
         }}
         startIcon={<HomeIcon />}
       >
-        &nbsp;{t("add")} {t("compound").replace("ال", "")}
+        &nbsp;{t("add")} {t("property").replace("ال", "")}
       </Button>
       <Dialog onClose={() => setOpen(false)} open={open}>
         <div>
