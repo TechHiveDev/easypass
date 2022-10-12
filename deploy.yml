@@ -21,7 +21,8 @@
       ansible.builtin.git:
         repo: "{{ project_repo }}"
         dest: "{{ project_path }}{{ project_name }}"
-    
+        force: true
+
     - name: "Serve Node Processs by PM2 API"
       ansible.builtin.shell: |
         # Enter Project Path 
