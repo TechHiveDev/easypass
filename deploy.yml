@@ -18,8 +18,7 @@
         state: directory
       
     - name: "Get sudo access"
-      ansible.builtin.shell: |
-        sudo su -
+      ansible.builtin.shell: sudo su -
 
     - name: Pull / Clone Repo if not exist
       ansible.builtin.git:
@@ -29,7 +28,7 @@
     - name: "Serve Node Processs by PM2 API"
       ansible.builtin.shell: |
         # Enter Project Path 
-        cd {{ project_path }}{{ project_name }}/server
+        # cd {{ project_path }}{{ project_name }}/server
         # UnZip the build file 
         # unzip -o build.zip
 

@@ -38,10 +38,10 @@ jobs:
           fetch-depth: 0
 
       # - - - - - - - - - - - - - - - - - - - - - - - - -
-      - name: Prettify code
-        uses: creyD/prettier_action@v4.2
-        with:
-          prettier_options: --write **/*.{js,md,ts}
+      # - name: Prettify code
+      #   uses: creyD/prettier_action@v4.2
+      #   with:
+      #     prettier_options: --write **/*.{js,md,ts}
 
       # - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -54,37 +54,37 @@ jobs:
 
       # - - - - - - - - - - - - - - - - - - - - - - - - -
 
-      - name: Yarn Install Node Modules api
-        # uses: borales/actions-yarn@v3.0.0
-        run: |
-          yarn install
-        working-directory: ./server
+      # - name: Yarn Install Node Modules api
+      #   # uses: borales/actions-yarn@v3.0.0
+      #   run: |
+      #     yarn install
+      #   working-directory: ./server
+
+      # # - - - - - - - - - - - - - - - - - - - - - - - - -
+
+      # - name: Yarn Install Node Modules client
+      #   # uses: borales/actions-yarn@v3.0.0
+      #   run: |
+      #     yarn install
+      #     yarn build
+      #     zip -r dist.zip dist
+      #   working-directory: ./client
+
+      # # - - - - - - - - - - - - - - - - - - - - - - - - -
+
+      # - name: Automated Commit files changes
+      #   run: |
+      #     git config --local user.email "github-actions[bot]@users.noreply.github.com"
+      #     git config --local user.name "github-actions[bot]"
+      #     git commit -m "Automated Changes" -a
 
       # - - - - - - - - - - - - - - - - - - - - - - - - -
 
-      - name: Yarn Install Node Modules client
-        # uses: borales/actions-yarn@v3.0.0
-        run: |
-          yarn install
-          yarn build
-          zip -r dist.zip dist
-        working-directory: ./client
-
-      # - - - - - - - - - - - - - - - - - - - - - - - - -
-
-      - name: Automated Commit files changes
-        run: |
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-          git commit -m "Automated Changes" -a
-
-      # - - - - - - - - - - - - - - - - - - - - - - - - -
-
-      - name: Automated Push file changes
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.ref }}
+      # - name: Automated Push file changes
+      #   uses: ad-m/github-push-action@master
+      #   with:
+      #     github_token: ${{ secrets.GITHUB_TOKEN }}
+      #     branch: ${{ github.ref }}
       # - - - - - - - - - - - - - - - - - - - - - - - - -
 
       - name: Run Ansible Deploy playbook on aws
