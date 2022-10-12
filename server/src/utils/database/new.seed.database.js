@@ -40,6 +40,7 @@ function arrayScans(type, compoundId, userId, deviceId, invitationId) {
             60 *
             60 *
             24 *
+            i *
             Math.floor(Math.random() * (maxDays - minDays + 1) + minDays)
       ),
       type,
@@ -53,6 +54,8 @@ function arrayScans(type, compoundId, userId, deviceId, invitationId) {
   await prisma.compound.create({
     data: {
       name: "Tech-Hive Compound - " + Date.now(),
+      logoUrl:
+        "https://www.christiesrealestate.com/blog/wp-content/uploads/2022/04/msb-33.jpg",
       users: {
         create: [
           {
@@ -137,6 +140,8 @@ function arrayScans(type, compoundId, userId, deviceId, invitationId) {
   await prisma.compound.create({
     data: {
       name: "Pyramid Heights Compound - " + Date.now(),
+      logoUrl:
+        "https://c8.alamy.com/comp/B0YRKC/living-quarters-inside-a-family-compound-in-the-gambia-B0YRKC.jpg",
       users: {
         create: [
           {
