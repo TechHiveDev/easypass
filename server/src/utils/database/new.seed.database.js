@@ -5,13 +5,6 @@ const prisma = new PrismaClient({ log: ["info", "query"] });
 
 // ==========================================================
 
-// Create compound
-// Create admin user
-// Create resident user
-// Create security user
-// assign admin to compound
-// assign security to compound
-// Create security user to compound
 
 const numScans = 20;
 const minDays = 1;
