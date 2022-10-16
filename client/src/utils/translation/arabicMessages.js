@@ -40,7 +40,7 @@ const arabicMessages = {
     Post: "المنشورات",
     inventory: "المخزون",
     Consumption: "الاستهلاك",
-    Compound: "المجمع",
+    Compound: "المجمعات",
     Compounds: "المجمعات",
     UserCompound: "العقارات",
     Invitation: "الدعوات",

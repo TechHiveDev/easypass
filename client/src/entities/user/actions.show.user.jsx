@@ -63,7 +63,11 @@ const UserShowActions = () => {
       </Button>
       <Dialog onClose={() => setOpen(false)} open={open}>
         <div>
-          <SimpleForm onSubmit={submitHandler} toolbar={<SaveToolbar />}>
+          <SimpleForm
+            onSubmit={submitHandler}
+            toolbar={<SaveToolbar />}
+            resource={"userCompound"}
+          >
             <ReferenceInput
               required
               source="compoundId"

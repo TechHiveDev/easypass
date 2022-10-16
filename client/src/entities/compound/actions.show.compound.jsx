@@ -95,7 +95,11 @@ const CompoundShowActions = () => {
       <Dialog onClose={() => setOpen(initialState)} open={open}>
         <div>
           {type === "user" ? (
-            <SimpleForm onSubmit={submitHandler} toolbar={<SaveToolbar />}>
+            <SimpleForm
+              onSubmit={submitHandler}
+              toolbar={<SaveToolbar />}
+              resource={"userCompound"}
+            >
               <ReferenceInput
                 required
                 source="userId"
@@ -110,7 +114,11 @@ const CompoundShowActions = () => {
               <NumberInput variant="outlined" source={"unitNumber"} required />
             </SimpleForm>
           ) : (
-            <SimpleForm onSubmit={submitHandler} toolbar={<SaveToolbar />}>
+            <SimpleForm
+              onSubmit={submitHandler}
+              toolbar={<SaveToolbar />}
+              resource={"announcement/create"}
+            >
               <TextInput variant="outlined" source="title" />
               <TextInput
                 variant="outlined"
