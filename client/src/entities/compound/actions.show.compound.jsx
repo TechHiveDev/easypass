@@ -1,5 +1,6 @@
 import { useState } from "react";
 import {
+  AutocompleteInput,
   EditButton,
   ImageField,
   ImageInput,
@@ -17,12 +18,11 @@ import Button from "@mui/material/Button";
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import AnnouncementIcon from "@mui/icons-material/Announcement";
 import Dialog from "@mui/material/Dialog";
-import SaveToolbar from "../../utils/SaveToolbar";
+import SaveToolbar from "../../components/SaveToolbar";
 
-const initialState = { open: false, type: undefined };
 const CompoundShowActions = () => {
   const t = useTranslate();
-  const [{ open, type }, setOpen] = useState(initialState);
+  const [{ open, type }, setOpen] = useState({ open: false, type: undefined });
   const refresh = useRefresh();
   const { save: saveUser } = useCreateController({
     resource: "userCompound",
@@ -39,7 +39,10 @@ const CompoundShowActions = () => {
         { compoundId, title, description, photoUrl },
         {
           onSuccess: () => {
-            setOpen(initialState);
+            setOpen((p) => ({
+              ...p,
+              open: false,
+            }));
             refresh();
           },
         }
@@ -52,6 +55,7 @@ const CompoundShowActions = () => {
       blockNumber,
       unitNumber,
     } = values;
+    console.log(values);
     saveUser(
       {
         compoundId,
@@ -62,7 +66,10 @@ const CompoundShowActions = () => {
       },
       {
         onSuccess: () => {
-          setOpen(initialState);
+          setOpen((p) => ({
+            ...p,
+            open: false,
+          }));
           refresh();
         },
       }
@@ -92,7 +99,15 @@ const CompoundShowActions = () => {
       >
         &nbsp;{t("add")} {t("announcement").replace("ال", "")}
       </Button>
-      <Dialog onClose={() => setOpen(initialState)} open={open}>
+      <Dialog
+        onClose={() =>
+          setOpen((p) => ({
+            ...p,
+            open: false,
+          }))
+        }
+        open={open}
+      >
         <div>
           {type === "user" ? (
             <SimpleForm
@@ -102,12 +117,18 @@ const CompoundShowActions = () => {
             >
               <ReferenceInput
                 required
+                label="user"
                 source="userId"
                 reference="user"
-                label={"user"}
-                name={"user"}
               >
-                <SelectInput optionText={"name"} required />
+                <AutocompleteInput
+                  label="user"
+                  required
+                  validate={(v) => {
+                    if (v === "") return t("requiredUser");
+                    return undefined;
+                  }}
+                />
               </ReferenceInput>
               <TextInput variant="outlined" source="streetName" required />
               <NumberInput variant="outlined" source={"blockNumber"} required />
@@ -125,7 +146,7 @@ const CompoundShowActions = () => {
                 source="description"
                 multiline={true}
               />
-              <ImageInput source="photoUrl" label="logo" accept="image/*">
+              <ImageInput source="photoUrl" accept="image/*">
                 <ImageField source="src" title="title" />
               </ImageInput>
             </SimpleForm>

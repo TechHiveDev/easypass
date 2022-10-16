@@ -13,21 +13,35 @@ import {
   TextInput,
   ReferenceInput,
   SelectInput,
+  AutocompleteInput,
+  WrapperField,
 } from "react-admin";
 import Actions from "../../reactAdmin/components/Actions";
+import UserType from "../../components/UserType";
 
 // ------------------------------------------------
 const inviteFilters = [
   <DateTimeInput label="from" source="createdAt.gte" />,
   <DateTimeInput label="to" source="createdAt.lte" />,
-  <TextInput label="type" source="type" />,
+  <TextInput />,
+  <SelectInput
+    label="type"
+    source="type"
+    choices={[
+      { id: "Delivery", name: "Delivery" },
+      { id: "Visitor", name: "Visitor" },
+    ]}
+  />,
   <ReferenceInput
     source="compoundId"
     reference="compound"
     label={"compound"}
     name={"compoundId"}
   >
-    <SelectInput optionText={"name"} />
+    <AutocompleteInput label="compound" />
+  </ReferenceInput>,
+  <ReferenceInput label="user" source="userId" reference="user">
+    <AutocompleteInput label="user" />
   </ReferenceInput>,
 ];
 export default function ListInvitation(props) {
@@ -36,16 +50,16 @@ export default function ListInvitation(props) {
       <Datagrid>
         <NumberField variant="outlined" source="id" />
         <TextField variant="outlined" source="name" />
-
-        <TextField variant="outlined" source="type" />
+        <WrapperField label={"type"}>
+          <UserType />
+        </WrapperField>
         <TextField variant="outlined" source="notes" />
-        <ReferenceField source="userId" reference="user">
+        <ReferenceField source="userId" reference="user" link="show">
           <TextField source="name" />
         </ReferenceField>
-        <ReferenceField source="compoundId" reference="compound">
+        <ReferenceField source="compoundId" reference="compound" link="show">
           <TextField source="name" />
         </ReferenceField>
-
         <Actions label="">
           <ShowButton label="ra.action.show" />
           <EditButton label="ra.action.edit" />

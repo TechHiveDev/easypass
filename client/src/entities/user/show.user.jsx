@@ -4,18 +4,19 @@ import {
   TextField,
   NumberField,
   BooleanField,
-  useRecordContext,
   ImageField,
   ReferenceManyField,
   Datagrid,
   ReferenceField,
-  ShowButton,
   EditButton,
-  DeleteButton,
+  FunctionField,
+  useTranslate,
+  WrapperField,
 } from "react-admin";
 import UserTitle from "./title";
 import ActionsShowUser from "./actions.show.user";
 import Actions from "../../reactAdmin/components/Actions";
+import UserType from "../../components/UserType";
 
 // ------------------------------------------------
 export default function ShowUser(props) {
@@ -25,7 +26,9 @@ export default function ShowUser(props) {
         <NumberField variant="outlined" source="id" />
         <TextField variant="outlined" source="email" />
         <TextField variant="outlined" source="name" />
-        <TextField variant="outlined" source="type" />
+        <WrapperField label={"type"}>
+          <UserType />
+        </WrapperField>
         <ImageField source="photoUrl" title="photo" />
         <BooleanField variant="outlined" source="active" />
         <TextField variant="outlined" source="phone" />
@@ -33,9 +36,14 @@ export default function ShowUser(props) {
           label="properties"
           reference="userCompound"
           target="userId"
+          link="show"
         >
           <Datagrid>
-            <ReferenceField source="compoundId" reference="compound">
+            <ReferenceField
+              source="compoundId"
+              reference="compound"
+              link="show"
+            >
               <TextField source="name" />
             </ReferenceField>
             <TextField variant="outlined" source="streetName" />

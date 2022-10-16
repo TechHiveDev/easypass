@@ -14,10 +14,10 @@ export default function ShowUserCompound(props) {
     <Show title={<UserCompoundTitle />}>
       <SimpleShowLayout>
         <NumberField variant="outlined" source="id" />
-        <ReferenceField source="userId" reference="user">
+        <ReferenceField source="userId" reference="user" link="show">
           <TextField source="name" />
         </ReferenceField>
-        <ReferenceField source="compoundId" reference="compound">
+        <ReferenceField source="compoundId" reference="compound" link="show">
           <TextField source="name" />
         </ReferenceField>
         <TextField variant="outlined" source="streetName" />

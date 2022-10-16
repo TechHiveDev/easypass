@@ -8,15 +8,17 @@ import {
   DeleteButton,
   usePermissions,
   ImageField,
+  SearchInput,
 } from "react-admin";
 import Actions from "../../reactAdmin/components/Actions";
 
 // ------------------------------------------------
+const compoundFilters = [<SearchInput source="q" alwaysOn />];
 
 export default function ListCompound(props) {
   const { isLoading, permissions } = usePermissions();
   return (
-    <List>
+    <List filters={compoundFilters}>
       <Datagrid>
         <NumberField variant="outlined" source="id" />
         <TextField variant="outlined" source="name" />

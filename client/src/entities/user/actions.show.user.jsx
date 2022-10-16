@@ -1,9 +1,9 @@
 import { useState } from "react";
 import {
+  AutocompleteInput,
   EditButton,
   NumberInput,
   ReferenceInput,
-  SelectInput,
   SimpleForm,
   TextInput,
   TopToolbar,
@@ -14,7 +14,8 @@ import {
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import HomeIcon from "@mui/icons-material/Home";
-import SaveToolbar from "../../utils/SaveToolbar";
+import SaveToolbar from "../../components/SaveToolbar";
+
 const UserShowActions = () => {
   const t = useTranslate();
   const [open, setOpen] = useState(false);
@@ -75,7 +76,14 @@ const UserShowActions = () => {
               label={"compound"}
               name={"compoundId"}
             >
-              <SelectInput optionText={"name"} required />
+              <AutocompleteInput
+                label="compound"
+                required
+                validate={(v) => {
+                  if (v === "") return t("requiredCompound");
+                  return undefined;
+                }}
+              />
             </ReferenceInput>
             <TextInput variant="outlined" source="streetName" required />
             <NumberInput variant="outlined" source={"blockNumber"} required />

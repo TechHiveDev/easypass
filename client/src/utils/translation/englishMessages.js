@@ -90,9 +90,20 @@ const allEnglishMessages = {
   users: "Users",
   property: "Property",
   invite: "Invite",
+  invitation: "Invitation",
   device: "Device",
   scan: "Scan",
   add: "Add",
   create: "Create",
+  userType: {
+    Security: "Security",
+    Admin: "Admin",
+    SuperAdmin: "SuperAdmin",
+    Resident: "Resident",
+    Visitor: "Visitor",
+    Delivery: "Delivery",
+  },
+  requiredUser: "User is required",
+  requiredCompound: "Compound is required",
 };
 export default allEnglishMessages;

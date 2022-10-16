@@ -6,8 +6,10 @@ import {
   BooleanField,
   DateField,
   ReferenceField,
+  WrapperField,
 } from "react-admin";
 import InvitationTitle from "./title";
+import UserType from "../../components/UserType";
 
 // ------------------------------------------------
 
@@ -17,13 +19,14 @@ export default function ShowInvitation(props) {
       <SimpleShowLayout>
         <NumberField variant="outlined" source="id" />
         <TextField variant="outlined" source="name" />
-
-        <TextField variant="outlined" source="type" />
+        <WrapperField label={"type"}>
+          <UserType />
+        </WrapperField>
         <TextField variant="outlined" source="notes" />
-        <ReferenceField source="userId" reference="user">
+        <ReferenceField source="userId" reference="user" link="show">
           <TextField source="name" />
         </ReferenceField>
-        <ReferenceField source="compoundId" reference="compound">
+        <ReferenceField source="compoundId" reference="compound" link="show">
           <TextField source="name" />
         </ReferenceField>
       </SimpleShowLayout>

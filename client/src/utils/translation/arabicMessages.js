@@ -341,12 +341,23 @@ const arabicMessages = {
   users: "المستخدمين",
   property: "العقار",
   invite: "الدعوة",
+  invitation: "الدعوة",
   device: "الجهاز",
   scan: "الكشف",
   add: "اضافة",
   create: "انشاء",
   fail: "فشل",
   success: "نجاح",
+  userType: {
+    Security: "أمن",
+    Admin: "مدير",
+    SuperAdmin: "مدير متميز",
+    Resident: "ساكن",
+    Visitor: "زائر",
+    Delivery: "توصيل",
+  },
+  requiredUser: "رجاء اختيار المستخدم",
+  requiredCompound: "رجاء اختيار المجمع",
 };
 
 export default arabicMessages;

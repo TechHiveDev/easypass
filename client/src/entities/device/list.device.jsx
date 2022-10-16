@@ -20,7 +20,7 @@ export default function ListDevice(props) {
       <Datagrid>
         <NumberField variant="outlined" source="id" />
         <TextField variant="outlined" source="ip" />
-        <ReferenceField source="compoundId" reference="compound">
+        <ReferenceField source="compoundId" reference="compound" link="show">
           <TextField source="name" />
         </ReferenceField>
 

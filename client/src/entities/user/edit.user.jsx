@@ -7,13 +7,16 @@ import {
   usePermissions,
   ImageInput,
   ImageField,
+  useTranslate,
 } from "react-admin";
 import UserTitle from "./title";
+import PreviewImage from "../../components/PreviewImage";
 
 // ------------------------------------------------
 
 export default function EditUser(props) {
   const { isLoading, permissions } = usePermissions();
+  const t = useTranslate();
   return (
     <Edit title={<UserTitle />}>
       {isLoading ? (
@@ -25,18 +28,10 @@ export default function EditUser(props) {
           <TextInput variant="outlined" source="name" />
           {/*<TextInput variant="outlined" source="password" />*/}
           <BooleanInput name={"active"} source={"active"} />
-          <ImageInput source="photoUrl" label="new logo" accept="image/*">
-            <ImageField source="src" title="title" />
+          <ImageInput source="photoUrl" accept="image/*">
+            <PreviewImage source="src" />
           </ImageInput>
-          <p>old logo</p>
-          <ImageField
-            source="photoUrl"
-            title="title"
-            label={"old image"}
-            displayName={"old image"}
-          />
           <TextInput variant="outlined" source="phone" />
-          <TextInput variant="outlined" source="docs" />
           <SelectInput
             required
             name={"type"}
@@ -44,14 +39,14 @@ export default function EditUser(props) {
             choices={
               permissions === "SuperAdmin"
                 ? [
-                    { id: "SuperAdmin", name: "SuperAdmin" },
-                    { id: "Admin", name: "Admin" },
-                    { id: "Resident", name: "Resident" },
-                    { id: "Security", name: "Security" },
+                    { id: "SuperAdmin", name: t("userType." + "SuperAdmin") },
+                    { id: "Admin", name: t("userType." + "Admin") },
+                    { id: "Resident", name: t("userType." + "Resident") },
+                    { id: "Security", name: t("userType." + "Security") },
                   ]
                 : [
-                    { id: "Resident", name: "Resident" },
-                    { id: "Security", name: "Security" },
+                    { id: "Resident", name: t("userType." + "Resident") },
+                    { id: "Security", name: t("userType." + "Security") },
                   ]
             }
           />

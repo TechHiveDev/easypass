@@ -3,13 +3,13 @@ import {
   Datagrid,
   TextField,
   NumberField,
-  BooleanField,
-  DateField,
   ShowButton,
   EditButton,
   DeleteButton,
   ReferenceField,
   useTranslate,
+  ReferenceInput,
+  AutocompleteInput,
 } from "react-admin";
 import Actions from "../../reactAdmin/components/Actions";
 
@@ -18,16 +18,29 @@ const Title = () => {
   const translate = useTranslate();
   return <span>{translate("properties")}</span>;
 };
+const userCompoundFilters = [
+  <ReferenceInput
+    source="compoundId"
+    reference="compound"
+    label={"compound"}
+    name={"compoundId"}
+  >
+    <AutocompleteInput label="compound" />
+  </ReferenceInput>,
+  <ReferenceInput label="user" source="userId" reference="user">
+    <AutocompleteInput label="user" />
+  </ReferenceInput>,
+];
 export default function ListUserCompound(props) {
   return (
-    <List title={<Title />}>
+    <List title={<Title />} filters={userCompoundFilters}>
       <Datagrid>
         <NumberField variant="outlined" source="id" />
 
-        <ReferenceField source="userId" reference="user">
+        <ReferenceField source="userId" reference="user" link="show">
           <TextField source="name" />
         </ReferenceField>
-        <ReferenceField source="compoundId" reference="compound">
+        <ReferenceField source="compoundId" reference="compound" link="show">
           <TextField source="name" />
         </ReferenceField>
         <TextField variant="outlined" source="streetName" />

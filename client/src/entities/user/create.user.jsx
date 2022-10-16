@@ -9,29 +9,14 @@ import {
   ReferenceInput,
   ImageInput,
   ImageField,
+  useTranslate,
+  AutocompleteInput,
 } from "react-admin";
 import Title from "./title";
 // ------------------------------------------------
-const validate = (values) => {
-  const errors = {};
-  if (!values.email) {
-    errors.email = "The Email is required";
-  }
-  if (!values.name) {
-    errors.name = "The name is required";
-  }
-  if (!values.password) {
-    errors.password = "The password is required";
-  }
-  if (!values.phone) {
-    errors.phone = "The phone is required";
-  }
-  if (!values.type) {
-    errors.type = "The type is required";
-  }
-  return errors;
-};
+
 export default function CreateUser(props) {
+  const t = useTranslate();
   const { isLoading, permissions } = usePermissions();
   return (
     <Create
@@ -42,39 +27,50 @@ export default function CreateUser(props) {
       {isLoading ? (
         <h3>Loading</h3>
       ) : (
-        <SimpleForm validate={validate}>
+        <SimpleForm
+        // validate={(v) => validate(v)}
+        >
           <TextInput variant="outlined" source="email" required />
           <TextInput variant="outlined" source="name" required />
           <TextInput variant="outlined" source="password" required />
-          <ImageInput source="photoUrl" label="logo" accept="image/*">
+          <ImageInput source="photoUrl" accept="image/*">
             <ImageField source="src" title="title" />
           </ImageInput>
           <TextInput variant="outlined" source="phone" required />
           <BooleanInput variant={"outlined"} source={"active"} />
           <SelectInput
-            source="type"
             required
+            name={"type"}
+            source={"type"}
             choices={
               permissions === "SuperAdmin"
                 ? [
-                    { id: "SuperAdmin", name: "SuperAdmin" },
-                    { id: "Admin", name: "Admin" },
-                    { id: "Resident", name: "Resident" },
-                    { id: "Security", name: "Security" },
+                    { id: "SuperAdmin", name: t("userType." + "SuperAdmin") },
+                    { id: "Admin", name: t("userType." + "Admin") },
+                    { id: "Resident", name: t("userType." + "Resident") },
+                    { id: "Security", name: t("userType." + "Security") },
                   ]
                 : [
-                    { id: "Resident", name: "Resident" },
-                    { id: "Security", name: "Security" },
+                    { id: "Resident", name: t("userType." + "Resident") },
+                    { id: "Security", name: t("userType." + "Security") },
                   ]
             }
           />
           <ReferenceInput
+            required
             source="compoundId"
             reference="compound"
             label={"compound"}
             name={"compoundId"}
           >
-            <SelectInput optionText={"name"} />
+            <AutocompleteInput
+              label="compound"
+              required
+              validate={(v) => {
+                if (v === "") return t("requiredCompound");
+                return undefined;
+              }}
+            />
           </ReferenceInput>
           <TextInput variant="outlined" source="streetName" required />
           <NumberInput variant="outlined" source={"blockNumber"} required />

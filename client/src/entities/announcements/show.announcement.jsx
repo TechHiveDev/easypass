@@ -26,6 +26,7 @@ export default function ShowAnnouncement(props) {
           source="compoundId"
           reference="compound"
           label="compound"
+          link="show"
         >
           <TextField source="name" />
         </ReferenceField>

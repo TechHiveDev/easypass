@@ -8,9 +8,13 @@ import {
   DateTimeInput,
   BooleanInput,
   ReferenceInput,
-  SelectInput,
+  WrapperField,
+  useRecordContext,
+  AutocompleteInput,
+  BooleanField,
 } from "react-admin";
 import Actions from "../../reactAdmin/components/Actions";
+import UserType from "../../components/UserType";
 
 // ------------------------------------------------
 const scanFilters = [
@@ -23,23 +27,42 @@ const scanFilters = [
     label={"compound"}
     name={"compoundId"}
   >
-    <SelectInput optionText={"name"} />
+    <AutocompleteInput label="compound" />
+  </ReferenceInput>,
+  <ReferenceInput label="user" source="userId" reference="user">
+    <AutocompleteInput label="user" />
   </ReferenceInput>,
 ];
+const CustomInvitation = () => {
+  const record = useRecordContext();
+  if (record.type === "Resident") return "-";
+  return <TextField variant="outlined" source="invitationId" />;
+};
 export default function ListScan(props) {
   return (
     <List filters={scanFilters}>
       <Datagrid>
         <NumberField variant="outlined" source="id" />
-        <TextField variant="outlined" source="invitationId" />
+        <WrapperField label="invitation">
+          <CustomInvitation />
+        </WrapperField>
         <TextField variant="outlined" source="deviceId" />
-        <TextField variant="outlined" source="success" />
-        <ReferenceField source="compoundId" reference="compound">
+        <ReferenceField
+          source="userId"
+          reference="user"
+          label={"user"}
+          link="show"
+        >
+          <TextField variant="outlined" source="name" />
+        </ReferenceField>
+        <BooleanField variant="outlined" source="success" />
+        <ReferenceField source="compoundId" reference="compound" link="show">
           <TextField source="name" />
         </ReferenceField>
-        <TextField variant="outlined" source="type" />
+        <WrapperField label={"type"}>
+          <UserType />
+        </WrapperField>
         <TextField variant="outlined" source="createdAt" />
-
         <Actions label="">
           <ShowButton label="ra.action.show" />
         </Actions>
