@@ -15,8 +15,8 @@ import {
   useTranslate,
 } from "react-admin";
 import Button from "@mui/material/Button";
-import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import AnnouncementIcon from "@mui/icons-material/Announcement";
+import HomeIcon from "@mui/icons-material/Home";
 import Dialog from "@mui/material/Dialog";
 import SaveToolbar from "../../components/SaveToolbar";
 
@@ -55,7 +55,6 @@ const CompoundShowActions = () => {
       blockNumber,
       unitNumber,
     } = values;
-    console.log(values);
     saveUser(
       {
         compoundId,
@@ -85,7 +84,7 @@ const CompoundShowActions = () => {
         onClick={() => {
           setOpen({ type: "user", open: true });
         }}
-        startIcon={<PersonAddAlt1Icon />}
+        startIcon={<HomeIcon />}
       >
         &nbsp;{t("add")} {t("property").replace("ال", "")}
       </Button>
