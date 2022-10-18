@@ -7,6 +7,7 @@ import {
   DateField,
   ShowButton,
   EditButton,
+  ImageField,
   DeleteButton,
   ReferenceField,
   TextInput,
@@ -26,7 +27,7 @@ const announcementFilters = [
     label={"compound"}
     name={"compoundId"}
   >
-    <SelectInput optionText={"name"} />
+    <AutocompleteInput />
   </ReferenceInput>,
 ];
 export default function ListAnnouncement(props) {
@@ -36,7 +37,7 @@ export default function ListAnnouncement(props) {
         <NumberField variant="outlined" source="id" />
         <TextField variant="outlined" source="title" />
         <TextField variant="outlined" source="description" />
-        <TextField variant="outlined" source="photoUrl" />
+        <ImageField variant="outlined" source="photoUrl" />
         <ReferenceField source="compoundId" reference="compound" link="show">
           <TextField source="name" />
         </ReferenceField>

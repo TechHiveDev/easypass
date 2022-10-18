@@ -36,6 +36,7 @@ const arabicMessages = {
     label: "التسجيل",
   },
   menu: {
+    Facility: "الخدمات",
     User: "المستخدمين",
     Post: "المنشورات",
     inventory: "المخزون",
@@ -45,6 +46,7 @@ const arabicMessages = {
     UserCompound: "العقارات",
     Invitation: "الدعوات",
     Scan: "الكشوف",
+    Request: "الطلبات",
     Device: "الاجهزة",
     Announcement: "الاعلانات",
   },
@@ -67,6 +69,34 @@ const arabicMessages = {
         compound: "المجمع",
         title: "العنوان",
         Title: "العنوان",
+        description: "الوصف",
+        compoundId: "المجمع",
+      },
+    },
+    request: {
+      name: "طلبات |||| طلب",
+      fields: {
+        id: "الكود",
+        type: "النوع",
+        availableDateFrom: "متاح من",
+        availableDateTo: "متاح الي",
+        requestNote: "رسالة الطلب",
+        respondNote: "رسالة الرد",
+        status: "الحالة",
+        compoundId: "المجمع",
+        userId: "المستخدم",
+        createdAt: "تاريخ الطلب",
+        facilityId: "الخدمة",
+      },
+    },
+    facility: {
+      name: "خدمات |||| خدمة",
+      fields: {
+        id: "الكود",
+        name: "الاسم",
+        price: "السعر",
+        photoUrl: "الصورة",
+        compound: "المجمع",
         description: "الوصف",
         compoundId: "المجمع",
       },
@@ -153,6 +183,7 @@ const arabicMessages = {
         notes: "الملاحظات",
         userId: "المستخدم",
         compoundId: "المجمع",
+        createdAt: "التاريخ",
       },
     },
     scan: {
@@ -358,6 +389,17 @@ const arabicMessages = {
   },
   requiredUser: "رجاء اختيار المستخدم",
   requiredCompound: "رجاء اختيار المجمع",
+  facility: "خدمة",
+  facilityType: {
+    Facility: "خدمة",
+    Issue: "مشكلة",
+  },
+  status: {
+    Pending: "في الانتظار",
+    Refused: "مرفوض",
+    InProgress: "جاري العمل",
+    Completed: "مكتملة",
+  },
 };
 
 export default arabicMessages;

@@ -1,14 +1,7 @@
-import {
-  Edit,
-  ImageField,
-  ImageInput,
-  SimpleForm,
-  TextInput,
-  useRecordContext,
-} from "react-admin";
-import CompoundTitle from "./title";
+import { Edit, ImageInput, SimpleForm, TextInput } from "react-admin";
+import CompoundTitle from "./title.compound";
 import PreviewImage from "../../components/PreviewImage";
-export default function EditCompound(props) {
+export default function EditCompound() {
   return (
     <Edit title={<CompoundTitle />}>
       <SimpleForm redirect="list">

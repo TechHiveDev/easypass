@@ -7,7 +7,7 @@ import {
   DateField,
   ReferenceField,
 } from "react-admin";
-import DeviceTitle from "./title";
+import DeviceTitle from "./title.device";
 
 // ------------------------------------------------
 

@@ -9,7 +9,7 @@ import {
   ImageField,
   useTranslate,
 } from "react-admin";
-import UserTitle from "./title";
+import UserTitle from "./title.user";
 import PreviewImage from "../../components/PreviewImage";
 
 // ------------------------------------------------

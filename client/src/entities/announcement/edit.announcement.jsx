@@ -2,24 +2,27 @@ import {
   Edit,
   SimpleForm,
   TextInput,
-  NumberInput,
-  BooleanInput,
-  DateInput,
   ReferenceInput,
-  SelectInput,
+  ImageInput,
   AutocompleteInput,
   useTranslate,
 } from "react-admin";
-import DeviceTitle from "./title.device";
+import AnnouncementTitle from "./title.announcement";
+import PreviewImage from "../../components/PreviewImage";
 
 // ------------------------------------------------
 
-export default function EditDevice(props) {
+export default function EditAnnouncement(props) {
   const t = useTranslate();
   return (
-    <Edit title={<DeviceTitle />}>
+    <Edit title={<AnnouncementTitle />}>
       <SimpleForm redirect="list">
-        <TextInput variant="outlined" source="ip" />
+        <TextInput variant="outlined" source="title" />
+        <TextInput variant="outlined" source="description" multiline={true} />
+        <TextInput variant="outlined" source="photoUrl" />
+        <ImageInput source="photoUrl" accept="image/*">
+          <PreviewImage source="src" />
+        </ImageInput>
         <ReferenceInput
           required
           source="compoundId"

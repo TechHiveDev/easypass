@@ -32,8 +32,12 @@ const CompoundShowActions = () => {
     resource: "announcement/create",
     redirect: false,
   });
+  const { save: saveFacility } = useCreateController({
+    resource: "facility",
+    redirect: false,
+  });
   const submitHandler = (values) => {
-    if (type !== "user") {
+    if (type === "announcement") {
       const { id: compoundId, title, description, photoUrl } = values;
       return saveAnnouncement(
         { compoundId, title, description, photoUrl },
@@ -48,31 +52,60 @@ const CompoundShowActions = () => {
         }
       );
     }
-    const {
-      id: compoundId,
-      userId,
-      streetName,
-      blockNumber,
-      unitNumber,
-    } = values;
-    saveUser(
-      {
-        compoundId,
+    if (type === "user") {
+      const {
+        id: compoundId,
         userId,
         streetName,
         blockNumber,
         unitNumber,
-      },
-      {
-        onSuccess: () => {
-          setOpen((p) => ({
-            ...p,
-            open: false,
-          }));
-          refresh();
+      } = values;
+      saveUser(
+        {
+          compoundId,
+          userId,
+          streetName,
+          blockNumber,
+          unitNumber,
         },
-      }
-    );
+        {
+          onSuccess: () => {
+            setOpen((p) => ({
+              ...p,
+              open: false,
+            }));
+            refresh();
+          },
+        }
+      );
+    }
+    if (type === "facility") {
+      const {
+        id: compoundId,
+        facilityName: name,
+        description,
+        price,
+        photoUrl,
+      } = values;
+      saveFacility(
+        {
+          compoundId,
+          name,
+          description,
+          price,
+          photoUrl,
+        },
+        {
+          onSuccess: () => {
+            setOpen((p) => ({
+              ...p,
+              open: false,
+            }));
+            refresh();
+          },
+        }
+      );
+    }
   };
   return (
     <TopToolbar>
@@ -97,6 +130,16 @@ const CompoundShowActions = () => {
         startIcon={<AnnouncementIcon />}
       >
         &nbsp;{t("add")} {t("announcement").replace("ال", "")}
+      </Button>
+      <Button
+        size="small"
+        color="primary"
+        onClick={() => {
+          setOpen({ type: "facility", open: true });
+        }}
+        startIcon={<AnnouncementIcon />}
+      >
+        &nbsp;{t("add")} {t("facility").replace("ال", "")}
       </Button>
       <Dialog
         onClose={() =>
@@ -133,7 +176,8 @@ const CompoundShowActions = () => {
               <NumberInput variant="outlined" source={"blockNumber"} required />
               <NumberInput variant="outlined" source={"unitNumber"} required />
             </SimpleForm>
-          ) : (
+          ) : null}
+          {type === "announcement" ? (
             <SimpleForm
               onSubmit={submitHandler}
               toolbar={<SaveToolbar />}
@@ -149,7 +193,32 @@ const CompoundShowActions = () => {
                 <ImageField source="src" title="title" />
               </ImageInput>
             </SimpleForm>
-          )}
+          ) : null}
+          {type === "facility" ? (
+            <SimpleForm
+              defaultValues={{
+                name: "",
+              }}
+              onSubmit={submitHandler}
+              toolbar={<SaveToolbar />}
+              resource={"facility"}
+            >
+              <TextInput
+                variant="outlined"
+                source="facilityName"
+                label={"signUp.name.label"}
+              />
+              <TextInput
+                variant="outlined"
+                source="description"
+                multiline={true}
+              />
+              <NumberInput variant="outlined" source="price" />
+              <ImageInput source="photoUrl" accept="image/*">
+                <ImageField source="src" title="title" />
+              </ImageInput>
+            </SimpleForm>
+          ) : null}
         </div>
       </Dialog>
     </TopToolbar>

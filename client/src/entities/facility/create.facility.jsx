@@ -1,25 +1,26 @@
 import {
-  Edit,
+  Create,
   SimpleForm,
   TextInput,
-  NumberInput,
-  BooleanInput,
-  DateInput,
   ReferenceInput,
-  SelectInput,
+  ImageInput,
+  NumberInput,
+  ImageField,
   AutocompleteInput,
   useTranslate,
 } from "react-admin";
-import DeviceTitle from "./title.device";
-
-// ------------------------------------------------
-
-export default function EditDevice(props) {
+import Title from "./title.facility";
+export default function CreateFacility(props) {
   const t = useTranslate();
   return (
-    <Edit title={<DeviceTitle />}>
-      <SimpleForm redirect="list">
-        <TextInput variant="outlined" source="ip" />
+    <Create title={<Title create={true} />}>
+      <SimpleForm>
+        <TextInput variant="outlined" source="name" />
+        <TextInput variant="outlined" source="description" multiline={true} />
+        <NumberInput variant="outlined" source="price" />
+        <ImageInput source="photoUrl" accept="image/*">
+          <ImageField source="src" title="title" />
+        </ImageInput>
         <ReferenceInput
           required
           source="compoundId"
@@ -37,6 +38,6 @@ export default function EditDevice(props) {
           />
         </ReferenceInput>
       </SimpleForm>
-    </Edit>
+    </Create>
   );
 }

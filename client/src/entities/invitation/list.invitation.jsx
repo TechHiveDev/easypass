@@ -3,8 +3,7 @@ import {
   Datagrid,
   TextField,
   NumberField,
-  BooleanField,
-  DateField,
+  FunctionField,
   ShowButton,
   EditButton,
   DeleteButton,
@@ -18,6 +17,7 @@ import {
 } from "react-admin";
 import Actions from "../../reactAdmin/components/Actions";
 import UserType from "../../components/UserType";
+import dateFormatter from "../../utils/dateFormatter";
 
 // ------------------------------------------------
 const inviteFilters = [
@@ -60,6 +60,10 @@ export default function ListInvitation(props) {
         <ReferenceField source="compoundId" reference="compound" link="show">
           <TextField source="name" />
         </ReferenceField>
+        <FunctionField
+          source={"createdAt"}
+          render={(rec) => dateFormatter(rec.createdAt)}
+        />
         <Actions label="">
           <ShowButton label="ra.action.show" />
           <EditButton label="ra.action.edit" />

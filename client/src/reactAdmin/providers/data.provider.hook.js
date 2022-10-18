@@ -19,6 +19,7 @@ const entitiesWithImages = [
   "announcement/create", // custom announcement
   "user",
   "announcement",
+  "facility",
 ];
 const defaultDataProvider = simpleRestProvider(config?.baseUrl, httpClient);
 

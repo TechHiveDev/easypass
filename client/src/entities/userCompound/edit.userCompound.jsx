@@ -11,7 +11,7 @@ import {
   AutocompleteInput,
   useTranslate,
 } from "react-admin";
-import UserCompoundTitle from "./title";
+import UserCompoundTitle from "./title.userCompound";
 
 export default function EditUserCompound(props) {
   const t = useTranslate();

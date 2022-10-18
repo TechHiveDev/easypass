@@ -7,9 +7,11 @@ import {
   DateField,
   ReferenceField,
   WrapperField,
+  FunctionField,
 } from "react-admin";
-import InvitationTitle from "./title";
+import InvitationTitle from "./title.invitation";
 import UserType from "../../components/UserType";
+import dateFormatter from "../../utils/dateFormatter";
 
 // ------------------------------------------------
 
@@ -29,6 +31,10 @@ export default function ShowInvitation(props) {
         <ReferenceField source="compoundId" reference="compound" link="show">
           <TextField source="name" />
         </ReferenceField>
+        <FunctionField
+          source={"createdAt"}
+          render={(rec) => dateFormatter(rec.createdAt)}
+        />
       </SimpleShowLayout>
     </Show>
   );

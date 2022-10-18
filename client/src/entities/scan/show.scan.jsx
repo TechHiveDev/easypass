@@ -6,9 +6,11 @@ import {
   ReferenceField,
   BooleanField,
   WrapperField,
+  FunctionField,
 } from "react-admin";
-import DeviceTitle from "./title";
+import DeviceTitle from "./title.scan";
 import UserType from "../../components/UserType";
+import dateFormatter from "../../utils/dateFormatter";
 
 // ------------------------------------------------
 
@@ -26,7 +28,10 @@ export default function ShowScan(props) {
         <WrapperField label={"type"}>
           <UserType />
         </WrapperField>
-        <TextField variant="outlined" source="createdAt" />
+        <FunctionField
+          source={"createdAt"}
+          render={(rec) => dateFormatter(rec.createdAt)}
+        />
       </SimpleShowLayout>
     </Show>
   );

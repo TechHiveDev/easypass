@@ -6,7 +6,7 @@ import {
   SelectInput,
   useTranslate,
 } from "react-admin";
-import InvitationTitle from "./title";
+import InvitationTitle from "./title.invitation";
 
 // ------------------------------------------------
 

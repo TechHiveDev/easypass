@@ -1,7 +1,10 @@
 import {
-  Create,
+  Edit,
   SimpleForm,
   TextInput,
+  NumberInput,
+  BooleanInput,
+  DateInput,
   ReferenceInput,
   SelectInput,
   ImageInput,
@@ -9,19 +12,19 @@ import {
   AutocompleteInput,
   useTranslate,
 } from "react-admin";
-import Title from "./title";
+import Title from "./title.facility";
+import PreviewImage from "../../components/PreviewImage";
 
-export default function CreateAnnouncement(props) {
+// ------------------------------------------------
+
+export default function EditFacility(props) {
   const t = useTranslate();
   return (
-    <Create
-      resource={"announcement/create"}
-      redirect={"/announcement"}
-      title={<Title create={true} />}
-    >
+    <Edit title={<Title />}>
       <SimpleForm redirect="list">
-        <TextInput variant="outlined" source="title" />
+        <TextInput variant="outlined" source="name" />
         <TextInput variant="outlined" source="description" multiline={true} />
+        <NumberInput variant="outlined" source="price" />
         <ImageInput source="photoUrl" accept="image/*">
           <ImageField source="src" title="title" />
         </ImageInput>
@@ -42,6 +45,6 @@ export default function CreateAnnouncement(props) {
           />
         </ReferenceInput>
       </SimpleForm>
-    </Create>
+    </Edit>
   );
 }

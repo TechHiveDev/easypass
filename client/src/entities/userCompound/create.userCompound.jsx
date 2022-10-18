@@ -8,7 +8,7 @@ import {
   AutocompleteInput,
   useTranslate,
 } from "react-admin";
-import Title from "./title";
+import Title from "./title.userCompound";
 
 // ------------------------------------------------
 

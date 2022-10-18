@@ -41,6 +41,7 @@ const allEnglishMessages = {
     label: "Sign-up",
   },
   menu: {
+    Facility: "Facilities",
     User: "Users",
     Post: "Posts",
     inventory: "Inventory",
@@ -49,6 +50,7 @@ const allEnglishMessages = {
     UserCompound: "Properties",
     Invitation: "Invitations",
     Scan: "Scans",
+    Request: "Requests",
     Device: "Devices",
     Announcement: "Announcements",
   },
@@ -105,5 +107,16 @@ const allEnglishMessages = {
   },
   requiredUser: "User is required",
   requiredCompound: "Compound is required",
+  facility: "Facility",
+  facilityType: {
+    Facility: "Facility",
+    Issue: "Issue",
+  },
+  status: {
+    Pending: "Pending",
+    Refused: "Refused",
+    InProgress: "In Progress",
+    Completed: "Completed",
+  },
 };
 export default allEnglishMessages;

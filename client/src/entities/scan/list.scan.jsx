@@ -12,9 +12,11 @@ import {
   useRecordContext,
   AutocompleteInput,
   BooleanField,
+  FunctionField,
 } from "react-admin";
 import Actions from "../../reactAdmin/components/Actions";
 import UserType from "../../components/UserType";
+import dateFormatter from "../../utils/dateFormatter";
 
 // ------------------------------------------------
 const scanFilters = [
@@ -62,7 +64,10 @@ export default function ListScan(props) {
         <WrapperField label={"type"}>
           <UserType />
         </WrapperField>
-        <TextField variant="outlined" source="createdAt" />
+        <FunctionField
+          source={"createdAt"}
+          render={(rec) => dateFormatter(rec.createdAt)}
+        />
         <Actions label="">
           <ShowButton label="ra.action.show" />
         </Actions>

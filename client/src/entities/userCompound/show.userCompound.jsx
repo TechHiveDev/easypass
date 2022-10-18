@@ -5,7 +5,7 @@ import {
   NumberField,
   ReferenceField,
 } from "react-admin";
-import UserCompoundTitle from "./title";
+import UserCompoundTitle from "./title.userCompound";
 
 // ------------------------------------------------
 

@@ -8,8 +8,10 @@ import {
   ReferenceField,
   ImageField,
   EditButton,
+  Pagination,
+  ShowButton,
 } from "react-admin";
-import CompoundTitle from "./title";
+import CompoundTitle from "./title.compound";
 import CompoundShowActions from "./actions.show.compound";
 import Actions from "../../reactAdmin/components/Actions";
 // ------------------------------------------------
@@ -27,6 +29,8 @@ export default function ShowCompound(props) {
           reference="userCompound"
           target="compoundId"
           link="show"
+          pagination={<Pagination />}
+          perPage={10}
         >
           <Datagrid>
             <ReferenceField source="userId" reference="user" link="show">
@@ -36,6 +40,7 @@ export default function ShowCompound(props) {
             <NumberField variant="outlined" source={"blockNumber"} />
             <NumberField variant="outlined" source={"unitNumber"} />
             <Actions label="">
+              <ShowButton label="ra.action.show" />
               <EditButton label="ra.action.edit" />
             </Actions>
           </Datagrid>
@@ -45,12 +50,35 @@ export default function ShowCompound(props) {
           reference="announcement"
           target="compoundId"
           link="show"
+          pagination={<Pagination />}
+          perPage={10}
         >
           <Datagrid>
             <TextField variant="outlined" source="title" />
             <TextField variant="outlined" source="description" />
             <ImageField variant="outlined" source="photoUrl" />
             <Actions label="">
+              <ShowButton label="ra.action.show" />
+              <EditButton label="ra.action.edit" />
+            </Actions>
+          </Datagrid>
+        </ReferenceManyField>
+        <ReferenceManyField
+          label="menu.Facility"
+          reference="facility"
+          target="compoundId"
+          link="show"
+          pagination={<Pagination />}
+          perPage={10}
+        >
+          <Datagrid>
+            <NumberField variant="outlined" source="id" />
+            <TextField variant="outlined" source="name" />
+            <TextField variant="outlined" source="description" />
+            <TextField variant="outlined" source="price" />
+            <ImageField variant="outlined" source="photoUrl" />
+            <Actions label="">
+              <ShowButton label="ra.action.show" />
               <EditButton label="ra.action.edit" />
             </Actions>
           </Datagrid>

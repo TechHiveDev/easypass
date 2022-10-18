@@ -12,7 +12,7 @@ import {
   useTranslate,
   AutocompleteInput,
 } from "react-admin";
-import Title from "./title";
+import Title from "./title.user";
 // ------------------------------------------------
 
 export default function CreateUser(props) {
