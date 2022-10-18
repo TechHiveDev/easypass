@@ -7,9 +7,11 @@ const prisma = new PrismaClient({
 });
 
 // ===============================================================
-
 /**
  * report Scan Report
+ * @author sergi-s
+ * if didn't refactor with 'day.js' contact me
+ * @link https://github.com/sergi-s
  */
 export const scanReport = async ({ compoundId, start, end, interval }) => {
   //NOTE: interval is enum (1=>day)

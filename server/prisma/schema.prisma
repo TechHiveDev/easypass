@@ -32,6 +32,7 @@ model User {
   createdAt    DateTime       @default(now())
   updatedAt    DateTime       @updatedAt
   Announcement Announcement[]
+  Request      Request[]
 }
 
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
@@ -51,6 +52,8 @@ model Compound {
   updatedAt    DateTime       @updatedAt
   Announcement Announcement[]
   Scan         Scan[]
+  Facilities   Facility[]
+  Request      Request[]
 }
 
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
@@ -151,6 +154,48 @@ model Announcement {
 }
 
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+model Facility {
+  id Int @id @default(autoincrement())
+
+  price       Float
+  name        String
+  description String?
+  photoUrl    String?
+
+  compoundId Int
+  compound   Compound @relation(fields: [compoundId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  Request   Request[]
+}
+
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+model Request {
+  id Int @id @default(autoincrement())
+
+  availableDateFrom DateTime      @default(now())
+  availableDateTo   DateTime      @default(now())
+  status            RequestStatus @default(Pending)
+  type              RequestType
+  facilityId        Int?
+  facility          Facility?     @relation(fields: [facilityId], references: [id], onDelete: NoAction)
+
+  requestNote String?
+  respondNote String?
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  compoundId Int
+  compound   Compound @relation(fields: [compoundId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
 enum UserType {
   SuperAdmin
@@ -170,6 +215,18 @@ enum ScanType {
   Resident
   Visitor
   Delivery
+}
+
+enum RequestStatus {
+  Pending
+  Refused
+  InProgress
+  Completed
+}
+
+enum RequestType {
+  Facility
+  Issue
 }
 
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~

@@ -29,6 +29,8 @@ import scanController from "./src/entities/scan/scan.controller.js";
 import scanUnprotectedController from "./src/entities/scan/scan.unprotected.controller";
 import deviceController from "./src/entities/device/device.controller.js";
 import announcementController from "./src/entities/announcement/announcement.controller";
+import facilityController from "./src/entities/facility/facility.controller";
+import requestController from "./src/entities/request/request.controller";
 
 // ------------------------------------------------------
 
@@ -99,6 +101,8 @@ app.use(invitationController);
 app.use(scanController);
 app.use(deviceController);
 app.use(announcementController);
+app.use(facilityController);
+app.use(requestController);
 
 // ------------------------------------------------------
 
