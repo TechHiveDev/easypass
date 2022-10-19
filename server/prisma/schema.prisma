@@ -70,8 +70,9 @@ model UserCompound {
   compoundId Int
   compound   Compound @relation(fields: [compoundId], references: [id], onDelete: Cascade)
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  Request   Request[]
 }
 
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
@@ -187,6 +188,9 @@ model Request {
 
   userId Int
   user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  userCompoundId Int
+  userCompound   UserCompound @relation(fields: [userCompoundId], references: [id], onDelete: NoAction)
 
   compoundId Int
   compound   Compound @relation(fields: [compoundId], references: [id], onDelete: Cascade)
