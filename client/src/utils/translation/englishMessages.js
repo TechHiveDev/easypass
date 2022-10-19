@@ -118,5 +118,6 @@ const allEnglishMessages = {
     InProgress: "In Progress",
     Completed: "Completed",
   },
+  streetBlockUnit: "Street - Block - Unit",
 };
 export default allEnglishMessages;

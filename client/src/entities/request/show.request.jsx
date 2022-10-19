@@ -23,6 +23,9 @@ export default function ShowRequest(props) {
           source={"type"}
           render={(rec) => `${t("facilityType." + rec.type)}`}
         />
+        <ReferenceField source="facilityId" reference="facility" link="show">
+          <TextField source="name" />
+        </ReferenceField>
         <FunctionField
           source={"createdAt"}
           render={(rec) =>
@@ -60,6 +63,18 @@ export default function ShowRequest(props) {
         </ReferenceField>
         <ReferenceField source="compoundId" reference="compound" link="show">
           <TextField source="name" />
+        </ReferenceField>
+        <ReferenceField
+          source="userCompoundId"
+          reference="userCompound"
+          link="show"
+          label={t("streetBlockUnit")}
+        >
+          <TextField source="streetName" />
+          &nbsp;-&nbsp;
+          <TextField source="blockNumber" />
+          &nbsp;-&nbsp;
+          <TextField source="unitNumber" />
         </ReferenceField>
       </SimpleShowLayout>
     </Show>

@@ -400,6 +400,7 @@ const arabicMessages = {
     InProgress: "جاري العمل",
     Completed: "مكتملة",
   },
+  streetBlockUnit: "شارع - عمارة - وحدة",
 };
 
 export default arabicMessages;

@@ -85,6 +85,16 @@ export default function ListRequest(props) {
         </ReferenceField>
         <ReferenceField source="compoundId" reference="compound" link="show">
           <TextField source="name" />
+        </ReferenceField>{" "}
+        <ReferenceField
+          source="userCompoundId"
+          reference="userCompound"
+          link="show"
+          label={t("streetBlockUnit")}
+        >
+          <TextField source="streetName" />
+          - <TextField source="blockNumber" />
+          - <TextField source="unitNumber" />
         </ReferenceField>
         <Actions label="">
           <ShowButton label="ra.action.show" />

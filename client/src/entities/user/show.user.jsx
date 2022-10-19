@@ -126,6 +126,18 @@ export default function ShowUser(props) {
             >
               <TextField source="name" />
             </ReferenceField>
+            <ReferenceField
+              source="userCompoundId"
+              reference="userCompound"
+              link="show"
+              label={t("streetBlockUnit")}
+            >
+              <TextField source="streetName" />
+              &nbsp;-&nbsp;
+              <TextField source="blockNumber" />
+              &nbsp;-&nbsp;
+              <TextField source="unitNumber" />
+            </ReferenceField>
             <Actions label="">
               <ShowButton label="ra.action.show" />
               <RespondButton />
