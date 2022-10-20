@@ -25,8 +25,8 @@ const screenOptions = ({ route: { name } }) => ({
   headerShown: false,
   swipeEnabled: true,
   header: (props) => <MyStatusBar {...props} />,
-  tabBarIcon: ({ focused, color, size }) => {
-    let iconName = "home";
+  tabBarIcon: ({ color }) => {
+    let iconName = "book";
 
     if (name === "Home") {
       iconName = "home";
@@ -42,15 +42,16 @@ const screenOptions = ({ route: { name } }) => ({
       iconName = "account";
     } else if (name === "Facilities") {
       iconName = "tools";
-    } else {
-      iconName = "book";
     }
     return <MaterialCommunityIcons name={iconName} size={26} color={color} />;
   },
   tabBarActiveTintColor: theme.colors.primary,
   tabBarInactiveTintColor: "gray",
   tabBarStyle: { height: hp(9) },
-  tabBarItemStyle: { paddingTop: hp(0.5), paddingBottom: hp(1.5) },
+  tabBarItemStyle:
+    name === "QR Code"
+      ? { display: "none" }
+      : { paddingTop: hp(0.5), paddingBottom: hp(1.5) },
   tabBarHideOnKeyboard: true,
 });
 

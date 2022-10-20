@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { SafeAreaView, StyleSheet, View, Text } from "react-native";
+import Animated, { useAnimatedProps } from "react-native-reanimated";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -8,30 +9,25 @@ import globalStyles from "../../Theme/global.styles";
 import SvgQRCode from "react-native-qrcode-svg";
 import theme from "../../Theme/paper.theme";
 import { futureDate } from "../../Components/Timer";
-import { useTimer } from "react-timer-hook";
+import useTimer from "../../Utils/useTimer";
 import { useCreateMutation } from "../../API/api";
 import { useAppSelector } from "../../Store/redux.hooks";
 import { useIsFocused } from "@react-navigation/native";
-import { Circle } from "react-native-progress";
 import { interpolate } from "react-native-reanimated";
+import Svg, { Rect } from "react-native-svg";
 
-// =================================================================
+const AnimatedRect = Animated.createAnimatedComponent(Rect);
 
 export default function QrCodeScreen() {
-  // ---------------------------------------------------
-
   const [qrCode, setQrCode] = useState(new Date());
-  const { seconds, restart, pause, isRunning } = useTimer({
+  const { milliseconds, seconds, restart, pause, isRunning } = useTimer({
     expiryTimestamp: futureDate({ date: new Date() }),
   });
   const { compoundId, userId } = useAppSelector(
     (s) => s?.auth?.currentCompound
   );
-
   const [generateQrCode] = useCreateMutation();
   const isFocused = useIsFocused();
-
-  // ---------------------------------------------------
 
   const fetchQrCode = async () => {
     const { data } = await generateQrCode({
@@ -48,11 +44,8 @@ export default function QrCodeScreen() {
     }
   };
 
-  // ---------------------------------------------------
-
   const updateQrCodeHandler = async () => {
     if (!isFocused) return pause();
-
     if (seconds < 10 && seconds > 0 && isRunning) return;
 
     if (seconds <= 10 && !isRunning) {
@@ -71,16 +64,35 @@ export default function QrCodeScreen() {
     return true;
   };
 
-  // ---------------------------------------------------
-
   useEffect(() => {
     updateQrCodeHandler();
   }, [seconds, isFocused, isRunning]);
 
-  // ---------------------------------------------------
-  const animationValue = interpolate(seconds, [0, 9], [0, 1]);
+  const animatedProps = useAnimatedProps(() => ({
+    strokeDashoffset: interpolate(milliseconds, [0, 10], [500, 100]),
+  }));
   return (
     <SafeAreaView style={{ ...globalStyles.screen, ...styles.container }}>
+      <Svg
+        height="50%"
+        width="80%"
+        viewBox="0 0 100 100"
+        style={{
+          position: "absolute",
+          top: hp(20),
+        }}
+      >
+        <AnimatedRect
+          x="10"
+          y="10"
+          width="80"
+          height="80"
+          stroke={theme.colors.primary}
+          strokeWidth="2"
+          strokeDasharray={"480"}
+          animatedProps={animatedProps}
+        ></AnimatedRect>
+      </Svg>
       <View
         style={{
           display: "flex",
@@ -88,15 +100,6 @@ export default function QrCodeScreen() {
           alignItems: "center",
         }}
       >
-        <Circle
-          progress={animationValue}
-          size={wp(80)}
-          color={theme.colors.primary}
-          style={{
-            position: "absolute",
-            top: -55,
-          }}
-        />
         <SvgQRCode size={wp(50)} value={qrCode.toString()} />
       </View>
       <View>

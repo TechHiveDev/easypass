@@ -14,31 +14,16 @@ import { Avatar } from "react-native-paper";
 import i18n from "i18n-js";
 import { useNavigation } from "@react-navigation/native";
 import facilities from "../../../../assets/facilities.png";
-import invite from "../../../../assets/invite.png";
 import qrcode from "../../../../assets/qrcode.png";
 // ====================================================================
 
 // Static Data
 const actions = [
   {
-    title: "facilities",
-    navigateTo: "Facilities",
-    icon: facilities,
-  },
-  {
     title: "QR Code",
     navigateTo: "QR Code",
     icon: qrcode,
   },
-  {
-    title: "invite",
-    navigateTo: "Invite",
-    icon: invite,
-  },
-  // {
-  //   title: "report",
-  //   navigateTo: "facilities",
-  // },
 ];
 
 // ====================================================================
@@ -91,7 +76,7 @@ const styles = StyleSheet.create({
     width: wp(95),
     flexDirection: "row",
     flexWrap: "wrap",
-    justifyContent: "space-between",
+    justifyContent: "center",
     paddingHorizontal: wp(2),
   },
   action: {
