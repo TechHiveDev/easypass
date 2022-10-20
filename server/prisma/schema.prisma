@@ -158,7 +158,7 @@ model Announcement {
 model Facility {
   id Int @id @default(autoincrement())
 
-  price       Float
+  price       Float?
   name        String
   description String?
   photoUrl    String?
@@ -223,9 +223,9 @@ enum ScanType {
 
 enum RequestStatus {
   Pending
-  Refused
+  Declined
   InProgress
-  Completed
+  Accepted
 }
 
 enum RequestType {

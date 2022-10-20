@@ -5,17 +5,9 @@ const prisma = new PrismaClient({ log: ["info", "query"] });
 
 // ==========================================================
 
-// Create compound
-// Create admin user
-// Create resident user
-// Create security user
-// assign admin to compound
-// assign security to compound
-// Create security user to compound
-
-const numScans = 20;
-const minDays = 1;
-const maxDays = 30;
+const numScans = 30;
+const minDays = 5;
+const maxDays = 90;
 
 function dynamicInvitationScans(type, compoundId, userId, invitationId) {
   return {
@@ -48,6 +40,12 @@ function arrayScans(type, compoundId, userId, deviceId, invitationId) {
       invitationId: invitationId ? invitationId : undefined,
     };
   });
+}
+
+function randomDate(start, end) {
+  return new Date(
+    start.getTime() + Math.random() * (end.getTime() - start.getTime())
+  );
 }
 
 (async () => {
@@ -196,6 +194,69 @@ function arrayScans(type, compoundId, userId, deviceId, invitationId) {
           "https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/McDonald%27s_Golden_Arches.svg/1200px-McDonald%27s_Golden_Arches.svg.png",
         compoundId: 1,
         userId: 4,
+      },
+    ],
+  });
+
+  await prisma.facility.createMany({
+    data: [
+      {
+        price: 50.5,
+        name: "International Interactions Coordinator",
+        description:
+          "added facilities tab in admin panel where admin can crud facilities,full text search them and filter them by compound.added request tab in admin pane",
+        photoUrl:
+          "https://easypass-api.techhive.dev/assets/facility/facility_1/1666172732314_concept-handyman-worker_98292-1125.webp",
+        compoundId: 1,
+      },
+      {
+        price: 125,
+        name: "Global Response Administrator",
+        description: "Regional",
+        photoUrl:
+          "https://easypass-api.techhive.dev/assets/facility/facility_2/1666172777140_depositphotos_93751818-stock-illustration-handyman-mascot-vector.jpg",
+        compoundId: 2,
+      },
+    ],
+  });
+
+  await prisma.request.createMany({
+    data: [
+      {
+        availableDateFrom: randomDate(
+          new Date(),
+          new Date(new Date().setDate(new Date().getDate() + 1))
+        ),
+        availableDateTo: randomDate(
+          new Date(new Date().setDate(new Date().getDate() + 1)),
+          new Date(new Date().setDate(new Date().getDate() + 2))
+        ),
+        status: "Pending",
+        type: "Facility",
+        requestNote: "complaint request",
+        respondNote: "complaint response",
+        userId: 5,
+        userCompoundId: 5,
+        compoundId: 2,
+        facilityId: 2,
+      },
+      {
+        availableDateFrom: randomDate(
+          new Date(),
+          new Date(new Date().setDate(new Date().getDate() + 1))
+        ),
+        availableDateTo: randomDate(
+          new Date(new Date().setDate(new Date().getDate() + 1)),
+          new Date(new Date().setDate(new Date().getDate() + 2))
+        ),
+        status: "Pending",
+        type: "Facility",
+        requestNote: "complaint request",
+        respondNote: "complaint response",
+        userId: 2,
+        userCompoundId: 2,
+        compoundId: 1,
+        facilityId: 1,
       },
     ],
   });
