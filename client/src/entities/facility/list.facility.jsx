@@ -32,7 +32,6 @@ export default function ListFacility(props) {
       <Datagrid>
         <NumberField variant="outlined" source="id" />
         <TextField variant="outlined" source="name" />
-        <TextField variant="outlined" source="description" />
         <TextField variant="outlined" source="price" />
         <ImageField variant="outlined" source="photoUrl" />
         <ReferenceField source="compoundId" reference="compound" link="show">

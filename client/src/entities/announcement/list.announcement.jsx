@@ -36,7 +36,6 @@ export default function ListAnnouncement(props) {
       <Datagrid>
         <NumberField variant="outlined" source="id" />
         <TextField variant="outlined" source="title" />
-        <TextField variant="outlined" source="description" />
         <ImageField variant="outlined" source="photoUrl" />
         <ReferenceField source="compoundId" reference="compound" link="show">
           <TextField source="name" />

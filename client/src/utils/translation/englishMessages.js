@@ -4,6 +4,13 @@ const allEnglishMessages = {
   ...englishMessages,
 
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+  resources: {
+    request: {
+      fields: {
+        availableDateFrom: "Available From To",
+      },
+    },
+  },
   signCommon: {
     invalid: "Invalid email or password",
   },
@@ -65,7 +72,6 @@ const allEnglishMessages = {
   },
 
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-  resources: {},
   no: "No",
   records: "Records",
   reports: "Reports",

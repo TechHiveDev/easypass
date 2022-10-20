@@ -78,7 +78,7 @@ const arabicMessages = {
       fields: {
         id: "الكود",
         type: "النوع",
-        availableDateFrom: "متاح من",
+        availableDateFrom: "متاح من الي",
         availableDateTo: "متاح الي",
         requestNote: "رسالة الطلب",
         respondNote: "رسالة الرد",

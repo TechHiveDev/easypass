@@ -14,7 +14,10 @@ import {
 } from "react-admin";
 import Actions from "../../reactAdmin/components/Actions";
 import { RespondButton } from "./RespondButton.request";
-import dateFormatter from "../../utils/dateFormatter";
+import dateFormatter, {
+  dayEqualityChecker,
+  daysMergerWithTime,
+} from "../../utils/dateFormatter";
 const requestFilters = [
   <SearchInput source="q" alwaysOn />,
   <ReferenceInput
@@ -34,7 +37,8 @@ const requestFilters = [
     <AutocompleteInput />
   </ReferenceInput>,
 ];
-
+const sameDayChecker = (rec) =>
+  dayEqualityChecker(rec?.availableDateFrom, rec?.availableDateTo);
 export default function ListRequest(props) {
   const t = useTranslate();
   return (
@@ -57,19 +61,15 @@ export default function ListRequest(props) {
         <FunctionField
           source={"availableDateFrom"}
           render={(rec) =>
-            `${
-              rec?.availableDateFrom
-                ? dateFormatter(rec.availableDateFrom)
-                : "-"
-            }`
+            daysMergerWithTime(rec?.availableDateFrom, rec.availableDateTo)
           }
         />
-        <FunctionField
-          source={"availableDateTo"}
-          render={(rec) =>
-            `${rec?.availableDateTo ? dateFormatter(rec.availableDateTo) : "-"}`
-          }
-        />
+        {/*<FunctionField*/}
+        {/*  source={"availableDateTo"}*/}
+        {/*  render={(rec) =>*/}
+        {/*    `${rec?.availableDateTo ? dateFormatter(rec.availableDateTo) : "-"}`*/}
+        {/*  }*/}
+        {/*/>*/}
         <TextField variant="outlined" source="requestNote" />
         <FunctionField
           source={"respondNote"}
