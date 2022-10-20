@@ -105,7 +105,7 @@ CREATE TABLE `Announcement` (
 -- CreateTable
 CREATE TABLE `Facility` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `price` DOUBLE NOT NULL,
+    `price` DOUBLE NULL,
     `name` VARCHAR(191) NOT NULL,
     `description` VARCHAR(191) NULL,
     `photoUrl` VARCHAR(191) NULL,
@@ -121,7 +121,7 @@ CREATE TABLE `Request` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `availableDateFrom` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `availableDateTo` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `status` ENUM('Pending', 'Refused', 'InProgress', 'Completed') NOT NULL DEFAULT 'Pending',
+    `status` ENUM('Pending', 'Declined', 'InProgress', 'Accepted') NOT NULL DEFAULT 'Pending',
     `type` ENUM('Facility', 'Issue') NOT NULL,
     `facilityId` INTEGER NULL,
     `requestNote` VARCHAR(191) NULL,
