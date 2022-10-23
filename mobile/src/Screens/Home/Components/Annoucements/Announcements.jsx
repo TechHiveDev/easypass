@@ -20,10 +20,11 @@ export default function Announcements() {
     data: announcements,
     error,
     isLoading,
+    isFetching,
     refetch,
   } = useGetCompoundAnnouncementsQuery(currentCompoundId);
   useEffect(() => {
-    if (isFocused) refetch();
+    if (isFocused && !isFetching) refetch();
   }, [isFocused]);
   const renderItem = (props) => <Announcement {...props} />;
 

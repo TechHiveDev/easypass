@@ -1,10 +1,10 @@
 import { useEffect } from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { NavigationContainer } from "@react-navigation/native";
-import ScreensNavigator from "./Screens.navigator";
 import UnAuthorizedNavigator from "./UnAuthorized.navigator";
 import LoadingErrorEmpty from "../Components/GenericScreens/LoadingErrorEmpty.screen";
 import { useAuthMe } from "../Utils/auth.hook";
+import DrawerNavigator from "./Drawer.navigator";
 
 // ==============================================================
 
@@ -26,7 +26,7 @@ export default function AppNavigator() {
   return (
     <SafeAreaProvider>
       <NavigationContainer>
-        {isAuthenticated ? <ScreensNavigator /> : <UnAuthorizedNavigator />}
+        {isAuthenticated ? <DrawerNavigator /> : <UnAuthorizedNavigator />}
       </NavigationContainer>
     </SafeAreaProvider>
   );

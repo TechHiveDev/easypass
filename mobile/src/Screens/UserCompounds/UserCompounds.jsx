@@ -24,7 +24,6 @@ export default function UserCompounds({ navigation }) {
     dispatch(setCurrentCompound(c));
     navigation.navigate("HomeStackTabNavigator");
   };
-  console.log(userCompound);
   return (
     <SafeAreaView>
       <Text

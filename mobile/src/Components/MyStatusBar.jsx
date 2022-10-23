@@ -2,12 +2,18 @@ import { StyleSheet } from "react-native";
 import { Appbar } from "react-native-paper";
 import i18n from "i18n-js";
 import theme from "../Theme/paper.theme";
-import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 import config from "../Config/config";
+import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 // ========================================================
 
 const hiddenStatusBar = ["login"];
-
+const defaultTitleAndButton = [
+  "Home",
+  "Profile",
+  "Facilities",
+  "Invite",
+  "All",
+];
 // ========================================================
 
 export default function MyStatusBar({
@@ -20,27 +26,26 @@ export default function MyStatusBar({
   let drawer = false;
   let title = params?.title ? params.title : name;
 
-  // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-
-  if (!params?.title) {
-    title = `${i18n.t(title)} ${params?.id ? " - " + params?.id : ""}`;
-  }
-
-  if (name === "home" || name == "HomeTabNavigator") title = config.name;
+  if (
+    name === "home" ||
+    name === "HomeTabNavigator" ||
+    defaultTitleAndButton.includes(name) ||
+    !name
+  )
+    title = config.name;
 
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
   if (
-    ["HomeTabNavigator", "exploreGroups", "home", i18n.t("home")].includes(name)
+    ["HomeTabNavigator", "exploreGroups", "home", i18n.t("home")]
+      .concat(defaultTitleAndButton)
+      .includes(name)
   ) {
     back = false;
     drawer = true;
   }
 
   if (["Tabs", "login"].includes(name)) back = false;
-
-  // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-  // {menu ? <MenuBar /> : false}
 
   return (
     <Appbar.Header style={styles.header}>

@@ -1,31 +1,26 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import MyStatusBar from "../Components/MyStatusBar";
-import DrawerNavigator from "./Drawer.navigator";
-
-// ==============================================================
+import DiscoverScreen from "../Screens/Discover/Discover.screen";
+import SingleDiscovery from "../Screens/Discover/SingleDiscovery.screen";
 
 const Stack = createNativeStackNavigator();
 
-// ==============================================================
-
-const stackrops = {
-  initialRouteName: "Tabs",
-};
-
 const screenOptions = {
-  headerShown: false,
+  headerShown: true,
   header: (props) => <MyStatusBar {...props} />,
 };
-
-// ==============================================================
-
 export default function ScreensNavigator() {
   return (
-    <Stack.Navigator {...stackrops}>
+    <Stack.Navigator>
       <Stack.Screen
-        name="HomeDrawer"
-        component={DrawerNavigator}
+        name="All"
+        component={DiscoverScreen}
+        options={screenOptions}
+      />
+      <Stack.Screen
+        name="Single"
+        component={SingleDiscovery}
         options={screenOptions}
       />
     </Stack.Navigator>

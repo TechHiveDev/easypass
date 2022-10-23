@@ -71,6 +71,7 @@ export default function QrCodeScreen() {
   const animatedProps = useAnimatedProps(() => ({
     strokeDashoffset: interpolate(milliseconds, [0, 10], [500, 100]),
   }));
+  if (!isFocused) return null;
   return (
     <SafeAreaView style={{ ...globalStyles.screen, ...styles.container }}>
       <Svg
@@ -79,7 +80,7 @@ export default function QrCodeScreen() {
         viewBox="0 0 100 100"
         style={{
           position: "absolute",
-          top: hp(20),
+          top: hp(21),
         }}
       >
         <AnimatedRect

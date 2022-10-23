@@ -14,7 +14,7 @@ import Profile from "../Screens/Profile/Profile.screen";
 import QrCode from "../Screens/QrCode/QrCode.screen";
 import InviteGuesst from "../Screens/InviteGuest/InviteGuest.screen";
 import ScanQrCode from "../Screens/ScanQrCode/ScanQrCode.screen";
-
+import Discover from "./DiscoverStack.navigator";
 // -------------------------------------------------------
 
 const Tab = createBottomTabNavigator();
@@ -22,7 +22,7 @@ const Tab = createBottomTabNavigator();
 // -------------------------------------------------------
 
 const screenOptions = ({ route: { name } }) => ({
-  headerShown: false,
+  headerShown: true,
   swipeEnabled: true,
   header: (props) => <MyStatusBar {...props} />,
   tabBarIcon: ({ color }) => {
@@ -42,6 +42,8 @@ const screenOptions = ({ route: { name } }) => ({
       iconName = "account";
     } else if (name === "Facilities") {
       iconName = "tools";
+    } else if (name === "Discover") {
+      iconName = "map-marker";
     }
     return <MaterialCommunityIcons name={iconName} size={26} color={color} />;
   },
@@ -74,6 +76,13 @@ export default function TabNavigator() {
     <Tab.Navigator screenOptions={screenOptions}>
       <Tab.Screen name={"Home"} component={HomeScreen} />
       <Tab.Screen name={"Invite"} component={InviteGuesst} />
+      <Tab.Screen
+        name={"Discover"}
+        component={Discover}
+        options={{
+          headerShown: false,
+        }}
+      />
       <Tab.Screen name={"QR Code"} component={QrCode} />
       <Tab.Screen name={"Facilities"} component={Facilities} />
       <Tab.Screen name={"Profile"} component={Profile} />

@@ -1,7 +1,9 @@
 import { StyleSheet } from "react-native";
 import { colors } from "./colors.theme";
-import { widthPercentageToDP as wp } from "react-native-responsive-screen";
-import { pow } from "react-native-reanimated";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
 
 // ----------------------------------------
 
@@ -14,6 +16,7 @@ const globalStyles = StyleSheet.create({
     backgroundColor: colors.background,
     width: wp(100),
     paddingHorizontal: wp(2),
+    paddingVertical: hp(2),
   },
   rowView: {
     width: "100%",
