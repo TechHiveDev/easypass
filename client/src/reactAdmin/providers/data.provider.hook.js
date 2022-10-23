@@ -20,7 +20,14 @@ const entitiesWithImages = [
   "user",
   "announcement",
   "facility",
+  "discover",
+  "discover/create", // custom discover
 ];
+const entitiesMapper = {
+  "oauth/register": "user",
+  "announcement/create": "announcement",
+  "discover/create": "discover",
+};
 const defaultDataProvider = simpleRestProvider(config?.baseUrl, httpClient);
 
 const uploadImage = async ({ image, entity, id }) => {
@@ -45,8 +52,10 @@ export const dataProvider = {
       if (!params?.data?.[uploadTarget]?.rawFile)
         return defaultDataProvider.create(resource, params);
       let entity = resource;
-      if (resource === "oauth/register") entity = "user";
-      if (resource === "announcement/create") entity = "announcement";
+      const mappedEntity = entitiesMapper[resource];
+      if (mappedEntity) {
+        entity = mappedEntity;
+      }
       const logoUrl = await uploadImage({
         image: params?.data?.[uploadTarget]?.rawFile,
         entity,

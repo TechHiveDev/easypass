@@ -26,7 +26,7 @@ export default function EditFacility(props) {
         <TextInput variant="outlined" source="description" multiline={true} />
         <NumberInput variant="outlined" source="price" />
         <ImageInput source="photoUrl" accept="image/*">
-          <ImageField source="src" title="title" />
+          <PreviewImage source="src" />
         </ImageInput>
         <ReferenceInput
           required

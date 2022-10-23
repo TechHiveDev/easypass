@@ -7,6 +7,7 @@ import Announcement from "./announcement/ui.announcement";
 import Scan from "./scan/ui.scan";
 import Facility from "./facility/ui.facility";
 import Request from "./request/ui.request";
+import Discover from "./discover/ui.discover";
 export default [
   Compound,
   User,
@@ -17,4 +18,5 @@ export default [
   Invitation,
   Device,
   Scan,
+  Discover,
 ];

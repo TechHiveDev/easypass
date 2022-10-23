@@ -82,6 +82,24 @@ export default function ShowCompound(props) {
               <EditButton label="ra.action.edit" />
             </Actions>
           </Datagrid>
+        </ReferenceManyField>{" "}
+        <ReferenceManyField
+          label="menu.Discover"
+          reference="discover"
+          target="compoundId"
+          link="show"
+          pagination={<Pagination />}
+          perPage={10}
+        >
+          <Datagrid>
+            <TextField variant="outlined" source="title" />
+            <TextField variant="outlined" source="description" />
+            <ImageField variant="outlined" source="photoUrl" />
+            <Actions label="">
+              <ShowButton label="ra.action.show" />
+              <EditButton label="ra.action.edit" />
+            </Actions>
+          </Datagrid>
         </ReferenceManyField>
       </SimpleShowLayout>
     </Show>

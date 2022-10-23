@@ -7,12 +7,12 @@ import {
   AutocompleteInput,
   useTranslate,
 } from "react-admin";
-import AnnouncementTitle from "./title.announcement";
+import AnnouncementTitle from "./title.discover";
 import PreviewImage from "../../components/PreviewImage";
 
 // ------------------------------------------------
 
-export default function EditAnnouncement(props) {
+export default function EditDiscover(props) {
   const t = useTranslate();
   return (
     <Edit title={<AnnouncementTitle />}>

@@ -1,26 +1,29 @@
 import {
-  Edit,
+  Create,
   SimpleForm,
   TextInput,
   ReferenceInput,
+  SelectInput,
   ImageInput,
+  ImageField,
   AutocompleteInput,
   useTranslate,
 } from "react-admin";
-import AnnouncementTitle from "./title.announcement";
-import PreviewImage from "../../components/PreviewImage";
+import Title from "./title.discover";
 
-// ------------------------------------------------
-
-export default function EditAnnouncement(props) {
+export default function CreateDiscover(props) {
   const t = useTranslate();
   return (
-    <Edit title={<AnnouncementTitle />}>
+    <Create
+      title={<Title create={true} />}
+      resource={"discover/create"}
+      redirect={"/discover"}
+    >
       <SimpleForm redirect="list">
         <TextInput variant="outlined" source="title" />
         <TextInput variant="outlined" source="description" multiline={true} />
         <ImageInput source="photoUrl" accept="image/*">
-          <PreviewImage source="src" />
+          <ImageField source="src" title="title" />
         </ImageInput>
         <ReferenceInput
           required
@@ -39,6 +42,6 @@ export default function EditAnnouncement(props) {
           />
         </ReferenceInput>
       </SimpleForm>
-    </Edit>
+    </Create>
   );
 }

@@ -60,6 +60,7 @@ const allEnglishMessages = {
     Request: "Requests",
     Device: "Devices",
     Announcement: "Announcements",
+    Discover: "Discoveries",
   },
 
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~

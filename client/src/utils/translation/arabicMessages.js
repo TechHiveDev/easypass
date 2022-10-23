@@ -49,6 +49,7 @@ const arabicMessages = {
     Request: "الطلبات",
     Device: "الاجهزة",
     Announcement: "الاعلانات",
+    Discover: "الاستكشافات",
   },
 
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
@@ -63,6 +64,30 @@ const arabicMessages = {
   resources: {
     announcement: {
       name: "اعلانات |||| اعلان",
+      fields: {
+        id: "الكود",
+        photoUrl: "الصورة",
+        compound: "المجمع",
+        title: "العنوان",
+        Title: "العنوان",
+        description: "الوصف",
+        compoundId: "المجمع",
+      },
+    },
+    discover: {
+      name: "الاستكشافات |||| استكشف",
+      fields: {
+        id: "الكود",
+        photoUrl: "الصورة",
+        compound: "المجمع",
+        title: "العنوان",
+        Title: "العنوان",
+        description: "الوصف",
+        compoundId: "المجمع",
+      },
+    },
+    "discover/create": {
+      name: "الاستكشافات |||| استكشف",
       fields: {
         id: "الكود",
         photoUrl: "الصورة",
@@ -401,6 +426,7 @@ const arabicMessages = {
     Completed: "مكتملة",
   },
   streetBlockUnit: "شارع - عمارة - وحدة",
+  discover: "استكشاف",
 };
 
 export default arabicMessages;

@@ -18,6 +18,7 @@ import Button from "@mui/material/Button";
 import AnnouncementIcon from "@mui/icons-material/Announcement";
 import HomeIcon from "@mui/icons-material/Home";
 import Dialog from "@mui/material/Dialog";
+import ExploreIcon from "@mui/icons-material/Explore";
 import SaveToolbar from "../../components/SaveToolbar";
 
 const CompoundShowActions = () => {
@@ -32,6 +33,10 @@ const CompoundShowActions = () => {
     resource: "announcement/create",
     redirect: false,
   });
+  const { save: saveDiscover } = useCreateController({
+    resource: "discover/create",
+    redirect: false,
+  });
   const { save: saveFacility } = useCreateController({
     resource: "facility",
     redirect: false,
@@ -40,6 +45,21 @@ const CompoundShowActions = () => {
     if (type === "announcement") {
       const { id: compoundId, title, description, photoUrl } = values;
       return saveAnnouncement(
+        { compoundId, title, description, photoUrl },
+        {
+          onSuccess: () => {
+            setOpen((p) => ({
+              ...p,
+              open: false,
+            }));
+            refresh();
+          },
+        }
+      );
+    }
+    if (type === "discover") {
+      const { id: compoundId, title, description, photoUrl } = values;
+      return saveDiscover(
         { compoundId, title, description, photoUrl },
         {
           onSuccess: () => {
@@ -140,6 +160,16 @@ const CompoundShowActions = () => {
         startIcon={<AnnouncementIcon />}
       >
         &nbsp;{t("add")} {t("facility").replace("ال", "")}
+      </Button>{" "}
+      <Button
+        size="small"
+        color="primary"
+        onClick={() => {
+          setOpen({ type: "discover", open: true });
+        }}
+        startIcon={<ExploreIcon />}
+      >
+        &nbsp;{t("add")} {t("discover").replace("ال", "")}
       </Button>
       <Dialog
         onClose={() =>
@@ -177,11 +207,11 @@ const CompoundShowActions = () => {
               <NumberInput variant="outlined" source={"unitNumber"} required />
             </SimpleForm>
           ) : null}
-          {type === "announcement" ? (
+          {type === "announcement" || type === "discover" ? (
             <SimpleForm
               onSubmit={submitHandler}
               toolbar={<SaveToolbar />}
-              resource={"announcement/create"}
+              resource={`${type}/create`}
             >
               <TextInput variant="outlined" source="title" />
               <TextInput
