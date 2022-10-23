@@ -57,6 +57,7 @@ const options = {
     },
   },
 };
+const timeString = "T00:00:00.000Z";
 
 const Invite = () => {
   const [locale] = useLocaleState();
@@ -159,11 +160,6 @@ const Invite = () => {
     if (!elementAtEvent?.[0]) return;
 
     const { datasetIndex, index: dataIndex } = elementAtEvent[0];
-    console.log({
-      data,
-      datasetIndex,
-      dataIndex,
-    });
     let type = "";
     if (chart === 1) {
       if (dataIndex === 0) {
@@ -197,17 +193,17 @@ const Invite = () => {
               gte:
                 chart === 0
                   ? data?.[0]?.report?.dates[dataIndex].substring(0, 10) +
-                    "T10:00:00.000Z"
-                  : from + "T10:00:00.000Z",
+                    timeString
+                  : from + timeString,
               lte:
                 chart === 0
                   ? data?.[0]?.report?.dates[dataIndex + 1]
                     ? `${data?.[0]?.report?.dates[dataIndex + 1].substring(
                         0,
                         10
-                      )}T10:00:00.000Z`
-                    : lastDate.toISOString().substring(0, 10) + "T10:00:00.000Z"
-                  : to + "T10:00:00.000Z",
+                      )}${timeString}`
+                    : lastDate.toISOString().substring(0, 10) + timeString
+                  : to + timeString,
             },
             type,
             compoundId: compound,
@@ -217,13 +213,13 @@ const Invite = () => {
               gte:
                 chart === 0
                   ? data?.[0]?.report?.dates[dataIndex].substring(0, 10) +
-                    "T10:00:00.000Z"
-                  : from + "T10:00:00.000Z",
+                    timeString
+                  : from + timeString,
               lte:
                 chart === 0
                   ? data?.[0]?.report?.dates[dataIndex + 1].substring(0, 10) +
-                    "T10:00:00.000Z"
-                  : to + "T10:00:00.000Z",
+                    timeString
+                  : to + timeString,
             },
             compoundId: compound,
           }

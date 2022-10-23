@@ -52,7 +52,7 @@ const options = {
     },
   },
 };
-
+const timeString = "T00:00:00.000Z";
 const Scan = () => {
   const translate = useTranslate();
   const [locale] = useLocaleState();
@@ -180,18 +180,17 @@ const Scan = () => {
       createdAt: {
         gte:
           chart === 0
-            ? data?.[0]?.report?.dates[dataIndex].substring(0, 10) +
-              "T10:00:00.000Z"
-            : from + "T10:00:00.000Z",
+            ? data?.[0]?.report?.dates[dataIndex].substring(0, 10) + timeString
+            : from + timeString,
         lte:
           chart === 0
             ? data?.[0]?.report?.dates[dataIndex + 1]
               ? `${data?.[0]?.report?.dates[dataIndex + 1].substring(
                   0,
                   10
-                )}T10:00:00.000Z`
-              : lastDate.toISOString().substring(0, 10) + "T10:00:00.000Z"
-            : to + "T10:00:00.000Z",
+                )}${timeString}`
+              : lastDate.toISOString().substring(0, 10) + timeString
+            : to + timeString,
       },
       success,
       compoundId: compound,
