@@ -1,9 +1,13 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Image } from "react-native";
 import { Appbar } from "react-native-paper";
 import i18n from "i18n-js";
 import theme from "../Theme/paper.theme";
 import config from "../Config/config";
-import { widthPercentageToDP as wp } from "react-native-responsive-screen";
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp,
+} from "react-native-responsive-screen";
+import splash from "../../assets/splash.png";
 // ========================================================
 
 const hiddenStatusBar = ["login"];
@@ -12,7 +16,7 @@ const defaultTitleAndButton = [
   "Profile",
   "Facilities",
   "Invite",
-  "All",
+  "AllCategories",
 ];
 // ========================================================
 
@@ -60,7 +64,11 @@ export default function MyStatusBar({
           color={theme.colors.primary}
         />
       )}
-      <Appbar.Content title={title} titleStyle={styles.content} />
+      {title === config.name ? (
+        <Image source={splash} resizeMode={"contain"} style={styles.image} />
+      ) : (
+        <Appbar.Content title={title} titleStyle={styles.content} />
+      )}
     </Appbar.Header>
   );
 }
@@ -70,6 +78,10 @@ export default function MyStatusBar({
 const styles = StyleSheet.create({
   header: {
     backgroundColor: theme.colors.white,
+  },
+  image: {
+    height: hp(5),
+    marginLeft: -wp(44),
   },
   content: {
     fontSize: 22,

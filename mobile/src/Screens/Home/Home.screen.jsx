@@ -4,7 +4,7 @@ import UserCard from "./Components/UserCard";
 import Announcements from "./Components/Annoucements";
 import Actions from "./Components/Actions";
 import { useAppSelector } from "../../Store/redux.hooks";
-
+import QrCode from "../../Components/QrCode";
 // =================================================================
 
 export default function HomeScreen() {
@@ -16,7 +16,7 @@ export default function HomeScreen() {
         {type === "Resident" && (
           <>
             <Announcements />
-            <Actions />
+            <QrCode />
           </>
         )}
       </ScrollView>

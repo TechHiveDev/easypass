@@ -4,7 +4,7 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
-import { Card } from "react-native-paper";
+import { Card, Text } from "react-native-paper";
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
@@ -14,47 +14,106 @@ import { useAppSelector } from "../../Store/redux.hooks";
 import { useGetListQuery } from "../../API/api";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { useEffect } from "react";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import theme from "../../Theme/paper.theme";
+import { View } from "moti";
+import { FlashList as FlatList } from "@shopify/flash-list";
 
-function Discover({ photoUrl: image, title, description }) {
+function Discover({ name, icon }) {
   const navigation = useNavigation();
   const pressHandler = () => {
-    navigation.navigate("Single", {
-      image,
-      title,
-      description,
+    navigation.navigate("SingleCategory", {
+      title: name,
     });
   };
   return (
     <TouchableOpacity onPress={pressHandler}>
       <Card style={styles.card}>
-        <Card.Cover source={{ uri: image }} style={styles.image} />
-        <Card.Title title={title} subtitle={description} />
+        <View
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: hp(15),
+          }}
+        >
+          <MaterialCommunityIcons
+            name={icon}
+            size={80}
+            color={theme.colors.grey}
+          />
+        </View>
+        <View
+          style={{
+            width: wp(30),
+            fontWeight: "bold",
+            justifyContent: "center",
+            alignItems: "center",
+            textAlign: "center",
+          }}
+        >
+          <Text
+            style={{
+              fontWeight: "bold",
+            }}
+          >
+            {name}
+          </Text>
+        </View>
       </Card>
     </TouchableOpacity>
   );
 }
 
 // =================================================================
-
+const fakeData = [
+  {
+    name: "Banking and Insurance",
+    icon: "bank",
+  },
+  {
+    name: "Groceries",
+    icon: "cart-outline",
+  },
+  {
+    name: "Places to Eat",
+    icon: "food",
+  },
+  {
+    name: "Pharmacies",
+    icon: "pill",
+  },
+  {
+    name: "Pet Care",
+    icon: "dog-side",
+  },
+];
 export default function DiscoverScreen() {
-  const currentCompoundId = useAppSelector(
-    (state) => state?.auth?.currentCompound?.compoundId
-  );
-  const { data, isFetching, refetch, error, isLoading } = useGetListQuery({
-    entity: `discover/compound/${currentCompoundId}`,
-  });
-  const isFocused = useIsFocused();
-  useEffect(() => {
-    if (isFocused && !isFetching) refetch();
-  }, [isFocused]);
-  if (isLoading || error || !data?.length) return null;
+  // const currentCompoundId = useAppSelector(
+  //   (state) => state?.auth?.currentCompound?.compoundId
+  // );
+  // const { data, isFetching, refetch, error, isLoading } = useGetListQuery({
+  //   entity: `discover/compound/${currentCompoundId}`,
+  // });
+  // const isFocused = useIsFocused();
+  // useEffect(() => {
+  //   if (isFocused && !isFetching) refetch();
+  // }, [isFocused]);
+  // if (isLoading || error || !data?.length) return null;
   return (
-    <SafeAreaView style={{ ...globalStyles.screen, ...styles.background }}>
-      <ScrollView>
-        {data?.map((facility, index) => (
-          <Discover key={index} {...facility} />
-        ))}
-      </ScrollView>
+    <SafeAreaView style={globalStyles.screen}>
+      {/*<ScrollView>*/}
+      {/*  {fakeData?.map((d, index) => (*/}
+      {/*    <Discover key={index} {...d} />*/}
+      {/*  ))}*/}
+      {/*</ScrollView>*/}
+      <FlatList
+        data={fakeData}
+        renderItem={({ item }) => <Discover {...item} />}
+        keyExtractor={(item) => item.icon}
+        estimatedItemSize={50}
+        numColumns={2}
+      />
     </SafeAreaView>
   );
 }
@@ -62,7 +121,14 @@ export default function DiscoverScreen() {
 const styles = StyleSheet.create({
   card: {
     marginVertical: hp(1),
-    marginHorizontal: wp(2),
+    marginHorizontal: wp(3),
+    width: wp(42),
+    height: hp(25),
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: wp(0.1),
+    textAlign: "center",
   },
   image: {
     height: hp(20),
@@ -73,5 +139,6 @@ const styles = StyleSheet.create({
   },
   col: {
     width: wp(45),
+    height: hp(25),
   },
 });

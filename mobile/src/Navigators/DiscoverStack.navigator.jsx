@@ -14,12 +14,12 @@ export default function ScreensNavigator() {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="All"
+        name="AllCategories"
         component={DiscoverScreen}
         options={screenOptions}
       />
       <Stack.Screen
-        name="Single"
+        name="SingleCategory"
         component={SingleDiscovery}
         options={screenOptions}
       />
