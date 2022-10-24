@@ -2,7 +2,7 @@ import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import MyStatusBar from "../Components/MyStatusBar";
 import DiscoverScreen from "../Screens/Discover/Discover.screen";
-import SingleDiscovery from "../Screens/Discover/SingleDiscovery.screen";
+import SingleDiscovery from "../Screens/Discover/DiscoveryCategory.screen";
 
 const Stack = createNativeStackNavigator();
 
@@ -14,12 +14,12 @@ export default function ScreensNavigator() {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="AllCategories"
+        name="AllDiscoverCategories"
         component={DiscoverScreen}
         options={screenOptions}
       />
       <Stack.Screen
-        name="SingleCategory"
+        name="SingleDiscoverCategory"
         component={SingleDiscovery}
         options={screenOptions}
       />

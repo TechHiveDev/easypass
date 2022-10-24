@@ -22,7 +22,7 @@ import { FlashList as FlatList } from "@shopify/flash-list";
 function Discover({ name, icon }) {
   const navigation = useNavigation();
   const pressHandler = () => {
-    navigation.navigate("SingleDiscoverCategory", {
+    navigation.navigate("SingleFacilityCategory", {
       title: name,
     });
   };
@@ -88,7 +88,7 @@ const fakeData = [
     icon: "dog-side",
   },
 ];
-export default function DiscoverScreen() {
+export default function FacilityScreen() {
   // const currentCompoundId = useAppSelector(
   //   (state) => state?.auth?.currentCompound?.compoundId
   // );

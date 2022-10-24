@@ -9,7 +9,7 @@ import MyStatusBar from "../Components/MyStatusBar";
 // -------------------------------------------------------
 
 import HomeScreen from "../Screens/Home/Home.screen";
-import Facilities from "../Screens/Facilities/Facilities.screen";
+import Facilities from "./FacilityStack.navigator";
 import Profile from "../Screens/Profile/Profile.screen";
 import QrCode from "../Screens/QrCode/QrCode.screen";
 import InviteGuesst from "../Screens/InviteGuest/InviteGuest.screen";
@@ -84,7 +84,9 @@ export default function TabNavigator() {
         }}
       />
       <Tab.Screen name={"QR Code"} component={QrCode} />
-      <Tab.Screen name={"Facilities"} component={Facilities} />
+      <Tab.Screen name={"Facilities"} component={Facilities} options={{
+          headerShown: false,
+      }} />
       <Tab.Screen name={"Profile"} component={Profile} />
     </Tab.Navigator>
   );

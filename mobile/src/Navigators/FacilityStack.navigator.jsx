@@ -1,9 +1,8 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import MyStatusBar from "../Components/MyStatusBar";
-import DiscoverScreen from "../Screens/Discover/Discover.screen";
-import SingleDiscovery from "../Screens/Discover/DiscoveryCategory.screen";
-
+import FacilityScreen from "../Screens/Facility/Facility.screen"
+import SingleFacility from "../Screens/Facility/FacilityCategory.screen";
 const Stack = createNativeStackNavigator();
 
 const screenOptions = {
@@ -14,13 +13,13 @@ export default function ScreensNavigator() {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="AllCategories"
-        component={DiscoverScreen}
+        name="AllFacilityCategories"
+        component={FacilityScreen}
         options={screenOptions}
       />
       <Stack.Screen
-        name="SingleCategory"
-        component={SingleDiscovery}
+        name="SingleFacilityCategory"
+        component={SingleFacility}
         options={screenOptions}
       />
     </Stack.Navigator>

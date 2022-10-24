@@ -16,7 +16,8 @@ const defaultTitleAndButton = [
   "Profile",
   "Facilities",
   "Invite",
-  "AllCategories",
+  "AllDiscoverCategories",
+    "AllFacilityCategories"
 ];
 // ========================================================
 

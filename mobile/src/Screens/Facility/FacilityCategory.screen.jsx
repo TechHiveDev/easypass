@@ -19,7 +19,7 @@ import { FlashList } from "@shopify/flash-list";
 import callPhone from "../../Utils/callPhone";
 import { allData } from "./fakeData";
 
-export default function DiscoveryCategoryScreen() {
+export default function SingleDiscovery() {
   const route = useRoute();
   const { title } = route.params;
   return (
