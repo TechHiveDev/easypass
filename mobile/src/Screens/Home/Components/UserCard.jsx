@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { Image, View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -6,6 +6,7 @@ import {
 import { Avatar, Card } from "react-native-paper";
 import { useAppSelector } from "../../../Store/redux.hooks";
 import { useNavigation } from "@react-navigation/native";
+import QrCode from "../../../Components/QrCode";
 
 // ====================================================================
 
@@ -17,45 +18,58 @@ export default function UserCard({ entity, keys, row }) {
   const currentCompound = useAppSelector(
     (state) => state?.auth?.currentCompound
   );
-  // -------------------------------
 
   return (
-    <TouchableOpacity
-      onPress={() => navigate.navigate("Profile")}
-      activeOpacity={0.75}
-    >
-      <Card style={styles.card}>
-        <Card.Title
-          left={(props) => (
-            <Avatar.Image
-              {...props}
-              size={50}
-              style={styles.image}
-              source={
-                photoUrl
-                  ? { uri: photoUrl }
-                  : require("../../../../assets/profile.png")
-              }
-            />
-          )}
-          right={(props) => (
-            <View style={styles.content}>
+    <Card style={styles.card}>
+      <Card.Title
+        left={(props) => (
+          <View
+            style={{
+              width: wp(33),
+              height: hp(25.2),
+            }}
+          >
+            <TouchableOpacity
+              onPress={() => navigate.navigate("Profile")}
+              activeOpacity={0.75}
+            >
+              <Image
+                {...props}
+                style={styles.image}
+                source={
+                  photoUrl
+                    ? { uri: photoUrl }
+                    : require("../../../../assets/profile.png")
+                }
+              />
+            </TouchableOpacity>
+            {/*<View*/}
+            {/*  style={{*/}
+            {/*    height: hp(2.2),*/}
+            {/*  }}*/}
+            {/*/>*/}
+            <TouchableOpacity
+              onPress={() => navigate.navigate("Profile")}
+              activeOpacity={0.75}
+            >
               <Text style={styles.name}>{name}</Text>
-              <Text style={styles.address}>{type}</Text>
-              {type === "Security" ? (
-                <>
-                  <Text style={styles.address}>email: {email}</Text>
-                  <Text style={styles.address}>phone: {phone}</Text>
-                  <Text style={styles.address}>
-                    current compound: {currentCompound.compoundId}
-                  </Text>
-                </>
-              ) : null}
+            </TouchableOpacity>
+          </View>
+        )}
+        right={(props) => {
+          return (
+            <View
+              style={{
+                marginLeft: wp(5),
+                paddingTop: hp(1),
+              }}
+            >
+              <QrCode />
             </View>
-          )}
-        />
-      </Card>
-    </TouchableOpacity>
+          );
+        }}
+      />
+    </Card>
   );
 }
 
@@ -63,23 +77,21 @@ export default function UserCard({ entity, keys, row }) {
 
 const styles = StyleSheet.create({
   card: {
-    width: wp(92),
     flexDirection: "row",
     borderWidth: 1,
     borderRadius: 7,
-    paddingVertical: hp(0.2),
-    paddingHorizontal: wp(1),
-    marginHorizontal: wp(1),
-  },
-  content: {
-    width: wp(68),
-    color: "grey",
   },
   name: {
     fontWeight: "600",
     fontSize: wp(4),
+    marginVertical: hp(1),
+    width: wp(30),
   },
   address: {
     color: "grey",
+  },
+  image: {
+    height: wp(45),
+    width: wp(35),
   },
 });

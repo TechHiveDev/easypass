@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     marginRight: wp(2),
   },
   cardCover: {
-    height: hp(15),
+    height: hp(22.5),
   },
   dialogImage: { height: hp(30) },
 });

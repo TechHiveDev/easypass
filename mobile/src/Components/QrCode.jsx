@@ -45,20 +45,26 @@ export default function QrCode() {
   };
 
   const updateQrCodeHandler = async () => {
-    if (!isFocused) return pause();
+    if (!isFocused) {
+      pause();
+      return;
+    }
     if (seconds < 10 && seconds > 0 && isRunning) return;
 
     if (seconds <= 10 && !isRunning) {
-      return restart(futureDate({ date: new Date() }));
+      restart(futureDate({ date: new Date() }));
+      return;
     }
 
     if (seconds === 0 && isRunning) {
-      return restart(futureDate({ date: new Date() }));
+      restart(futureDate({ date: new Date() }));
+      return;
     }
 
     if (seconds === 10) {
       await fetchQrCode();
-      return restart(futureDate({ date: new Date(), seconds: 9 }));
+      restart(futureDate({ date: new Date(), seconds: 9 }));
+      return;
     }
 
     return true;
@@ -75,12 +81,12 @@ export default function QrCode() {
   return (
     <SafeAreaView style={styles.container}>
       <Svg
-        height="110%"
-        width="110%"
+        height="92%"
+        width={"92%"}
         viewBox="0 0 100 100"
         style={{
           position: "absolute",
-          top: hp(-2.3),
+          top: hp(1.4),
         }}
       >
         <AnimatedRect
@@ -103,9 +109,9 @@ export default function QrCode() {
       >
         <SvgQRCode size={wp(50)} value={qrCode.toString()} />
       </View>
-      <View>
-        <Text>{seconds}</Text>
-      </View>
+      {/*<View>*/}
+      {/*  <Text>{seconds}</Text>*/}
+      {/*</View>*/}
     </SafeAreaView>
   );
 }
@@ -113,7 +119,7 @@ const styles = StyleSheet.create({
   container: {
     alignItems: "center",
     justifyContent: "center",
-    width: wp(96),
+    width: wp(80),
     height: hp(35),
   },
 });

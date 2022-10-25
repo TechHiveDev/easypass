@@ -6,8 +6,9 @@ import {
   SafeAreaView,
   Text,
   View,
+  TouchableOpacity,
 } from "react-native";
-import { useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import {
   heightPercentageToDP as hp,
@@ -18,79 +19,126 @@ import globalStyles from "../../Theme/global.styles";
 import { FlashList } from "@shopify/flash-list";
 import callPhone from "../../Utils/callPhone";
 import { allData } from "./fakeData";
+import { useEffect } from "react";
 
 export default function SingleDiscovery() {
   const route = useRoute();
   const { title } = route.params;
+  const navigation = useNavigation();
+  const clickHandler = (item) => {
+    navigation.navigate("DiscoverItem", { title: item.name, ...item });
+  };
   return (
     <SafeAreaView style={globalStyles.screen}>
       <FlashList
+        key={1}
         estimatedItemSize={187}
-        data={allData.find((d) => d.name === title).items}
-        keyExtractor={(item) => item.name}
+        data={allData?.find((d) => d?.name === title)?.items}
+        keyExtractor={(item) => item?.name}
         renderItem={({ item }) => {
           return (
             <Card
               style={{
-                height: hp(22.5),
                 marginHorizontal: wp(2),
                 marginVertical: hp(2),
+                overflow: "hidden",
+                padding: wp(3),
               }}
             >
               <View
                 style={{
                   flex: 1,
-                  paddingHorizontal: wp(5),
                   display: "flex",
                   flexDirection: "row",
                   alignItems: "center",
                 }}
               >
-                <Image
-                  resizeMode={"cover"}
-                  source={{ uri: item.image }}
-                  style={{
-                    width: wp(30),
-                    height: hp(20),
-                  }}
-                />
-                <View
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    marginLeft: wp(5),
-                  }}
-                >
-                  <Text
+                <View>
+                  <TouchableOpacity onPress={() => clickHandler(item)}>
+                    <Image
+                      resizeMode={"cover"}
+                      source={{ uri: item.image }}
+                      style={{
+                        width: wp(35),
+                        height: wp(35),
+                        borderRadius: wp(35 / 2),
+                      }}
+                    />
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => callPhone(item.phone)}
                     style={{
-                      fontSize: wp(5),
-                      fontWeight: "bold",
+                      position: "absolute",
+                      bottom: -hp(0.5),
+                      left: wp(0),
+                      width: wp(8),
+                      height: wp(8),
+                      borderRadius: wp(4),
+                      backgroundColor: theme.colors.grey,
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
                     }}
                   >
-                    {item.name}
-                  </Text>
-                  <Text
-                    style={{
-                      fontSize: wp(4),
-                      width: wp(30),
-                    }}
-                  >
-                    {item.shortDescription}
-                  </Text>
+                    <MaterialCommunityIcons
+                      name="phone-outline"
+                      size={15}
+                      color={theme.colors.primary}
+                    />
+                  </TouchableOpacity>
                 </View>
-                <Button
-                  onPress={() => callPhone(item.phone)}
-                  style={{
-                    marginLeft: wp(5),
-                  }}
-                >
-                  <MaterialCommunityIcons
-                    name="phone-outline"
-                    size={24}
-                    color="black"
-                  />
-                </Button>
+                <TouchableOpacity onPress={() => clickHandler(item)}>
+                  <View
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "flex-start",
+                      marginLeft: wp(5),
+                      width: wp(40),
+                    }}
+                  >
+                    <Text
+                      style={{
+                        fontSize: wp(6.5),
+                        fontWeight: "bold",
+                        color: theme.colors.primary,
+                      }}
+                    >
+                      {item.name}
+                    </Text>
+                    <Text
+                      style={{
+                        fontSize: wp(4),
+                      }}
+                    >
+                      {item.shortDescription}
+                    </Text>
+                    <View
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <MaterialCommunityIcons
+                        name="clock-time-two-outline"
+                        size={15}
+                        color={theme.colors.primary}
+                        style={{
+                          marginTop: hp(0.2),
+                        }}
+                      />
+                      <Text
+                        style={{
+                          marginLeft: wp(0.5),
+                          fontSize: wp(3.5),
+                        }}
+                      >
+                        {item.from} to {item.to}
+                      </Text>
+                    </View>
+                  </View>
+                </TouchableOpacity>
               </View>
             </Card>
           );

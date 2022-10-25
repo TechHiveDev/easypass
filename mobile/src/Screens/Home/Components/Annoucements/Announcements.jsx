@@ -10,6 +10,7 @@ import { useGetCompoundAnnouncementsQuery } from "../../../../API/api";
 import { useAppSelector } from "../../../../Store/redux.hooks";
 import { useIsFocused } from "@react-navigation/native";
 import { useEffect } from "react";
+import { FlashList } from "@shopify/flash-list";
 
 export default function Announcements() {
   const currentCompoundId = useAppSelector(
@@ -34,7 +35,8 @@ export default function Announcements() {
     <View style={styles.slider}>
       <MyText text={i18n.t("announcements")} style={styles.title} />
       <SafeAreaView>
-        <FlatList
+        <FlashList
+          estimatedItemSize={218}
           horizontal={true}
           data={announcements}
           keyExtractor={(a) => a.id}

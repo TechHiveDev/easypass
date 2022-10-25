@@ -17,7 +17,7 @@ const defaultTitleAndButton = [
   "Facilities",
   "Invite",
   "AllDiscoverCategories",
-    "AllFacilityCategories"
+  "AllFacilityCategories",
 ];
 // ========================================================
 
@@ -81,8 +81,9 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.white,
   },
   image: {
+    width: wp(35),
     height: hp(5),
-    marginLeft: -wp(44),
+    marginLeft: wp(15),
   },
   content: {
     fontSize: 22,
