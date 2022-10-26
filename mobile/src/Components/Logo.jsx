@@ -8,10 +8,11 @@ export default function Logo({
   width = 100,
   height = 80,
   source = require("../../assets/logo.png"),
+  ...props
 }) {
   return (
     <View style={{ ...styles.container, width: wp(containerWidth) }}>
-      <Image style={{ width, height }} source={source} />
+      <Image style={{ width, height }} source={source} {...props} />
     </View>
   );
 }

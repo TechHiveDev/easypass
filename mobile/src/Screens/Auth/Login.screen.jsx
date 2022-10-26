@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Form from "../../Components/Form/Form";
 import Input from "../../Components/Form/Input";
@@ -8,10 +8,12 @@ import { useLoginMutation } from "../../API/api";
 import { useAppDispatch } from "../../Store/redux.hooks";
 import { setAccesToken, setAuthUser } from "../../Store/Slices/auth.slice";
 import Logo from "../../Components/Logo";
-import { heightPercentageToDP as hp } from "react-native-responsive-screen";
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP,
+} from "react-native-responsive-screen";
 import theme from "../../Theme/paper.theme";
 import Toast from "react-native-toast-message";
-import config from "../../Config/config";
 
 // =================================================================
 
@@ -56,9 +58,10 @@ export default function LoginScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <Logo
-        width={500}
+        width={widthPercentageToDP(100)}
         height={170}
-        source={{ uri: "https://picsum.photos/900" }}
+        source={require("../../../assets/splash.png")}
+        resizeMode={"contain"}
       />
       <View style={styles.body}>
         <Form
@@ -71,7 +74,7 @@ export default function LoginScreen() {
             cancelButton: true,
             cancelText: "register",
             cancelIcon: "account-plus-outline",
-            title: config.name,
+            title: false,
             submitText: "login",
             submitIcon: "login",
           }}

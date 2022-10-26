@@ -11,7 +11,7 @@ export const allData = [
         shortDescription: "Egyptian Bank",
         description:
           "dfghidkhgfdf kgfdhjkgfhj hkljfgklhjgkh kgfhjkfg fdgfdgfdgdfgfdg",
-        address: "57 home street , elmnt2a",
+        address: "36 Ahmed El-Sawy St., 6 th District",
         from: "8:00 am",
         to: "5:00 pm",
       },
@@ -23,7 +23,7 @@ export const allData = [
         shortDescription: "Egyptian Bank",
         description:
           "dfghidkhgfdf kgfdhjkgfhj hkljfgklhjgkh kgfhjkfg fdgfdgfdgdfgfdg",
-        address: "57 home street , elmnt2a",
+        address: "36 Ahmed El-Sawy St., 6 th District",
         from: "8:00 am",
         to: "5:00 pm",
       },
@@ -41,7 +41,7 @@ export const allData = [
         shortDescription: "Online and in place shopping",
         description:
           "dfghidkhgfdf kgfdhjkgfhj hkljfgklhjgkh kgfhjkfg fdgfdgfdgdfgfdg",
-        address: "57 home street , elmnt2a",
+        address: "36 Ahmed El-Sawy St., 6 th District",
         from: "8:00 am",
         to: "5:00 pm",
       },
@@ -59,7 +59,7 @@ export const allData = [
         shortDescription: "Holmes Fantastic Burger",
         description:
           "dfghidkhgfdf kgfdhjkgfhj hkljfgklhjgkh kgfhjkfg fdgfdgfdgdfgfdg",
-        address: "57 home street , elmnt2a",
+        address: "36 Ahmed El-Sawy St., 6 th District",
         from: "8:00 am",
         to: "5:00 pm",
       },
@@ -74,10 +74,10 @@ export const allData = [
         image:
           "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhbnfsp585gwIUCC2fGm910h6688P0PLPz-9hqtD5Cj1BdRm_9xEopbWDUanWewVeEytrBoM9Rd_rDiYwE7hC47YxIW3BycaYT5vUu5ohVQkPiiZtMU4u7YLHBh2Jn0g_79ExKqzrr-PKJoNhUaNZRk4SC35i8NM4_vxO8mUV3GoS8892ERqsutKLtvxQ/s16000/%D8%B1%D9%82%D9%85-%D8%B5%D9%8A%D8%AF%D9%84%D9%8A%D8%A9-%D8%A7%D9%84%D8%A8%D9%8A%D8%B3%D9%89-%D8%A7%D9%84%D8%A7%D8%B3%D9%83%D9%86%D8%AF%D8%B1%D9%8A%D8%A9.png",
         phone: "033929566",
-        shortDescription: "Near by Pharmacy",
+        shortDescription: "Nearby Pharmacy",
         description:
           "dfghidkhgfdf kgfdhjkgfhj hkljfgklhjgkh kgfhjkfg fdgfdgfdgdfgfdg",
-        address: "57 home street , elmnt2a",
+        address: "36 Ahmed El-Sawy St., 6 th District",
         from: "8:00 am",
         to: "5:00 pm",
       },

@@ -3,7 +3,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
-import { Avatar, Card } from "react-native-paper";
+import { Card } from "react-native-paper";
 import { useAppSelector } from "../../../Store/redux.hooks";
 import { useNavigation } from "@react-navigation/native";
 import QrCode from "../../../Components/QrCode";
@@ -80,6 +80,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     borderWidth: 1,
     borderRadius: 7,
+    padding: 0,
   },
   name: {
     fontWeight: "600",

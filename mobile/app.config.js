@@ -6,9 +6,9 @@ module.exports = {
   orientation: "portrait",
   icon: "./assets/icon.png",
   splash: {
-    image: "./assets/splash.png",
-    resizeMode: "contain",
-    backgroundColor: "#ffffff",
+    image: "./assets/splash-screen.png",
+    resizeMode: "cover",
+    // backgroundColor: "#ffffff",
   },
   plugins: [
     [
