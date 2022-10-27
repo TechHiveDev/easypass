@@ -1,9 +1,4 @@
-import {
-  Alert,
-  SafeAreaView,
-  StyleSheet,
-  TouchableOpacity,
-} from "react-native";
+import { Alert, SafeAreaView, StyleSheet } from "react-native";
 import { Button, Card, Dialog, Portal, Text } from "react-native-paper";
 import {
   heightPercentageToDP as hp,
@@ -16,6 +11,7 @@ import { View } from "moti";
 import { FlashList } from "@shopify/flash-list";
 import { fakeData } from "./fakeData";
 import { useState } from "react";
+import TouchableOpacity from "../../Components/TouchableOpacity";
 
 function Discover({ name, icon }) {
   const [visible, setVisible] = useState(false);

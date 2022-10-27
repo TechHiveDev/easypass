@@ -58,10 +58,10 @@ export default function LoginScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <Logo
-        width={widthPercentageToDP(100)}
+        width={widthPercentageToDP(120)}
         height={170}
-        source={require("../../../assets/splash.png")}
-        resizeMode={"contain"}
+        source={require("../../../assets/login.png")}
+        resizeMode={"cover"}
       />
       <View style={styles.body}>
         <Form

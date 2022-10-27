@@ -1,4 +1,4 @@
-import { SafeAreaView, StyleSheet, TouchableOpacity } from "react-native";
+import { SafeAreaView, StyleSheet } from "react-native";
 import { Card, Text } from "react-native-paper";
 import {
   heightPercentageToDP as hp,
@@ -11,6 +11,7 @@ import theme from "../../Theme/paper.theme";
 import { View } from "moti";
 import { FlashList } from "@shopify/flash-list";
 import { fakeData } from "./fakeData";
+import TouchableOpacity from "../../Components/TouchableOpacity";
 
 function Discover({ name, icon }) {
   const navigation = useNavigation();

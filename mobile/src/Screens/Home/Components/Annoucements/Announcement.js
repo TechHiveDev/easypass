@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { Image, StyleSheet, TouchableOpacity } from "react-native";
+import { Image, StyleSheet } from "react-native";
 import { Button, Card, Dialog, Paragraph, Portal } from "react-native-paper";
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from "react-native-responsive-screen";
+import TouchableOpacity from "../../../../Components/TouchableOpacity";
 
 export default function Announcement({
   item: { title = "", description = "", photoUrl },
