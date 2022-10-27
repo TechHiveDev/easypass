@@ -14,8 +14,13 @@ export default function SingleDiscovery() {
   const route = useRoute();
   const { image, description, phone, from, to, address } = route.params;
   return (
-    <SafeAreaView style={[globalStyles.screen, { paddingHorizontal: 0 }]}>
-      <ScrollView style={styles.background}>
+    <SafeAreaView
+      style={[
+        globalStyles.screen,
+        { paddingHorizontal: 0, backgroundColor: theme.colors.transparentGrey },
+      ]}
+    >
+      <ScrollView>
         <Image
           style={styles.image}
           resizeMode="contain"
@@ -100,8 +105,5 @@ const styles = StyleSheet.create({
   image: {
     width: wp(98),
     height: hp(35),
-  },
-  background: {
-    backgroundColor: theme.colors.white,
   },
 });

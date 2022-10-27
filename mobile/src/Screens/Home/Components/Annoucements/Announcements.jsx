@@ -1,4 +1,4 @@
-import { SafeAreaView, View, StyleSheet, FlatList } from "react-native";
+import { SafeAreaView, View, StyleSheet } from "react-native";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -58,5 +58,6 @@ const styles = StyleSheet.create({
     paddingVertical: hp(1),
     paddingHorizontal: wp(2),
     fontWeight: "bold",
+    fontSize: wp(5),
   },
 });

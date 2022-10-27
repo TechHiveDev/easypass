@@ -8,8 +8,6 @@ import { useNavigation } from "@react-navigation/native";
 import QrCode from "../../../Components/QrCode";
 import theme from "../../../Theme/paper.theme";
 
-// ====================================================================
-
 export default function UserCard() {
   const currentCompound = useAppSelector(
     (state) => state?.auth?.currentCompound
@@ -69,8 +67,12 @@ const styles = StyleSheet.create({
   container: {
     display: "flex",
     flexDirection: "row",
-    width: wp(96),
-    paddingHorizontal: wp(1),
+    width: wp(94.5),
+    padding: wp(2),
+    borderRadius: wp(2),
+    backgroundColor: theme.colors.white,
+    borderWidth: wp(0.2),
+    borderColor: theme.colors.grey,
   },
   avatar: {
     width: wp(15),
@@ -84,7 +86,7 @@ const styles = StyleSheet.create({
     marginTop: hp(2),
     borderWidth: wp(0.2),
     borderColor: theme.colors.grey,
-    backgroundColor: theme.colors.transparentGrey,
+    backgroundColor: theme.colors.white,
     borderRadius: wp(5),
     overflow: "hidden",
     display: "flex",

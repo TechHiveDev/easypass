@@ -109,7 +109,14 @@ export default function ProfileScreen() {
   // ---------------------------------------------------
 
   return (
-    <SafeAreaView style={globalStyles.screen}>
+    <SafeAreaView
+      style={[
+        globalStyles.screen,
+        {
+          backgroundColor: theme.colors.transparentGrey,
+        },
+      ]}
+    >
       <View style={styles.container}>
         <TouchableOpacity disabled={hideSubmitButton} onPress={pickImage}>
           <PaperAvatar.Image

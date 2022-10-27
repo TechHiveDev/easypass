@@ -8,6 +8,7 @@ import { useCreateMutation } from "../../API/api";
 import { useAppSelector } from "../../Store/redux.hooks";
 import { useFocusEffect } from "@react-navigation/native";
 import Toast from "react-native-toast-message";
+import theme from "../../Theme/paper.theme";
 
 export default function InviteGuest({}) {
   const [sharing, setSharing] = useState(false);
@@ -16,7 +17,7 @@ export default function InviteGuest({}) {
       setSharing(false);
     }, 1000);
   });
-  const [generateInviteLink, { isLoading, error }] = useCreateMutation();
+  const [generateInviteLink, { isLoading }] = useCreateMutation();
   const defaultValues = { name: "", phone: "", type: "Delivery", notes: "" };
   const { compoundId, userId } = useAppSelector(
     (s) => s?.auth?.currentCompound
@@ -56,7 +57,14 @@ export default function InviteGuest({}) {
   // ---------------------------------------------------
 
   return (
-    <SafeAreaView style={globalStyles.screen}>
+    <SafeAreaView
+      style={[
+        globalStyles.screen,
+        {
+          backgroundColor: theme.colors.transparentGrey,
+        },
+      ]}
+    >
       <Form
         {...{
           isLoading,
