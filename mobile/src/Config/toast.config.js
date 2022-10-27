@@ -1,5 +1,4 @@
 import { View, Text, StyleSheet } from "react-native";
-import Toast, { BaseToast, ErrorToast } from "react-native-toast-message";
 
 const styles = StyleSheet.create({
   successContainer: {

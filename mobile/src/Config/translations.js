@@ -187,8 +187,6 @@ export default {
     courseName: "إسم المادة",
     Pending: "في انتظار الرد على الطلب",
     Refused: "تم رفض طلبك",
-    Pending: "Pending",
-    Refused: "Refused",
     myGroups: "My Groups",
     facilities: "Facilities",
     "invite friends": "Invite Friends",

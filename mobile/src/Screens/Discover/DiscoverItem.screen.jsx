@@ -21,17 +21,17 @@ export default function SingleDiscovery() {
           resizeMode="contain"
           source={{ uri: image }}
         />
-        {/*<Paragraph*/}
-        {/*  style={[*/}
-        {/*    styles.text,*/}
-        {/*    {*/}
-        {/*      fontWeight: "bold",*/}
-        {/*    },*/}
-        {/*  ]}*/}
-        {/*>*/}
-        {/*  Description:*/}
-        {/*</Paragraph>*/}
-        {/*<Paragraph style={styles.text}>{description}</Paragraph>*/}
+        <Paragraph
+          style={[
+            styles.text,
+            {
+              fontWeight: "bold",
+            },
+          ]}
+        >
+          Description:
+        </Paragraph>
+        <Paragraph style={styles.text}>{description}</Paragraph>
         <Paragraph
           style={[
             styles.text,

@@ -12,6 +12,7 @@ const theme = {
     black: "black",
     grey: "rgb(180, 180, 184)",
     lightgrey: "rgb(199, 199, 204)",
+    transparentGrey: "rgba(229,229,229,0.79)",
   },
 };
 

@@ -9,7 +9,7 @@ import { useNavigation } from "@react-navigation/native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import theme from "../../Theme/paper.theme";
 import { View } from "moti";
-import { FlashList as FlatList } from "@shopify/flash-list";
+import { FlashList } from "@shopify/flash-list";
 import { fakeData } from "./fakeData";
 
 function Discover({ name, icon }) {
@@ -22,36 +22,15 @@ function Discover({ name, icon }) {
   return (
     <TouchableOpacity onPress={pressHandler}>
       <Card style={styles.card}>
-        <View
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: hp(15),
-          }}
-        >
+        <View style={styles.iconContainer}>
           <MaterialCommunityIcons
             name={icon}
             size={80}
             color={theme.colors.grey}
           />
         </View>
-        <View
-          style={{
-            width: wp(30),
-            fontWeight: "bold",
-            justifyContent: "center",
-            alignItems: "center",
-            textAlign: "center",
-          }}
-        >
-          <Text
-            style={{
-              fontWeight: "bold",
-            }}
-          >
-            {name}
-          </Text>
+        <View style={styles.nameContainer}>
+          <Text style={styles.boldText}>{name}</Text>
         </View>
       </Card>
     </TouchableOpacity>
@@ -62,8 +41,8 @@ function Discover({ name, icon }) {
 
 export default function DiscoverScreen() {
   return (
-    <SafeAreaView style={globalStyles.screen}>
-      <FlatList
+    <SafeAreaView style={styles.screen}>
+      <FlashList
         data={fakeData}
         renderItem={({ item }) => <Discover {...item} />}
         keyExtractor={(item) => item.icon}
@@ -75,6 +54,10 @@ export default function DiscoverScreen() {
 }
 
 const styles = StyleSheet.create({
+  screen: {
+    ...globalStyles.screen,
+    backgroundColor: theme.colors.transparentGrey,
+  },
   card: {
     marginVertical: hp(1),
     marginHorizontal: wp(1.5),
@@ -96,5 +79,20 @@ const styles = StyleSheet.create({
   col: {
     width: wp(45),
     height: hp(25),
+  },
+  iconContainer: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    height: hp(15),
+  },
+  nameContainer: {
+    width: wp(30),
+    justifyContent: "center",
+    alignItems: "center",
+    textAlign: "center",
+  },
+  boldText: {
+    fontWeight: "bold",
   },
 });

@@ -3,96 +3,97 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
-import { Card } from "react-native-paper";
 import { useAppSelector } from "../../../Store/redux.hooks";
 import { useNavigation } from "@react-navigation/native";
 import QrCode from "../../../Components/QrCode";
+import theme from "../../../Theme/paper.theme";
 
 // ====================================================================
 
-export default function UserCard({ entity, keys, row }) {
-  const { name, type, photoUrl, email, phone } = useAppSelector(
-    (state) => state?.auth?.user
-  );
-  const navigate = useNavigation();
+export default function UserCard() {
   const currentCompound = useAppSelector(
     (state) => state?.auth?.currentCompound
   );
-
+  const { name, photoUrl } = useAppSelector((state) => state?.auth?.user);
+  const navigation = useNavigation();
   return (
-    <Card style={styles.card}>
-      <Card.Title
-        left={(props) => (
-          <View
+    <>
+      <View style={styles.container}>
+        <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
+          <Image
+            style={styles.avatar}
+            source={
+              photoUrl
+                ? { uri: photoUrl }
+                : require("../../../../assets/profile.png")
+            }
+          />
+        </TouchableOpacity>
+        <View>
+          <Text style={styles.welcomeText}>Welcome Back,</Text>
+          <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
+            <Text style={styles.welcomeText}>{name.split(" ")[0]}!</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+      <View style={styles.qrCodeContainer}>
+        <QrCode />
+        <View
+          style={{
+            backgroundColor: theme.colors.primary,
+            width: wp(94.5),
+            height: hp(5),
+            textAlign: "center",
+            marginTop: -hp(3),
+          }}
+        >
+          <Text
             style={{
-              width: wp(33),
-              height: hp(25.2),
+              textAlign: "left",
+              color: "white",
+              marginTop: hp(1),
             }}
           >
-            <TouchableOpacity
-              onPress={() => navigate.navigate("Profile")}
-              activeOpacity={0.75}
-            >
-              <Image
-                {...props}
-                style={styles.image}
-                source={
-                  photoUrl
-                    ? { uri: photoUrl }
-                    : require("../../../../assets/profile.png")
-                }
-              />
-            </TouchableOpacity>
-            {/*<View*/}
-            {/*  style={{*/}
-            {/*    height: hp(2.2),*/}
-            {/*  }}*/}
-            {/*/>*/}
-            <TouchableOpacity
-              onPress={() => navigate.navigate("Profile")}
-              activeOpacity={0.75}
-            >
-              <Text style={styles.name}>{name}</Text>
-            </TouchableOpacity>
-          </View>
-        )}
-        right={(props) => {
-          return (
-            <View
-              style={{
-                marginLeft: wp(5),
-                paddingTop: hp(1),
-              }}
-            >
-              <QrCode />
-            </View>
-          );
-        }}
-      />
-    </Card>
+            {"  "}
+            {currentCompound?.compoundName}
+          </Text>
+        </View>
+      </View>
+    </>
   );
 }
 
 // ====================================================================
 
 const styles = StyleSheet.create({
-  card: {
+  container: {
+    display: "flex",
     flexDirection: "row",
-    borderWidth: 1,
-    borderRadius: 7,
-    padding: 0,
+    width: wp(96),
+    paddingHorizontal: wp(1),
   },
-  name: {
-    fontWeight: "600",
-    fontSize: wp(4),
-    marginVertical: hp(1),
-    width: wp(30),
+  avatar: {
+    width: wp(15),
+    height: wp(15),
+    borderRadius: wp(15 / 2),
+    borderWidth: wp(0.5),
+    borderColor: theme.colors.primary,
+    marginRight: wp(2),
   },
-  address: {
-    color: "grey",
+  qrCodeContainer: {
+    marginTop: hp(2),
+    borderWidth: wp(0.2),
+    borderColor: theme.colors.grey,
+    backgroundColor: theme.colors.transparentGrey,
+    borderRadius: wp(5),
+    overflow: "hidden",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    width: wp(94.5),
   },
-  image: {
-    height: wp(45),
-    width: wp(35),
+  welcomeText: {
+    fontSize: wp(5),
+    fontWeight: "bold",
   },
 });

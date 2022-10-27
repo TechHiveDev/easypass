@@ -1,8 +1,6 @@
-import { Button, Card, Paragraph } from "react-native-paper";
+import { Card } from "react-native-paper";
 import {
   Image,
-  StyleSheet,
-  ScrollView,
   SafeAreaView,
   Text,
   View,
@@ -19,7 +17,6 @@ import globalStyles from "../../Theme/global.styles";
 import { FlashList } from "@shopify/flash-list";
 import callPhone from "../../Utils/callPhone";
 import { allData } from "./fakeData";
-import { useEffect } from "react";
 
 export default function SingleDiscovery() {
   const route = useRoute();
@@ -29,9 +26,15 @@ export default function SingleDiscovery() {
     navigation.navigate("DiscoverItem", { title: item.name, ...item });
   };
   return (
-    <SafeAreaView style={globalStyles.screen}>
+    <SafeAreaView
+      style={[
+        globalStyles.screen,
+        {
+          backgroundColor: theme.colors.transparentGrey,
+        },
+      ]}
+    >
       <FlashList
-        key={1}
         estimatedItemSize={187}
         data={allData?.find((d) => d?.name === title)?.items}
         keyExtractor={(item) => item?.name}
@@ -147,14 +150,3 @@ export default function SingleDiscovery() {
     </SafeAreaView>
   );
 }
-const styles = StyleSheet.create({
-  text: {
-    marginTop: hp(4),
-    marginHorizontal: wp(3),
-    fontSize: wp(5),
-  },
-  image: { width: wp(100), height: hp(40) },
-  background: {
-    backgroundColor: theme.colors.white,
-  },
-});

@@ -1,24 +1,15 @@
 import {
   Alert,
-  Image,
   SafeAreaView,
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
-import {
-  Button,
-  Card,
-  Dialog,
-  Paragraph,
-  Portal,
-  Text,
-} from "react-native-paper";
+import { Button, Card, Dialog, Portal, Text } from "react-native-paper";
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from "react-native-responsive-screen";
 import globalStyles from "../../Theme/global.styles";
-import { useNavigation } from "@react-navigation/native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import theme from "../../Theme/paper.theme";
 import { View } from "moti";
@@ -27,13 +18,8 @@ import { fakeData } from "./fakeData";
 import { useState } from "react";
 
 function Discover({ name, icon }) {
-  const navigation = useNavigation();
-
   const [visible, setVisible] = useState(false);
   const pressHandler = () => {
-    // navigation.navigate("SingleFacilityCategory", {
-    //   title: name,
-    // });
     setVisible(true);
   };
   return (
@@ -120,7 +106,14 @@ function Discover({ name, icon }) {
 
 export default function DiscoverScreen() {
   return (
-    <SafeAreaView style={globalStyles.screen}>
+    <SafeAreaView
+      style={[
+        globalStyles.screen,
+        {
+          backgroundColor: theme.colors.transparentGrey,
+        },
+      ]}
+    >
       <FlashList
         data={fakeData}
         renderItem={({ item }) => <Discover {...item} />}
