@@ -159,16 +159,25 @@ model Announcement {
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
 model Discover {
-  id          Int     @id @default(autoincrement())
-  title       String?
-  description String?
-  photoUrl    String?
+  id               Int     @id @default(autoincrement())
+  name            String?
+  description      String?
+  photoUrl         String?
+  phone            String?
+  shortDescription String?
+  address          String?
+
+  openDateFrom DateTime? @default(now())
+  openDateTo   DateTime? @default(now())
 
   userId Int
   user   User @relation(fields: [userId], references: [id], onDelete: NoAction)
 
   compoundId Int
   compound   Compound @relation(fields: [compoundId], references: [id], onDelete: Cascade)
+
+  categoryId Int
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: NoAction)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -178,17 +187,40 @@ model Discover {
 model Facility {
   id Int @id @default(autoincrement())
 
-  price       Float?
-  name        String
-  description String?
-  photoUrl    String?
+  price            Float?
+  name             String
+  description      String?
+  photoUrl         String?
+  phone            String?
+  shortDescription String?
+  address          String?
 
   compoundId Int
   compound   Compound @relation(fields: [compoundId], references: [id], onDelete: Cascade)
 
+  categoryId Int
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: NoAction)
+
+  slots Json
+
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   Request   Request[]
+}
+
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+model Category {
+  id Int @id @default(autoincrement())
+
+  name        String
+  description String?
+  // photoUrl    String?
+  icon        String?
+  type        CategoryType
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  Discover    Discover[]
+  Facility    Facility[]
 }
 
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
@@ -251,6 +283,11 @@ enum RequestStatus {
 enum RequestType {
   Facility
   Issue
+}
+
+enum CategoryType {
+  Facility
+  Discover
 }
 
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
