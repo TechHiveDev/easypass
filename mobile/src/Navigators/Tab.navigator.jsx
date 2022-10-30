@@ -22,6 +22,17 @@ const Tab = createBottomTabNavigator();
 // -------------------------------------------------------
 
 const screenOptions = ({ route: { name } }) => ({
+  topBar: {
+    drawBehind: true,
+    background: {
+      translucent: true,
+      color: "transparent",
+    },
+  },
+  statusBar: {
+    drawBehind: true,
+    translucent: true,
+  },
   headerShown: true,
   swipeEnabled: true,
   header: (props) => <MyStatusBar {...props} />,
@@ -84,9 +95,13 @@ export default function TabNavigator() {
         }}
       />
       <Tab.Screen name={"QR Code"} component={QrCode} />
-      <Tab.Screen name={"Facilities"} component={Facilities} options={{
+      <Tab.Screen
+        name={"Facilities"}
+        component={Facilities}
+        options={{
           headerShown: false,
-      }} />
+        }}
+      />
       <Tab.Screen name={"Profile"} component={Profile} />
     </Tab.Navigator>
   );
