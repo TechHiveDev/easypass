@@ -22,17 +22,6 @@ const Tab = createBottomTabNavigator();
 // -------------------------------------------------------
 
 const screenOptions = ({ route: { name } }) => ({
-  topBar: {
-    drawBehind: true,
-    background: {
-      translucent: true,
-      color: "transparent",
-    },
-  },
-  statusBar: {
-    drawBehind: true,
-    translucent: true,
-  },
   headerShown: true,
   swipeEnabled: true,
   header: (props) => <MyStatusBar {...props} />,

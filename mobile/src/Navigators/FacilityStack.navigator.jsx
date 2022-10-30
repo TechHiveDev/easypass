@@ -7,17 +7,6 @@ import DiscoverItem from "../Screens/Discover/DiscoverItem.screen";
 const Stack = createNativeStackNavigator();
 
 const screenOptions = {
-  topBar: {
-    drawBehind: true,
-    background: {
-      translucent: true,
-      color: "transparent",
-    },
-  },
-  statusBar: {
-    drawBehind: true,
-    translucent: true,
-  },
   headerShown: true,
   header: (props) => <MyStatusBar {...props} />,
 };
