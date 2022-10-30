@@ -12,11 +12,19 @@ import { FlashList } from "@shopify/flash-list";
 import { fakeData } from "./fakeData";
 import { useState } from "react";
 import TouchableOpacity from "../../Components/TouchableOpacity";
+import { useNavigation } from "@react-navigation/native";
 
-function Discover({ name, icon }) {
+function Discover({ name, icon, ...rest }) {
   const [visible, setVisible] = useState(false);
+  const navigation = useNavigation();
   const pressHandler = () => {
-    setVisible(true);
+    navigation.navigate("FacilityItem", {
+      name,
+      title: name,
+      icon,
+      ...rest,
+    });
+    // setVisible(true);
   };
   return (
     <TouchableOpacity onPress={pressHandler}>
@@ -100,7 +108,7 @@ function Discover({ name, icon }) {
 
 // =================================================================
 
-export default function DiscoverScreen() {
+export default function FacilityScreen() {
   return (
     <SafeAreaView
       style={[

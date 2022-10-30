@@ -20,6 +20,9 @@
         "buildType": "apk",
         "gradleCommand": ":app:assembleRelease",
         "developmentClient": true
+      },
+      "ios": {
+        "enterpriseProvisioning": "universal"
       }
     },
     "production": {}
