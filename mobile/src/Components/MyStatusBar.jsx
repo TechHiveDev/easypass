@@ -79,8 +79,6 @@ export default function MyStatusBar({
 const styles = StyleSheet.create({
   header: {
     backgroundColor: theme.colors.white,
-    borderWidth: wp(1),
-    borderColor: "red",
   },
   image: {
     width: wp(35),
