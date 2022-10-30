@@ -53,7 +53,7 @@ export default function MyStatusBar({
   if (["Tabs", "login"].includes(name)) back = false;
 
   return (
-    <Appbar.Header style={styles.header}>
+    <Appbar.Header style={styles.header} statusBarHeight={hp(3.5)}>
       {back && (
         <Appbar.BackAction onPress={goBack} color={theme.colors.primary} />
       )}
