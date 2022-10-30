@@ -32,6 +32,7 @@ import announcementController from "./src/entities/announcement/announcement.con
 import facilityController from "./src/entities/facility/facility.controller";
 import requestController from "./src/entities/request/request.controller";
 import discoverController from "./src/entities/discover/discover.controller";
+import categoryController from "./src/entities/category/category.controller";
 
 // ------------------------------------------------------
 
@@ -105,6 +106,7 @@ app.use(announcementController);
 app.use(facilityController);
 app.use(requestController);
 app.use(discoverController);
+app.use(categoryController);
 
 // ------------------------------------------------------
 

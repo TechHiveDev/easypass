@@ -5,9 +5,9 @@ const prisma = new PrismaClient({ log: ["info", "query"] });
 
 // ==========================================================
 
-const numScans = 30;
-const minDays = 5;
-const maxDays = 90;
+const numScans = 400;
+const minDays = 7;
+const maxDays = 365;
 
 function dynamicInvitationScans(type, compoundId, userId, invitationId) {
   return {
@@ -95,7 +95,7 @@ function randomDate(start, end) {
               create: {
                 id: 2,
                 email: "resident@example.com",
-                name: "resident name",
+                name: "Nour",
                 photoUrl:
                   "https://img.freepik.com/free-photo/bohemian-man-with-his-arms-crossed_1368-3542.jpg",
                 // password :12345
@@ -137,7 +137,7 @@ function randomDate(start, end) {
 
   await prisma.compound.create({
     data: {
-      name: "Pyramid Heights Compound - " + Date.now(),
+      name: "Pyramid Heights Compound",
       logoUrl:
         "https://c8.alamy.com/comp/B0YRKC/living-quarters-inside-a-family-compound-in-the-gambia-B0YRKC.jpg",
       users: {
@@ -198,24 +198,138 @@ function randomDate(start, end) {
     ],
   });
 
+  await prisma.category.createMany({
+    data: [
+      { id: 1, name: "Banking And Insurance", type: "Discover", icon: "bank" },
+      { id: 2, name: "Groceries", type: "Discover", icon: "cart-outline" },
+      { id: 3, name: "Places to Eat", type: "Discover", icon: "food" },
+      { id: 4, name: "Pharmacies", type: "Discover", icon: "pill" },
+      { id: 5, name: "Pet Care", type: "Discover", icon: "dog-side" },
+
+      { id: 6, name: "Banking And Insurance", type: "Facility", icon: "bank" },
+      { id: 7, name: "Car Wash", type: "Facility", icon: "car-wash" },
+      {
+        id: 8,
+        name: "Gorceries shopping",
+        type: "Facility",
+        icon: "cart-outline",
+      },
+      { id: 9, name: "Laundry", type: "Facility", icon: "tshirt-crew-outline" },
+      {
+        id: 10,
+        name: "House Cleaning",
+        type: "Facility",
+        icon: "home-search-outline",
+      },
+      { id: 11, name: "Plumber", type: "Facility", icon: "water-pump" },
+      { id: 12, name: "Electrician", type: "Facility", icon: "tools" },
+    ],
+  });
+
   await prisma.facility.createMany({
     data: [
       {
-        price: 50.5,
-        name: "International Interactions Coordinator",
+        categoryId: 6,
+        compoundId: 1,
+        name: "Masr Bank",
         description:
           "added facilities tab in admin panel where admin can crud facilities,full text search them and filter them by compound.added request tab in admin pane",
         photoUrl:
-          "https://easypass-api.techhive.dev/assets/facility/facility_1/1666172732314_concept-handyman-worker_98292-1125.webp",
-        compoundId: 1,
+          "https://www.elaosboa.com/wp-content/uploads/2022/09/elaosboa85726.png",
+        phone: "19888",
+        shortDescription: "Egyptian Bank",
+        description: "this is bank masr description",
+        address: "57 home street , elmnt2a",
+        slots: [
+          {
+            to: "2022-10-30T8:30:00.699Z",
+            from: "2022-10-30T5:00:00.699Z",
+            available: true,
+          },
+        ],
       },
       {
-        price: 125,
-        name: "Global Response Administrator",
+        categoryId: 6,
+        compoundId: 1,
+        name: "NBE Bank",
         description: "Regional",
         photoUrl:
-          "https://easypass-api.techhive.dev/assets/facility/facility_2/1666172777140_depositphotos_93751818-stock-illustration-handyman-mascot-vector.jpg",
-        compoundId: 2,
+          "https://www.egycareers.com/wp-content/uploads/2022/05/%D8%A7%D9%84%D8%A8%D9%86%D9%83-%D8%A7%D9%84%D8%A3%D9%87%D9%84%D9%8A-%D8%A7%D9%84%D9%85%D8%B5%D8%B1%D9%8A.jpeg",
+        phone: "19623",
+        shortDescription: "National Bank of Egypt",
+        description: "this is National Bank of Egypt",
+        address: "55 home street , elmnt2a",
+        slots: [
+          {
+            to: "2022-10-30T8:30:00.699Z",
+            from: "2022-10-30T5:00:00.699Z",
+            available: true,
+          },
+        ],
+      },
+      {
+        categoryId: 8,
+        compoundId: 1,
+        name: "Carrefour",
+        photoUrl:
+          "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Carrefour_logo.svg/800px-Carrefour_logo.svg.png",
+        phone: "16061",
+        shortDescription: "Online and in place shopping",
+        description:
+          "dfghidkhgfdf kgfdhjkgfhj hkljfgklhjgkh kgfhjkfg fdgfdgfdgdfgfdg",
+        address: "51 home street , elmnt2a",
+        slots: [
+          {
+            to: "2022-10-30T8:30:00.699Z",
+            from: "2022-10-30T5:00:00.699Z",
+            available: true,
+          },
+        ],
+      },
+    ],
+  });
+
+  await prisma.discover.createMany({
+    data: [
+      {
+        userId: 3,
+        categoryId: 1,
+        compoundId: 1,
+        name: "Masr Bank",
+        description:
+          "added facilities tab in admin panel where admin can crud facilities,full text search them and filter them by compound.added request tab in admin pane",
+        photoUrl:
+          "https://www.elaosboa.com/wp-content/uploads/2022/09/elaosboa85726.png",
+        phone: "19888",
+        shortDescription: "Egyptian Bank",
+        description: "this is bank masr description",
+        address: "57 home street , elmnt2a",
+      },
+      {
+        userId: 3,
+        categoryId: 1,
+        compoundId: 1,
+        name: "NBE Bank",
+        description: "Regional",
+        photoUrl:
+          "https://www.egycareers.com/wp-content/uploads/2022/05/%D8%A7%D9%84%D8%A8%D9%86%D9%83-%D8%A7%D9%84%D8%A3%D9%87%D9%84%D9%8A-%D8%A7%D9%84%D9%85%D8%B5%D8%B1%D9%8A.jpeg",
+        phone: "19623",
+        shortDescription: "National Bank of Egypt",
+        description: "this is National Bank of Egypt",
+        address: "55 home street , elmnt2a",
+      },
+      {
+        userId: 3,
+        categoryId: 2,
+        compoundId: 1,
+        name: "Carrefour",
+        photoUrl:
+          "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Carrefour_logo.svg/800px-Carrefour_logo.svg.png",
+        phone: "16061",
+        shortDescription: "Online and in place shopping",
+        description:
+          "dfghidkhgfdf kgfdhjkgfhj hkljfgklhjgkh kgfhjkfg fdgfdgfdgdfgfdg",
+        address: "51 home street , elmnt2a",
       },
     ],
   });

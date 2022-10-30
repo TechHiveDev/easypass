@@ -103,13 +103,51 @@ CREATE TABLE `Announcement` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
+CREATE TABLE `Discover` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(191) NULL,
+    `description` VARCHAR(191) NULL,
+    `photoUrl` VARCHAR(191) NULL,
+    `phone` VARCHAR(191) NULL,
+    `shortDescription` VARCHAR(191) NULL,
+    `address` VARCHAR(191) NULL,
+    `openDateFrom` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `openDateTo` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `userId` INTEGER NOT NULL,
+    `compoundId` INTEGER NOT NULL,
+    `categoryId` INTEGER NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
 CREATE TABLE `Facility` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `price` DOUBLE NULL,
     `name` VARCHAR(191) NOT NULL,
     `description` VARCHAR(191) NULL,
     `photoUrl` VARCHAR(191) NULL,
+    `phone` VARCHAR(191) NULL,
+    `shortDescription` VARCHAR(191) NULL,
+    `address` VARCHAR(191) NULL,
     `compoundId` INTEGER NOT NULL,
+    `categoryId` INTEGER NOT NULL,
+    `slots` JSON NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Category` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(191) NOT NULL,
+    `description` VARCHAR(191) NULL,
+    `icon` VARCHAR(191) NULL,
+    `type` ENUM('Facility', 'Discover') NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
 
@@ -169,7 +207,19 @@ ALTER TABLE `Announcement` ADD CONSTRAINT `Announcement_userId_fkey` FOREIGN KEY
 ALTER TABLE `Announcement` ADD CONSTRAINT `Announcement_compoundId_fkey` FOREIGN KEY (`compoundId`) REFERENCES `Compound`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE `Discover` ADD CONSTRAINT `Discover_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE NO ACTION ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Discover` ADD CONSTRAINT `Discover_compoundId_fkey` FOREIGN KEY (`compoundId`) REFERENCES `Compound`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Discover` ADD CONSTRAINT `Discover_categoryId_fkey` FOREIGN KEY (`categoryId`) REFERENCES `Category`(`id`) ON DELETE NO ACTION ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE `Facility` ADD CONSTRAINT `Facility_compoundId_fkey` FOREIGN KEY (`compoundId`) REFERENCES `Compound`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Facility` ADD CONSTRAINT `Facility_categoryId_fkey` FOREIGN KEY (`categoryId`) REFERENCES `Category`(`id`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Request` ADD CONSTRAINT `Request_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
