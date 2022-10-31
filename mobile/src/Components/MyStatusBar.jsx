@@ -1,75 +1,52 @@
-import { StyleSheet, Image } from "react-native";
+import { StyleSheet } from "react-native";
 import { Appbar } from "react-native-paper";
-import i18n from "i18n-js";
 import theme from "../Theme/paper.theme";
-import config from "../Config/config";
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from "react-native-responsive-screen";
-import splash from "../../assets/splash.png";
-// ========================================================
 
-const hiddenStatusBar = ["login"];
-const defaultTitleAndButton = [
-  "Home",
-  "Profile",
-  "Facilities",
-  "Invite",
-  "AllDiscoverCategories",
-  "AllFacilityCategories",
+const hiddenStatusBar = ["login", "Home", "AllFacilityCategories"];
+const allowBackList = [
+  "SingleDiscoveryCategory",
+  "DiscoverItem",
+  "FacilityItem",
 ];
 // ========================================================
-
+const mapper = {
+  AllDiscoverCategories: "Discover",
+  AllFacilityCategories: "Facilities",
+};
 export default function MyStatusBar({
-  navigation: { goBack, openDrawer },
+  navigation: { goBack },
   route: { name, params },
 }) {
+  const title = params?.title
+    ? params.title
+    : mapper[name]
+    ? mapper[name]
+    : name;
+  const allowBack = params?.allowBack || allowBackList.includes(name);
   if (hiddenStatusBar.includes(name)) return <></>;
-
-  let back = true;
-  let drawer = false;
-  let title = params?.title ? params.title : name;
-
-  if (
-    name === "home" ||
-    name === "HomeTabNavigator" ||
-    defaultTitleAndButton.includes(name) ||
-    !name
-  )
-    title = config.name;
-
-  // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-
-  if (
-    ["HomeTabNavigator", "exploreGroups", "home", i18n.t("home")]
-      .concat(defaultTitleAndButton)
-      .includes(name)
-  ) {
-    back = false;
-    drawer = true;
+  if (allowBack) {
+    return (
+      <Appbar.Header style={styles.header} statusBarHeight={0}>
+        <Appbar.BackAction onPress={goBack} color={theme.colors.primary} />
+        <Appbar.Content title={title} titleStyle={styles.content} />
+        <Appbar.BackAction
+          disabled={true}
+          onPress={goBack}
+          color={theme.colors.primary}
+          style={{
+            opacity: 0,
+          }}
+        />
+      </Appbar.Header>
+    );
   }
-
-  if (["Tabs", "login"].includes(name)) back = false;
-
   return (
     <Appbar.Header style={styles.header} statusBarHeight={0}>
-      {back && (
-        <Appbar.BackAction onPress={goBack} color={theme.colors.primary} />
-      )}
-      {drawer && (
-        <Appbar.Action
-          size={30}
-          icon="menu"
-          onPress={openDrawer}
-          color={theme.colors.primary}
-        />
-      )}
-      {title === config.name ? (
-        <Image source={splash} resizeMode={"contain"} style={styles.image} />
-      ) : (
-        <Appbar.Content title={title} titleStyle={styles.content} />
-      )}
+      <Appbar.Content title={title} titleStyle={styles.content} />
     </Appbar.Header>
   );
 }
@@ -78,18 +55,23 @@ export default function MyStatusBar({
 
 const styles = StyleSheet.create({
   header: {
-    backgroundColor: theme.colors.white,
+    backgroundColor: theme.colors.transparentGrey,
+    width: wp(94.5),
+    marginHorizontal: wp(2),
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    borderColor: theme.colors.grey,
+    borderBottomWidth: hp(0.1),
   },
   image: {
     width: wp(35),
     height: hp(5),
-    marginLeft: wp(15),
   },
   content: {
     fontSize: 22,
     fontWeight: "500",
-    alignSelf: "center",
     color: theme.colors.primary,
-    marginLeft: -wp(14),
+    textAlign: "center",
   },
 });

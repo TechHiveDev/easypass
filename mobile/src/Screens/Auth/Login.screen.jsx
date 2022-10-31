@@ -6,7 +6,11 @@ import { SafeAreaView, View, StyleSheet, StatusBar } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useLoginMutation } from "../../API/api";
 import { useAppDispatch } from "../../Store/redux.hooks";
-import { setAccesToken, setAuthUser } from "../../Store/Slices/auth.slice";
+import {
+  setAccesToken,
+  setAuthUser,
+  setCurrentCompound,
+} from "../../Store/Slices/auth.slice";
 import Logo from "../../Components/Logo";
 import {
   heightPercentageToDP as hp,
@@ -37,6 +41,7 @@ export default function LoginScreen() {
       if (res?.data?.user?.id && res?.data?.accessToken) {
         AsyncStorage.setItem("accessToken", res.data.accessToken);
         dispatch(setAccesToken(res?.data?.accessToken));
+        dispatch(setCurrentCompound(res?.data?.user?.userCompound?.[0]));
         dispatch(setAuthUser({ user: res.data.user }));
         return;
       }

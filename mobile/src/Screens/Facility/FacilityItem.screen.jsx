@@ -1,23 +1,6 @@
-import { Button, Paragraph, Text } from "react-native-paper";
-import {
-  Image,
-  StyleSheet,
-  ScrollView,
-  SafeAreaView,
-  View,
-  TouchableOpacity,
-  Alert,
-} from "react-native";
-import { useRoute } from "@react-navigation/native";
-import {
-  heightPercentageToDP as hp,
-  widthPercentageToDP as wp,
-} from "react-native-responsive-screen";
-import theme from "../../Theme/paper.theme";
-import globalStyles from "../../Theme/global.styles";
-import callPhone from "../../Utils/callPhone";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { Agenda, Calendar } from "react-native-calendars/src/index";
+import { Button, Text } from "react-native-paper";
+import { StyleSheet, SafeAreaView, View, Alert } from "react-native";
+import { Agenda } from "react-native-calendars/src/index";
 import { useState } from "react";
 
 const timeToString = (time) => {
@@ -26,8 +9,8 @@ const timeToString = (time) => {
 };
 const renderEmptyDate = () => {
   return (
-    <View style={styles.emptyDate}>
-      <Text>This is empty date!</Text>
+    <View style={styles.item}>
+      <Text>No available slots here!</Text>
     </View>
   );
 };
@@ -52,35 +35,44 @@ const markedItems = {
 };
 const initItems = {
   "2022-10-31": [
-    { name: "item 1 - any js object" },
-    { name: "item * - any js object" },
+    { name: "item 1 - any js object", from: "1:00 pm", to: "4:00 pm" },
+    { name: "item 1* - any js object", from: "5:00 pm", to: "8:00 pm" },
   ],
-  "2022-11-01": [{ name: "item 2 - any js object" }],
-  "2022-11-02": [{ name: "item 3 - any js object" }],
-  "2022-11-03": [{ name: "item 4 - any js object" }],
+  "2022-11-01": [
+    { name: "item 2 - any js object", from: "1:00 pm", to: "4:00 pm" },
+    { name: "item 2* - any js object", from: "5:00 pm", to: "7:00 pm" },
+  ],
+  "2022-11-02": [
+    { name: "item 3 - any js object", from: "7:00 pm", to: "8:00 pm" },
+  ],
+  "2022-11-03": [
+    { name: "item 4 - any js object", from: "8:00 pm", to: "9:00 pm" },
+  ],
 };
 export default function SingleDiscovery() {
-  const route = useRoute();
-  const { image, description, phone, from, to, address } = route.params;
   const [items, setItems] = useState(initItems);
   const loadItems = (day) => {
-    return Promise.resolve();
+    const { dateString } = day;
+    if (dateString in items) return;
+    setItems((old) => {
+      return {
+        ...old,
+        [dateString]: [],
+      };
+    });
   };
-  const renderItem = (reservation, isFirst) => {
+  const renderItem = (reservation) => {
     const fontSize = 14;
     const color = "#43515c";
 
     return (
-      <View
-        style={[
-          styles.item,
-          // { height: reservation.height }
-        ]}
-      >
+      <View style={[styles.item]}>
         <Text style={{ fontSize, color }}>{reservation.name}</Text>
         <Text style={{ fontSize, color }}>from: {reservation.from}</Text>
         <Text style={{ fontSize, color }}>to: {reservation.to}</Text>
-        <Button onPress={() => Alert.alert(reservation.name)}> Request</Button>
+        <Button onPress={() => Alert.alert(reservation.name)}>
+          Request Service
+        </Button>
       </View>
     );
   };
@@ -88,18 +80,21 @@ export default function SingleDiscovery() {
     return r1.name !== r2.name;
   };
   return (
-    <SafeAreaView style={[globalStyles.screen, { paddingHorizontal: 0 }]}>
+    <SafeAreaView
+      style={[globalStyles.screen, { display: "flex", paddingHorizontal: 0 }]}
+    >
       <Agenda
         minDate={minDate}
         markedDates={markedItems}
         items={items}
         disabledByDefault={true}
         // loadItemsForMonth={loadItems}
-        // loadItemsForMonth={loadItems}
+        loadItemsForMonth={loadItems}
         renderItem={renderItem}
         renderEmptyDate={renderEmptyDate}
         rowHasChanged={rowHasChanged}
         showClosingKnob={true}
+        showOnlySelectedDayItems={true}
       />
     </SafeAreaView>
   );

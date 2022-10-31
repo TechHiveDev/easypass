@@ -18,9 +18,12 @@ import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
 import config from "../../Config/config";
 import { onlyNumbersCheck } from "../../Utils/string.util";
+import Button from "../../Components/Form/Button";
+import { useAuthMe } from "../../Utils/auth.hook";
 // =================================================================
 
 export default function ProfileScreen() {
+  const { logout } = useAuthMe();
   const [uploadingImage, setUploadingImage] = useState(false);
   const [hideSubmitButton, setHideSubmitButton] = useState(true);
   const dispatch = useAppDispatch();
@@ -210,6 +213,25 @@ export default function ProfileScreen() {
             />
           ) : null}
         </Form>
+        <View
+          style={{
+            display: hideSubmitButton ? "flex" : "none",
+            flexDirection: "row",
+          }}
+        >
+          <Button
+            onPress={() => setHideSubmitButton(!hideSubmitButton)}
+            text={"Edit"}
+            icon={"account-edit"}
+            width={wp(45)}
+          />
+          <Button
+            onPress={() => logout()}
+            text={"Logout"}
+            icon={"logout"}
+            width={wp(45)}
+          />
+        </View>
       </View>
     </SafeAreaView>
   );

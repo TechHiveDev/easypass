@@ -16,11 +16,10 @@ import theme from "../../Theme/paper.theme";
 import globalStyles from "../../Theme/global.styles";
 import { FlashList } from "@shopify/flash-list";
 import callPhone from "../../Utils/callPhone";
-import { allData } from "./fakeData";
-
+import timeFromString from "../../Utils/timeFromString";
 export default function SingleDiscovery() {
   const route = useRoute();
-  const { title } = route.params;
+  const { items } = route.params;
   const navigation = useNavigation();
   const clickHandler = (item) => {
     navigation.navigate("DiscoverItem", { title: item.name, ...item });
@@ -36,7 +35,7 @@ export default function SingleDiscovery() {
     >
       <FlashList
         estimatedItemSize={187}
-        data={allData?.find((d) => d?.name === title)?.items}
+        data={items}
         keyExtractor={(item) => item?.name}
         renderItem={({ item }) => {
           return (
@@ -60,7 +59,7 @@ export default function SingleDiscovery() {
                   <TouchableOpacity onPress={() => clickHandler(item)}>
                     <Image
                       resizeMode={"cover"}
-                      source={{ uri: item.image }}
+                      source={{ uri: item.photoUrl }}
                       style={{
                         width: wp(35),
                         height: wp(35),
@@ -137,7 +136,8 @@ export default function SingleDiscovery() {
                           fontSize: wp(3.5),
                         }}
                       >
-                        {item.from} to {item.to}
+                        {timeFromString(item.openDateFrom)} to{" "}
+                        {timeFromString(item.openDateTo)}
                       </Text>
                     </View>
                   </View>

@@ -9,10 +9,18 @@ import theme from "../../Theme/paper.theme";
 import globalStyles from "../../Theme/global.styles";
 import callPhone from "../../Utils/callPhone";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import timeFromString from "../../Utils/timeFromString";
 
 export default function SingleDiscovery() {
   const route = useRoute();
-  const { image, description, phone, from, to, address } = route.params;
+  const {
+    photoUrl: image,
+    description,
+    phone,
+    openDateFrom: from,
+    openDateTo: to,
+    address,
+  } = route.params;
   return (
     <SafeAreaView
       style={[
@@ -59,7 +67,7 @@ export default function SingleDiscovery() {
           Opening Hours:
         </Paragraph>
         <Paragraph style={styles.text}>
-          {from} to {to}
+          {timeFromString(from)} to {timeFromString(to)}
         </Paragraph>
         <Paragraph
           style={[

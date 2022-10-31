@@ -5,14 +5,11 @@ import { useAppSelector } from "../Store/redux.hooks";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import theme from "../Theme/paper.theme";
 import MyStatusBar from "../Components/MyStatusBar";
-
-// -------------------------------------------------------
-
 import HomeScreen from "../Screens/Home/Home.screen";
 import Facilities from "./FacilityStack.navigator";
 import Profile from "../Screens/Profile/Profile.screen";
 import QrCode from "../Screens/QrCode/QrCode.screen";
-import InviteGuesst from "../Screens/InviteGuest/InviteGuest.screen";
+import InviteGuest from "../Screens/InviteGuest/InviteGuest.screen";
 import ScanQrCode from "../Screens/ScanQrCode/ScanQrCode.screen";
 import Discover from "./DiscoverStack.navigator";
 // -------------------------------------------------------
@@ -60,12 +57,7 @@ const screenOptions = ({ route: { name } }) => ({
 // -------------------------------------------------------
 
 export default function TabNavigator() {
-  // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-
   const userType = useAppSelector((state) => state?.auth?.user?.type);
-
-  // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-
   return userType === "Security" ? (
     <Tab.Navigator screenOptions={screenOptions}>
       {/*<Tab.Screen name={"home"} component={HomeScreen} />*/}
@@ -75,7 +67,7 @@ export default function TabNavigator() {
   ) : (
     <Tab.Navigator screenOptions={screenOptions}>
       <Tab.Screen name={"Home"} component={HomeScreen} />
-      <Tab.Screen name={"Invite"} component={InviteGuesst} />
+      <Tab.Screen name={"Invite"} component={InviteGuest} />
       <Tab.Screen
         name={"Discover"}
         component={Discover}

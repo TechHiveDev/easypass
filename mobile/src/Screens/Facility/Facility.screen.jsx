@@ -1,5 +1,5 @@
 import { Alert, SafeAreaView, StyleSheet } from "react-native";
-import { Button, Card, Dialog, Portal, Text } from "react-native-paper";
+import { Appbar, Button, Card, Dialog, Portal, Text } from "react-native-paper";
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
@@ -22,6 +22,7 @@ function Discover({ name, icon, ...rest }) {
       name,
       title: name,
       icon,
+      allowBack: true,
       ...rest,
     });
     // setVisible(true);
@@ -109,23 +110,46 @@ function Discover({ name, icon, ...rest }) {
 // =================================================================
 
 export default function FacilityScreen() {
+  const navigation = useNavigation();
   return (
-    <SafeAreaView
-      style={[
-        globalStyles.screen,
-        {
-          backgroundColor: theme.colors.transparentGrey,
-        },
-      ]}
-    >
-      <FlashList
-        data={fakeData}
-        renderItem={({ item }) => <Discover {...item} />}
-        keyExtractor={(item) => item.name}
-        estimatedItemSize={50}
-        numColumns={2}
-      />
-    </SafeAreaView>
+    <>
+      <Appbar.Header style={styles.header} statusBarHeight={0}>
+        <Appbar.BackAction
+          color={theme.colors.primary}
+          disabled={true}
+          style={{
+            opacity: 0,
+          }}
+        />
+        <Appbar.Content title={"Facilities"} titleStyle={styles.content} />
+        <Appbar.Action
+          color={theme.colors.primary}
+          icon={"calendar"}
+          onPress={() =>
+            navigation.navigate("FacilityNotifications", {
+              title: "Requests",
+              allowBack: true,
+            })
+          }
+        />
+      </Appbar.Header>
+      <SafeAreaView
+        style={[
+          globalStyles.screen,
+          {
+            backgroundColor: theme.colors.transparentGrey,
+          },
+        ]}
+      >
+        <FlashList
+          data={fakeData}
+          renderItem={({ item }) => <Discover {...item} />}
+          keyExtractor={(item) => item.name}
+          estimatedItemSize={50}
+          numColumns={2}
+        />
+      </SafeAreaView>
+    </>
   );
 }
 
@@ -151,5 +175,21 @@ const styles = StyleSheet.create({
   col: {
     width: wp(45),
     height: hp(25),
+  },
+  header: {
+    backgroundColor: theme.colors.transparentGrey,
+    width: wp(94.5),
+    marginHorizontal: wp(2),
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    borderColor: theme.colors.grey,
+    borderBottomWidth: hp(0.1),
+  },
+  content: {
+    fontSize: 22,
+    fontWeight: "500",
+    color: theme.colors.primary,
+    textAlign: "center",
   },
 });

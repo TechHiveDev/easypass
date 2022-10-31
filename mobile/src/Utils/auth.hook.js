@@ -5,6 +5,7 @@ import {
   setAuthUser,
   resetAuthUser,
   setAccesToken,
+  setCurrentCompound,
 } from "../Store/Slices/auth.slice";
 import { useLazyMeQuery } from "../API/api";
 
@@ -41,10 +42,13 @@ export const useAuthMe = () => {
         .then(async (data) => {
           if (data?.id) {
             // await AsyncStorage.setItem("accessToken", accessToken);
+            console.log(data);
+            dispatch(setCurrentCompound(data?.userCompound?.[0]));
             dispatch(setAuthUser({ user: data }));
           }
         })
         .finally(() => setLoading(false));
+      return true;
     }
   };
 
