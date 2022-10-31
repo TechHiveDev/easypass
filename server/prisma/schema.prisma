@@ -159,13 +159,13 @@ model Announcement {
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
 model Discover {
-  id               Int     @id @default(autoincrement())
-  name            String?
-  description      String?
-  photoUrl         String?
-  phone            String?
+  id          Int     @id @default(autoincrement())
+  name        String?
+  description String?
+  photoUrl    String?
+  phone       String?
   shortDescription String?
-  address          String?
+  address     String?
 
   openDateFrom DateTime? @default(now())
   openDateTo   DateTime? @default(now())
@@ -187,19 +187,14 @@ model Discover {
 model Facility {
   id Int @id @default(autoincrement())
 
-  price            Float?
-  name             String
-  description      String?
-  photoUrl         String?
-  phone            String?
-  shortDescription String?
-  address          String?
+  price       Float?
+  name        String
+  description String?
+  photoUrl    String?
+  phone       String?
 
   compoundId Int
   compound   Compound @relation(fields: [compoundId], references: [id], onDelete: Cascade)
-
-  categoryId Int
-  category   Category @relation(fields: [categoryId], references: [id], onDelete: NoAction)
 
   slots Json
 
@@ -214,13 +209,10 @@ model Category {
 
   name        String
   description String?
-  // photoUrl    String?
   icon        String?
-  type        CategoryType
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
   Discover    Discover[]
-  Facility    Facility[]
 }
 
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
@@ -228,14 +220,15 @@ model Category {
 model Request {
   id Int @id @default(autoincrement())
 
-  availableDateFrom DateTime      @default(now())
-  availableDateTo   DateTime      @default(now())
-  status            RequestStatus @default(Pending)
-  type              RequestType
-  facilityId        Int?
-  facility          Facility?     @relation(fields: [facilityId], references: [id], onDelete: NoAction)
+  availableDateFrom DateTime @default(now())
+  availableDateTo   DateTime @default(now())
 
-  requestNote String?
+  status     RequestStatus @default(Pending)
+  type       RequestType
+  facilityId Int?
+  facility   Facility?     @relation(fields: [facilityId], references: [id], onDelete: NoAction)
+
+  // requestNote String?
   respondNote String?
 
   userId Int
@@ -275,19 +268,17 @@ enum ScanType {
 
 enum RequestStatus {
   Pending
-  Declined
-  InProgress
-  Accepted
+  // Declined
+  // InProgress
+  // Accepted
+  Completed
+  Cancelled
+  Done
 }
 
 enum RequestType {
   Facility
   Issue
-}
-
-enum CategoryType {
-  Facility
-  Discover
 }
 
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~

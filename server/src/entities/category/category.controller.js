@@ -100,30 +100,18 @@
 // ------------------------------------------------------------------
 
 import { crud, prismaCrud } from "../../utils/crud/express-crud-router";
-import { getCategoryByType, getEntityByCategoryCompound } from "./category.service";
+import { getDiscoverCompound } from "./category.service";
 // ------------------------------------------------------------------
 
 const crudController = { ...prismaCrud("category") };
 
 const customRoutesController = [
   {
-    method: "get", // get, post, put, delete  (from express router)
-    path: "/category/type/:type",
-    controller: async (req, res, next) => {
-      try {
-        let categories = await getCategoryByType(req.params.type);
-        res.status(202).json(categories);
-      } catch (err) {
-        next(err);
-      }
-    },
-  },
-  {
     method: "get",
-    path: "/category/:type/compound/:id",
+    path: "/category/compound/:id",
     controller: async (req, res, next) => {
       try {
-        let data = await getEntityByCategoryCompound(req.params.type, +req.params.id);
+        let data = await getDiscoverCompound(+req.params.id);
         res.status(202).json(data);
       } catch (err) {
         next(err);

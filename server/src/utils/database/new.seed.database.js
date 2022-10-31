@@ -199,36 +199,17 @@ function randomDate(start, end) {
 
   await prisma.category.createMany({
     data: [
-      { id: 1, name: "Banking And Insurance", type: "Discover", icon: "bank" },
-      { id: 2, name: "Groceries", type: "Discover", icon: "cart-outline" },
-      { id: 3, name: "Places to Eat", type: "Discover", icon: "food" },
-      { id: 4, name: "Pharmacies", type: "Discover", icon: "pill" },
-      { id: 5, name: "Pet Care", type: "Discover", icon: "dog-side" },
-
-      { id: 6, name: "Banking And Insurance", type: "Facility", icon: "bank" },
-      { id: 7, name: "Car Wash", type: "Facility", icon: "car-wash" },
-      {
-        id: 8,
-        name: "Gorceries shopping",
-        type: "Facility",
-        icon: "cart-outline",
-      },
-      { id: 9, name: "Laundry", type: "Facility", icon: "tshirt-crew-outline" },
-      {
-        id: 10,
-        name: "House Cleaning",
-        type: "Facility",
-        icon: "home-search-outline",
-      },
-      { id: 11, name: "Plumber", type: "Facility", icon: "water-pump" },
-      { id: 12, name: "Electrician", type: "Facility", icon: "tools" },
+      { id: 1, name: "Banking And Insurance", icon: "bank" },
+      { id: 2, name: "Groceries", icon: "cart-outline" },
+      { id: 3, name: "Places to Eat", icon: "food" },
+      { id: 4, name: "Pharmacies", icon: "pill" },
+      { id: 5, name: "Pet Care", icon: "dog-side" },
     ],
   });
 
   await prisma.facility.createMany({
     data: [
       {
-        categoryId: 6,
         compoundId: 1,
         name: "Masr Bank",
         description:
@@ -236,9 +217,7 @@ function randomDate(start, end) {
         photoUrl:
           "https://www.elaosboa.com/wp-content/uploads/2022/09/elaosboa85726.png",
         phone: "19888",
-        shortDescription: "Egyptian Bank",
         description: "this is bank masr description",
-        address: "57 home street , elmnt2a",
         slots: [
           {
             to: "2022-10-30T8:30:00.699Z",
@@ -248,16 +227,13 @@ function randomDate(start, end) {
         ],
       },
       {
-        categoryId: 6,
         compoundId: 1,
         name: "NBE Bank",
         description: "Regional",
         photoUrl:
           "https://www.egycareers.com/wp-content/uploads/2022/05/%D8%A7%D9%84%D8%A8%D9%86%D9%83-%D8%A7%D9%84%D8%A3%D9%87%D9%84%D9%8A-%D8%A7%D9%84%D9%85%D8%B5%D8%B1%D9%8A.jpeg",
         phone: "19623",
-        shortDescription: "National Bank of Egypt",
         description: "this is National Bank of Egypt",
-        address: "55 home street , elmnt2a",
         slots: [
           {
             to: "2022-10-30T8:30:00.699Z",
@@ -267,16 +243,13 @@ function randomDate(start, end) {
         ],
       },
       {
-        categoryId: 8,
         compoundId: 1,
         name: "Carrefour",
         photoUrl:
           "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Carrefour_logo.svg/800px-Carrefour_logo.svg.png",
         phone: "16061",
-        shortDescription: "Online and in place shopping",
         description:
           "dfghidkhgfdf kgfdhjkgfhj hkljfgklhjgkh kgfhjkfg fdgfdgfdgdfgfdg",
-        address: "51 home street , elmnt2a",
         slots: [
           {
             to: "2022-10-30T8:30:00.699Z",
@@ -346,7 +319,6 @@ function randomDate(start, end) {
         ),
         status: "Pending",
         type: "Facility",
-        requestNote: "complaint request",
         respondNote: "complaint response",
         userId: 5,
         userCompoundId: 5,
@@ -364,7 +336,6 @@ function randomDate(start, end) {
         ),
         status: "Pending",
         type: "Facility",
-        requestNote: "complaint request",
         respondNote: "complaint response",
         userId: 2,
         userCompoundId: 2,
