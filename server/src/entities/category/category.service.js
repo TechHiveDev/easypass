@@ -25,13 +25,9 @@ const prisma = new PrismaClient();
 
 // ------------------------------------------------------------
 
-export const getCategoryByType = async (type) => {
-  return await prisma.category.findMany({ where: { type } });
-};
-export const getEntityByCategoryCompound = async (type, compoundId) => {
+export const getDiscoverCompound = async (compoundId) => {
   return await prisma.category.findMany({
-    where: { type },
-    include: { Facility: { where: { compoundId } } },
+    include: { Discover: { where: { compoundId } } },
   });
 };
 
