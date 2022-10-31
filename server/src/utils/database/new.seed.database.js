@@ -32,7 +32,6 @@ function arrayScans(type, compoundId, userId, deviceId, invitationId) {
             60 *
             60 *
             24 *
-            i *
             Math.floor(Math.random() * (maxDays - minDays + 1) + minDays)
       ),
       type,
