@@ -105,11 +105,16 @@
 // ------------------------------------------------------------------
 
 import { crud, prismaCrud } from "../../utils/crud/express-crud-router";
-import { getRequestsByCompound, getRequestsByUser } from "./request.service";
+import {
+  getRequestsByCompound,
+  getRequestsByUser,
+  createRequest,
+} from "./request.service";
 
 // ==================================================================
 const crudController = {
   ...prismaCrud("request"),
+  create: createRequest,
 };
 
 // ------------------------------------------------------------------

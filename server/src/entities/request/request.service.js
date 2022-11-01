@@ -32,5 +32,30 @@ export const getRequestsByCompound = async (compoundId) => {
 export const getRequestsByUser = async (userId) => {
   return await prisma.request.findMany({ where: { userId } });
 };
+export const createRequest = async (data) => {
+  const { availableDateFrom, availableDateTo, facilityId } = data;
 
+  let facility = await prisma.facility.findUnique({
+    where: { id: facilityId },
+  });
+  const { slots, ...res } = facility;
+  for (let i = 0; i < slots.length; i++) {
+    if (
+      slots[i].from == availableDateFrom &&
+      slots[i].to == availableDateTo &&
+      slots[i].available
+    ) {
+      slots[i].available = false;
+
+      console.log({ ...res, slots });
+      await prisma.facility.update({
+        where: { id: facilityId },
+        data: { ...res, slots },
+      });
+      return await prisma.request.create({ data });
+    }
+  }
+
+  throw { status: 400, message: "invalid request or no slots available" };
+};
 // ------------------------------------------------------------------
