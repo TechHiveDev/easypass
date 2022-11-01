@@ -25,6 +25,7 @@ export const initialItemsGetter = (slots) => {
   );
   // then populate the arrays inside the initialItems object
   slots.forEach((s) => {
+    console.log(s);
     const date = s.from.split("T")[0];
     const from = s.from.split("T")[1];
     const to = s.to.split("T")[1];
@@ -33,6 +34,7 @@ export const initialItemsGetter = (slots) => {
         date,
         from,
         to,
+        available: s.available,
       });
     }
   });

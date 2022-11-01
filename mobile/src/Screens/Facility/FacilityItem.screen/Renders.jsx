@@ -23,7 +23,7 @@ export const RenderItem = ({ reservation, facilityId, price }) => {
     (state) => state?.auth?.currentCompound
   );
   const [bookService, { isLoading }] = useCreateMutation();
-
+  console.log(reservation.available);
   const from =
     reservation.from.substring(1, 2) === ":"
       ? ("0" + reservation.from).substring(0, 5)
@@ -61,16 +61,20 @@ export const RenderItem = ({ reservation, facilityId, price }) => {
         </Text>
         {price ? <Text style={{ fontSize, color }}>Price: {price}</Text> : null}
       </View>
-      <Button
-        style={{
-          borderWidth: widthPercentageToDP(1),
-          borderColor: theme.colors.primary,
-        }}
-        disabled={isLoading}
-        onPress={pressHandler}
-      >
-        {isLoading ? <ActivityIndicator /> : "Book"}
-      </Button>
+      {reservation.available === false ? (
+        <Text>Booked X</Text>
+      ) : (
+        <Button
+          style={{
+            borderWidth: widthPercentageToDP(1),
+            borderColor: theme.colors.primary,
+          }}
+          disabled={isLoading || reservation.available === false}
+          onPress={pressHandler}
+        >
+          {isLoading ? <ActivityIndicator /> : "Book"}
+        </Button>
+      )}
     </View>
   );
 };
