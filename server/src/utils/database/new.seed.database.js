@@ -215,8 +215,8 @@ function randomDate(start, end) {
         compoundId: 1,
         slots: [
           {
-            to: "2022-11-02T8:30:00.699Z",
-            from: "2022-11-02T5:00:00.699Z",
+            to: "2022-11-01T14:00:00.000Z",
+            from: "2022-11-01T05:00:00.000Z",
             available: true,
           },
         ],
@@ -227,8 +227,8 @@ function randomDate(start, end) {
         compoundId: 1,
         slots: [
           {
-            to: "2022-11-02T8:30:00.699Z",
-            from: "2022-11-02T5:00:00.699Z",
+            to: "2022-11-01T14:00:00.000Z",
+            from: "2022-11-01T05:00:00.000Z",
             available: true,
           },
         ],
@@ -239,8 +239,8 @@ function randomDate(start, end) {
         compoundId: 1,
         slots: [
           {
-            to: "2022-11-02T8:30:00.699Z",
-            from: "2022-11-02T5:00:00.699Z",
+            to: "2022-11-01T14:00:00.000Z",
+            from: "2022-11-01T05:00:00.000Z",
             available: true,
           },
         ],
@@ -251,8 +251,8 @@ function randomDate(start, end) {
         compoundId: 1,
         slots: [
           {
-            to: "2022-11-02T8:30:00.699Z",
-            from: "2022-11-02T5:00:00.699Z",
+            to: "2022-11-01T14:00:00.000Z",
+            from: "2022-11-01T05:00:00.000Z",
             available: true,
           },
         ],
@@ -263,8 +263,8 @@ function randomDate(start, end) {
         compoundId: 1,
         slots: [
           {
-            to: "2022-11-02T8:30:00.699Z",
-            from: "2022-11-02T5:00:00.699Z",
+            to: "2022-11-01T14:00:00.000Z",
+            from: "2022-11-01T05:00:00.000Z",
             available: true,
           },
         ],
@@ -275,8 +275,8 @@ function randomDate(start, end) {
         compoundId: 1,
         slots: [
           {
-            to: "2022-11-02T8:30:00.699Z",
-            from: "2022-11-02T5:00:00.699Z",
+            to: "2022-11-01T14:00:00.000Z",
+            from: "2022-11-01T05:00:00.000Z",
             available: true,
           },
         ],
