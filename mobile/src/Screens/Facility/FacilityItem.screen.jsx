@@ -1,7 +1,8 @@
 import { Button, Text } from "react-native-paper";
 import { StyleSheet, SafeAreaView, View, Alert } from "react-native";
-import { Agenda } from "react-native-calendars/src/index";
+import { Agenda } from "react-native-calendars";
 import { useState } from "react";
+import globalStyles from "../../Theme/global.styles";
 
 const timeToString = (time) => {
   const date = new Date(time);
