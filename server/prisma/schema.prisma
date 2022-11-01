@@ -159,13 +159,13 @@ model Announcement {
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
 model Discover {
-  id          Int     @id @default(autoincrement())
-  name        String?
-  description String?
-  photoUrl    String?
-  phone       String?
+  id               Int     @id @default(autoincrement())
+  name             String?
+  description      String?
+  photoUrl         String?
+  phone            String?
   shortDescription String?
-  address     String?
+  address          String?
 
   openDateFrom DateTime? @default(now())
   openDateTo   DateTime? @default(now())
@@ -190,7 +190,7 @@ model Facility {
   price       Float?
   name        String
   description String?
-  photoUrl    String?
+  icon        String
   phone       String?
 
   compoundId Int

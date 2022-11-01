@@ -210,50 +210,73 @@ function randomDate(start, end) {
   await prisma.facility.createMany({
     data: [
       {
+        name: "Car Wash",
+        icon: "car-wash",
         compoundId: 1,
-        name: "Masr Bank",
-        description:
-          "added facilities tab in admin panel where admin can crud facilities,full text search them and filter them by compound.added request tab in admin pane",
-        photoUrl:
-          "https://www.elaosboa.com/wp-content/uploads/2022/09/elaosboa85726.png",
-        phone: "19888",
-        description: "this is bank masr description",
         slots: [
           {
-            to: "2022-10-30T8:30:00.699Z",
-            from: "2022-10-30T5:00:00.699Z",
+            to: "2022-11-02T8:30:00.699Z",
+            from: "2022-11-02T5:00:00.699Z",
             available: true,
           },
         ],
       },
       {
+        name: "Groceries Shopping",
+        icon: "cart-outline",
         compoundId: 1,
-        name: "NBE Bank",
-        description: "Regional",
-        photoUrl:
-          "https://www.egycareers.com/wp-content/uploads/2022/05/%D8%A7%D9%84%D8%A8%D9%86%D9%83-%D8%A7%D9%84%D8%A3%D9%87%D9%84%D9%8A-%D8%A7%D9%84%D9%85%D8%B5%D8%B1%D9%8A.jpeg",
-        phone: "19623",
-        description: "this is National Bank of Egypt",
         slots: [
           {
-            to: "2022-10-30T8:30:00.699Z",
-            from: "2022-10-30T5:00:00.699Z",
+            to: "2022-11-02T8:30:00.699Z",
+            from: "2022-11-02T5:00:00.699Z",
             available: true,
           },
         ],
       },
       {
+        name: "Laundry",
+        icon: "tshirt-crew-outline",
         compoundId: 1,
-        name: "Carrefour",
-        photoUrl:
-          "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Carrefour_logo.svg/800px-Carrefour_logo.svg.png",
-        phone: "16061",
-        description:
-          "dfghidkhgfdf kgfdhjkgfhj hkljfgklhjgkh kgfhjkfg fdgfdgfdgdfgfdg",
         slots: [
           {
-            to: "2022-10-30T8:30:00.699Z",
-            from: "2022-10-30T5:00:00.699Z",
+            to: "2022-11-02T8:30:00.699Z",
+            from: "2022-11-02T5:00:00.699Z",
+            available: true,
+          },
+        ],
+      },
+      {
+        name: "House Cleaning",
+        icon: "home-search-outline",
+        compoundId: 1,
+        slots: [
+          {
+            to: "2022-11-02T8:30:00.699Z",
+            from: "2022-11-02T5:00:00.699Z",
+            available: true,
+          },
+        ],
+      },
+      {
+        name: "Plumber",
+        icon: "water-pump",
+        compoundId: 1,
+        slots: [
+          {
+            to: "2022-11-02T8:30:00.699Z",
+            from: "2022-11-02T5:00:00.699Z",
+            available: true,
+          },
+        ],
+      },
+      {
+        name: "Electrician",
+        icon: "tools",
+        compoundId: 1,
+        slots: [
+          {
+            to: "2022-11-02T8:30:00.699Z",
+            from: "2022-11-02T5:00:00.699Z",
             available: true,
           },
         ],
