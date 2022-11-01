@@ -23,7 +23,6 @@ export const RenderItem = ({ reservation, facilityId, price }) => {
     (state) => state?.auth?.currentCompound
   );
   const [bookService, { isLoading }] = useCreateMutation();
-  console.log(reservation.available);
   const from =
     reservation.from.substring(1, 2) === ":"
       ? ("0" + reservation.from).substring(0, 5)
