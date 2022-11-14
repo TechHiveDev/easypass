@@ -5,11 +5,10 @@ import {
   NumberField,
   BooleanField,
   DateField,
-  ReferenceField,
-  TextInput,
+  ReferenceField, TextInput,
   ReferenceInput,
   SelectInput,
-  ImageField,
+  ImageField, ArrayInput, SimpleFormIterator, DateTimeInput, BooleanInput, ArrayField, Datagrid,
 } from "react-admin";
 import Title from "./title.facility";
 
@@ -21,7 +20,8 @@ export default function ShowFacility(props) {
       <SimpleShowLayout>
         <TextField variant="outlined" source="name" />
         <TextField variant="outlined" source="description" multiline={true} />
-        <ImageField source="photoUrl" title="title" />
+        <TextField variant="outlined" source="price"/>
+        <TextField variant="outlined" source="icon"/>
         <ReferenceField
           source="compoundId"
           reference="compound"
@@ -30,6 +30,13 @@ export default function ShowFacility(props) {
         >
           <TextField source="name" />
         </ReferenceField>
+        <ArrayField source="slots">
+          <Datagrid>
+            <TextField source="from" helperText={false} />
+            <TextField source="to" helperText={false} />
+            <BooleanField source="available" helperText={false} />
+          </Datagrid>
+        </ArrayField>
       </SimpleShowLayout>
     </Show>
   );

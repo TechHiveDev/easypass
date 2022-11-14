@@ -8,6 +8,10 @@ import {
   ImageField,
   AutocompleteInput,
   useTranslate,
+  ArrayInput,
+  SimpleFormIterator,
+    DateTimeInput,
+    BooleanInput
 } from "react-admin";
 import Title from "./title.facility";
 export default function CreateFacility(props) {
@@ -18,9 +22,8 @@ export default function CreateFacility(props) {
         <TextInput variant="outlined" source="name" />
         <TextInput variant="outlined" source="description" multiline={true} />
         <NumberInput variant="outlined" source="price" />
-        <ImageInput source="photoUrl" accept="image/*">
-          <ImageField source="src" title="title" />
-        </ImageInput>
+        <p>Choose an icon from <a href={"https://icons.expo.fyi/"} target="_blank"> Icons</a> (Make sure it's Material community icons family) and put it's name here </p>
+        <TextInput variant="outlined" source="icon" />
         <ReferenceInput
           required
           source="compoundId"
@@ -37,6 +40,13 @@ export default function CreateFacility(props) {
             }}
           />
         </ReferenceInput>
+        <ArrayInput source="slots" >
+          <SimpleFormIterator inline>
+            <DateTimeInput source="from" helperText={false} />
+            <DateTimeInput source="to" helperText={false} />
+            <BooleanInput source="available" helperText={false} />
+          </SimpleFormIterator>
+        </ArrayInput>
       </SimpleForm>
     </Create>
   );

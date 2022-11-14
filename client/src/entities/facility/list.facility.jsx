@@ -7,6 +7,7 @@ import {
   EditButton,
   DeleteButton,
   ReferenceField,
+    Button,
   ReferenceInput,
   AutocompleteInput,
   ImageField,
@@ -33,7 +34,6 @@ export default function ListFacility(props) {
         <NumberField variant="outlined" source="id" />
         <TextField variant="outlined" source="name" />
         <TextField variant="outlined" source="price" />
-        <ImageField variant="outlined" source="photoUrl" />
         <ReferenceField source="compoundId" reference="compound" link="show">
           <TextField source="name" />
         </ReferenceField>
