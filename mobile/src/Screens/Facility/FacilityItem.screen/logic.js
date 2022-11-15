@@ -26,8 +26,14 @@ export const initialItemsGetter = (slots) => {
   // then populate the arrays inside the initialItems object
   slots.forEach((s) => {
     const date = s.from.split("T")[0];
-    const from = s.from.split("T")[1];
-    const to = s.to.split("T")[1];
+    //handle offset dynamically
+    const fromDate = new Date(s.from);
+    const offset = fromDate.getTimezoneOffset() / -60; // to get hours
+    fromDate.setHours(fromDate.getHours() + offset);
+    const toDate = new Date(s.to);
+    toDate.setHours(toDate.getHours() + offset);
+    const from = fromDate.toISOString().split("T")[1];
+    const to = toDate.toISOString().split("T")[1];
     if (date in initialItems) {
       initialItems[date].push({
         date,
