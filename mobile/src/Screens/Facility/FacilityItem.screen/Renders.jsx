@@ -15,7 +15,12 @@ export const renderEmptyDate = () => {
   );
 };
 export const RenderItem = ({ reservation, facilityId, price }) => {
-  const { refetch } = useListContext();
+  const { refetch, data } = useListContext();
+  const currentSlot = data
+    .find((d) => d.id === facilityId)
+    ?.slots?.find(
+      (s) => s.from === reservation.fromAPI && s.to === reservation.toAPI
+    );
   const fontSize = 14;
   const color = "#43515c";
   const userId = useAppSelector((state) => state?.auth?.user?.id);
@@ -39,8 +44,8 @@ export const RenderItem = ({ reservation, facilityId, price }) => {
         userCompoundId,
         userId,
         facilityId,
-        availableDateFrom: reservation.date + "T" + reservation.from,
-        availableDateTo: reservation.date + "T" + reservation.to,
+        availableDateFrom: reservation.fromAPI,
+        availableDateTo: reservation.toAPI,
         type: "Facility",
       },
     });
@@ -60,7 +65,7 @@ export const RenderItem = ({ reservation, facilityId, price }) => {
         </Text>
         {price ? <Text style={{ fontSize, color }}>Price: {price}</Text> : null}
       </View>
-      {reservation.available === false ? (
+      {currentSlot?.available === false ? (
         <Text>Booked X</Text>
       ) : (
         <Button
