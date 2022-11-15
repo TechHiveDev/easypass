@@ -419,6 +419,7 @@ const arabicMessages = {
   },
   requiredUser: 'رجاء اختيار المستخدم',
   requiredCompound: 'رجاء اختيار المجمع',
+  requiredCategory: 'رجاء اختيار المجموعة',
   facility: 'خدمة',
   facilityType: {
     Facility: 'خدمة',

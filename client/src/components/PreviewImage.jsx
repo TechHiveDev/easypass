@@ -1,7 +1,8 @@
-import { ImageField } from "react-admin";
+import { ImageField } from 'react-admin';
 
-const PreviewImage = ({ record, source }) => {
-  if (typeof record == "string") {
+const PreviewImage = ({ record, source, ...props }) => {
+  console.log(record, source, props);
+  if (typeof record === 'string') {
     record = {
       [source]: record,
     };

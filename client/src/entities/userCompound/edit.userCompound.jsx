@@ -10,8 +10,8 @@ import {
   SelectInput,
   AutocompleteInput,
   useTranslate,
-} from "react-admin";
-import UserCompoundTitle from "./title.userCompound";
+} from 'react-admin';
+import UserCompoundTitle from './title.userCompound';
 
 export default function EditUserCompound(props) {
   const t = useTranslate();
@@ -22,31 +22,33 @@ export default function EditUserCompound(props) {
           required
           source="compoundId"
           reference="compound"
-          label={"compound"}
-          name={"compoundId"}
+          label="compound"
+          name="compoundId"
         >
           <AutocompleteInput
             label="compound"
+            optionText="name"
             required
             validate={(v) => {
-              if (v === "") return t("requiredCompound");
+              if (v === '') return t('requiredCompound');
               return undefined;
             }}
           />
         </ReferenceInput>
         <ReferenceInput required label="user" source="userId" reference="user">
           <AutocompleteInput
+            optionText="name"
             label="user"
             required
             validate={(v) => {
-              if (v === "") return t("requiredUser");
+              if (v === '') return t('requiredUser');
               return undefined;
             }}
           />
         </ReferenceInput>
         <TextInput variant="outlined" source="streetName" required />
-        <NumberInput variant="outlined" source={"blockNumber"} required />
-        <NumberInput variant="outlined" source={"unitNumber"} required />
+        <NumberInput variant="outlined" source="blockNumber" required />
+        <NumberInput variant="outlined" source="unitNumber" required />
       </SimpleForm>
     </Edit>
   );

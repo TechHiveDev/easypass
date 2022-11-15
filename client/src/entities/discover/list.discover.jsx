@@ -16,28 +16,51 @@ import {
   ReferenceInput,
   SelectInput,
   AutocompleteInput,
-} from "react-admin";
-import Actions from "../../reactAdmin/components/Actions";
+  FunctionField,
+} from 'react-admin';
+import Actions from '../../reactAdmin/components/Actions';
+import { timeFormatter, timeMerger } from '../../utils/dateFormatter';
 
 // ------------------------------------------------
 const announcementFilters = [
   <ReferenceInput
     source="compoundId"
     reference="compound"
-    label={"compound"}
-    name={"compoundId"}
+    label="compound"
+    name="compoundId"
   >
-    <AutocompleteInput />
+    <AutocompleteInput optionText="name" />
+  </ReferenceInput>,
+  <ReferenceInput
+    required
+    source="categoryId"
+    reference="category"
+    // label="category"
+    // name="name"
+  >
+    <AutocompleteInput optionText="name" />
   </ReferenceInput>,
 ];
+
 export default function ListDiscover(props) {
   return (
     <List filters={announcementFilters}>
       <Datagrid>
         <NumberField variant="outlined" source="id" />
-        <TextField variant="outlined" source="title" />
+        <TextField variant="outlined" source="name" />
+        <TextField variant="outlined" source="shortDescription" />
         <ImageField variant="outlined" source="photoUrl" />
+        <TextField variant="outlined" source="phone" />
+        <TextField variant="outlined" source="address" />
+        <FunctionField
+          variant="outlined"
+          source="openFromTo"
+          render={(r) => timeMerger(r.openDateFrom, r.openDateTo)}
+        />
         <ReferenceField source="compoundId" reference="compound" link="show">
+          <TextField source="name" />
+        </ReferenceField>
+        <ReferenceField source="categoryId" reference="category" link="show">
           <TextField source="name" />
         </ReferenceField>
 

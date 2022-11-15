@@ -11,30 +11,26 @@ import {
   ShowButton,
   TextField,
   useTranslate,
-} from "react-admin";
-import Actions from "../../reactAdmin/components/Actions";
-import { RespondButton } from "./RespondButton.request";
+} from 'react-admin';
+import Actions from '../../reactAdmin/components/Actions';
+import { RespondButton } from './RespondButton.request';
 import dateFormatter, {
   dayEqualityChecker,
   daysMergerWithTime,
-} from "../../utils/dateFormatter";
+} from '../../utils/dateFormatter';
+
 const requestFilters = [
   <SearchInput source="q" alwaysOn />,
   <ReferenceInput
     source="compoundId"
     reference="compound"
-    label={"compound"}
-    name={"compoundId"}
+    label="compound"
+    name="compoundId"
   >
-    <AutocompleteInput />
+    <AutocompleteInput optionText="name" />
   </ReferenceInput>,
-  <ReferenceInput
-    source="userId"
-    reference="user"
-    label={"user"}
-    name={"userId"}
-  >
-    <AutocompleteInput />
+  <ReferenceInput source="userId" reference="user" label="user" name="userId">
+    <AutocompleteInput optionText="name" />
   </ReferenceInput>,
 ];
 const sameDayChecker = (rec) =>
@@ -46,51 +42,51 @@ export default function ListRequest(props) {
       <Datagrid>
         <NumberField variant="outlined" source="id" />
         <FunctionField
-          source={"type"}
-          render={(rec) => `${t("facilityType." + rec.type)}`}
+          source="type"
+          render={(rec) => `${t(`facilityType.${rec.type}`)}`}
         />
         <ReferenceField source="facilityId" reference="facility" link="show">
           <TextField source="name" />
         </ReferenceField>
         <FunctionField
-          source={"createdAt"}
+          source="createdAt"
           render={(rec) =>
-            `${rec?.createdAt ? dateFormatter(rec.createdAt) : "-"}`
+            `${rec?.createdAt ? dateFormatter(rec.createdAt) : '-'}`
           }
         />
         <FunctionField
-          source={"availableDateFrom"}
+          source="availableDateFrom"
           render={(rec) =>
             daysMergerWithTime(rec?.availableDateFrom, rec.availableDateTo)
           }
         />
-        {/*<FunctionField*/}
-        {/*  source={"availableDateTo"}*/}
-        {/*  render={(rec) =>*/}
-        {/*    `${rec?.availableDateTo ? dateFormatter(rec.availableDateTo) : "-"}`*/}
-        {/*  }*/}
-        {/*/>*/}
+        {/* <FunctionField */}
+        {/*  source={"availableDateTo"} */}
+        {/*  render={(rec) => */}
+        {/*    `${rec?.availableDateTo ? dateFormatter(rec.availableDateTo) : "-"}` */}
+        {/*  } */}
+        {/* /> */}
         <TextField variant="outlined" source="requestNote" />
         <FunctionField
-          source={"respondNote"}
-          render={(rec) => `${rec?.respondNote ? rec.respondNote : "-"}`}
+          source="respondNote"
+          render={(rec) => `${rec?.respondNote ? rec.respondNote : '-'}`}
         />
-        {/*Pending || Refused || InProgress || Completed*/}
+        {/* Pending || Refused || InProgress || Completed */}
         <FunctionField
-          source={"status"}
-          render={(rec) => `${t("status." + rec.status)}`}
+          source="status"
+          render={(rec) => `${t(`status.${rec.status}`)}`}
         />
         <ReferenceField source="userId" reference="user" link="show">
           <TextField source="name" />
         </ReferenceField>
         <ReferenceField source="compoundId" reference="compound" link="show">
           <TextField source="name" />
-        </ReferenceField>{" "}
+        </ReferenceField>{' '}
         <ReferenceField
           source="userCompoundId"
           reference="userCompound"
           link="show"
-          label={t("streetBlockUnit")}
+          label={t('streetBlockUnit')}
         >
           <TextField source="streetName" />
           - <TextField source="blockNumber" />

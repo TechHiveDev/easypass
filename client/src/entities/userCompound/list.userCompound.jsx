@@ -10,25 +10,25 @@ import {
   useTranslate,
   ReferenceInput,
   AutocompleteInput,
-} from "react-admin";
-import Actions from "../../reactAdmin/components/Actions";
+} from 'react-admin';
+import Actions from '../../reactAdmin/components/Actions';
 
 // ------------------------------------------------
 const Title = () => {
   const translate = useTranslate();
-  return <span>{translate("properties")}</span>;
+  return <span>{translate('properties')}</span>;
 };
 const userCompoundFilters = [
   <ReferenceInput
     source="compoundId"
     reference="compound"
-    label={"compound"}
-    name={"compoundId"}
+    label="compound"
+    name="compoundId"
   >
-    <AutocompleteInput label="compound" />
+    <AutocompleteInput label="compound" optionText="name" />
   </ReferenceInput>,
   <ReferenceInput label="user" source="userId" reference="user">
-    <AutocompleteInput label="user" />
+    <AutocompleteInput label="user" optionText="name" />
   </ReferenceInput>,
 ];
 export default function ListUserCompound(props) {
@@ -44,8 +44,8 @@ export default function ListUserCompound(props) {
           <TextField source="name" />
         </ReferenceField>
         <TextField variant="outlined" source="streetName" />
-        <NumberField variant="outlined" source={"blockNumber"} />
-        <NumberField variant="outlined" source={"unitNumber"} />
+        <NumberField variant="outlined" source="blockNumber" />
+        <NumberField variant="outlined" source="unitNumber" />
         <Actions label="">
           <ShowButton label="ra.action.show" />
           <EditButton label="ra.action.edit" />

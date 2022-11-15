@@ -42,6 +42,7 @@ export default function EditFacility() {
         >
           <AutocompleteInput
             label="compound"
+            optionText="name"
             required
             validate={(v) => {
               if (v === '') return t('requiredCompound');

@@ -1,35 +1,27 @@
 import {
-  Create,
+  Edit,
   SimpleForm,
   TextInput,
   ReferenceInput,
-  SelectInput,
   ImageInput,
-  ImageField,
   AutocompleteInput,
   useTranslate,
-  TimeInput,
 } from 'react-admin';
-import Title from './title.discover';
+import AnnouncementTitle from './title.discoverCategory';
+import PreviewImage from '../../components/PreviewImage';
 
-export default function CreateDiscover(props) {
+// ------------------------------------------------
+
+export default function EditDiscoverCategory(props) {
   const t = useTranslate();
   return (
-    <Create
-      title={<Title create />}
-      resource="discover/create"
-      redirect="/discover"
-    >
+    <Edit title={<AnnouncementTitle />}>
       <SimpleForm redirect="list">
         <TextInput variant="outlined" source="name" />
-        <TextInput variant="outlined" source="shortDescription" multiline />
         <TextInput variant="outlined" source="description" multiline />
         <ImageInput source="photoUrl" accept="image/*">
-          <ImageField source="src" title="title" />
+          <PreviewImage source="src" />
         </ImageInput>
-        <TextInput source="phone" />
-        <TimeInput source="openDateFrom" />
-        <TimeInput source="openDateTo" />
         <ReferenceInput
           required
           source="compoundId"
@@ -38,8 +30,8 @@ export default function CreateDiscover(props) {
           name="compoundId"
         >
           <AutocompleteInput
-            optionText="name"
             label="compound"
+            optionText="name"
             required
             validate={(v) => {
               if (v === '') return t('requiredCompound');
@@ -55,8 +47,8 @@ export default function CreateDiscover(props) {
           name="categoryId"
         >
           <AutocompleteInput
-            optionText="name"
             label="category"
+            optionText="name"
             required
             validate={(v) => {
               if (v === '') return t('requiredCategory');
@@ -65,6 +57,6 @@ export default function CreateDiscover(props) {
           />
         </ReferenceInput>
       </SimpleForm>
-    </Create>
+    </Edit>
   );
 }

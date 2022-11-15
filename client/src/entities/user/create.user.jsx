@@ -11,19 +11,15 @@ import {
   ImageField,
   useTranslate,
   AutocompleteInput,
-} from "react-admin";
-import Title from "./title.user";
+} from 'react-admin';
+import Title from './title.user';
 // ------------------------------------------------
 
 export default function CreateUser(props) {
   const t = useTranslate();
   const { isLoading, permissions } = usePermissions();
   return (
-    <Create
-      resource={"oauth/register"}
-      redirect={"/user"}
-      title={<Title create={true} />}
-    >
+    <Create resource="oauth/register" redirect="/user" title={<Title create />}>
       {isLoading ? (
         <h3>Loading</h3>
       ) : (
@@ -37,22 +33,22 @@ export default function CreateUser(props) {
             <ImageField source="src" title="title" />
           </ImageInput>
           <TextInput variant="outlined" source="phone" required />
-          <BooleanInput variant={"outlined"} source={"active"} />
+          <BooleanInput variant="outlined" source="active" />
           <SelectInput
             required
-            name={"type"}
-            source={"type"}
+            name="type"
+            source="type"
             choices={
-              permissions === "SuperAdmin"
+              permissions === 'SuperAdmin'
                 ? [
-                    { id: "SuperAdmin", name: t("userType." + "SuperAdmin") },
-                    { id: "Admin", name: t("userType." + "Admin") },
-                    { id: "Resident", name: t("userType." + "Resident") },
-                    { id: "Security", name: t("userType." + "Security") },
+                    { id: 'SuperAdmin', name: t('userType.' + 'SuperAdmin') },
+                    { id: 'Admin', name: t('userType.' + 'Admin') },
+                    { id: 'Resident', name: t('userType.' + 'Resident') },
+                    { id: 'Security', name: t('userType.' + 'Security') },
                   ]
                 : [
-                    { id: "Resident", name: t("userType." + "Resident") },
-                    { id: "Security", name: t("userType." + "Security") },
+                    { id: 'Resident', name: t('userType.' + 'Resident') },
+                    { id: 'Security', name: t('userType.' + 'Security') },
                   ]
             }
           />
@@ -60,21 +56,22 @@ export default function CreateUser(props) {
             required
             source="compoundId"
             reference="compound"
-            label={"compound"}
-            name={"compoundId"}
+            label="compound"
+            name="compoundId"
           >
             <AutocompleteInput
+              optionText="name"
               label="compound"
               required
               validate={(v) => {
-                if (v === "") return t("requiredCompound");
+                if (v === '') return t('requiredCompound');
                 return undefined;
               }}
             />
           </ReferenceInput>
           <TextInput variant="outlined" source="streetName" required />
-          <NumberInput variant="outlined" source={"blockNumber"} required />
-          <NumberInput variant="outlined" source={"unitNumber"} required />
+          <NumberInput variant="outlined" source="blockNumber" required />
+          <NumberInput variant="outlined" source="unitNumber" required />
         </SimpleForm>
       )}
     </Create>

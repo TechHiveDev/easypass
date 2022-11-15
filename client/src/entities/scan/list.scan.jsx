@@ -13,10 +13,10 @@ import {
   AutocompleteInput,
   BooleanField,
   FunctionField,
-} from "react-admin";
-import Actions from "../../reactAdmin/components/Actions";
-import UserType from "../../components/UserType";
-import dateFormatter from "../../utils/dateFormatter";
+} from 'react-admin';
+import Actions from '../../reactAdmin/components/Actions';
+import UserType from '../../components/UserType';
+import dateFormatter from '../../utils/dateFormatter';
 
 // ------------------------------------------------
 const scanFilters = [
@@ -26,18 +26,18 @@ const scanFilters = [
   <ReferenceInput
     source="compoundId"
     reference="compound"
-    label={"compound"}
-    name={"compoundId"}
+    label="compound"
+    name="compoundId"
   >
-    <AutocompleteInput label="compound" />
+    <AutocompleteInput label="compound" optionText="name" />
   </ReferenceInput>,
   <ReferenceInput label="user" source="userId" reference="user">
-    <AutocompleteInput label="user" />
+    <AutocompleteInput label="user" optionText="name" />
   </ReferenceInput>,
 ];
 const CustomInvitation = () => {
   const record = useRecordContext();
-  if (record.type === "Resident") return "-";
+  if (record.type === 'Resident') return '-';
   return <TextField variant="outlined" source="invitationId" />;
 };
 export default function ListScan(props) {
@@ -52,7 +52,7 @@ export default function ListScan(props) {
         <ReferenceField
           source="userId"
           reference="user"
-          label={"user"}
+          label="user"
           link="show"
         >
           <TextField variant="outlined" source="name" />
@@ -61,11 +61,11 @@ export default function ListScan(props) {
         <ReferenceField source="compoundId" reference="compound" link="show">
           <TextField source="name" />
         </ReferenceField>
-        <WrapperField label={"type"}>
+        <WrapperField label="type">
           <UserType />
         </WrapperField>
         <FunctionField
-          source={"createdAt"}
+          source="createdAt"
           render={(rec) => dateFormatter(rec.createdAt)}
         />
         <Actions label="">

@@ -9,8 +9,8 @@ import {
   SelectInput,
   AutocompleteInput,
   useTranslate,
-} from "react-admin";
-import DeviceTitle from "./title.device";
+} from 'react-admin';
+import DeviceTitle from './title.device';
 
 // ------------------------------------------------
 
@@ -24,14 +24,15 @@ export default function EditDevice(props) {
           required
           source="compoundId"
           reference="compound"
-          label={"compound"}
-          name={"compoundId"}
+          label="compound"
+          name="compoundId"
         >
           <AutocompleteInput
+            optionText="name"
             label="compound"
             required
             validate={(v) => {
-              if (v === "") return t("requiredCompound");
+              if (v === '') return t('requiredCompound');
               return undefined;
             }}
           />

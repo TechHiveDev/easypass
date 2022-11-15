@@ -10,10 +10,10 @@ import {
   EditButton,
   Pagination,
   ShowButton,
-} from "react-admin";
-import CompoundTitle from "./title.compound";
-import CompoundShowActions from "./actions.show.compound";
-import Actions from "../../reactAdmin/components/Actions";
+} from 'react-admin';
+import CompoundTitle from './title.compound';
+import CompoundShowActions from './actions.show.compound';
+import Actions from '../../reactAdmin/components/Actions';
 // ------------------------------------------------
 
 export default function ShowCompound(props) {
@@ -37,8 +37,8 @@ export default function ShowCompound(props) {
               <TextField source="name" />
             </ReferenceField>
             <TextField variant="outlined" source="streetName" />
-            <NumberField variant="outlined" source={"blockNumber"} />
-            <NumberField variant="outlined" source={"unitNumber"} />
+            <NumberField variant="outlined" source="blockNumber" />
+            <NumberField variant="outlined" source="unitNumber" />
             <Actions label="">
               <ShowButton label="ra.action.show" />
               <EditButton label="ra.action.edit" />
@@ -82,7 +82,7 @@ export default function ShowCompound(props) {
               <EditButton label="ra.action.edit" />
             </Actions>
           </Datagrid>
-        </ReferenceManyField>{" "}
+        </ReferenceManyField>{' '}
         <ReferenceManyField
           label="menu.Discover"
           reference="discover"
@@ -92,9 +92,16 @@ export default function ShowCompound(props) {
           perPage={10}
         >
           <Datagrid>
-            <TextField variant="outlined" source="title" />
+            <TextField variant="outlined" source="name" />
             <TextField variant="outlined" source="description" />
             <ImageField variant="outlined" source="photoUrl" />
+            <ReferenceField
+              source="categoryId"
+              reference="category"
+              link="show"
+            >
+              <TextField source="name" />
+            </ReferenceField>
             <Actions label="">
               <ShowButton label="ra.action.show" />
               <EditButton label="ra.action.edit" />

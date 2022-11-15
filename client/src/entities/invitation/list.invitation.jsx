@@ -14,10 +14,10 @@ import {
   SelectInput,
   AutocompleteInput,
   WrapperField,
-} from "react-admin";
-import Actions from "../../reactAdmin/components/Actions";
-import UserType from "../../components/UserType";
-import dateFormatter from "../../utils/dateFormatter";
+} from 'react-admin';
+import Actions from '../../reactAdmin/components/Actions';
+import UserType from '../../components/UserType';
+import dateFormatter from '../../utils/dateFormatter';
 
 // ------------------------------------------------
 const inviteFilters = [
@@ -28,20 +28,20 @@ const inviteFilters = [
     label="type"
     source="type"
     choices={[
-      { id: "Delivery", name: "Delivery" },
-      { id: "Visitor", name: "Visitor" },
+      { id: 'Delivery', name: 'Delivery' },
+      { id: 'Visitor', name: 'Visitor' },
     ]}
   />,
   <ReferenceInput
     source="compoundId"
     reference="compound"
-    label={"compound"}
-    name={"compoundId"}
+    label="compound"
+    name="compoundId"
   >
-    <AutocompleteInput label="compound" />
+    <AutocompleteInput label="compound" optionText="name" />
   </ReferenceInput>,
   <ReferenceInput label="user" source="userId" reference="user">
-    <AutocompleteInput label="user" />
+    <AutocompleteInput label="user" optionText="name" />
   </ReferenceInput>,
 ];
 export default function ListInvitation(props) {
@@ -50,7 +50,7 @@ export default function ListInvitation(props) {
       <Datagrid>
         <NumberField variant="outlined" source="id" />
         <TextField variant="outlined" source="name" />
-        <WrapperField label={"type"}>
+        <WrapperField label="type">
           <UserType />
         </WrapperField>
         <TextField variant="outlined" source="notes" />
@@ -61,7 +61,7 @@ export default function ListInvitation(props) {
           <TextField source="name" />
         </ReferenceField>
         <FunctionField
-          source={"createdAt"}
+          source="createdAt"
           render={(rec) => dateFormatter(rec.createdAt)}
         />
         <Actions label="">

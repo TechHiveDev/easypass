@@ -3,21 +3,24 @@ import {
   Datagrid,
   TextField,
   NumberField,
+  BooleanField,
+  DateField,
   ShowButton,
   EditButton,
+  ImageField,
   DeleteButton,
   ReferenceField,
-  Button,
+  TextInput,
+  DateTimeInput,
+  BooleanInput,
   ReferenceInput,
+  SelectInput,
   AutocompleteInput,
-  ImageField,
-  SearchInput,
 } from 'react-admin';
 import Actions from '../../reactAdmin/components/Actions';
 
 // ------------------------------------------------
-const facilityFilters = [
-  <SearchInput source="q" alwaysOn />,
+const announcementFilters = [
   <ReferenceInput
     source="compoundId"
     reference="compound"
@@ -27,14 +30,17 @@ const facilityFilters = [
     <AutocompleteInput optionText="name" />
   </ReferenceInput>,
 ];
-export default function ListFacility(props) {
+export default function ListDiscoverCategory(props) {
   return (
-    <List filters={facilityFilters}>
+    <List filters={announcementFilters}>
       <Datagrid>
         <NumberField variant="outlined" source="id" />
         <TextField variant="outlined" source="name" />
-        <TextField variant="outlined" source="price" />
+        <ImageField variant="outlined" source="photoUrl" />
         <ReferenceField source="compoundId" reference="compound" link="show">
+          <TextField source="name" />
+        </ReferenceField>
+        <ReferenceField source="categoryId" reference="category" link="show">
           <TextField source="name" />
         </ReferenceField>
 

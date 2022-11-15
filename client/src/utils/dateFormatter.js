@@ -5,6 +5,23 @@ const dateFormatter = (date) => {
     timeStyle: 'short', // full or long or medium or short
   }).format(new Date(date));
 };
+export const timeFormatter = (date) => {
+  const locale = JSON.parse(localStorage.getItem('RaStore.locale')) || 'en';
+  return new Intl.DateTimeFormat(locale, {
+    timeStyle: 'short', // full or long or medium or short
+  }).format(new Date(date));
+};
+export const timeMerger = (t1, t2) => {
+  const locale = JSON.parse(localStorage.getItem('RaStore.locale')) || 'en';
+  const isEnglish = locale === 'en';
+  const from = timeFormatter(t1);
+  const to = timeFormatter(t2);
+  const samePeriod = from.slice(-2) === to.slice(-2);
+  return (
+    `${samePeriod ? from.slice(0, -2) : from}` +
+    `${isEnglish ? ' to ' : ' الي '}${to}`
+  );
+};
 export default dateFormatter;
 export const dayEqualityChecker = (date1, date2) => {
   const locale = JSON.parse(localStorage.getItem('RaStore.locale')) || 'en';

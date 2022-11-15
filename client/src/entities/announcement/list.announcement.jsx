@@ -16,18 +16,18 @@ import {
   ReferenceInput,
   SelectInput,
   AutocompleteInput,
-} from "react-admin";
-import Actions from "../../reactAdmin/components/Actions";
+} from 'react-admin';
+import Actions from '../../reactAdmin/components/Actions';
 
 // ------------------------------------------------
 const announcementFilters = [
   <ReferenceInput
     source="compoundId"
     reference="compound"
-    label={"compound"}
-    name={"compoundId"}
+    label="compound"
+    name="compoundId"
   >
-    <AutocompleteInput />
+    <AutocompleteInput optionText="name" />
   </ReferenceInput>,
 ];
 export default function ListAnnouncement(props) {
