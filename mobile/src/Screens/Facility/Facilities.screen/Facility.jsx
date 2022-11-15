@@ -11,7 +11,7 @@ import theme from "../../../Theme/paper.theme";
 import { StyleSheet } from "react-native";
 import globalStyles from "../../../Theme/global.styles";
 
-export function Discover({ name, icon, ...rest }) {
+export function Facility({ name, icon, ...rest }) {
   const navigation = useNavigation();
   const pressHandler = () => {
     navigation.navigate("FacilityItem", {

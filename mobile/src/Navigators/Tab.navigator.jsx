@@ -6,7 +6,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import theme from "../Theme/paper.theme";
 import MyStatusBar from "../Components/MyStatusBar";
 import HomeScreen from "../Screens/Home/Home.screen";
-import Facilities from "./FacilityStack.navigator";
+import FacilitiesNavigator from "./FaciltyTopTab.navigator";
 import Profile from "../Screens/Profile/Profile.screen";
 import QrCode from "../Screens/QrCode/QrCode.screen";
 import InviteGuest from "../Screens/InviteGuest/InviteGuest.screen";
@@ -37,7 +37,7 @@ const screenOptions = ({ route: { name } }) => ({
       iconName = "qrcode-scan";
     } else if (name === "Profile") {
       iconName = "account";
-    } else if (name === "Facilities") {
+    } else if (name === "Services") {
       iconName = "tools";
     } else if (name === "Discover") {
       iconName = "map-marker";
@@ -77,8 +77,8 @@ export default function TabNavigator() {
       />
       <Tab.Screen name={"QR Code"} component={QrCode} />
       <Tab.Screen
-        name={"Facilities"}
-        component={Facilities}
+        name={"Services"}
+        component={FacilitiesNavigator}
         options={{
           headerShown: false,
         }}

@@ -53,7 +53,15 @@ export default function DiscoverScreen() {
   });
   if (error || isLoading) return null;
   return (
-    <SafeAreaView style={styles.screen}>
+    <SafeAreaView
+      style={[
+        styles.screen,
+        {
+          padding: 0,
+          paddingLeft: wp(7),
+        },
+      ]}
+    >
       <FlashList
         data={data}
         renderItem={({ item }) => <Discover item={item} />}
