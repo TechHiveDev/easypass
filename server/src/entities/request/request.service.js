@@ -30,7 +30,7 @@ export const getRequestsByCompound = async (compoundId) => {
 };
 
 export const getRequestsByUser = async (userId) => {
-  return await prisma.request.findMany({ where: { userId } });
+  return await prisma.request.findMany({ where: { userId }, include: { facility: true } });
 };
 export const createRequest = async (data) => {
   const { availableDateFrom, availableDateTo, facilityId } = data;
