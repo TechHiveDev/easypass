@@ -25,6 +25,7 @@ export default function EditDiscover() {
           <PreviewImage source="src" title="title" />
         </ImageInput>
         <TextInput source="phone" />
+        <TextInput source="address" />
         <TimeInput source="openDateFrom" />
         <TimeInput source="openDateTo" />
         <ReferenceInput

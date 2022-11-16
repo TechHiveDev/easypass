@@ -8,7 +8,7 @@ import {
   ImageField,
   AutocompleteInput,
   useTranslate,
-  TimeInput,
+  TimeInput, TextField,
 } from 'react-admin';
 import Title from './title.discover';
 
@@ -28,6 +28,7 @@ export default function CreateDiscover(props) {
           <ImageField source="src" title="title" />
         </ImageInput>
         <TextInput source="phone" />
+        <TextInput source="address" />
         <TimeInput source="openDateFrom" />
         <TimeInput source="openDateTo" />
         <ReferenceInput
