@@ -54,7 +54,7 @@ export default function ListDiscover(props) {
         <TextField variant="outlined" source="address" />
         <FunctionField
           variant="outlined"
-          source="openFromTo"
+          source="openDateFrom"
           render={(r) => timeMerger(r.openDateFrom, r.openDateTo)}
         />
         <ReferenceField source="compoundId" reference="compound" link="show">
