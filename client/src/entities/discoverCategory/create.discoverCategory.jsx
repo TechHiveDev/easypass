@@ -18,6 +18,16 @@ export default function CreateDiscoverCategory(props) {
       <SimpleForm redirect="list">
         <TextInput variant="outlined" source="name" />
         <TextInput variant="outlined" source="description" multiline />
+        <p>
+          Choose an icon from{' '}
+          <a href="https://icons.expo.fyi/" target="_blank" rel="noreferrer">
+            {' '}
+            Icons
+          </a>{' '}
+          (Make sure it's Material community icons family) and put it's name
+          here{' '}
+        </p>
+        <TextInput variant="outlined" source="icon" />
       </SimpleForm>
     </Create>
   );

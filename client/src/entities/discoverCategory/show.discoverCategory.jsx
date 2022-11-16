@@ -4,6 +4,7 @@ import {
   TextField,
   ReferenceField,
   ImageField,
+  NumberField,
 } from 'react-admin';
 import DiscoverTitle from './title.discoverCategory';
 
@@ -13,20 +14,10 @@ export default function ShowDiscoverCategory(props) {
   return (
     <Show title={<DiscoverTitle />}>
       <SimpleShowLayout>
+        <NumberField variant="outlined" source="id" />
         <TextField variant="outlined" source="name" />
-        <TextField variant="outlined" source="description" multiline />
-        <ImageField source="photoUrl" title="title" />
-        <ReferenceField
-          source="compoundId"
-          reference="compound"
-          label="compound"
-          link="show"
-        >
-          <TextField source="name" />
-        </ReferenceField>
-        <ReferenceField source="categoryId" reference="category" link="show">
-          <TextField source="name" />
-        </ReferenceField>
+        <TextField variant="outlined" source="description" />
+        <TextField variant="outlined" source="icon" />
       </SimpleShowLayout>
     </Show>
   );

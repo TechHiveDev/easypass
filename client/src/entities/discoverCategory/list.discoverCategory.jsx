@@ -36,13 +36,8 @@ export default function ListDiscoverCategory(props) {
       <Datagrid>
         <NumberField variant="outlined" source="id" />
         <TextField variant="outlined" source="name" />
-        <ImageField variant="outlined" source="photoUrl" />
-        <ReferenceField source="compoundId" reference="compound" link="show">
-          <TextField source="name" />
-        </ReferenceField>
-        <ReferenceField source="categoryId" reference="category" link="show">
-          <TextField source="name" />
-        </ReferenceField>
+        <TextField variant="outlined" source="description" />
+        <TextField variant="outlined" source="icon" />
 
         <Actions label="">
           <ShowButton label="ra.action.show" />

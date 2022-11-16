@@ -1,4 +1,4 @@
-import { useRecordContext, useTranslate } from "react-admin";
+import { useRecordContext, useTranslate } from 'react-admin';
 
 const DiscoverTitle = ({ create = false }) => {
   const t = useTranslate();
@@ -6,9 +6,11 @@ const DiscoverTitle = ({ create = false }) => {
   // the record can be empty while loading
   return (
     <span>
-      {create ? t("create") : ""}{" "}
-      {create ? t("discover").replace("ال", "") : t("discover")}
-      {record ? record.id : ""}
+      {create ? t('create') : ''}{' '}
+      {create
+        ? t('singleDiscoverCategory').replace('ال', '')
+        : t('discoverCategory')}
+      {record ? record.id : ''}
     </span>
   );
 };

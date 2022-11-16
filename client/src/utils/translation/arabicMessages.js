@@ -50,6 +50,7 @@ const arabicMessages = {
     Device: 'الاجهزة',
     Announcement: 'الاعلانات',
     Discover: 'الاستكشافات',
+    DiscoverCategory: 'انواع الاستكشافات',
   },
 
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
@@ -81,9 +82,14 @@ const arabicMessages = {
         photoUrl: 'الصورة',
         compound: 'المجمع',
         title: 'العنوان',
-        Title: 'العنوان',
         description: 'الوصف',
         compoundId: 'المجمع',
+        categoryId: 'النوع',
+        name: 'الاسم',
+        shortDescription: 'وصف قصير',
+        phone: 'الرقم',
+        address: 'العنوان',
+        openFromTo: 'مواعيد العمل',
       },
     },
     'discover/create': {
@@ -129,6 +135,25 @@ const arabicMessages = {
         available: 'متاح',
         from: 'من',
         to: 'الي',
+        icon: 'أيقونة',
+      },
+    },
+    category: {
+      name: 'خدمات |||| خدمة',
+      fields: {
+        id: 'الكود',
+        name: 'الاسم',
+        price: 'السعر',
+        photoUrl: 'الصورة',
+        compound: 'المجمع',
+        description: 'الوصف',
+        compoundId: 'المجمع',
+        slots: 'الاوقات',
+        time: 'الوقت',
+        available: 'متاح',
+        from: 'من',
+        to: 'الي',
+        icon: 'أيقونة',
       },
     },
     'announcement/create': {
@@ -433,6 +458,8 @@ const arabicMessages = {
   },
   streetBlockUnit: 'شارع - عمارة - وحدة',
   discover: 'استكشاف',
+  discoverCategory: 'انواع استشكاف',
+  singleDiscoverCategory: 'نوع استشكاف',
 };
 
 export default arabicMessages;

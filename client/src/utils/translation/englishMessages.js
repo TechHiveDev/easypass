@@ -61,6 +61,7 @@ const allEnglishMessages = {
     Device: 'Devices',
     Announcement: 'Announcements',
     Discover: 'Discoveries',
+    DiscoverCategory: 'Discover Categories',
   },
 
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~

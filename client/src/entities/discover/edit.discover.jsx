@@ -6,17 +6,14 @@ import {
   ImageInput,
   AutocompleteInput,
   useTranslate,
-  ImageField,
   TimeInput,
-  useRecordContext,
-  useEditContext,
 } from 'react-admin';
 import AnnouncementTitle from './title.discover';
 import PreviewImage from '../../components/PreviewImage';
 
 // ------------------------------------------------
 
-export default function EditDiscover(props) {
+export default function EditDiscover() {
   const t = useTranslate();
   return (
     <Edit title={<AnnouncementTitle />}>

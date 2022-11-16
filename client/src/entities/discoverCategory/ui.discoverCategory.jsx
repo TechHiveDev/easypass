@@ -5,7 +5,7 @@ import list from './list.discoverCategory';
 
 export default {
   name: 'category',
-  label: 'Discover Category',
+  label: 'DiscoverCategory',
   hide: false,
   create,
   edit,
