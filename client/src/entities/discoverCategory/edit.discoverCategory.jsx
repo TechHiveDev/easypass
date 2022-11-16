@@ -17,7 +17,7 @@ export default function EditDiscoverCategory(props) {
   return (
     <Edit title={<AnnouncementTitle />}>
       <SimpleForm redirect="list">
-        <TextInput variant="outlined" source="name" />
+        <TextInput variant="outlined" source="name" required/>
         <TextInput variant="outlined" source="description" multiline />
         <p>
           Choose an icon from{' '}
@@ -28,7 +28,7 @@ export default function EditDiscoverCategory(props) {
           (Make sure it's Material community icons family) and put it's name
           here{' '}
         </p>
-        <TextInput variant="outlined" source="icon" />
+        <TextInput variant="outlined" source="icon" required/>
       </SimpleForm>
     </Edit>
   );
