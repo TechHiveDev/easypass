@@ -51,6 +51,7 @@ export default function DiscoverScreen() {
   const { data, error, isLoading } = useGetListQuery({
     entity: "category/compound/" + currentCompoundId,
   });
+  console.log(data)
   if (error || isLoading) return null;
   return (
     <SafeAreaView
@@ -58,14 +59,14 @@ export default function DiscoverScreen() {
         styles.screen,
         {
           padding: 0,
-          paddingLeft: wp(7),
+          // paddingLeft: wp(7),
         },
       ]}
     >
       <FlashList
         data={data}
         renderItem={({ item }) => <Discover item={item} />}
-        keyExtractor={(item) => item.icon}
+        keyExtractor={(item) => item.id}
         estimatedItemSize={50}
         numColumns={2}
       />

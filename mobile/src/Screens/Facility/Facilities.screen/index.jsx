@@ -8,7 +8,7 @@ import { SafeAreaView } from "react-native";
 
 export default function FacilityScreen() {
   const { data, error, isLoading } = useListContext();
-  if (error || isLoading) return null;
+  if (error || isLoading) return <></>;
   return (
     <SafeAreaView
       style={[
@@ -16,7 +16,6 @@ export default function FacilityScreen() {
         {
           backgroundColor: theme.colors.transparentGrey,
           padding: 0,
-          paddingLeft: wp(7),
         },
       ]}
     >

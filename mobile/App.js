@@ -1,5 +1,5 @@
 import React from "react";
-import { Alert, I18nManager, Platform } from "react-native";
+import { Alert, I18nManager, Platform, View } from "react-native";
 import { Provider } from "react-redux";
 import { Provider as PaperProvider } from "react-native-paper";
 import store from "./src/Store/app.store";
@@ -60,12 +60,17 @@ export default function App() {
     }
   }, []);
   useEffect(() => {
-    registerForPushNotificationsAsync();
+    // registerForPushNotificationsAsync();
   }, [registerForPushNotificationsAsync]);
   I18nManager.allowRTL(isRTL);
   I18nManager.forceRTL(isRTL);
   return (
     <>
+      <View
+        style={{
+          height: 50,
+        }}
+      />
       <Provider store={store}>
         <PaperProvider theme={theme}>
           <AppNavigator />

@@ -4,6 +4,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
+import theme from "./paper.theme";
 
 // ----------------------------------------
 
@@ -11,9 +12,7 @@ const globalStyles = StyleSheet.create({
   screen: {
     flex: 1,
     justifyContent: "flex-start",
-
-    // alignItems: "center",
-    backgroundColor: colors.background,
+    backgroundColor: theme.colors.transparentGrey,
     width: wp(100),
     paddingHorizontal: wp(2),
     paddingVertical: hp(2),
