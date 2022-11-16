@@ -136,7 +136,7 @@ const customRoutesController = [
     path: "/request/user/:id",
     controller: async (req, res, next) => {
       try {
-        let facilities = await getRequestsByUser(+req.params.id);
+        let facilities = await getRequestsByUser(+req.params.id, req.query);
         res.status(202).json(facilities);
       } catch (err) {
         next(err);
@@ -146,3 +146,10 @@ const customRoutesController = [
 ];
 // ------------------------------------------------------------------
 export default crud("/request", crudController, customRoutesController);
+
+// from 8:40 to 9:45 (APPASAP+SAL)
+// from 9:45 to 2:29 easypass
+// ---------------------------------------------------
+// passwords for both: Qwerty12345?
+// HTTPS port 443
+// Device port for communication port: 51212
