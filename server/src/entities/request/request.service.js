@@ -21,6 +21,7 @@
  */
 
 import { PrismaClient } from "@prisma/client";
+import { parseQuery } from "../../utils/crud/controller/controller.utils";
 const prisma = new PrismaClient();
 
 // ------------------------------------------------------------
@@ -29,8 +30,17 @@ export const getRequestsByCompound = async (compoundId) => {
   return await prisma.request.findMany({ where: { compoundId } });
 };
 
-export const getRequestsByUser = async (userId) => {
-  return await prisma.request.findMany({ where: { userId }, include: { facility: true } });
+export const getRequestsByUser = async (userId, query) => {
+  const { q, limit, offset, filter, order, from, to } = parseQuery(
+    query
+  );
+  return await prisma.request.findMany({
+    take: limit,
+    skip: offset,
+    where: { ...filter, userId },
+    orderBy: order,
+    include: { facility: true }
+  });
 };
 export const createRequest = async (data) => {
   const { availableDateFrom, availableDateTo, facilityId } = data;
