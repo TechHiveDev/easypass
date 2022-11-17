@@ -146,10 +146,3 @@ const customRoutesController = [
 ];
 // ------------------------------------------------------------------
 export default crud("/request", crudController, customRoutesController);
-
-// from 8:40 to 9:45 (APPASAP+SAL)
-// from 9:45 to 2:29 easypass
-// ---------------------------------------------------
-// passwords for both: Qwerty12345?
-// HTTPS port 443
-// Device port for communication port: 51212

@@ -273,6 +273,7 @@ enum RequestStatus {
   // Accepted
   Completed
   Cancelled
+  Refused
   Done
 }
 
