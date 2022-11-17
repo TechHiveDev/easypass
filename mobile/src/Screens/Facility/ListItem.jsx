@@ -18,6 +18,7 @@ const getFormattedTime = (time) => {
   return `${hours}:${formattedMinutes}`;
 };
 export const ListItem = ({ item, cancel = true }) => {
+  const cancelled = item.status === "Cancelled";
   const { facility, ...restOfRequest } = item;
   const [cancelBooking] = useUpdateMutation({
     entity: "request",
@@ -55,7 +56,7 @@ export const ListItem = ({ item, cancel = true }) => {
         width: wp(80),
         marginBottom: hp(1.5),
         paddingBottom: hp(1),
-        opacity: cancel ? 1 : 0.6,
+        opacity: cancelled ? 0.6 : cancel ? 1 : 0.6,
       }}
     >
       <Card.Content
@@ -109,7 +110,7 @@ export const ListItem = ({ item, cancel = true }) => {
             {getFormattedTime(from)} to {getFormattedTime(to)}
           </Text>
         </View>
-        {cancel ? (
+        {cancelled ? null : cancel ? (
           <Button
             onPress={showDialog}
             style={{
@@ -126,7 +127,7 @@ export const ListItem = ({ item, cancel = true }) => {
           </Button>
         ) : null}
       </Card.Content>
-      {cancel ? (
+      {cancelled ? null : cancel ? (
         <Portal>
           <Dialog visible={visible} onDismiss={hideDialog}>
             <Dialog.Title>Cancel</Dialog.Title>

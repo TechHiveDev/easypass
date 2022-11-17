@@ -30,13 +30,9 @@ const Upcoming = () => {
     () =>
       data
         ? groupBy(
-            data
-              ?.filter((d) => {
-                return d.status !== "cancelled";
-              })
-              ?.map((d) => {
-                return { ...d, date: d?.availableDateFrom.split("T")[0] };
-              }),
+            data?.map((d) => {
+              return { ...d, date: d?.availableDateFrom.split("T")[0] };
+            }),
             "date"
           )
         : {},
