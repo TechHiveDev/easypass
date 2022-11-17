@@ -13,6 +13,7 @@ import { FlashList } from "@shopify/flash-list";
 import TouchableOpacity from "../../Components/TouchableOpacity";
 import { useAppSelector } from "../../Store/redux.hooks";
 import { useGetListQuery } from "../../API/api";
+import React from "react";
 
 function Discover({ item }) {
   const { name, icon } = item;
@@ -43,15 +44,15 @@ function Discover({ item }) {
 }
 
 // =================================================================
+const ListEmptyComponent = () => <Text>No Discoveries yet</Text>;
 
 export default function DiscoverScreen() {
   const currentCompoundId = useAppSelector(
     (state) => state?.auth?.currentCompound?.compoundId
   );
-  const { data, error, isLoading } = useGetListQuery({
+  const { data, error, isLoading, isFetching, refetch } = useGetListQuery({
     entity: "category/compound/" + currentCompoundId,
   });
-  console.log(data)
   if (error || isLoading) return null;
   return (
     <SafeAreaView
@@ -59,16 +60,22 @@ export default function DiscoverScreen() {
         styles.screen,
         {
           padding: 0,
-          // paddingLeft: wp(7),
         },
       ]}
     >
       <FlashList
+        onRefresh={() => {
+          if (!isFetching) {
+            refetch();
+          }
+        }}
+        refreshing={isFetching ?? false}
         data={data}
         renderItem={({ item }) => <Discover item={item} />}
         keyExtractor={(item) => item.id}
         estimatedItemSize={50}
         numColumns={2}
+        ListEmptyComponent={ListEmptyComponent}
       />
     </SafeAreaView>
   );

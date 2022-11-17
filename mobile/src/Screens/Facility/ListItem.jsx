@@ -5,9 +5,11 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from "react-native-responsive-screen";
-import { Alert, Text, View } from "react-native";
+import { Text, View } from "react-native";
 import theme from "../../Theme/paper.theme";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useUpdateMutation } from "../../API/api";
+import { Toast } from "react-native-toast-message/lib/src/Toast";
 
 const getFormattedTime = (time) => {
   const hours = time.getHours().toString();
@@ -16,11 +18,33 @@ const getFormattedTime = (time) => {
   return `${hours}:${formattedMinutes}`;
 };
 export const ListItem = ({ item, cancel = true }) => {
+  const { facility, ...restOfRequest } = item;
+  const [cancelBooking] = useUpdateMutation({
+    entity: "request",
+    id: item.id,
+    body: { ...restOfRequest, status: "Cancelled" },
+  });
   const [visible, setVisible] = React.useState(false);
   const showDialog = () => setVisible(true);
   const hideDialog = () => setVisible(false);
-  const cancelRequest = () => {
-    Alert.alert("cancel", JSON.stringify(item));
+  const cancelRequest = async () => {
+    const res = await cancelBooking({
+      entity: "request",
+      id: item.id,
+      body: { ...restOfRequest, status: "Cancelled" },
+    });
+    const data = res.data;
+    if (data?.id) {
+      Toast.show({
+        type: "success",
+        text1: "Cancelled reservation successfully ",
+      });
+    } else {
+      Toast.show({
+        type: "error",
+        text1: "Error happened while cancelling reservation",
+      });
+    }
     hideDialog();
   };
   const from = handleOffsetObject(item.availableDateFrom);

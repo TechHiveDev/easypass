@@ -66,11 +66,11 @@ export default function App() {
   I18nManager.forceRTL(isRTL);
   return (
     <>
-      <View
-        style={{
-          height: 50,
-        }}
-      />
+      {/*<View*/}
+      {/*  style={{*/}
+      {/*    height: 50,*/}
+      {/*  }}*/}
+      {/*/>*/}
       <Provider store={store}>
         <PaperProvider theme={theme}>
           <AppNavigator />

@@ -5,6 +5,7 @@ import { useGetListQuery } from "../../../API/api";
 import { useSelector } from "react-redux";
 import { FlashList } from "@shopify/flash-list";
 import { Request } from "../Request";
+import { Text } from "react-native-paper";
 
 const groupBy = (xs, key) => {
   return xs.reduce(function (rv, x) {
@@ -15,6 +16,7 @@ const groupBy = (xs, key) => {
 
 const newDate = new Date();
 const currentDate = newDate.toISOString();
+const ListEmptyComponent = () => <Text>No Upcoming reservations</Text>;
 
 const Upcoming = () => {
   const userId = useSelector((s) => s.auth.user.id);
@@ -53,6 +55,12 @@ const Upcoming = () => {
   return (
     <View style={globalStyles.screen}>
       <FlashList
+        refreshing={isFetching ?? false}
+        onRefresh={() => {
+          if (isFetching) {
+            refetch();
+          }
+        }}
         estimatedItemSize={123}
         keyExtractor={(item) => item}
         data={sortedItems}
@@ -61,6 +69,7 @@ const Upcoming = () => {
             <Request date={item} list={formattedData[item]} cancel={true} />
           );
         }}
+        ListEmptyComponent={ListEmptyComponent}
       />
     </View>
   );
