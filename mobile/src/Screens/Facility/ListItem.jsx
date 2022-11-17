@@ -32,7 +32,7 @@ export const ListItem = ({ item, cancel = true }) => {
     const res = await cancelBooking({
       entity: "request",
       id: item.id,
-      body: { ...restOfRequest, status: "Cancelled" },
+      body: { status: "Cancelled" },
     });
     const data = res.data;
     if (data?.id) {
