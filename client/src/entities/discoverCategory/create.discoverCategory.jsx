@@ -16,8 +16,8 @@ export default function CreateDiscoverCategory(props) {
   return (
     <Create title={<Title create />}>
       <SimpleForm redirect="list">
-        <TextInput variant="outlined" source="name" />
-        <TextInput variant="outlined" source="description" multiline />
+        <TextInput variant="outlined" source="name"  required />
+        <TextInput variant="outlined" source="description" multiline  />
         <p>
           Choose an icon from{' '}
           <a href="https://icons.expo.fyi/" target="_blank" rel="noreferrer">
@@ -27,7 +27,7 @@ export default function CreateDiscoverCategory(props) {
           (Make sure it's Material community icons family) and put it's name
           here{' '}
         </p>
-        <TextInput variant="outlined" source="icon" />
+        <TextInput variant="outlined" source="icon" required />
       </SimpleForm>
     </Create>
   );

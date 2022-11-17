@@ -1,14 +1,17 @@
+import React from "react";
 import { FlashList } from "@shopify/flash-list";
+import { SafeAreaView } from "react-native";
 import { Facility } from "./Facility";
 import { useListContext } from "../../../Navigators/FacilityContext";
 import globalStyles from "../../../Theme/global.styles";
 import theme from "../../../Theme/paper.theme";
-import { widthPercentageToDP as wp } from "react-native-responsive-screen";
-import { SafeAreaView } from "react-native";
+import { Text } from "react-native-paper";
+
+const ListEmptyComponent = () => <Text>No Facilities yet</Text>;
 
 export default function FacilityScreen() {
-  const { data, error, isLoading } = useListContext();
-  if (error || isLoading) return null;
+  const { data, error, isLoading, refetch, isFetching } = useListContext();
+  if (error || isLoading) return <></>;
   return (
     <SafeAreaView
       style={[
@@ -16,16 +19,22 @@ export default function FacilityScreen() {
         {
           backgroundColor: theme.colors.transparentGrey,
           padding: 0,
-          paddingLeft: wp(7),
         },
       ]}
     >
       <FlashList
+        onRefresh={() => {
+          if (!isFetching) {
+            refetch();
+          }
+        }}
+        refreshing={isFetching ?? false}
         data={data}
         renderItem={({ item }) => <Facility {...item} />}
         keyExtractor={(item) => item.name}
         estimatedItemSize={50}
         numColumns={2}
+        ListEmptyComponent={ListEmptyComponent}
       />
     </SafeAreaView>
   );

@@ -1,27 +1,16 @@
 import React from "react";
-import { Text, View } from "react-native";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import FacilityStackNavigator from "./SingleFacilityStack.navigator";
+import UpcomingFacilitiesScreen from "../Screens/Facility/UpcomingFacilities.screen";
+import PastFacilitiesScreen from "../Screens/Facility/PastFacilities.screen";
 const Tab = createMaterialTopTabNavigator();
-
-const UpComing = () => (
-  <View>
-    <Text>UpComing</Text>
-  </View>
-);
-
-const Past = () => (
-  <View>
-    <Text>Past</Text>
-  </View>
-);
 
 const FacilityTopTabNavigator = () => {
   return (
     <Tab.Navigator>
-      <Tab.Screen name={"Book"} component={FacilityStackNavigator} />
-      <Tab.Screen name="UpComing" component={UpComing} />
-      <Tab.Screen name="Past" component={Past} />
+      <Tab.Screen name="Book" component={FacilityStackNavigator} />
+      <Tab.Screen name="UpComing" component={UpcomingFacilitiesScreen} />
+      <Tab.Screen name="Past" component={PastFacilitiesScreen} />
     </Tab.Navigator>
   );
 };

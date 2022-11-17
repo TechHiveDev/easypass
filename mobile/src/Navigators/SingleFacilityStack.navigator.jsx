@@ -6,6 +6,7 @@ import FacilityItem from "../Screens/Facility/FacilityItem.screen";
 import { useAppSelector } from "../Store/redux.hooks";
 import { useGetListQuery } from "../API/api";
 import { ListContext } from "./FacilityContext";
+import { useFocusEffect } from "@react-navigation/native";
 const Stack = createNativeStackNavigator();
 
 const screenOptions = {
@@ -16,8 +17,13 @@ export default function ScreensNavigator() {
   const currentCompoundId = useAppSelector(
     (state) => state?.auth?.currentCompound?.compoundId
   );
-  const { data, error, isLoading, refetch } = useGetListQuery({
+  const { data, error, isLoading, refetch, isFetching } = useGetListQuery({
     entity: "facility/compound/" + currentCompoundId,
+  });
+  useFocusEffect(() => {
+    if (!isFetching) {
+      refetch();
+    }
   });
   return (
     <ListContext.Provider
