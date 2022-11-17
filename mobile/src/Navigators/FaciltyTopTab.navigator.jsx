@@ -3,7 +3,7 @@ import { createMaterialTopTabNavigator } from "@react-navigation/material-top-ta
 import FacilityStackNavigator from "./SingleFacilityStack.navigator";
 import UpcomingFacilitiesScreen from "../Screens/Facility/UpcomingFacilities.screen";
 import PastFacilitiesScreen from "../Screens/Facility/PastFacilities.screen";
-const Tab = createMaterialTopTabNavigator()
+const Tab = createMaterialTopTabNavigator();
 
 const FacilityTopTabNavigator = () => {
   return (
