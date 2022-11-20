@@ -1,4 +1,4 @@
-import { useRecordContext, useTranslate } from "react-admin";
+import { useRecordContext, useTranslate } from 'react-admin';
 
 const FacilityTitle = ({ create = false }) => {
   const t = useTranslate();
@@ -6,9 +6,9 @@ const FacilityTitle = ({ create = false }) => {
   // the record can be empty while loading
   return (
     <span>
-      {create ? t("create") : ""}&nbsp;
-      {create ? t("facility").replace("ال", "") : t("facility")}&nbsp;
-      {record ? record.id : ""}
+      {create ? t('create') : ''}&nbsp;
+      {create ? t('service').replace('ال', '') : t('service')}&nbsp;
+      {record ? record.id : ''}
     </span>
   );
 };

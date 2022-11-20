@@ -12,6 +12,7 @@ import {
   DateTimeInput,
 } from 'react-admin';
 import Title from './title.facility';
+import IconHelper from '../../components/IconHelper';
 
 // ------------------------------------------------
 
@@ -23,15 +24,7 @@ export default function EditFacility() {
         <TextInput variant="outlined" source="name" />
         <TextInput variant="outlined" source="description" multiline />
         <NumberInput variant="outlined" source="price" />
-        <p>
-          Choose an icon from{' '}
-          <a href="https://icons.expo.fyi/" target="_blank" rel="noreferrer">
-            {' '}
-            Icons
-          </a>{' '}
-          (Make sure it's Material community icons family) and put it's name
-          here{' '}
-        </p>
+        <IconHelper />
         <TextInput variant="outlined" source="icon" />
         <ReferenceInput
           required

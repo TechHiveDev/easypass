@@ -36,7 +36,7 @@ const arabicMessages = {
     label: 'التسجيل',
   },
   menu: {
-    Facility: 'الخدمات',
+    Service: 'الخدمات',
     User: 'المستخدمين',
     Post: 'المنشورات',
     inventory: 'المخزون',
@@ -445,7 +445,7 @@ const arabicMessages = {
   requiredUser: 'رجاء اختيار المستخدم',
   requiredCompound: 'رجاء اختيار المجمع',
   requiredCategory: 'رجاء اختيار المجموعة',
-  facility: 'خدمة',
+  service: 'خدمة',
   facilityType: {
     Facility: 'خدمة',
     Issue: 'مشكلة',

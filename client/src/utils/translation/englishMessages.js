@@ -48,7 +48,7 @@ const allEnglishMessages = {
     label: 'Sign-up',
   },
   menu: {
-    Facility: 'Facilities',
+    Service: 'Services',
     User: 'Users',
     Post: 'Posts',
     inventory: 'Inventory',
@@ -116,7 +116,7 @@ const allEnglishMessages = {
   requiredUser: 'User is required',
   requiredCompound: 'Compound is required',
   requiredCategory: 'Category is required',
-  facility: 'Facility',
+  service: 'Service',
   facilityType: {
     Facility: 'Facility',
     Issue: 'Issue',
