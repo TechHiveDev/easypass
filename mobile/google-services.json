@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "176720501942",
+    "project_id": "easypass-test",
+    "storage_bucket": "easypass-test.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:176720501942:android:d06eb2f87d337e0dd15a17",
+        "android_client_info": {
+          "package_name": "com.techhive.easypass"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "176720501942-dhflrkm2gu3noa8umc54scb2jgrq7b0l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDSwrHMJsMFZj6HZM-6R_a8CmmiTwxTraM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "176720501942-dhflrkm2gu3noa8umc54scb2jgrq7b0l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

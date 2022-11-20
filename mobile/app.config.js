@@ -1,4 +1,5 @@
 const config = require("./src/Config/config");
+
 module.exports = {
   name: config.name,
   slug: config.slug,
@@ -18,6 +19,13 @@ module.exports = {
           "The app accesses your photos to upload profile photo.",
       },
     ],
+    [
+      "expo-notifications",
+      {
+        icon: "./assets/icon.png",
+        color: "#0072BC",
+      },
+    ],
   ],
   updates: {
     fallbackToCacheTimeout: 0,
@@ -32,6 +40,7 @@ module.exports = {
     },
   },
   android: {
+    googleServicesFile: "./google-services.json",
     adaptiveIcon: {
       foregroundImage: "./assets/adaptive-icon.png",
       backgroundColor: "#FFFFFF",
