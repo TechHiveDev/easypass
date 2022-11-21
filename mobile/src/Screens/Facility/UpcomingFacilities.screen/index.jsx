@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import globalStyles from "../../../Theme/global.styles";
 import { View } from "react-native";
 import { useGetListQuery } from "../../../API/api";
@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { FlashList } from "@shopify/flash-list";
 import { Request } from "../Request";
 import { Text } from "react-native-paper";
+import { useIsFocused } from "@react-navigation/native";
 
 const groupBy = (xs, key) => {
   return xs.reduce(function (rv, x) {
@@ -17,7 +18,7 @@ const groupBy = (xs, key) => {
 const newDate = new Date();
 const currentDate = newDate.toISOString();
 const ListEmptyComponent = () => <Text>No Upcoming reservations</Text>;
-
+let counter = 0;
 const Upcoming = () => {
   const userId = useSelector((s) => s.auth.user.id);
   const { data, error, isLoading, isFetching, refetch } = useGetListQuery({
@@ -45,6 +46,15 @@ const Upcoming = () => {
       }),
     [formattedData]
   );
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    if (!isFetching && isFocused) {
+      refetch();
+      console.log("Upcoming fetch count on focus is ", ++counter);
+    }
+  }, [isFocused]);
+
   if (!data || isLoading || error) {
     return null;
   }

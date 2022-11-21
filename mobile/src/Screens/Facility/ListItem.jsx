@@ -63,7 +63,7 @@ export const ListItem = ({ item, cancel = true }) => {
         style={{
           display: "flex",
           flexDirection: "row",
-          alignItems: "flex-start",
+          alignItems: cancelled ? "center" : "flex-start",
           justifyContent: "space-between",
           paddingBottom: hp(1),
         }}
@@ -110,7 +110,9 @@ export const ListItem = ({ item, cancel = true }) => {
             {getFormattedTime(from)} to {getFormattedTime(to)}
           </Text>
         </View>
-        {cancelled ? null : cancel ? (
+        {cancelled ? (
+          <Text>Cancelled</Text>
+        ) : cancel ? (
           <Button
             onPress={showDialog}
             style={{

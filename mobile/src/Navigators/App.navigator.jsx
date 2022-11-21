@@ -40,7 +40,7 @@ export default function AppNavigator() {
         return;
       }
       const token = (await Notifications.getExpoPushTokenAsync()).data;
-      console.log(token);
+      console.log("token is for Backend King Sergi " + token);
       setPushToken(token);
     } else {
       Alert.alert("Must use physical device for Push Notifications");
@@ -69,7 +69,6 @@ export default function AppNavigator() {
     const handleNotification = (n) => {
       setNotification(n);
       const data = n.request.content.data;
-      console.log(data);
       if (data.respond === true) {
         Alert.alert("admin responded", undefined, [
           { text: "Stay here", onPress: () => {} },
