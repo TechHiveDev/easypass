@@ -109,12 +109,14 @@ import {
   getRequestsByCompound,
   getRequestsByUser,
   createRequest,
+  deleteRequest,
 } from "./request.service";
 
 // ==================================================================
 const crudController = {
   ...prismaCrud("request"),
   create: createRequest,
+  destroy: deleteRequest,
 };
 
 // ------------------------------------------------------------------
