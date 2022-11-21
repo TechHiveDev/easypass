@@ -10,6 +10,8 @@ import {
   SimpleFormIterator,
   DateTimeInput,
   BooleanInput,
+  TimeInput,
+  required,
 } from 'react-admin';
 import Title from './title.facility';
 import IconHelper from '../../components/IconHelper';
@@ -43,9 +45,18 @@ export default function CreateFacility() {
         </ReferenceInput>
         <ArrayInput source="slots">
           <SimpleFormIterator inline>
-            <DateTimeInput source="from" helperText={false} />
-            <DateTimeInput source="to" helperText={false} />
-            <BooleanInput source="available" helperText={false} />
+            <DateTimeInput
+              source="from"
+              helperText={false}
+              validate={required()}
+            />
+            <TimeInput source="to" helperText={false} validate={required()} />
+            <BooleanInput
+              defaultValue
+              source="available"
+              helperText={false}
+              validate={required()}
+            />
           </SimpleFormIterator>
         </ArrayInput>
       </SimpleForm>
