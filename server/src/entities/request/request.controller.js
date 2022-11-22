@@ -110,6 +110,7 @@ import {
   getRequestsByUser,
   createRequest,
   deleteRequest,
+  updateRequest
 } from "./request.service";
 
 // ==================================================================
@@ -117,6 +118,7 @@ const crudController = {
   ...prismaCrud("request"),
   create: createRequest,
   destroy: deleteRequest,
+  update: updateRequest,
 };
 
 // ------------------------------------------------------------------

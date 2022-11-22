@@ -8,3 +8,5 @@ assets/*
 # exception to the rule
 # !assets/user/.gitkeep
 .idea
+
+push-notification-key.json

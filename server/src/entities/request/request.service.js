@@ -26,22 +26,29 @@ const prisma = new PrismaClient();
 
 // ------------------------------------------------------------
 
+import { sendNotification } from "../../utils/notification/expo.js";
+
+// ------------------------------------------------------------
+
 export const getRequestsByCompound = async (compoundId) => {
   return await prisma.request.findMany({ where: { compoundId } });
 };
 
+// ------------------------------------------------------------------
+
 export const getRequestsByUser = async (userId, query) => {
-  const { q, limit, offset, filter, order, from, to } = parseQuery(
-    query
-  );
+  const { q, limit, offset, filter, order, from, to } = parseQuery(query);
   return await prisma.request.findMany({
     take: limit,
     skip: offset,
     where: { ...filter, userId },
     orderBy: order,
-    include: { facility: true }
+    include: { facility: true },
   });
 };
+
+// ------------------------------------------------------------------
+
 export const createRequest = async (data) => {
   const { availableDateFrom, availableDateTo, facilityId } = data;
 
@@ -80,7 +87,8 @@ export const deleteRequest = async (id) => {
   const { slots, ...res } = facility;
   for (let i = 0; i < slots.length; i++) {
     if (
-      new Date(slots[i].from).getTime() == request.availableDateFrom.getTime() &&
+      new Date(slots[i].from).getTime() ==
+        request.availableDateFrom.getTime() &&
       new Date(slots[i].to).getTime() == request.availableDateTo.getTime() &&
       !slots[i].available
     ) {
@@ -94,5 +102,23 @@ export const deleteRequest = async (id) => {
       return await prisma.request.delete({ where: { id } });
     }
   }
+};
 
-}
+// ------------------------------------------------------------------
+
+export const updateRequest = async (id, data) => {
+  const request = await prisma.request.findUnique({
+    where: { id },
+    include: { user: true, facility: true },
+  });
+  if (data.isAdmin) {
+    delete data.isAdmin;
+    await sendNotification({
+      usersPushTokens: [request.user.notificationToken],
+      title: `Response to ${request.facility.name}`,
+      body: "an admin responded to your request",
+      data: { respond: true },
+    });
+  }
+  return await prisma.request.update({ where: { id }, data });
+};
