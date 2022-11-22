@@ -59,13 +59,11 @@ export default function AppNavigator() {
   const handleNotificationResponse = (response) => {
     console.log(response?.notification?.request?.content?.body);
   };
+
   useEffect(() => {
     authMe().then(() => {
       SplashScreen.hideAsync();
     });
-  }, [authMe]);
-
-  useEffect(() => {
     const handleNotification = (n) => {
       setNotification(n);
       const data = n.request.content.data;
@@ -87,7 +85,12 @@ export default function AppNavigator() {
       handleNotificationResponse
     );
     Notifications.setNotificationHandler(handleNotification);
-  }, [navigation, registerForPushNotificationsAsync]);
+    return () => {
+      Notifications.removeNotificationSubscription(handleNotification);
+      Notifications.removeNotificationSubscription(handleNotificationResponse);
+    };
+    // eslint-disable-next-line
+  }, []);
 
   if (loading) {
     return null;
