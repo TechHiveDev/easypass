@@ -89,7 +89,7 @@ export default function AppNavigator() {
       Notifications.removeNotificationSubscription(handleNotification);
       Notifications.removeNotificationSubscription(handleNotificationResponse);
     };
-    // eslint-disable-next-line
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (loading) {
