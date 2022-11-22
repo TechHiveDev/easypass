@@ -1,0 +1,13 @@
+diff --git a/node_modules/react-native-calendars/src/day-state-manager.js b/node_modules/react-native-calendars/src/day-state-manager.js
+index 3610e19..ed41421 100644
+--- a/node_modules/react-native-calendars/src/day-state-manager.js
++++ b/node_modules/react-native-calendars/src/day-state-manager.js
+@@ -3,7 +3,7 @@ const { toMarkingFormat } = require('./interface');
+ export function getState(day, current, props) {
+     const { minDate, maxDate, disabledByDefault, context } = props;
+     let state = '';
+-    if ((context?.date ?? toMarkingFormat(current)) === toMarkingFormat(day)) {
++    if (context?.date === toMarkingFormat(day)) {
+         state = 'selected';
+     }
+     else if (isToday(day)) {

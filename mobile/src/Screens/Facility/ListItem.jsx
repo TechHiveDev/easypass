@@ -1,5 +1,5 @@
 import React from "react";
-import { handleOffsetObject } from "../../Utils/handleOffset";
+import handleOffset from "../../Utils/handleOffset";
 import { Button, Card, Dialog, Paragraph, Portal } from "react-native-paper";
 import {
   heightPercentageToDP as hp,
@@ -11,12 +11,6 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useUpdateMutation } from "../../API/api";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
 
-const getFormattedTime = (time) => {
-  const hours = time.getHours().toString();
-  const minutes = time.getMinutes().toString();
-  const formattedMinutes = minutes.length === 1 ? `0${minutes}` : minutes;
-  return `${hours}:${formattedMinutes}`;
-};
 export const ListItem = ({ item, cancel = true }) => {
   const cancelled = item.status === "Cancelled";
   const { facility, ...restOfRequest } = item;
@@ -48,8 +42,10 @@ export const ListItem = ({ item, cancel = true }) => {
     }
     hideDialog();
   };
-  const from = handleOffsetObject(item.availableDateFrom);
-  const to = handleOffsetObject(item.availableDateTo);
+  const from = handleOffset(item.availableDateFrom)
+    .split("T")[1]
+    .substring(0, 5);
+  const to = handleOffset(item.availableDateTo).split("T")[1].substring(0, 5);
   return (
     <Card
       style={{
@@ -107,7 +103,7 @@ export const ListItem = ({ item, cancel = true }) => {
               name={"clock-outline"}
               color={theme.colors.black}
             />{" "}
-            {getFormattedTime(from)} to {getFormattedTime(to)}
+            {from} to {to}
           </Text>
         </View>
         {cancelled ? (

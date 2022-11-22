@@ -10,8 +10,15 @@ export const rowHasChanged = (r1, r2) => {
 export const minDate = timeToString(new Date());
 
 export const initialItemsGetter = (slots) => {
+  const currentDay = new Date();
+  //filter available slots
+  const availableSlots = slots.filter(
+    (s) => s.available === true && new Date(s.from) > currentDay
+  );
   // first get unique dates
-  const slotDates = [...new Set(slots.map((s) => s.from.split("T")[0]))];
+  const slotDates = [
+    ...new Set(availableSlots.map((s) => s.from.split("T")[0])),
+  ];
   // then make an object with this dates like { "2022-11-02": [], "2022-11-03": [] } (object of arrays)
   let initialItems = slotDates.reduce((ac, a) => ({ ...ac, [a]: [] }), {});
   // and an object to mark the days  {"2022-11-02": {marked: true,disabled: false,}}
@@ -26,7 +33,7 @@ export const initialItemsGetter = (slots) => {
     {}
   );
   // then populate the arrays inside the initialItems object
-  slots.forEach((s) => {
+  availableSlots.forEach((s) => {
     const date = s.from.split("T")[0];
     const from = handleOffset(s.from).split("T")[1];
     const to = handleOffset(s.to).split("T")[1];
