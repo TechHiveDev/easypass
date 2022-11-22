@@ -57,7 +57,6 @@ export const createRequest = async (data) => {
     ) {
       slots[i].available = false;
 
-      console.log({ ...res, slots });
       await prisma.facility.update({
         where: { id: facilityId },
         data: { ...res, slots },
@@ -68,4 +67,32 @@ export const createRequest = async (data) => {
 
   throw { status: 400, message: "invalid request or no slots available" };
 };
+
 // ------------------------------------------------------------------
+
+export const deleteRequest = async (id) => {
+  const request = await prisma.request.findUnique({ where: { id } });
+
+  let facility = await prisma.facility.findUnique({
+    where: { id: request.facilityId },
+  });
+
+  const { slots, ...res } = facility;
+  for (let i = 0; i < slots.length; i++) {
+    if (
+      new Date(slots[i].from).getTime() == request.availableDateFrom.getTime() &&
+      new Date(slots[i].to).getTime() == request.availableDateTo.getTime() &&
+      !slots[i].available
+    ) {
+      slots[i].available = true;
+
+      await prisma.facility.update({
+        where: { id: request.facilityId },
+        data: { ...res, slots },
+      });
+      // return await prisma.request.delete({ data });
+      return await prisma.request.delete({ where: { id } });
+    }
+  }
+
+}
