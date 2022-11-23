@@ -105,11 +105,12 @@
 // ------------------------------------------------------------------
 
 import { crud, prismaCrud } from "../../utils/crud/express-crud-router";
-import { getFacilitiesByCompound } from "./facility.service";
+import { getFacilitiesByCompound, createFacility } from "./facility.service";
 
 // ==================================================================
 const crudController = {
   ...prismaCrud("facility"),
+  create: createFacility
 };
 
 // ------------------------------------------------------------------
