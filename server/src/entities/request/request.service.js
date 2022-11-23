@@ -50,29 +50,39 @@ export const getRequestsByUser = async (userId, query) => {
 // ------------------------------------------------------------------
 
 export const createRequest = async (data) => {
-  const { availableDateFrom, availableDateTo, facilityId } = data;
+  try {
+    const { availableDateFrom, availableDateTo, facilityId } = data;
 
-  let facility = await prisma.facility.findUnique({
-    where: { id: facilityId },
-  });
-  const { slots, ...res } = facility;
-  for (let i = 0; i < slots.length; i++) {
-    if (
-      slots[i].from == availableDateFrom &&
-      slots[i].to == availableDateTo &&
-      slots[i].available
-    ) {
-      slots[i].available = false;
-
-      await prisma.facility.update({
+    if (data.type === "Facility") {
+      let facility = await prisma.facility.findUnique({
         where: { id: facilityId },
-        data: { ...res, slots },
       });
+      let { slots, ...res } = facility;
+
+      slots = slots.map(validateAndTransform);
+
+      for (let i = 0; i < slots.length; i++) {
+        if (
+          slots[i].from == availableDateFrom &&
+          slots[i].to == availableDateTo &&
+          slots[i].available
+        ) {
+          slots[i].available = false;
+
+          await prisma.facility.update({
+            where: { id: facilityId },
+            data: { ...res, slots },
+          });
+          return await prisma.request.create({ data });
+        }
+      }
+      throw { status: 400, message: "invalid request or no slots available" };
+    } else {
       return await prisma.request.create({ data });
     }
+  } catch (e) {
+    throw e;
   }
-
-  throw { status: 400, message: "invalid request or no slots available" };
 };
 
 // ------------------------------------------------------------------
@@ -80,27 +90,30 @@ export const createRequest = async (data) => {
 export const deleteRequest = async (id) => {
   const request = await prisma.request.findUnique({ where: { id } });
 
-  let facility = await prisma.facility.findUnique({
-    where: { id: request.facilityId },
-  });
+  if (request.type === "Facility") {
+    let facility = await prisma.facility.findUnique({
+      where: { id: request.facilityId },
+    });
 
-  const { slots, ...res } = facility;
-  for (let i = 0; i < slots.length; i++) {
-    if (
-      new Date(slots[i].from).getTime() ==
-        request.availableDateFrom.getTime() &&
-      new Date(slots[i].to).getTime() == request.availableDateTo.getTime() &&
-      !slots[i].available
-    ) {
-      slots[i].available = true;
+    const { slots, ...res } = facility;
+    for (let i = 0; i < slots.length; i++) {
+      if (
+        new Date(slots[i].from).getTime() ==
+          request.availableDateFrom.getTime() &&
+        new Date(slots[i].to).getTime() == request.availableDateTo.getTime() &&
+        !slots[i].available
+      ) {
+        slots[i].available = true;
 
-      await prisma.facility.update({
-        where: { id: request.facilityId },
-        data: { ...res, slots },
-      });
-      // return await prisma.request.delete({ data });
-      return await prisma.request.delete({ where: { id } });
+        await prisma.facility.update({
+          where: { id: request.facilityId },
+          data: { ...res, slots },
+        });
+        return await prisma.request.delete({ where: { id } });
+      }
     }
+  } else {
+    return await prisma.request.delete({ where: { id } });
   }
 };
 
@@ -111,7 +124,36 @@ export const updateRequest = async (id, data) => {
     where: { id },
     include: { user: true, facility: true },
   });
+
+  if (request.type === "Facility") {
+    // if cancelling free the slot 
+    if (request.status != "Cancelled" && data.status && data.status == "Cancelled") {
+      let facility = await prisma.facility.findUnique({
+        where: { id: request.facilityId },
+      });
+
+      const { slots, ...res } = facility;
+      for (let i = 0; i < slots.length; i++) {
+        if (
+          new Date(slots[i].from).getTime() ==
+            request.availableDateFrom.getTime() &&
+          new Date(slots[i].to).getTime() ==
+            request.availableDateTo.getTime() &&
+          !slots[i].available
+        ) {
+          slots[i].available = true;
+
+          await prisma.facility.update({
+            where: { id: request.facilityId },
+            data: { ...res, slots },
+          });
+        }
+      }
+    }
+  }
+
   if (data.isAdmin) {
+    // if admin, notify user 
     delete data.isAdmin;
     await sendNotification({
       usersPushTokens: [request.user.notificationToken],
@@ -121,4 +163,25 @@ export const updateRequest = async (id, data) => {
     });
   }
   return await prisma.request.update({ where: { id }, data });
+};
+
+// -----------------------------------------------------------------
+
+const validateAndTransform = (slot, index) => {
+  const fromDate = slot.from.split("T")[0];
+  const toTime = slot.to.split("T")[1];
+  const toTransformed = `${fromDate}T${toTime}`;
+  const fromObject = new Date(slot.from);
+  const toObject = new Date(toTransformed);
+  if (fromObject > toObject)
+    throw `to can't be less than from in slot number ${index}`;
+  // console.log("kolo tmm ");
+  // console.log({
+  //   ...slot,
+  //   to: toTransformed,
+  // });
+  return {
+    ...slot,
+    to: toTransformed,
+  };
 };
