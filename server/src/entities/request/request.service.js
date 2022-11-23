@@ -175,11 +175,11 @@ const validateAndTransform = (slot, index) => {
   const toObject = new Date(toTransformed);
   if (fromObject > toObject)
     throw `to can't be less than from in slot number ${index}`;
-  console.log("kolo tmm ");
-  console.log({
-    ...slot,
-    to: toTransformed,
-  });
+  // console.log("kolo tmm ");
+  // console.log({
+  //   ...slot,
+  //   to: toTransformed,
+  // });
   return {
     ...slot,
     to: toTransformed,
