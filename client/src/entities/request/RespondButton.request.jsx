@@ -7,15 +7,16 @@ import {
   useRecordContext,
   useRefresh,
   useTranslate,
-} from "react-admin";
-import { useState } from "react";
-import { useMutation } from "react-query";
-import Button from "@mui/material/Button";
-import CircularProgress from "@mui/material/CircularProgress";
-import Dialog from "@mui/material/Dialog";
-import DialogTitle from "@mui/material/DialogTitle";
-import ReplyIcon from "@mui/icons-material/Reply";
-import SaveToolbar from "../../components/SaveToolbar";
+} from 'react-admin';
+import { useState } from 'react';
+import { useMutation } from 'react-query';
+import Button from '@mui/material/Button';
+import CircularProgress from '@mui/material/CircularProgress';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import ReplyIcon from '@mui/icons-material/Reply';
+import SaveToolbar from '../../components/SaveToolbar';
+
 export const RespondButton = () => {
   const t = useTranslate();
   const [open, setOpen] = useState(false);
@@ -26,11 +27,11 @@ export const RespondButton = () => {
   const record = useRecordContext();
   const dataProvider = useDataProvider();
   const { mutateAsync, isLoading } = useMutation(
-    ["request", "update", { id: record?.id }],
+    ['request', 'update', { id: record?.id }],
     (variables) =>
-      dataProvider.update("request", {
+      dataProvider.update('request', {
         id: record?.id,
-        data: variables,
+        data: { ...variables, isAdmin: true },
       })
   );
   const submitHandler = async (values) => {
@@ -51,7 +52,7 @@ export const RespondButton = () => {
         {isLoading ? (
           <CircularProgress />
         ) : (
-          `${locale === "ar" ? " استجيب" : "respond"}`
+          `${locale === 'ar' ? ' استجيب' : 'respond'}`
         )}
       </Button>
       <Dialog
@@ -61,19 +62,19 @@ export const RespondButton = () => {
         aria-describedby="modal-modal-description"
       >
         <DialogTitle>
-          {locale === "ar" ? "استجيب للطلب " : "Respond to request "}
+          {locale === 'ar' ? 'استجيب للطلب ' : 'Respond to request '}
           {record?.id}
         </DialogTitle>
         <SimpleForm onSubmit={submitHandler} toolbar={<SaveToolbar />}>
-          <TextInput source={"respondNote"} variant="outlined" multiline />
+          <TextInput source="respondNote" variant="outlined" multiline />
           <SelectInput
             variant="outlined"
             source="status"
             choices={[
-              { id: "Pending", name: t("status." + "Pending") },
-              { id: "Refused", name: t("status." + "Refused") },
-              { id: "InProgress", name: t("status." + "InProgress") },
-              { id: "Completed", name: t("status." + "Completed") },
+              { id: 'Pending', name: t('status.' + 'Pending') },
+              { id: 'Refused', name: t('status.' + 'Refused') },
+              { id: 'InProgress', name: t('status.' + 'InProgress') },
+              { id: 'Completed', name: t('status.' + 'Completed') },
             ]}
           />
         </SimpleForm>
