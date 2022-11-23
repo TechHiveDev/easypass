@@ -59,8 +59,6 @@ export const createRequest = async (data) => {
       });
       let { slots, ...res } = facility;
 
-      slots = slots.map(validateAndTransform);
-
       for (let i = 0; i < slots.length; i++) {
         if (
           slots[i].from == availableDateFrom &&
@@ -101,7 +99,8 @@ export const deleteRequest = async (id) => {
         new Date(slots[i].from).getTime() ==
           request.availableDateFrom.getTime() &&
         new Date(slots[i].to).getTime() == request.availableDateTo.getTime() &&
-        !slots[i].available
+        !slots[i].available &&
+        request.status !== "Cancelled"
       ) {
         slots[i].available = true;
 
@@ -126,8 +125,12 @@ export const updateRequest = async (id, data) => {
   });
 
   if (request.type === "Facility") {
-    // if cancelling free the slot 
-    if (request.status != "Cancelled" && data.status && data.status == "Cancelled") {
+    // if cancelling free the slot
+    if (
+      request.status != "Cancelled" &&
+      data.status &&
+      data.status == "Cancelled"
+    ) {
       let facility = await prisma.facility.findUnique({
         where: { id: request.facilityId },
       });
@@ -153,7 +156,7 @@ export const updateRequest = async (id, data) => {
   }
 
   if (data.isAdmin) {
-    // if admin, notify user 
+    // if admin, notify user
     delete data.isAdmin;
     await sendNotification({
       usersPushTokens: [request.user.notificationToken],
@@ -163,25 +166,4 @@ export const updateRequest = async (id, data) => {
     });
   }
   return await prisma.request.update({ where: { id }, data });
-};
-
-// -----------------------------------------------------------------
-
-const validateAndTransform = (slot, index) => {
-  const fromDate = slot.from.split("T")[0];
-  const toTime = slot.to.split("T")[1];
-  const toTransformed = `${fromDate}T${toTime}`;
-  const fromObject = new Date(slot.from);
-  const toObject = new Date(toTransformed);
-  if (fromObject > toObject)
-    throw `to can't be less than from in slot number ${index}`;
-  // console.log("kolo tmm ");
-  // console.log({
-  //   ...slot,
-  //   to: toTransformed,
-  // });
-  return {
-    ...slot,
-    to: toTransformed,
-  };
 };
