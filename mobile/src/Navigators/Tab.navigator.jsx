@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { useAppSelector } from "../Store/redux.hooks";
@@ -21,7 +21,14 @@ import { Alert, Platform } from "react-native";
 const appConfig = require("../../app.json");
 const projectId = appConfig?.expo?.extra?.eas?.projectId;
 // -------------------------------------------------------
-
+if (Platform.OS === "android") {
+  await Notifications.setNotificationChannelAsync("default", {
+    name: "default",
+    importance: Notifications.AndroidImportance.MAX,
+    vibrationPattern: [0, 250, 250, 250],
+    lightColor: theme.colors.primary,
+  });
+}
 const Tab = createBottomTabNavigator();
 
 // -------------------------------------------------------
@@ -73,53 +80,43 @@ export default function TabNavigator() {
   const [notification, setNotification] = useState({});
   const [updateMyProfile] = useUpdateMutation();
 
-  const registerForPushNotificationsAsync = useCallback(async () => {
-    if (Device.isDevice) {
-      Alert.alert("is device true");
-      const { status: existingStatus } =
-        await Notifications.getPermissionsAsync();
-      let finalStatus = existingStatus;
-      if (existingStatus !== "granted") {
-        const { status } = await Notifications.requestPermissionsAsync();
-        finalStatus = status;
-      }
-      if (finalStatus !== "granted") {
-        Alert.alert("Failed to get push token for push notification!");
-        return;
-      }
-      const notificationToken = (
-        await Notifications.getExpoPushTokenAsync({
-          projectId,
-        })
-      ).data;
-      console.log("token is for Backend King Sergi " + notificationToken);
-      Alert.alert("token", notificationToken);
-      setPushToken(notificationToken);
-      const res = await updateMyProfile({
-        entity: "user",
-        id,
-        body: { notificationToken },
-      });
-      Alert.alert("res", JSON.stringify(res));
-    } else {
-      Alert.alert("Must use physical device for Push Notifications");
-    }
-
-    if (Platform.OS === "android") {
-      await Notifications.setNotificationChannelAsync("default", {
-        name: "default",
-        importance: Notifications.AndroidImportance.MAX,
-        vibrationPattern: [0, 250, 250, 250],
-        lightColor: theme.colors.primary,
-      });
-    }
-  }, [id]);
-
   const handleNotificationResponse = (response) => {
     console.log(response?.notification?.request?.content?.body);
   };
 
   useEffect(() => {
+    const registerForPushNotificationsAsync = async () => {
+      if (Device.isDevice) {
+        Alert.alert("is device true");
+        const { status: existingStatus } =
+          await Notifications.getPermissionsAsync();
+        let finalStatus = existingStatus;
+        if (existingStatus !== "granted") {
+          const { status } = await Notifications.requestPermissionsAsync();
+          finalStatus = status;
+        }
+        if (finalStatus !== "granted") {
+          Alert.alert("Failed to get push token for push notification!");
+          return;
+        }
+        const notificationToken = (
+          await Notifications.getExpoPushTokenAsync({
+            projectId,
+          })
+        ).data;
+        console.log("token is for Backend King Sergi " + notificationToken);
+        Alert.alert("token", notificationToken);
+        setPushToken(notificationToken);
+        const res = await updateMyProfile({
+          entity: "user",
+          id,
+          body: { notificationToken },
+        });
+        Alert.alert("res", JSON.stringify(res));
+      } else {
+        Alert.alert("Must use physical device for Push Notifications");
+      }
+    };
     const handleNotification = (n) => {
       setNotification(n);
       const data = n.request.content.data;
@@ -135,6 +132,7 @@ export default function TabNavigator() {
         ]);
       }
     };
+
     registerForPushNotificationsAsync();
     Notifications.addNotificationReceivedListener(handleNotification);
     Notifications.addNotificationResponseReceivedListener(
@@ -145,8 +143,7 @@ export default function TabNavigator() {
       Notifications.removeNotificationSubscription(handleNotification);
       Notifications.removeNotificationSubscription(handleNotificationResponse);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [id, navigation, updateMyProfile]);
   return userType === "Security" ? (
     <Tab.Navigator screenOptions={screenOptions}>
       {/*<Tab.Screen name={"home"} component={HomeScreen} />*/}
