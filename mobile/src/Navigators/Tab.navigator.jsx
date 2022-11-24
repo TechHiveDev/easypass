@@ -71,6 +71,7 @@ export default function TabNavigator() {
   const [updateMyProfile] = useUpdateMutation();
 
   const registerForPushNotificationsAsync = useCallback(async () => {
+    Alert.alert("notification triggered");
     if (Device.isDevice) {
       const { status: existingStatus } =
         await Notifications.getPermissionsAsync();
@@ -86,12 +87,14 @@ export default function TabNavigator() {
       const notificationToken = (await Notifications.getExpoPushTokenAsync())
         .data;
       console.log("token is for Backend King Sergi " + notificationToken);
+      Alert.alert("token", notificationToken);
       setPushToken(notificationToken);
-      await updateMyProfile({
+      const res = await updateMyProfile({
         entity: "user",
         id,
         body: { notificationToken },
       });
+      Alert.alert("res", JSON.stringify(res));
     } else {
       Alert.alert("Must use physical device for Push Notifications");
     }
