@@ -1,28 +1,22 @@
-import { admin } from "firebase-admin";
-import fcm from "fcm-notification";
-
-// import serviceAccount from "../configs/push-notification-key.json";
-import { serviceAccount } from "../configs/configs";
-
-const certPath = admin.credential.cert(serviceAccount);
-var FCM = new fcm(certPath);
-
-export const sendNotification = ({ usersPushTokens, title, body }) => {
-  try {
-    let message = {
-      notification: {
-        title,
-        body,
-      },
-      token: usersPushTokens,
-    };
-    FCM.send(message, function (err, res) {
+var FCM = require("fcm-node");
+var serverKey = process.env.FIREBASE_SERVER_KEY;
+var fcm = new FCM(serverKey);
+export const sendNotificationFirebase = async ({ usersPushTokens, title, body }) => {
+  // console.log({ usersPushTokens, title, body });
+  var message = {
+    notification: {
+      title,
+      body,
+    },
+  };
+  usersPushTokens.forEach((userToken) => {
+    message.to = userToken;
+    fcm.send(message, function (err, response) {
       if (err) {
-        throw err;
+        console.log("Something has gone wrong!");
+      } else {
+        // console.log("Successfully sent with response: ", response);
       }
     });
-  } catch (err) {
-    throw err;
-  }
-  return true;
+  });
 };
