@@ -74,8 +74,8 @@ export default function TabNavigator() {
   const [updateMyProfile] = useUpdateMutation();
 
   const registerForPushNotificationsAsync = useCallback(async () => {
-    Alert.alert("notification triggered");
     if (Device.isDevice) {
+      Alert.alert("is device true");
       const { status: existingStatus } =
         await Notifications.getPermissionsAsync();
       let finalStatus = existingStatus;
