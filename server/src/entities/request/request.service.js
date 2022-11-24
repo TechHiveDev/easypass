@@ -26,7 +26,8 @@ const prisma = new PrismaClient();
 
 // ------------------------------------------------------------
 
-import { sendNotification } from "../../utils/notification/expo.js";
+import { sendNotificationExpo } from "../../utils/notification/expo.js";
+import { sendNotificationFirebase } from "../../utils/notification/firebase";
 
 // ------------------------------------------------------------
 
@@ -51,12 +52,12 @@ export const getRequestsByUser = async (userId, query) => {
 
 export const createRequest = async (data) => {
   try {
-    const { availableDateFrom, availableDateTo, facilityId } = data;
-
-    if (data.type === "Facility") {
+    const { availableDateFrom, availableDateTo, facilityId, type } = data;
+    if (type === "Facility") {
       let facility = await prisma.facility.findUnique({
         where: { id: facilityId },
       });
+
       let { slots, ...res } = facility;
 
       for (let i = 0; i < slots.length; i++) {
@@ -67,16 +68,21 @@ export const createRequest = async (data) => {
         ) {
           slots[i].available = false;
 
+          await getAssociatedAdmin(facilityId);
+
           await prisma.facility.update({
             where: { id: facilityId },
             data: { ...res, slots },
           });
-          return await prisma.request.create({ data });
+
+          return await prisma.request.create({
+            data,
+          });
         }
       }
       throw { status: 400, message: "invalid request or no slots available" };
     } else {
-      return await prisma.request.create({ data });
+      return await prisma.request.create(data);
     }
   } catch (e) {
     throw e;
@@ -158,7 +164,7 @@ export const updateRequest = async (id, data) => {
   if (data.isAdmin) {
     // if admin, notify user
     delete data.isAdmin;
-    await sendNotification({
+    await sendNotificationExpo({
       usersPushTokens: [request.user.notificationToken],
       title: `Response to ${request.facility.name}`,
       body: "an admin responded to your request",
@@ -166,4 +172,47 @@ export const updateRequest = async (id, data) => {
     });
   }
   return await prisma.request.update({ where: { id }, data });
+};
+
+// ------------------------------------------------------------------
+
+const getAssociatedAdmin = async (facilityId) => {
+  const facility = await prisma.facility.findFirst({
+    where: {
+      id: facilityId,
+    },
+    select: {
+      compound: {
+        select: {
+          id: true,
+        },
+      },
+    },
+  });
+
+  const usersPushTokens = await prisma.userCompound
+    .findMany({
+      where: {
+        compoundId: facility.compound.id,
+        user: {
+          OR: [{ type: "Admin" }, { type: "SuperAdmin" }],
+        },
+      },
+      select: {
+        user: {
+          select: {
+            notificationToken: true,
+          },
+        },
+      },
+    })
+    ?.then((data) =>
+      data.map(({ user: { notificationToken } }) => notificationToken)
+    );
+
+  await sendNotificationFirebase({
+    usersPushTokens,
+    title: "Someone Request a facility",
+    body: "gamed",
+  });
 };
