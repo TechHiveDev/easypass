@@ -22,7 +22,7 @@ const appConfig = require("../../app.json");
 const projectId = appConfig?.expo?.extra?.eas?.projectId;
 // -------------------------------------------------------
 if (Platform.OS === "android") {
-  await Notifications.setNotificationChannelAsync("default", {
+  Notifications.setNotificationChannelAsync("default", {
     name: "default",
     importance: Notifications.AndroidImportance.MAX,
     vibrationPattern: [0, 250, 250, 250],
