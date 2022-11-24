@@ -17,6 +17,9 @@ import { useUpdateMutation } from "../API/api";
 import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
 import { Alert, Platform } from "react-native";
+
+const appConfig = require("../../app.json");
+const projectId = appConfig?.expo?.extra?.eas?.projectId;
 // -------------------------------------------------------
 
 const Tab = createBottomTabNavigator();
@@ -84,8 +87,11 @@ export default function TabNavigator() {
         Alert.alert("Failed to get push token for push notification!");
         return;
       }
-      const notificationToken = (await Notifications.getExpoPushTokenAsync())
-        .data;
+      const notificationToken = (
+        await Notifications.getExpoPushTokenAsync({
+          projectId,
+        })
+      ).data;
       console.log("token is for Backend King Sergi " + notificationToken);
       Alert.alert("token", notificationToken);
       setPushToken(notificationToken);
