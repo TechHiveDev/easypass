@@ -15,6 +15,13 @@
         {
           "photosPermission": "The app accesses your photos to upload profile photo."
         }
+      ],
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/icon.png",
+          "color": "#0072BC"
+        }
       ]
     ],
     "updates": {
@@ -34,7 +41,8 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.techhive.easypass"
+      "package": "com.techhive.easypass",
+      "useNextNotificationsApi": true
     },
     "web": {
       "favicon": "./assets/favicon.png"

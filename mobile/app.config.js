@@ -46,6 +46,7 @@ module.exports = {
       backgroundColor: "#FFFFFF",
     },
     package: "com.techhive.easypass",
+    useNextNotificationsApi: true,
   },
   web: {
     favicon: "./assets/favicon.png",
