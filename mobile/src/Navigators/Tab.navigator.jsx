@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { useAppSelector } from "../Store/redux.hooks";
@@ -17,18 +17,18 @@ import { useUpdateMutation } from "../API/api";
 import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
 import { Alert, Platform } from "react-native";
+import { initializeApp } from "firebase/app";
 
 const appConfig = require("../../app.json");
 const projectId = appConfig?.expo?.extra?.eas?.projectId;
 // -------------------------------------------------------
-if (Platform.OS === "android") {
-  Notifications.setNotificationChannelAsync("default", {
-    name: "default",
-    importance: Notifications.AndroidImportance.MAX,
-    vibrationPattern: [0, 250, 250, 250],
-    lightColor: theme.colors.primary,
-  });
-}
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
 const Tab = createBottomTabNavigator();
 
 // -------------------------------------------------------
@@ -69,20 +69,26 @@ const screenOptions = ({ route: { name } }) => ({
   tabBarHideOnKeyboard: true,
 });
 
-// -------------------------------------------------------
+const firebaseConfig = {
+  apiKey: "AIzaSyCM-MKKdGwC3XAtM-gCYsg_bJiVLwoqxeo",
+  authDomain: "easypass-test.firebaseapp.com",
+  projectId: "easypass-test",
+  storageBucket: "easypass-test.appspot.com",
+  messagingSenderId: "176720501942",
+  appId: "1:176720501942:web:8521372009ba8de5d15a17",
+  measurementId: "G-GPV3EWF9SD",
+};
 export default function TabNavigator() {
   const { userType, id } = useAppSelector((state) => ({
     userType: state?.auth?.user?.type,
     id: state?.auth?.user?.id,
   }));
-  const navigation = useNavigation();
-  const [pushToken, setPushToken] = useState(null);
-  const [notification, setNotification] = useState({});
   const [updateMyProfile] = useUpdateMutation();
 
-  const handleNotificationResponse = (response) => {
-    console.log(response?.notification?.request?.content?.body);
-  };
+  const [expoPushToken, setExpoPushToken] = useState("");
+  const [notification, setNotification] = useState(true);
+  const notificationListener = useRef();
+  const responseListener = useRef();
 
   useEffect(() => {
     const registerForPushNotificationsAsync = async () => {
@@ -106,44 +112,52 @@ export default function TabNavigator() {
         ).data;
         console.log("token is for Backend King Sergi " + notificationToken);
         Alert.alert("token", notificationToken);
-        setPushToken(notificationToken);
         const res = await updateMyProfile({
           entity: "user",
           id,
           body: { notificationToken },
         });
         Alert.alert("res", JSON.stringify(res));
+        if (Platform.OS === "android") {
+          Notifications.setNotificationChannelAsync("default", {
+            name: "default",
+            importance: Notifications.AndroidImportance.MAX,
+            vibrationPattern: [0, 250, 250, 250],
+            lightColor: "rgba(0,255,239,0.49)",
+          });
+        }
+        return notificationToken;
       } else {
         Alert.alert("Must use physical device for Push Notifications");
+        return null;
       }
     };
-    const handleNotification = (n) => {
-      setNotification(n);
-      const data = n.request.content.data;
-      if (data.respond === true) {
-        Alert.alert("admin responded", undefined, [
-          { text: "Stay here", onPress: () => {} },
-          {
-            text: "See it",
-            onPress: () =>
-              navigation.navigate("Services", { screen: "UpComing" }),
-            style: "cancel",
-          },
-        ]);
-      }
-    };
+    registerForPushNotificationsAsync().then((token) => {
+      setExpoPushToken(token);
+    });
 
-    registerForPushNotificationsAsync();
-    Notifications.addNotificationReceivedListener(handleNotification);
-    Notifications.addNotificationResponseReceivedListener(
-      handleNotificationResponse
-    );
-    Notifications.setNotificationHandler(handleNotification);
+    // This listener is fired whenever a notification is received while the app is foregrounded
+    notificationListener.current =
+      Notifications.addNotificationReceivedListener((notification) => {
+        setNotification(notification);
+      });
+
+    // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
+    responseListener.current =
+      Notifications.addNotificationResponseReceivedListener((response) => {
+        // console.log(response);
+      });
+
     return () => {
-      Notifications.removeNotificationSubscription(handleNotification);
-      Notifications.removeNotificationSubscription(handleNotificationResponse);
+      Notifications.removeNotificationSubscription(
+        notificationListener.current
+      );
+      Notifications.removeNotificationSubscription(responseListener.current);
     };
-  }, [id, navigation, updateMyProfile]);
+  }, []);
+  useEffect(() => {
+    const app = initializeApp(firebaseConfig);
+  }, []);
   return userType === "Security" ? (
     <Tab.Navigator screenOptions={screenOptions}>
       {/*<Tab.Screen name={"home"} component={HomeScreen} />*/}
