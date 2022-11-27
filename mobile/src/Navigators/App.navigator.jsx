@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import UnAuthorizedNavigator from "./UnAuthorized.navigator";
 import { useAuthMe } from "../Utils/auth.hook";
@@ -12,7 +12,6 @@ import * as Device from "expo-device";
 import { Alert, Platform } from "react-native";
 import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "../Utils/firebase";
-import { navigate } from "./navigationUtils";
 
 const appConfig = require("../../app.json");
 const projectId = appConfig?.expo?.extra?.eas?.projectId;
@@ -22,31 +21,45 @@ SplashScreen.preventAutoHideAsync();
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
     shouldShowAlert: true,
-    shouldPlaySound: true,
+    shouldPlaySound: false,
     shouldSetBadge: false,
   }),
 });
-const pendingNotifications = [];
-let notificationsHandler;
 
 export default function AppNavigator() {
   const { authMe, isAuthenticated, loading } = useAuthMe();
-
+  const lastNotificationResponse = Notifications.useLastNotificationResponse();
   const id = useAppSelector((state) => state?.auth?.user?.id);
   const [updateMyProfile] = useUpdateMutation();
   const navigation = useNavigation();
-  const [notification, setNotification] = useState(undefined);
   const notificationListener = useRef();
-  const responseListener = useRef();
   useEffect(() => {
-    const data = notification?.notification?.request?.content?.data;
-    navigate("Services", {
-      screen: "UpComing",
-      params: {
-        id: data?.requestId,
-      },
-    });
-  }, [notification?.notification?.request?.content?.data]);
+    const data = lastNotificationResponse?.notification?.request?.content?.data;
+    if (data?.respond === true) {
+      Alert.alert("admin responded to your request", undefined, [
+        {
+          text: "Stay here",
+          onPress: () => {},
+        },
+        {
+          text: "See it",
+          onPress: () => {
+            if (id) {
+              navigation.navigate("Services", {
+                screen: "UpComing",
+                params: {
+                  id: data?.requestId,
+                },
+              });
+            } else {
+              Alert.alert("Authentication", "You must login first");
+            }
+          },
+          style: "cancel",
+        },
+      ]);
+    }
+  }, [id, lastNotificationResponse, navigation]);
   useEffect(() => {
     const registerForPushNotificationsAsync = async () => {
       if (Device.isDevice && id) {
@@ -119,27 +132,12 @@ export default function AppNavigator() {
         }
       });
 
-    // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
-    responseListener.current =
-      Notifications.addNotificationResponseReceivedListener((r) => {
-        if (notificationsHandler !== undefined) {
-          notificationsHandler(r);
-        } else {
-          pendingNotifications.push(r);
-        }
-      });
-    notificationsHandler = setNotification;
-    while (pendingNotifications.length > 0) {
-      const pendingNotification = pendingNotifications.pop();
-      notificationsHandler(pendingNotification);
-    }
     return () => {
       Notifications.removeNotificationSubscription(
         notificationListener.current
       );
-      Notifications.removeNotificationSubscription(responseListener.current);
     };
-  }, [id]);
+  }, [id, navigation, updateMyProfile]);
 
   useEffect(() => {
     initializeApp(firebaseConfig);
@@ -152,6 +150,7 @@ export default function AppNavigator() {
   if (loading) {
     return null;
   }
+
   return (
     <SafeAreaProvider>
       {isAuthenticated ? <TabNavigator /> : <UnAuthorizedNavigator />}
