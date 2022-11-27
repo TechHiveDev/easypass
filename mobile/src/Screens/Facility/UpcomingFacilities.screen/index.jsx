@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import { FlashList } from "@shopify/flash-list";
 import { Request } from "../Request";
 import { Text } from "react-native-paper";
-import { useIsFocused } from "@react-navigation/native";
+import { useIsFocused, useRoute } from "@react-navigation/native";
 
 const groupBy = (xs, key) => {
   return xs.reduce(function (rv, x) {
@@ -18,8 +18,9 @@ const groupBy = (xs, key) => {
 const newDate = new Date();
 const currentDate = newDate.toISOString();
 const ListEmptyComponent = () => <Text>No Upcoming reservations</Text>;
-let counter = 0;
+
 const Upcoming = () => {
+  const { params } = useRoute();
   const userId = useSelector((s) => s.auth.user.id);
   const { data, error, isLoading, isFetching, refetch } = useGetListQuery({
     entity: `request/user/${userId}`,
@@ -51,7 +52,6 @@ const Upcoming = () => {
   useEffect(() => {
     if (!isFetching && isFocused) {
       refetch();
-      console.log("Upcoming fetch count on focus is ", ++counter);
     }
   }, [isFocused]);
 
@@ -72,7 +72,12 @@ const Upcoming = () => {
         data={sortedItems}
         renderItem={({ item }) => {
           return (
-            <Request date={item} list={formattedData[item]} cancel={true} />
+            <Request
+              date={item}
+              list={formattedData[item]}
+              cancel={true}
+              notificationId={params?.id}
+            />
           );
         }}
         ListEmptyComponent={ListEmptyComponent}

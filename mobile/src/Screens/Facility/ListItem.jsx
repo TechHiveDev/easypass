@@ -10,8 +10,11 @@ import theme from "../../Theme/paper.theme";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useUpdateMutation } from "../../API/api";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
+import { motify } from "moti";
 
-export const ListItem = ({ item, cancel = true }) => {
+const MotiCard = motify(Card)();
+
+export const ListItem = ({ item, cancel = true, notificationId }) => {
   const cancelled = item.status === "Cancelled";
   const { facility, ...restOfRequest } = item;
   const [cancelBooking] = useUpdateMutation({
@@ -47,7 +50,15 @@ export const ListItem = ({ item, cancel = true }) => {
     .substring(0, 5);
   const to = handleOffset(item.availableDateTo).split("T")[1].substring(0, 5);
   return (
-    <Card
+    <MotiCard
+      animate={{
+        scale: item.id === notificationId ? [1.1, 1, 1.1, 1] : 1,
+        borderColor:
+          item.id === notificationId
+            ? [theme.colors.primary, null, theme.colors.primary, null]
+            : null,
+        borderWidth: item.id === notificationId ? [wp(0.1), 0, 0.1, 0] : 0,
+      }}
       style={{
         width: wp(80),
         marginBottom: hp(1.5),
@@ -102,9 +113,21 @@ export const ListItem = ({ item, cancel = true }) => {
             <MaterialCommunityIcons
               name={"clock-outline"}
               color={theme.colors.black}
-            />{" "}
+            />
             {from} to {to}
           </Text>
+          {item?.respondNote ? (
+            <Text>
+              response:{" "}
+              <Text
+                style={{
+                  fontWeight: "bold",
+                }}
+              >
+                {item.respondNote}
+              </Text>
+            </Text>
+          ) : null}
         </View>
         {cancelled ? (
           <Text>Cancelled</Text>
@@ -145,6 +168,6 @@ export const ListItem = ({ item, cancel = true }) => {
           </Dialog>
         </Portal>
       ) : null}
-    </Card>
+    </MotiCard>
   );
 };

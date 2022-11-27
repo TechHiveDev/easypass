@@ -7,14 +7,13 @@ import { useAppSelector } from "../Store/redux.hooks";
 import { useGetListQuery } from "../API/api";
 import { ListContext } from "./FacilityContext";
 import { useIsFocused } from "@react-navigation/native";
+
 const Stack = createNativeStackNavigator();
 
 const screenOptions = {
   headerShown: true,
   header: (props) => <MyStatusBar {...props} />,
 };
-let counter = 0;
-
 export default function ScreensNavigator() {
   const currentCompoundId = useAppSelector(
     (state) => state?.auth?.currentCompound?.compoundId
@@ -27,7 +26,6 @@ export default function ScreensNavigator() {
   useEffect(() => {
     if (!isFetching && isFocused) {
       refetch();
-      console.log("Book fetch count on focus is ", ++counter);
     }
   }, [isFocused]);
   return (

@@ -20,8 +20,6 @@ const currentDate = newDate.toISOString();
 
 const ListEmptyComponent = () => <Text>No Past Requests</Text>;
 
-let counter = 0;
-
 const Past = () => {
   const userId = useSelector((s) => s.auth.user.id);
   const { data, error, isLoading, isFetching, refetch } = useGetListQuery({
@@ -58,7 +56,6 @@ const Past = () => {
   useEffect(() => {
     if (!isFetching && isFocused) {
       refetch();
-      console.log("past facilities fetch count on focus is ", ++counter);
     }
   }, [isFocused]);
   if (!data || isLoading || error) {

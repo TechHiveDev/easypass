@@ -7,7 +7,7 @@ import theme from "../../Theme/paper.theme";
 import React from "react";
 import { ListItem } from "./ListItem";
 
-export const Request = ({ date, list, cancel }) => {
+export const Request = ({ date, list, cancel, notificationId }) => {
   const day = date.substring(8, 10);
   const monthNumber = Number(date.substring(5, 7));
   const monthObj = new Date();
@@ -79,7 +79,14 @@ export const Request = ({ date, list, cancel }) => {
         }}
       >
         {list.map((item) => {
-          return <ListItem item={item} key={item.id} cancel={cancel} />;
+          return (
+            <ListItem
+              item={item}
+              key={item.id}
+              cancel={cancel}
+              notificationId={notificationId}
+            />
+          );
         })}
       </View>
     </View>
