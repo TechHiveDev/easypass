@@ -12,6 +12,7 @@ import * as Device from "expo-device";
 import { Alert, Platform } from "react-native";
 import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "../Utils/firebase";
+import { navigate } from "./navigationUtils";
 
 const appConfig = require("../../app.json");
 const projectId = appConfig?.expo?.extra?.eas?.projectId;
@@ -21,20 +22,31 @@ SplashScreen.preventAutoHideAsync();
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
     shouldShowAlert: true,
-    shouldPlaySound: false,
+    shouldPlaySound: true,
     shouldSetBadge: false,
   }),
 });
+const pendingNotifications = [];
+let notificationsHandler;
+
 export default function AppNavigator() {
   const { authMe, isAuthenticated, loading } = useAuthMe();
 
   const id = useAppSelector((state) => state?.auth?.user?.id);
   const [updateMyProfile] = useUpdateMutation();
   const navigation = useNavigation();
-  const [notification, setNotification] = useState(true);
+  const [notification, setNotification] = useState(undefined);
   const notificationListener = useRef();
   const responseListener = useRef();
-
+  useEffect(() => {
+    const data = notification?.notification?.request?.content?.data;
+    navigate("Services", {
+      screen: "UpComing",
+      params: {
+        id: data?.requestId,
+      },
+    });
+  }, [notification?.notification?.request?.content?.data]);
   useEffect(() => {
     const registerForPushNotificationsAsync = async () => {
       if (Device.isDevice && id) {
@@ -80,7 +92,6 @@ export default function AppNavigator() {
     // This listener is fired whenever a notification is received while the app is foregrounded
     notificationListener.current =
       Notifications.addNotificationReceivedListener((notif) => {
-        setNotification(notif);
         const data = notif?.request?.content?.data;
         if (data?.respond === true) {
           Alert.alert("admin responded to your request", undefined, [
@@ -111,9 +122,17 @@ export default function AppNavigator() {
     // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
     responseListener.current =
       Notifications.addNotificationResponseReceivedListener((r) => {
-        setNotification(r);
+        if (notificationsHandler !== undefined) {
+          notificationsHandler(r);
+        } else {
+          pendingNotifications.push(r);
+        }
       });
-
+    notificationsHandler = setNotification;
+    while (pendingNotifications.length > 0) {
+      const pendingNotification = pendingNotifications.pop();
+      notificationsHandler(pendingNotification);
+    }
     return () => {
       Notifications.removeNotificationSubscription(
         notificationListener.current

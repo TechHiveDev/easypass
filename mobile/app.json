@@ -1,5 +1,6 @@
 {
   "expo": {
+    "scheme": "pyramid-heights",
     "name": "Pyramid Heights",
     "slug": "pyramid-heights",
     "version": "1.0.0",
@@ -42,6 +43,9 @@
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.techhive.easypass",
+      "permissions": [
+        "NOTIFICATIONS"
+      ],
       "useNextNotificationsApi": true
     },
     "web": {

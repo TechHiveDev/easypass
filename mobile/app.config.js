@@ -1,6 +1,7 @@
 const config = require("./src/Config/config");
 
 module.exports = {
+  scheme: "pyramid-heights",
   name: config.name,
   slug: config.slug,
   version: "1.0.0",
