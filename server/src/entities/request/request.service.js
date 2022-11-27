@@ -59,6 +59,7 @@ export const createRequest = async (data) => {
       });
 
       let { slots, ...res } = facility;
+      let newRequest;
 
       for (let i = 0; i < slots.length; i++) {
         if (
@@ -68,19 +69,21 @@ export const createRequest = async (data) => {
         ) {
           slots[i].available = false;
 
-          await getAssociatedAdmin(facilityId);
-
           await prisma.facility.update({
             where: { id: facilityId },
             data: { ...res, slots },
           });
 
-          return await prisma.request.create({
+          newRequest = await prisma.request.create({
             data,
           });
         }
       }
-      throw { status: 400, message: "invalid request or no slots available" };
+      if (newRequest) {
+        await sendNotificationToAssociatedAdmin(facilityId, newRequest);
+        return newRequest;
+      } else
+        throw { status: 400, message: "invalid request or no slots available" };
     } else {
       return await prisma.request.create(data);
     }
@@ -167,8 +170,8 @@ export const updateRequest = async (id, data) => {
     await sendNotificationExpo({
       usersPushTokens: [request.user.notificationToken],
       title: `Response to ${request.facility.name}`,
-      body: "an admin responded to your request",
-      data: { respond: true },
+      body: `admin: ${data.respondNote}`,
+      data: { respond: true, requestId: request.id },
     });
   }
   return await prisma.request.update({ where: { id }, data });
@@ -176,7 +179,7 @@ export const updateRequest = async (id, data) => {
 
 // ------------------------------------------------------------------
 
-const getAssociatedAdmin = async (facilityId) => {
+const sendNotificationToAssociatedAdmin = async (facilityId, newRequest) => {
   const facility = await prisma.facility.findFirst({
     where: {
       id: facilityId,
@@ -212,7 +215,10 @@ const getAssociatedAdmin = async (facilityId) => {
 
   await sendNotificationFirebase({
     usersPushTokens,
-    title: "Someone Request a facility",
-    body: "gamed",
+    title: "A user requested a service",
+    body: `user requested a service from ${newRequest.availableDateFrom} to ${newRequest.availableDateTo}`,
+    data: {
+      requestId: newRequest.id,
+    },
   });
 };
