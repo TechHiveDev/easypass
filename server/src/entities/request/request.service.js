@@ -213,10 +213,13 @@ const sendNotificationToAssociatedAdmin = async (facilityId, newRequest) => {
       data.map(({ user: { notificationToken } }) => notificationToken)
     );
 
+  const from = newRequest.availableDateFrom.toISOString().slice(0, 10);
+  const to = newRequest.availableDateTo.toISOString().slice(0, 10);
+
   await sendNotificationFirebase({
     usersPushTokens,
     title: "A user requested a service",
-    body: `user requested a service from ${newRequest.availableDateFrom} to ${newRequest.availableDateTo}`,
+    body: `user requested a service from ${from} to ${to}`,
     data: {
       requestId: newRequest.id,
     },
