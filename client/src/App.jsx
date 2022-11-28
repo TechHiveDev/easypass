@@ -1,6 +1,9 @@
 import React from 'react';
+import { useNotify } from 'react-admin';
+import { onMessage } from 'firebase/messaging';
 import MyAdmin from './reactAdmin';
-import { useRequestPermissionAndSendToken } from './utils/firebase/getToken';
+import { useRequestPermissionAndSendToken } from './utils/firebase/useRequestPermissionAndSendToken';
+import { messaging } from './utils/firebase';
 
 // ------------------------------------------------
 
@@ -17,7 +20,12 @@ document.body.style.backgroundColor =
 // ------------------------------------------------
 
 function App() {
+  const notify = useNotify();
+
   useRequestPermissionAndSendToken();
+  onMessage(messaging, (payload) => {
+    notify(JSON.stringify(payload));
+  });
   return <MyAdmin />;
 }
 
