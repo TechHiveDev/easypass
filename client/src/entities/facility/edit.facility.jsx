@@ -1,22 +1,23 @@
 import {
-  Edit,
-  SimpleForm,
-  TextInput,
-  NumberInput,
-  BooleanInput,
-  ReferenceInput,
-  AutocompleteInput,
-  useTranslate,
   ArrayInput,
-  SimpleFormIterator,
+  AutocompleteInput,
+  BooleanInput,
   DateTimeInput,
+  Edit,
+  NumberInput,
+  ReferenceInput,
   required,
+  SimpleForm,
+  SimpleFormIterator,
+  TextInput,
   TimeInput,
+  useTranslate,
 } from 'react-admin';
 import Title from './title.facility';
 import IconHelper from '../../components/IconHelper';
 
 // ------------------------------------------------
+let editCurrentTime;
 
 export default function EditFacility() {
   const t = useTranslate();
@@ -50,9 +51,37 @@ export default function EditFacility() {
             <DateTimeInput
               source="from"
               helperText={false}
-              validate={required()}
+              validate={[
+                required(),
+                (value) => {
+                  editCurrentTime = value;
+                  if (Date.parse(value) < new Date()) {
+                    return `must set date and time to later time not now or in the past`;
+                  }
+                },
+              ]}
             />
-            <TimeInput source="to" helperText={false} validate={required()} />
+            <TimeInput
+              source="to"
+              helperText={false}
+              validate={[
+                required(),
+                (value) => {
+                  const from = new Date(editCurrentTime);
+                  const fromDate = from.toISOString().split('T')[0];
+                  const to = new Date(value);
+                  const toTime = to.toISOString().split('T')[1];
+                  const toTransformed = `${fromDate}T${toTime}`;
+                  if (
+                    new Date(toTransformed) < from ||
+                    toTime.substring(0, 5) ===
+                      from.toISOString().split('T')[1].substring(0, 5)
+                  ) {
+                    return `to value can't be less than or equal to from value`;
+                  }
+                },
+              ]}
+            />
             <BooleanInput
               defaultValue
               source="available"
