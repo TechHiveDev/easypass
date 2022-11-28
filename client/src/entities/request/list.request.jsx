@@ -1,7 +1,6 @@
 import {
   AutocompleteInput,
   Datagrid,
-  DeleteButton,
   FunctionField,
   List,
   NumberField,
@@ -82,7 +81,6 @@ export default function ListRequest(props) {
         <Actions label="">
           <ShowButton label="ra.action.show" />
           <RespondButton />
-          <DeleteButton label="ra.action.delete" />
         </Actions>
       </Datagrid>
     </List>
