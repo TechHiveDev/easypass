@@ -1,9 +1,10 @@
 import React from 'react';
-import { useNotify } from 'react-admin';
-import { onMessage } from 'firebase/messaging';
+import { AdminContext } from 'react-admin';
 import MyAdmin from './reactAdmin';
 import { useRequestPermissionAndSendToken } from './utils/firebase/useRequestPermissionAndSendToken';
-import { messaging } from './utils/firebase';
+import i18nProvider from './utils/translation/i18nProvider';
+import { dataProvider } from './reactAdmin/providers/data.provider.hook';
+import { authProvider } from './reactAdmin/providers/auth.provider.hook';
 
 // ------------------------------------------------
 
@@ -20,13 +21,12 @@ document.body.style.backgroundColor =
 // ------------------------------------------------
 
 function App() {
-  const notify = useNotify();
-
   useRequestPermissionAndSendToken();
-  onMessage(messaging, (payload) => {
-    notify(JSON.stringify(payload));
-  });
-  return <MyAdmin />;
+  return (
+    <AdminContext {...{ i18nProvider, dataProvider, authProvider }}>
+      <MyAdmin />
+    </AdminContext>
+  );
 }
 
 // ------------------------------------------------

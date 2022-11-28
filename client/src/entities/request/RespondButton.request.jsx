@@ -71,10 +71,11 @@ export const RespondButton = () => {
             variant="outlined"
             source="status"
             choices={[
-              { id: 'Pending', name: t('status.' + 'Pending') },
-              { id: 'Refused', name: t('status.' + 'Refused') },
-              { id: 'InProgress', name: t('status.' + 'InProgress') },
-              { id: 'Completed', name: t('status.' + 'Completed') },
+              { id: 'Pending', name: t('status.Pending') },
+              { id: 'Completed', name: t('status.Completed') },
+              { id: 'Cancelled', name: t('status.Cancelled') },
+              { id: 'Refused', name: t('status.Refused') },
+              { id: 'Done', name: t('status.Done') },
             ]}
           />
         </SimpleForm>

@@ -123,9 +123,10 @@ const allEnglishMessages = {
   },
   status: {
     Pending: 'Pending',
-    Refused: 'Refused',
-    InProgress: 'In Progress',
     Completed: 'Completed',
+    Cancelled: 'Cancelled',
+    Refused: 'Refused',
+    Done: 'Done',
   },
   streetBlockUnit: 'Street - Block - Unit',
 };
