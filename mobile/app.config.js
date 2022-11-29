@@ -1,7 +1,7 @@
 const config = require("./src/Config/config");
 
 module.exports = {
-  scheme: "pyramid-heights",
+  scheme: config.scheme,
   name: config.name,
   slug: config.slug,
   version: "1.0.0",
@@ -33,7 +33,7 @@ module.exports = {
   },
   assetBundlePatterns: ["**/*"],
   ios: {
-    bundleIdentifier: "com.techhive.easypass",
+    bundleIdentifier: config.package,
     buildNumber: "1.0.0",
     supportsTablet: true,
     infoPlist: {
@@ -46,15 +46,10 @@ module.exports = {
       foregroundImage: "./assets/adaptive-icon.png",
       backgroundColor: "#FFFFFF",
     },
-    package: "com.techhive.easypass",
+    package: config.package,
     useNextNotificationsApi: true,
   },
   web: {
     favicon: "./assets/favicon.png",
-  },
-  extra: {
-    eas: {
-      projectId: "f12e984b-6eea-4e43-95fd-6618101e7121",
-    },
   },
 };

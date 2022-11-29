@@ -1,5 +1,7 @@
 module.exports = {
   API_URL: "https://easypass-api.techhive.dev",
-  name: "Pyramid Heights",
-  slug: "pyramid-heights",
+  name: "Mountain View",
+  slug: "mountain_view",
+  scheme: "mountainview",
+  package: "com.techhive.mountainview",
 };
