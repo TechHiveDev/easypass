@@ -29,7 +29,7 @@ export default function LoginScreen() {
   // -------------------------------------
 
   const defaultValues = {
-    email: "resident@example.com",
+    email: "resident@mountainview.com",
     password: "12345",
   };
 
