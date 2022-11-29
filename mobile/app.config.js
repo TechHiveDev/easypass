@@ -52,4 +52,9 @@ module.exports = {
   web: {
     favicon: "./assets/favicon.png",
   },
+  extra: {
+    eas: {
+      projectId: config.easProjectId,
+    },
+  },
 };
