@@ -41,13 +41,11 @@ module.exports = {
     },
   },
   android: {
-    googleServicesFile: "./google-services.json",
     adaptiveIcon: {
       foregroundImage: "./assets/adaptive-icon.png",
       backgroundColor: "#FFFFFF",
     },
     package: config.package,
-    useNextNotificationsApi: true,
   },
   web: {
     favicon: "./assets/favicon.png",
