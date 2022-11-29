@@ -34,54 +34,54 @@ export default function UserCard() {
             <Text style={styles.welcomeText}>{name.split(" ")[0]}!</Text>
           </TouchableOpacity>
         </View>
-        <View
-          style={{
-            marginLeft: wp(25),
-            marginTop: hp(1.5),
-          }}
-        >
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate("NotificationsScreen", {
-                title: "Notifcations",
-                allowBack: true,
-              })
-            }
-          >
-            <MaterialCommunityIcons
-              name="bell"
-              size={24}
-              color={theme.colors.primary}
-            />
-            {notificationCount > 0 ? (
-              <View
-                style={{
-                  position: "absolute",
-                  width: wp(5),
-                  height: wp(5),
-                  zIndex: 3,
-                  backgroundColor: "white",
-                  borderColor: theme.colors.primary,
-                  borderWidth: wp(0.5),
-                  borderRadius: wp(2.5),
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  top: -hp(0.5),
-                  right: -wp(1),
-                }}
-              >
-                <Text
-                  style={{
-                    fontSize: wp(2.5),
-                  }}
-                >
-                  {notificationCount}
-                </Text>
-              </View>
-            ) : null}
-          </TouchableOpacity>
-        </View>
+        {/*<View*/}
+        {/*  style={{*/}
+        {/*    marginLeft: wp(25),*/}
+        {/*    marginTop: hp(1.5),*/}
+        {/*  }}*/}
+        {/*>*/}
+        {/*  <TouchableOpacity*/}
+        {/*    onPress={() =>*/}
+        {/*      navigation.navigate("NotificationsScreen", {*/}
+        {/*        title: "Notifcations",*/}
+        {/*        allowBack: true,*/}
+        {/*      })*/}
+        {/*    }*/}
+        {/*  >*/}
+        {/*    <MaterialCommunityIcons*/}
+        {/*      name="bell"*/}
+        {/*      size={24}*/}
+        {/*      color={theme.colors.primary}*/}
+        {/*    />*/}
+        {/*    {notificationCount > 0 ? (*/}
+        {/*      <View*/}
+        {/*        style={{*/}
+        {/*          position: "absolute",*/}
+        {/*          width: wp(5),*/}
+        {/*          height: wp(5),*/}
+        {/*          zIndex: 3,*/}
+        {/*          backgroundColor: "white",*/}
+        {/*          borderColor: theme.colors.primary,*/}
+        {/*          borderWidth: wp(0.5),*/}
+        {/*          borderRadius: wp(2.5),*/}
+        {/*          display: "flex",*/}
+        {/*          justifyContent: "center",*/}
+        {/*          alignItems: "center",*/}
+        {/*          top: -hp(0.5),*/}
+        {/*          right: -wp(1),*/}
+        {/*        }}*/}
+        {/*      >*/}
+        {/*        <Text*/}
+        {/*          style={{*/}
+        {/*            fontSize: wp(2.5),*/}
+        {/*          }}*/}
+        {/*        >*/}
+        {/*          {notificationCount}*/}
+        {/*        </Text>*/}
+        {/*      </View>*/}
+        {/*    ) : null}*/}
+        {/*  </TouchableOpacity>*/}
+        {/*</View>*/}
       </View>
       <View style={styles.qrCodeContainer}>
         <QrCode />
