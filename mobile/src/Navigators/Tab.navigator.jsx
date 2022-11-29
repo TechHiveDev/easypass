@@ -12,6 +12,7 @@ import QrCode from "../Screens/QrCode/QrCode.screen";
 import InviteGuest from "../Screens/InviteGuest/InviteGuest.screen";
 import ScanQrCode from "../Screens/ScanQrCode/ScanQrCode.screen";
 import Discover from "./DiscoverStack.navigator";
+import HomeNavigator from "./Home.navigator";
 
 const Tab = createBottomTabNavigator();
 
@@ -63,7 +64,7 @@ export default function TabNavigator() {
     </Tab.Navigator>
   ) : (
     <Tab.Navigator screenOptions={screenOptions}>
-      <Tab.Screen name={"Home"} component={HomeScreen} />
+      <Tab.Screen name={"Home"} component={HomeNavigator} />
       <Tab.Screen name={"Invite"} component={InviteGuest} />
       <Tab.Screen
         name={"Discover"}
