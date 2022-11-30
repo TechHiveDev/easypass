@@ -20,20 +20,15 @@ import theme from "../../Theme/paper.theme";
 import Toast from "react-native-toast-message";
 
 // =================================================================
+const defaultValues = {
+  email: "resident@example.com",
+  password: "12345",
+};
 
 export default function LoginScreen() {
   const { navigate } = useNavigation();
   const [login, { isLoading, error }] = useLoginMutation();
   const dispatch = useAppDispatch();
-
-  // -------------------------------------
-
-  const defaultValues = {
-    email: "resident@example.com",
-    password: "12345",
-  };
-
-  // -------------------------------------
 
   const onSubmit = async (values) => {
     try {
@@ -57,8 +52,6 @@ export default function LoginScreen() {
       Toast.show({ type: "error", text1: e.message });
     }
   };
-
-  // -------------------------------------
 
   return (
     <SafeAreaView style={styles.container}>
@@ -92,8 +85,6 @@ export default function LoginScreen() {
     </SafeAreaView>
   );
 }
-
-// =================================================================
 
 const styles = StyleSheet.create({
   container: {
