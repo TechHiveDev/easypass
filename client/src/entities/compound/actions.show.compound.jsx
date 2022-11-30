@@ -6,11 +6,11 @@ import {
   ImageInput,
   NumberInput,
   ReferenceInput,
-  SelectInput,
   SimpleForm,
   TextInput,
   TopToolbar,
   useCreateController,
+  usePermissions,
   useRefresh,
   useTranslate,
 } from 'react-admin';
@@ -22,6 +22,7 @@ import ExploreIcon from '@mui/icons-material/Explore';
 import SaveToolbar from '../../components/SaveToolbar';
 
 const CompoundShowActions = () => {
+  const { isLoading, permissions } = usePermissions();
   const t = useTranslate();
   const [{ open, type }, setOpen] = useState({ open: false, type: undefined });
   const refresh = useRefresh();
@@ -129,7 +130,7 @@ const CompoundShowActions = () => {
   };
   return (
     <TopToolbar>
-      <EditButton />
+      {!isLoading && permissions === 'SuperAdmin' ? <EditButton /> : null}
       {/* Add your custom actions */}
       <Button
         size="small"

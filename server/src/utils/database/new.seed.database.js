@@ -255,8 +255,8 @@ function randomDate(start, end) {
   await prisma.scan.createMany({
     data: [
       //type, compoundId, userId, deviceId, invitationId
-      ...arrayScans("Visitor", PiramidHeightsCompoundId, PiramidHeightsResident, PiramidHeightsDeviceId, 3),
-      ...arrayScans("Delivery", PiramidHeightsCompoundId, PiramidHeightsResident, PiramidHeightsDeviceId, 4),
+      ...arrayScans("Visitor", PiramidHeightsCompoundId, PiramidHeightsResident, PiramidHeightsDeviceId, 1),
+      ...arrayScans("Delivery", PiramidHeightsCompoundId, PiramidHeightsResident, PiramidHeightsDeviceId, 2),
       ...arrayScans("Resident", PiramidHeightsCompoundId, PiramidHeightsResident, PiramidHeightsDeviceId),
 
       
@@ -472,27 +472,24 @@ function randomDate(start, end) {
         categoryId: 1,
         compoundId: PiramidHeightsCompoundId,
         name: "Masr Bank",
-        description:
-          "added facilities tab in admin panel where admin can crud facilities,full text search them and filter them by compound.added request tab in admin pane",
         photoUrl:
           "https://www.elaosboa.com/wp-content/uploads/2022/09/elaosboa85726.png",
         phone: "19888",
         shortDescription: "Egyptian Bank",
         description: "this is bank masr description",
-        address: "57 home street , elmnt2a",
+        address: "57 home street",
       },
       {
         userId: PiramidHeightsSuperAdmin,
         categoryId: 1,
         compoundId: PiramidHeightsCompoundId,
         name: "NBE Bank",
-        description: "Regional",
         photoUrl:
           "https://www.egycareers.com/wp-content/uploads/2022/05/%D8%A7%D9%84%D8%A8%D9%86%D9%83-%D8%A7%D9%84%D8%A3%D9%87%D9%84%D9%8A-%D8%A7%D9%84%D9%85%D8%B5%D8%B1%D9%8A.jpeg",
         phone: "19623",
         shortDescription: "National Bank of Egypt",
         description: "this is National Bank of Egypt",
-        address: "55 home street , elmnt2a",
+        address: "55 home street",
       },
       {
         userId: PiramidHeightsSuperAdmin,
@@ -504,36 +501,34 @@ function randomDate(start, end) {
         phone: "16061",
         shortDescription: "Online and in place shopping",
         description:
-          "dfghidkhgfdf kgfdhjkgfhj hkljfgklhjgkh kgfhjkfg fdgfdgfdgdfgfdg",
-        address: "51 home street , elmnt2a",
+          "provide customers with quality services, products and food accessible to all across all distribution channels",
+        address: "51 home street",
       },
       //--
       {
         userId: MoutainViewSuperAdmin,
         categoryId: 1,
         compoundId: MoutainViewCompoundId,
-        name: "Masr Bank",
+        name: "Banque Misr",
+        shortDescription: "Egyptian Bank",
         description:
-          "added facilities tab in admin panel where admin can crud facilities,full text search them and filter them by compound.added request tab in admin pane",
+          "Banque Misr is an Egyptian bank co-founded by industrialist Joseph Aslan Cattaui Pasha and economist Talaat Harb Pasha in 1920.",
         photoUrl:
           "https://www.elaosboa.com/wp-content/uploads/2022/09/elaosboa85726.png",
         phone: "19888",
-        shortDescription: "Egyptian Bank",
-        description: "this is bank masr description",
-        address: "57 home street , elmnt2a",
+        address: "Abou Quer, Bab Sharqi WA Wabour Al Meyah, Bab Sharqi, Alexandria",
       },
       {
         userId: MoutainViewSuperAdmin,
         categoryId: 1,
         compoundId: MoutainViewCompoundId,
-        name: "NBE Bank",
-        description: "Regional",
+        name: "National Bank of Egypt",
         photoUrl:
           "https://www.egycareers.com/wp-content/uploads/2022/05/%D8%A7%D9%84%D8%A8%D9%86%D9%83-%D8%A7%D9%84%D8%A3%D9%87%D9%84%D9%8A-%D8%A7%D9%84%D9%85%D8%B5%D8%B1%D9%8A.jpeg",
         phone: "19623",
         shortDescription: "National Bank of Egypt",
-        description: "this is National Bank of Egypt",
-        address: "55 home street , elmnt2a",
+        description: "National Bank of Egypt is a bank founded in Egypt in June 1898, and is the country's largest bank",
+        address: "Mid District, 42, Amir El-Bahr, St., Moharram Bek, Alexandria",
       },
       {
         userId: MoutainViewSuperAdmin,
@@ -545,8 +540,8 @@ function randomDate(start, end) {
         phone: "16061",
         shortDescription: "Online and in place shopping",
         description:
-          "dfghidkhgfdf kgfdhjkgfhj hkljfgklhjgkh kgfhjkfg fdgfdgfdgdfgfdg",
-        address: "51 home street , elmnt2a",
+          "Carrefour is a French multinational retail and wholesaling corporation headquartered in Massy, France. The eighth-largest retailer in the world by revenue",
+        address: "Gate 4 - 1st Alexandria Cairo Desert Road - Alexandria",
       },
     ],
   });
