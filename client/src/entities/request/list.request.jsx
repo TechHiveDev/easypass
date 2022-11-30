@@ -1,7 +1,6 @@
 import {
   AutocompleteInput,
   Datagrid,
-  DeleteButton,
   FunctionField,
   List,
   NumberField,
@@ -14,10 +13,7 @@ import {
 } from 'react-admin';
 import Actions from '../../reactAdmin/components/Actions';
 import { RespondButton } from './RespondButton.request';
-import dateFormatter, {
-  dayEqualityChecker,
-  daysMergerWithTime,
-} from '../../utils/dateFormatter';
+import dateFormatter, { daysMergerWithTime } from '../../utils/dateFormatter';
 
 const requestFilters = [
   <SearchInput source="q" alwaysOn />,
@@ -33,8 +29,6 @@ const requestFilters = [
     <AutocompleteInput optionText="name" />
   </ReferenceInput>,
 ];
-const sameDayChecker = (rec) =>
-  dayEqualityChecker(rec?.availableDateFrom, rec?.availableDateTo);
 export default function ListRequest(props) {
   const t = useTranslate();
   return (
@@ -60,18 +54,10 @@ export default function ListRequest(props) {
             daysMergerWithTime(rec?.availableDateFrom, rec.availableDateTo)
           }
         />
-        {/* <FunctionField */}
-        {/*  source={"availableDateTo"} */}
-        {/*  render={(rec) => */}
-        {/*    `${rec?.availableDateTo ? dateFormatter(rec.availableDateTo) : "-"}` */}
-        {/*  } */}
-        {/* /> */}
-        <TextField variant="outlined" source="requestNote" />
         <FunctionField
           source="respondNote"
           render={(rec) => `${rec?.respondNote ? rec.respondNote : '-'}`}
         />
-        {/* Pending || Refused || InProgress || Completed */}
         <FunctionField
           source="status"
           render={(rec) => `${t(`status.${rec.status}`)}`}
@@ -81,7 +67,7 @@ export default function ListRequest(props) {
         </ReferenceField>
         <ReferenceField source="compoundId" reference="compound" link="show">
           <TextField source="name" />
-        </ReferenceField>{' '}
+        </ReferenceField>
         <ReferenceField
           source="userCompoundId"
           reference="userCompound"
@@ -95,7 +81,6 @@ export default function ListRequest(props) {
         <Actions label="">
           <ShowButton label="ra.action.show" />
           <RespondButton />
-          <DeleteButton label="ra.action.delete" />
         </Actions>
       </Datagrid>
     </List>

@@ -1,15 +1,15 @@
 import {
+  FunctionField,
+  NumberField,
+  ReferenceField,
   Show,
   SimpleShowLayout,
   TextField,
-  NumberField,
-  ReferenceField,
-  FunctionField,
   useTranslate,
-} from "react-admin";
-import Title from "./title.request";
-import { RespondButton } from "./RespondButton.request";
-import dateFormatter from "../../utils/dateFormatter";
+} from 'react-admin';
+import Title from './title.request';
+import { RespondButton } from './RespondButton.request';
+import dateFormatter from '../../utils/dateFormatter';
 
 // ------------------------------------------------
 
@@ -20,43 +20,41 @@ export default function ShowRequest(props) {
       <SimpleShowLayout>
         <NumberField variant="outlined" source="id" />
         <FunctionField
-          source={"type"}
-          render={(rec) => `${t("facilityType." + rec.type)}`}
+          source="type"
+          render={(rec) => `${t(`facilityType.${rec.type}`)}`}
         />
         <ReferenceField source="facilityId" reference="facility" link="show">
           <TextField source="name" />
         </ReferenceField>
         <FunctionField
-          source={"createdAt"}
+          source="createdAt"
           render={(rec) =>
-            `${rec?.createdAt ? dateFormatter(rec.createdAt) : "-"}`
+            `${rec?.createdAt ? dateFormatter(rec.createdAt) : '-'}`
           }
         />
         <FunctionField
-          source={"availableDateFrom"}
+          source="availableDateFrom"
           render={(rec) =>
             `${
               rec?.availableDateFrom
                 ? dateFormatter(rec.availableDateFrom)
-                : "-"
+                : '-'
             }`
           }
         />
         <FunctionField
-          source={"availableDateTo"}
+          source="availableDateTo"
           render={(rec) =>
-            `${rec?.availableDateTo ? dateFormatter(rec.availableDateTo) : "-"}`
+            `${rec?.availableDateTo ? dateFormatter(rec.availableDateTo) : '-'}`
           }
         />
-        <TextField variant="outlined" source="requestNote" />
         <FunctionField
-          source={"respondNote"}
-          render={(rec) => `${rec?.respondNote ? rec.respondNote : "-"}`}
+          source="respondNote"
+          render={(rec) => `${rec?.respondNote ? rec.respondNote : '-'}`}
         />
-        {/*Pending || Refused || InProgress || Completed*/}
         <FunctionField
-          source={"status"}
-          render={(rec) => `${t("status." + rec.status)}`}
+          source="status"
+          render={(rec) => `${t(`status.${rec.status}`)}`}
         />
         <ReferenceField source="userId" reference="user" link="show">
           <TextField source="name" />
@@ -68,7 +66,7 @@ export default function ShowRequest(props) {
           source="userCompoundId"
           reference="userCompound"
           link="show"
-          label={t("streetBlockUnit")}
+          label={t('streetBlockUnit')}
         >
           <TextField source="streetName" />
           &nbsp;-&nbsp;

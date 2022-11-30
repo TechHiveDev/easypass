@@ -1,4 +1,5 @@
 import {
+  required,
   SelectInput,
   SimpleForm,
   TextInput,
@@ -68,13 +69,15 @@ export const RespondButton = () => {
         <SimpleForm onSubmit={submitHandler} toolbar={<SaveToolbar />}>
           <TextInput source="respondNote" variant="outlined" multiline />
           <SelectInput
+            validate={required()}
             variant="outlined"
             source="status"
             choices={[
-              { id: 'Pending', name: t('status.' + 'Pending') },
-              { id: 'Refused', name: t('status.' + 'Refused') },
-              { id: 'InProgress', name: t('status.' + 'InProgress') },
-              { id: 'Completed', name: t('status.' + 'Completed') },
+              { id: 'Pending', name: t('status.Pending') },
+              // { id: 'Completed', name: t('status.Completed') },
+              { id: 'Cancelled', name: t('status.Cancelled') },
+              // { id: 'Refused', name: t('status.Refused') },
+              // { id: 'Done', name: t('status.Done') },
             ]}
           />
         </SimpleForm>

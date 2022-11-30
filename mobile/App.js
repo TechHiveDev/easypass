@@ -36,11 +36,11 @@ export default function App() {
   };
   return (
     <>
-      <View
-        style={{
-          height: heightPercentageToDP(5),
-        }}
-      />
+      {/*<View*/}
+      {/*  style={{*/}
+      {/*    height: heightPercentageToDP(5),*/}
+      {/*  }}*/}
+      {/*/>*/}
       <Provider store={store}>
         <PaperProvider theme={theme}>
           <NavigationContainer

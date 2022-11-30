@@ -1,6 +1,10 @@
 import React from 'react';
+import { AdminContext } from 'react-admin';
 import MyAdmin from './reactAdmin';
-import { useRequestPermissionAndSendToken } from './utils/firebase/getToken';
+import { useRequestPermissionAndSendToken } from './utils/firebase/useRequestPermissionAndSendToken';
+import i18nProvider from './utils/translation/i18nProvider';
+import { dataProvider } from './reactAdmin/providers/data.provider.hook';
+import { authProvider } from './reactAdmin/providers/auth.provider.hook';
 
 // ------------------------------------------------
 
@@ -18,7 +22,11 @@ document.body.style.backgroundColor =
 
 function App() {
   useRequestPermissionAndSendToken();
-  return <MyAdmin />;
+  return (
+    <AdminContext {...{ i18nProvider, dataProvider, authProvider }}>
+      <MyAdmin />
+    </AdminContext>
+  );
 }
 
 // ------------------------------------------------

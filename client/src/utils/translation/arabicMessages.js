@@ -455,9 +455,10 @@ const arabicMessages = {
   },
   status: {
     Pending: 'في الانتظار',
-    Refused: 'مرفوض',
-    InProgress: 'جاري العمل',
     Completed: 'مكتملة',
+    Cancelled: 'ملغاة',
+    Refused: 'مرفوض',
+    Done: 'اكتملت',
   },
   streetBlockUnit: 'شارع - عمارة - وحدة',
   discover: 'استكشاف',

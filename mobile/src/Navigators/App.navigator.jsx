@@ -25,7 +25,7 @@ Notifications.setNotificationHandler({
     shouldSetBadge: false,
   }),
 });
-
+let lastNotifications = [];
 export default function AppNavigator() {
   const { authMe, isAuthenticated, loading } = useAuthMe();
   const lastNotificationResponse = Notifications.useLastNotificationResponse();
@@ -34,6 +34,9 @@ export default function AppNavigator() {
   const navigation = useNavigation();
   const notificationListener = useRef();
   useEffect(() => {
+    if (lastNotifications.includes(lastNotificationResponse)) {
+      return;
+    }
     const data = lastNotificationResponse?.notification?.request?.content?.data;
     if (data?.respond === true) {
       Alert.alert("admin responded to your request", undefined, [
@@ -59,6 +62,7 @@ export default function AppNavigator() {
         },
       ]);
     }
+    lastNotifications.push(lastNotificationResponse);
   }, [id, lastNotificationResponse, navigation]);
   useEffect(() => {
     const registerForPushNotificationsAsync = async () => {
@@ -100,7 +104,9 @@ export default function AppNavigator() {
         }
       }
     };
-    registerForPushNotificationsAsync();
+    if (id) {
+      registerForPushNotificationsAsync();
+    }
 
     // This listener is fired whenever a notification is received while the app is foregrounded
     notificationListener.current =

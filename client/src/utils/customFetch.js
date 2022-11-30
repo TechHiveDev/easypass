@@ -5,7 +5,6 @@ const customFetch = async (url, options = {}) => {
   if (!['GET', 'POST', 'PUT', 'DELETE'].includes(method)) {
     console.error('http verbs can only be GET or POST or PUT or DELETE');
   }
-  console.log({ body });
   const token = localStorage.getItem('accessToken');
   const res = await fetch(
     config.baseUrl + url,

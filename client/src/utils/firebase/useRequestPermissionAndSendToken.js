@@ -28,8 +28,8 @@ export const useRequestPermissionAndSendToken = () => {
         console.log('error retrieving token', e);
       }
     };
-    if (user.id) {
+    if (user?.id) {
       request();
     }
-  }, [user.id]);
+  }, [user?.id]);
 };

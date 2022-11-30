@@ -32,13 +32,20 @@ export const getFacilitiesByCompound = async (compoundId) => {
 // ------------------------------------------------------------------
 
 export const createFacility = async (data) => {
-  console.log(data);
   if (data.slots) {
     data.slots = data.slots.map(validateAndTransform);
   }
   return await prisma.facility.create({ data });
 };
+
 // ------------------------------------------------------------------
+
+export const updateFacility = async (id, data) => {
+  if (data.slots) {
+    data.slots = data.slots.map(validateAndTransform);
+  }
+  return prisma.facility.update({ where: { id }, data });
+};
 
 const validateAndTransform = (slot, index) => {
   const fromDate = slot.from.split("T")[0];
@@ -46,14 +53,8 @@ const validateAndTransform = (slot, index) => {
   const toTransformed = `${fromDate}T${toTime}`;
   const fromObject = new Date(slot.from);
   const toObject = new Date(toTransformed);
-  console.log({ msg: "HELOOOOOOOOOO", bool: fromObject > toObject });
   if (fromObject > toObject)
     throw { message: `to can't be less than from in slot number ${index}` };
-  // console.log("kolo tmm ");
-  // console.log({
-  //   ...slot,
-  //   to: toTransformed,
-  // });
   return {
     ...slot,
     to: toTransformed,
