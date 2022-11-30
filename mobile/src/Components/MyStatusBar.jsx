@@ -1,4 +1,5 @@
-import { StyleSheet } from "react-native";
+import React from "react";
+import { Image, StyleSheet } from "react-native";
 import { Appbar } from "react-native-paper";
 import theme from "../Theme/paper.theme";
 import {
@@ -6,7 +7,8 @@ import {
   widthPercentageToDP as wp,
 } from "react-native-responsive-screen";
 
-const hiddenStatusBar = ["login", "Home", "AllFacilityCategories"];
+const imageStatusBar = ["Home"];
+const hiddenStatusBar = ["login", "AllFacilityCategories"];
 const allowBackList = [
   "SingleDiscoveryCategory",
   "DiscoverItem",
@@ -28,6 +30,17 @@ export default function MyStatusBar({
     : name;
   const allowBack = params?.allowBack || allowBackList.includes(name);
   if (hiddenStatusBar.includes(name)) return <></>;
+  if (imageStatusBar.includes(name)) {
+    return (
+      <Appbar.Header style={styles.imageHeader} statusBarHeight={0}>
+        <Image
+          source={require("../../assets/header.png")}
+          resizeMode={"contain"}
+          style={styles.image}
+        />
+      </Appbar.Header>
+    );
+  }
   if (allowBack) {
     return (
       <Appbar.Header style={styles.header} statusBarHeight={0}>
@@ -35,11 +48,8 @@ export default function MyStatusBar({
         <Appbar.Content title={title} titleStyle={styles.content} />
         <Appbar.BackAction
           disabled={true}
-          onPress={goBack}
           color={theme.colors.primary}
-          style={{
-            opacity: 0,
-          }}
+          style={styles.opacityO}
         />
       </Appbar.Header>
     );
@@ -54,6 +64,11 @@ export default function MyStatusBar({
 // ========================================================
 
 const styles = StyleSheet.create({
+  imageHeader: {
+    backgroundColor: theme.colors.transparentGrey,
+    elevation: 0,
+    borderWidth: 0,
+  },
   header: {
     backgroundColor: theme.colors.transparentGrey,
     width: wp(94.5),
@@ -65,13 +80,17 @@ const styles = StyleSheet.create({
     borderBottomWidth: hp(0.1),
   },
   image: {
-    width: wp(35),
-    height: hp(5),
+    width: wp(50),
+    height: hp(6),
+    marginHorizontal: wp(25),
   },
   content: {
     fontSize: 22,
     fontWeight: "500",
     color: theme.colors.primary,
     textAlign: "center",
+  },
+  opacityO: {
+    opacity: 0,
   },
 });

@@ -11,6 +11,7 @@ export default function HomeScreen() {
         globalStyles.screen,
         {
           backgroundColor: theme.colors.transparentGrey,
+          paddingVertical: 0,
         },
       ]}
     >
