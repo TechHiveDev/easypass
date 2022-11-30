@@ -10,6 +10,7 @@ import {
   TextInput,
   TopToolbar,
   useCreateController,
+  usePermissions,
   useRefresh,
   useTranslate,
 } from 'react-admin';
