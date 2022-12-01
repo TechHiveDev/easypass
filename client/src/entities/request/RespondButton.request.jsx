@@ -32,11 +32,23 @@ export const RespondButton = () => {
     (variables) =>
       dataProvider.update('request', {
         id: record?.id,
-        data: { ...variables, isAdmin: true },
+        data: variables,
       })
   );
   const submitHandler = async (values) => {
-    const res = await mutateAsync(values);
+    const { status, respondNote } = values;
+    const res = await mutateAsync(
+      record.status === status
+        ? {
+            respondNote: `${status}#ST#${respondNote}`,
+            userType: 'Admin',
+          }
+        : {
+            respondNote: `${status}#ST#${respondNote}`,
+            userType: 'Admin',
+            status,
+          }
+    );
     if (res?.data?.id) {
       handleClose();
       refresh();
@@ -67,17 +79,31 @@ export const RespondButton = () => {
           {record?.id}
         </DialogTitle>
         <SimpleForm onSubmit={submitHandler} toolbar={<SaveToolbar />}>
-          <TextInput source="respondNote" variant="outlined" multiline />
+          <TextInput
+            source="respondNote"
+            variant="outlined"
+            format={(v) => {
+              const note = v?.split('#ST#')[1];
+              return note;
+            }}
+            multiline
+          />
           <SelectInput
             validate={required()}
             variant="outlined"
             source="status"
+            // enum RequestStatus {
+            //   Pending // pendingAt  (by user) remove
+            //   Cancelled // cancelledAt (by user) remove
+            //   AdminRefused // adminRefusedAt (by admin)
+            //   InProgress // inProgressAt (by user/by admin)
+            //   Completed // completedAt (by user/by admin)
+            // }
             choices={[
-              { id: 'Pending', name: t('status.Pending') },
-              // { id: 'Completed', name: t('status.Completed') },
-              { id: 'Cancelled', name: t('status.Cancelled') },
-              // { id: 'Refused', name: t('status.Refused') },
-              // { id: 'Done', name: t('status.Done') },
+              { id: 'AdminRefused', name: t('status.AdminRefused') },
+              { id: 'InProgress', name: t('status.InProgress') },
+              { id: 'Pending', name: t('status.Pending'), disabled: true },
+              { id: 'Completed', name: t('status.Completed') },
             ]}
           />
         </SimpleForm>

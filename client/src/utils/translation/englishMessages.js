@@ -126,6 +126,8 @@ const allEnglishMessages = {
     Completed: 'Completed',
     Cancelled: 'Cancelled',
     Refused: 'Refused',
+    AdminRefused: 'Admin Refused',
+    InProgress: 'In Progress',
     Done: 'Done',
   },
   streetBlockUnit: 'Street - Block - Unit',

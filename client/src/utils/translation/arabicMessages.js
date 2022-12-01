@@ -458,6 +458,8 @@ const arabicMessages = {
     Completed: 'مكتملة',
     Cancelled: 'ملغاة',
     Refused: 'مرفوض',
+    AdminRefused: 'رفض من الادمن',
+    InProgress: 'جاري العمل',
     Done: 'اكتملت',
   },
   streetBlockUnit: 'شارع - عمارة - وحدة',

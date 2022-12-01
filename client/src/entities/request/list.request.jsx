@@ -56,7 +56,9 @@ export default function ListRequest(props) {
         />
         <FunctionField
           source="respondNote"
-          render={(rec) => `${rec?.respondNote ? rec.respondNote : '-'}`}
+          render={(rec) =>
+            `${rec?.respondNote ? rec.respondNote.split('#ST#')[1] : '-'}`
+          }
         />
         <FunctionField
           source="status"
