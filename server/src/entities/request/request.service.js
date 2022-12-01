@@ -150,6 +150,7 @@ export const updateRequest = async (id, data) => {
       availableDateFrom: request.availableDateFrom,
       availableDateTo: request.availableDateTo,
       slots,
+      isPut: true,
     });
 
     await prisma.facility.update({
@@ -226,6 +227,7 @@ const getSlotToUpdate = ({
   availableDateFrom,
   availableDateTo,
   available,
+  isPut = false,
 }) => {
   let flag = false;
   for (let i = 0; i < slots.length; i++) {
@@ -242,8 +244,7 @@ const getSlotToUpdate = ({
       flag = true;
     }
   }
-
-  if (!flag)
+  if (!flag && !isPut)
     throw { status: 400, message: "invalid request or no slots available" };
   return slots;
 };
