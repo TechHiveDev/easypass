@@ -18,7 +18,12 @@ const formatData = (data) => {
       seen,
       respondNote,
       facility: { icon, name },
+      availableDateFrom: from,
+      availableDateTo: to,
     } = item;
+    const respondNoteStatus = respondNote
+      ? respondNote.split("#ST#")[0]
+      : undefined;
     [
       { status: "Pending", date: pendingAt, seen: true },
       { status: "Cancelled", date: cancelledAt, seen: true },
@@ -26,25 +31,40 @@ const formatData = (data) => {
         status: "InProgress",
         date: inProgressAt,
         seen: completedAt || adminRefusedAt ? true : seen,
-        respondNote: completedAt ? undefined : respondNote,
       },
       {
         status: "AdminRefused",
         date: adminRefusedAt,
         seen: completedAt ? true : seen,
-        respondNote: completedAt ? undefined : respondNote,
       },
       {
         status: "Completed",
         date: completedAt,
         seen: adminRefusedAt ? true : seen,
-        respondNote: adminRefusedAt ? undefined : respondNote,
       },
-    ].forEach((s) => {
-      if (s.date !== null) {
-        list.push({ ...s, icon, name, id: id + s.status, requestId: id });
-      }
-    });
+    ]
+      .map((e) => {
+        if (e.status === respondNoteStatus) {
+          return {
+            ...e,
+            respondNote: respondNote.split("#ST#")[1],
+          };
+        }
+        return e;
+      })
+      .forEach((s) => {
+        if (s.date !== null) {
+          list.push({
+            ...s,
+            icon,
+            name,
+            id: id + s.status,
+            requestId: id,
+            from,
+            to,
+          });
+        }
+      });
   });
   return list.sort((a, b) => {
     return new Date(b.date).getTime() - new Date(a.date).getTime();

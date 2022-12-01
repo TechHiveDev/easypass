@@ -132,7 +132,7 @@ export const ListItem = ({ item, cancel = true, notificationId }) => {
                   fontWeight: "bold",
                 }}
               >
-                {item.respondNote}
+                {item.respondNote ? item.respondNote?.split("#ST#")[1] : "-"}
               </Text>
             </Text>
           ) : null}
