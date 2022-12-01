@@ -37,14 +37,22 @@ export const RespondButton = () => {
   );
   const submitHandler = async (values) => {
     const { status, respondNote } = values;
+    let note;
+    const statusFromNote = respondNote?.split('#ST#')[0];
+    const noteFromNote = respondNote?.split('#ST#')[1];
+    if (!noteFromNote) {
+      note = statusFromNote;
+    } else {
+      note = noteFromNote;
+    }
     const res = await mutateAsync(
       record.status === status
         ? {
-            respondNote: `${status}#ST#${respondNote}`,
+            respondNote: `${status}#ST#${note}`,
             userType: 'Admin',
           }
         : {
-            respondNote: `${status}#ST#${respondNote}`,
+            respondNote: `${status}#ST#${note}`,
             userType: 'Admin',
             status,
           }
