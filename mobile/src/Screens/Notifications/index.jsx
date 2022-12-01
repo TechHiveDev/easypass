@@ -4,49 +4,19 @@ import { View } from "react-native";
 import { useGetListQuery } from "../../API/api";
 import { useSelector } from "react-redux";
 import { FlashList } from "@shopify/flash-list";
-import { Request } from "../Facility/Request";
 import { Text } from "react-native-paper";
-import { useIsFocused, useRoute } from "@react-navigation/native";
+import { useIsFocused } from "@react-navigation/native";
+import Notification from "./Notification";
+import formatData from "./formatData";
 
-const groupBy = (xs, key) => {
-  return xs.reduce(function (rv, x) {
-    (rv[x[key]] = rv[x[key]] || []).push(x);
-    return rv;
-  }, {});
-};
-
-const newDate = new Date();
-const currentDate = newDate.toISOString();
 const ListEmptyComponent = () => <Text>No Upcoming reservations</Text>;
 
-const Upcoming = () => {
-  const { params } = useRoute();
+const Notifications = () => {
   const userId = useSelector((s) => s.auth.user.id);
   const { data, error, isLoading, isFetching, refetch } = useGetListQuery({
     entity: `request/user/${userId}`,
-    filter: {
-      availableDateFrom: { gte: currentDate },
-    },
   });
-  const formattedData = useMemo(
-    () =>
-      data
-        ? groupBy(
-            data?.map((d) => {
-              return { ...d, date: d?.availableDateFrom.split("T")[0] };
-            }),
-            "date"
-          )
-        : {},
-    [data]
-  );
-  const sortedItems = useMemo(
-    () =>
-      Object.keys(formattedData).sort((a, b) => {
-        return new Date(a).getTime() - new Date(b).getTime();
-      }),
-    [formattedData]
-  );
+  const formattedData = useMemo(() => formatData(data), [data]);
   const isFocused = useIsFocused();
 
   useEffect(() => {
@@ -68,17 +38,10 @@ const Upcoming = () => {
           }
         }}
         estimatedItemSize={123}
-        keyExtractor={(item) => item}
-        data={sortedItems}
+        keyExtractor={(item) => item.id}
+        data={formattedData}
         renderItem={({ item }) => {
-          return (
-            <Request
-              date={item}
-              list={formattedData[item]}
-              cancel={true}
-              notificationId={params?.id}
-            />
-          );
+          return <Notification item={item} />;
         }}
         ListEmptyComponent={ListEmptyComponent}
       />
@@ -86,4 +49,4 @@ const Upcoming = () => {
   );
 };
 
-export default Upcoming;
+export default Notifications;

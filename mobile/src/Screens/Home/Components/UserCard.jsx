@@ -1,20 +1,39 @@
+import React, { useEffect } from "react";
 import { Image, View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import { useAppSelector } from "../../../Store/redux.hooks";
-import { useNavigation } from "@react-navigation/native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 import QrCode from "../../../Components/QrCode";
 import theme from "../../../Theme/paper.theme";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-let notificationCount = 4;
+import { useGetListQuery } from "../../../API/api";
+
 export default function UserCard() {
-  const currentCompound = useAppSelector(
-    (state) => state?.auth?.currentCompound
+  const { currentCompound, user } = useAppSelector((state) => ({
+    currentCompound: state?.auth?.currentCompound,
+    user: state?.auth?.user,
+  }));
+  const { id: userId, name, photoUrl } = user;
+  const { data, isFetching, refetch } = useGetListQuery(
+    {
+      entity: `request/user/${userId}`,
+    },
+    {
+      skip: !userId,
+    }
   );
-  const { name, photoUrl } = useAppSelector((state) => state?.auth?.user);
+  let notificationCount = data ? data?.filter((d) => d?.seen === false) : 0;
   const navigation = useNavigation();
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    if (!isFetching && isFocused && userId) {
+      refetch();
+    }
+  }, [isFocused]);
   return (
     <>
       <View style={styles.container}>

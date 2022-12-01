@@ -47,6 +47,7 @@ export const RenderItem = ({ reservation, facilityId, price }) => {
         availableDateFrom: reservation.fromAPI,
         availableDateTo: reservation.toAPI,
         type: "Facility",
+        userType: "Resident",
       },
     });
     if (res?.data?.id) {

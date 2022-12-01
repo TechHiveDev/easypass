@@ -20,7 +20,11 @@ export const ListItem = ({ item, cancel = true, notificationId }) => {
   const [cancelBooking] = useUpdateMutation({
     entity: "request",
     id: item.id,
-    body: { ...restOfRequest, status: "Cancelled" },
+    body: {
+      status: "Cancelled",
+      userType: "Resident",
+      cancelledAt: new Date().toISOString(),
+    },
   });
   const [visible, setVisible] = React.useState(false);
   const showDialog = () => setVisible(true);
@@ -29,7 +33,11 @@ export const ListItem = ({ item, cancel = true, notificationId }) => {
     const res = await cancelBooking({
       entity: "request",
       id: item.id,
-      body: { status: "Cancelled" },
+      body: {
+        status: "Cancelled",
+        userType: "Resident",
+        cancelledAt: new Date().toISOString(),
+      },
     });
     const data = res.data;
     if (data?.id) {
