@@ -18,6 +18,13 @@ import DialogTitle from '@mui/material/DialogTitle';
 import ReplyIcon from '@mui/icons-material/Reply';
 import SaveToolbar from '../../components/SaveToolbar';
 
+const keyMapper = {
+  // Pending: 'pendingAt',
+  Cancelled: 'cancelledAt',
+  AdminRefused: 'adminRefusedAt',
+  InProgress: 'inProgressAt',
+  Completed: 'completedAt',
+};
 export const RespondButton = () => {
   const t = useTranslate();
   const [open, setOpen] = useState(false);
@@ -45,7 +52,9 @@ export const RespondButton = () => {
     } else {
       note = noteFromNote;
     }
-    const res = await mutateAsync(
+    const currentTime = new Date().toISOString();
+    const key = keyMapper[status];
+    const variables =
       record.status === status
         ? {
             respondNote: `${status}#ST#${note}`,
@@ -55,7 +64,10 @@ export const RespondButton = () => {
             respondNote: `${status}#ST#${note}`,
             userType: 'Admin',
             status,
-          }
+          };
+
+    const res = await mutateAsync(
+      key ? { ...variables, [key]: currentTime } : variables
     );
     if (res?.data?.id) {
       handleClose();
