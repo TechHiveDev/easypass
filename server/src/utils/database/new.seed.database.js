@@ -546,42 +546,42 @@ function randomDate(start, end) {
     ],
   });
 
-  await prisma.request.createMany({
-    data: [
-      {
-        availableDateFrom: randomDate(
-          new Date(),
-          new Date(new Date().setDate(new Date().getDate() + 1))
-        ),
-        availableDateTo: randomDate(
-          new Date(new Date().setDate(new Date().getDate() + 1)),
-          new Date(new Date().setDate(new Date().getDate() + 2))
-        ),
-        status: "Pending",
-        type: "Facility",
-        respondNote: "complaint response",
-        userId: 5,
-        userCompoundId: 5,
-        compoundId: 2,
-        facilityId: 2,
-      },
-      {
-        availableDateFrom: randomDate(
-          new Date(),
-          new Date(new Date().setDate(new Date().getDate() + 1))
-        ),
-        availableDateTo: randomDate(
-          new Date(new Date().setDate(new Date().getDate() + 1)),
-          new Date(new Date().setDate(new Date().getDate() + 2))
-        ),
-        status: "Pending",
-        type: "Facility",
-        respondNote: "complaint response",
-        userId: 2,
-        userCompoundId: 2,
-        compoundId: 1,
-        facilityId: 1,
-      },
-    ],
-  });
+  // await prisma.request.createMany({
+  //   data: [
+  //     {
+  //       availableDateFrom: randomDate(
+  //         new Date(),
+  //         new Date(new Date().setDate(new Date().getDate() + 1))
+  //       ),
+  //       availableDateTo: randomDate(
+  //         new Date(new Date().setDate(new Date().getDate() + 1)),
+  //         new Date(new Date().setDate(new Date().getDate() + 2))
+  //       ),
+  //       status: "Pending",
+  //       type: "Facility",
+  //       respondNote: "complaint response",
+  //       userId: 5,
+  //       userCompoundId: 5,
+  //       compoundId: 2,
+  //       facilityId: 2,
+  //     },
+  //     {
+  //       availableDateFrom: randomDate(
+  //         new Date(),
+  //         new Date(new Date().setDate(new Date().getDate() + 1))
+  //       ),
+  //       availableDateTo: randomDate(
+  //         new Date(new Date().setDate(new Date().getDate() + 1)),
+  //         new Date(new Date().setDate(new Date().getDate() + 2))
+  //       ),
+  //       status: "Pending",
+  //       type: "Facility",
+  //       respondNote: "complaint response",
+  //       userId: 2,
+  //       userCompoundId: 2,
+  //       compoundId: 1,
+  //       facilityId: 1,
+  //     },
+  //   ],
+  // });
 })();
