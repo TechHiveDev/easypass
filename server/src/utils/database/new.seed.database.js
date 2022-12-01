@@ -10,22 +10,22 @@ const minDays = 7;
 const maxDays = 365;
 
 //
-const PiramidHeightsAdmin = 4;
-const PiramidHeightsSuperAdmin = 3;
-const PiramidHeightsResident = 2;
-const PiramidHeightsSecurity = 1;
+const PyramidHeightsAdmin = 4;
+const PyramidHeightsSuperAdmin = 3;
+const PyramidHeightsResident = 2;
+const PyramidHeightsSecurity = 1;
 
-const PiramidHeightsCompoundId = 1;
-const PiramidHeightsDeviceId = 1;
+const PyramidHeightsCompoundId = 1;
+const PyramidHeightsDeviceId = 1;
 
 
-const MoutainViewAdmin = 5;
-const MoutainViewSuperAdmin = 6;
-const MoutainViewResident = 7;
-const MoutainViewSecurity = 8;
+const MountainViewAdmin = 5;
+const MountainViewSuperAdmin = 6;
+const MountainViewResident = 7;
+const MountainViewSecurity = 8;
 
-const MoutainViewDeviceId = 2;
-const MoutainViewCompoundId = 2;
+const MountainViewDeviceId = 2;
+const MountainViewCompoundId = 2;
 
 function dynamicInvitationScans(type, compoundId, userId, invitationId) {
   return {
@@ -68,7 +68,7 @@ function randomDate(start, end) {
 (async () => {
   await prisma.compound.create({
     data: {
-      name: "Pyramid Heights Compound",// + Date.now(),
+      name: "Pyramid Heights",// + Date.now(),
       logoUrl:
         "https://www.christiesrealestate.com/blog/wp-content/uploads/2022/04/msb-33.jpg",
       users: {
@@ -76,7 +76,7 @@ function randomDate(start, end) {
           {
             user: {
               create: {
-                id: PiramidHeightsAdmin,
+                id: PyramidHeightsAdmin,
                 email: "admin@example.com",
                 name: "admin name",
                 photoUrl:
@@ -93,7 +93,7 @@ function randomDate(start, end) {
           {
             user: {
               create: {
-                id: PiramidHeightsSuperAdmin,
+                id: PyramidHeightsSuperAdmin,
                 email: "superadmin@example.com",
                 name: "admin name",
                 photoUrl:
@@ -110,7 +110,7 @@ function randomDate(start, end) {
           {
             user: {
               create: {
-                id: PiramidHeightsResident,
+                id: PyramidHeightsResident,
                 email: "resident@example.com",
                 name: "Nour",
                 photoUrl:
@@ -127,7 +127,7 @@ function randomDate(start, end) {
           {
             user: {
               create: {
-                id: PiramidHeightsSecurity,
+                id: PyramidHeightsSecurity,
                 email: "security@example.com",
                 name: "security name",
                 photoUrl:
@@ -148,8 +148,8 @@ function randomDate(start, end) {
 
   await prisma.compound.create({
     data: {
-      id: MoutainViewCompoundId,
-      name: "Mountain View Compound",
+      id: MountainViewCompoundId,
+      name: "Mountain View",
       logoUrl:
         "https://c8.alamy.com/comp/B0YRKC/living-quarters-inside-a-family-compound-in-the-gambia-B0YRKC.jpg",
       users: {
@@ -157,7 +157,7 @@ function randomDate(start, end) {
           {
             user: {
               create: {
-                id: MoutainViewResident,
+                id: MountainViewResident,
                 email: "resident@mountainview.com",
                 name: "Mountain View resident name",
                 photoUrl:
@@ -174,9 +174,9 @@ function randomDate(start, end) {
           {
             user: {
               create: {
-                id: MoutainViewAdmin,
+                id: MountainViewAdmin,
                 email: "admin@mountainview.com",
-                name: "moutain view admin name",
+                name: "mountain view admin name",
                 photoUrl:
                   "https://img.freepik.com/free-photo/portrait-young-indian-top-manager-t-shirt-tie-crossed-arms-smiling-white-isolated-wall_496169-1513.jpg",
                 // password :12345
@@ -191,9 +191,9 @@ function randomDate(start, end) {
           {
             user: {
               create: {
-                id: MoutainViewSuperAdmin,
+                id: MountainViewSuperAdmin,
                 email: "superadmin@mountainview.com",
-                name: "MoutainView super admin",
+                name: "MountainView super admin",
                 photoUrl:
                   "https://img.freepik.com/free-photo/portrait-young-indian-top-manager-t-shirt-tie-crossed-arms-smiling-white-isolated-wall_496169-1513.jpg",
                 // password :12345
@@ -208,7 +208,7 @@ function randomDate(start, end) {
           , {
             user: {
               create: {
-                id: MoutainViewSecurity,
+                id: MountainViewSecurity,
                 email: "security@mountainview.com",
                 name: "security name",
                 photoUrl:
@@ -229,40 +229,40 @@ function randomDate(start, end) {
 
   await prisma.device.create({
     data: {
-      id: PiramidHeightsDeviceId,
+      id: PyramidHeightsDeviceId,
       ip: "476575675612",
-      compoundId: PiramidHeightsCompoundId,
+      compoundId: PyramidHeightsCompoundId,
     },
   });
 
   await prisma.device.create({
     data: {
-      id: MoutainViewDeviceId,
+      id: MountainViewDeviceId,
       ip: "476575675611",
-      compoundId: MoutainViewDeviceId,
+      compoundId: MountainViewDeviceId,
     },
   });
   await prisma.invitation.createMany({
     data: [
       //type, compoundId, userId, invitationId
-      dynamicInvitationScans("Visitor", PiramidHeightsCompoundId, PiramidHeightsResident, 1),
-      dynamicInvitationScans("Delivery", PiramidHeightsCompoundId, PiramidHeightsResident, 2),
+      dynamicInvitationScans("Visitor", PyramidHeightsCompoundId, PyramidHeightsResident, 1),
+      dynamicInvitationScans("Delivery", PyramidHeightsCompoundId, PyramidHeightsResident, 2),
 
-      dynamicInvitationScans("Visitor", MoutainViewCompoundId, MoutainViewResident, 3),
-      dynamicInvitationScans("Delivery", MoutainViewCompoundId, MoutainViewResident, 4),
+      dynamicInvitationScans("Visitor", MountainViewCompoundId, MountainViewResident, 3),
+      dynamicInvitationScans("Delivery", MountainViewCompoundId, MountainViewResident, 4),
     ],
   });
   await prisma.scan.createMany({
     data: [
       //type, compoundId, userId, deviceId, invitationId
-      ...arrayScans("Visitor", PiramidHeightsCompoundId, PiramidHeightsResident, PiramidHeightsDeviceId, 1),
-      ...arrayScans("Delivery", PiramidHeightsCompoundId, PiramidHeightsResident, PiramidHeightsDeviceId, 2),
-      ...arrayScans("Resident", PiramidHeightsCompoundId, PiramidHeightsResident, PiramidHeightsDeviceId),
+      ...arrayScans("Visitor", PyramidHeightsCompoundId, PyramidHeightsResident, PyramidHeightsDeviceId, 1),
+      ...arrayScans("Delivery", PyramidHeightsCompoundId, PyramidHeightsResident, PyramidHeightsDeviceId, 2),
+      ...arrayScans("Resident", PyramidHeightsCompoundId, PyramidHeightsResident, PyramidHeightsDeviceId),
 
       
-      ...arrayScans("Visitor", MoutainViewCompoundId, MoutainViewResident, MoutainViewDeviceId, 3),
-      ...arrayScans("Delivery", MoutainViewCompoundId, MoutainViewResident, MoutainViewDeviceId, 4),
-      ...arrayScans("Resident", MoutainViewCompoundId, MoutainViewResident, MoutainViewDeviceId),
+      ...arrayScans("Visitor", MountainViewCompoundId, MountainViewResident, MountainViewDeviceId, 3),
+      ...arrayScans("Delivery", MountainViewCompoundId, MountainViewResident, MountainViewDeviceId, 4),
+      ...arrayScans("Resident", MountainViewCompoundId, MountainViewResident, MountainViewDeviceId),
     ],
   });
 
@@ -273,16 +273,16 @@ function randomDate(start, end) {
         description: "Join our gym for a limited discount offer",
         photoUrl:
           "https://upload.wikimedia.org/wikipedia/en/thumb/3/3f/Gold%27s_Gym_logo.svg/1200px-Gold%27s_Gym_logo.svg.png",
-        compoundId: PiramidHeightsCompoundId,
-        userId: PiramidHeightsSuperAdmin,
+        compoundId: PyramidHeightsCompoundId,
+        userId: PyramidHeightsSuperAdmin,
       },
       {
-        title: "Mac openning soon",
+        title: "Mac opening soon",
         description: "Mac is joining our compound soon",
         photoUrl:
           "https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/McDonald%27s_Golden_Arches.svg/1200px-McDonald%27s_Golden_Arches.svg.png",
-        compoundId: PiramidHeightsCompoundId,
-        userId: PiramidHeightsAdmin,
+        compoundId: PyramidHeightsCompoundId,
+        userId: PyramidHeightsAdmin,
       },
       //---
       {
@@ -290,16 +290,16 @@ function randomDate(start, end) {
         description: "Join our gym for a limited discount offer",
         photoUrl:
           "https://upload.wikimedia.org/wikipedia/en/thumb/3/3f/Gold%27s_Gym_logo.svg/1200px-Gold%27s_Gym_logo.svg.png",
-        compoundId: MoutainViewCompoundId,
-        userId: MoutainViewSuperAdmin,
+        compoundId: MountainViewCompoundId,
+        userId: MountainViewSuperAdmin,
       },
       {
-        title: "Mac openning soon",
+        title: "Mac opening soon",
         description: "Mac is joining our compound soon",
         photoUrl:
           "https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/McDonald%27s_Golden_Arches.svg/1200px-McDonald%27s_Golden_Arches.svg.png",
-        compoundId: MoutainViewCompoundId,
-        userId: MoutainViewAdmin,
+        compoundId: MountainViewCompoundId,
+        userId: MountainViewAdmin,
       },
     ],
   });
@@ -319,7 +319,7 @@ function randomDate(start, end) {
       {
         name: "Car Wash",
         icon: "car-wash",
-        compoundId: PiramidHeightsCompoundId,
+        compoundId: PyramidHeightsCompoundId,
         slots: [
           {
             to: "2022-11-01T14:00:00.000Z",
@@ -331,7 +331,7 @@ function randomDate(start, end) {
       {
         name: "Groceries Shopping",
         icon: "cart-outline",
-        compoundId: PiramidHeightsCompoundId,
+        compoundId: PyramidHeightsCompoundId,
         slots: [
           {
             to: "2022-11-01T14:00:00.000Z",
@@ -343,7 +343,7 @@ function randomDate(start, end) {
       {
         name: "Laundry",
         icon: "tshirt-crew-outline",
-        compoundId: PiramidHeightsCompoundId,
+        compoundId: PyramidHeightsCompoundId,
         slots: [
           {
             to: "2022-11-01T14:00:00.000Z",
@@ -355,7 +355,7 @@ function randomDate(start, end) {
       {
         name: "House Cleaning",
         icon: "home-search-outline",
-        compoundId: PiramidHeightsCompoundId,
+        compoundId: PyramidHeightsCompoundId,
         slots: [
           {
             to: "2022-11-01T14:00:00.000Z",
@@ -367,7 +367,7 @@ function randomDate(start, end) {
       {
         name: "Plumber",
         icon: "water-pump",
-        compoundId: PiramidHeightsCompoundId,
+        compoundId: PyramidHeightsCompoundId,
         slots: [
           {
             to: "2022-11-01T14:00:00.000Z",
@@ -379,7 +379,7 @@ function randomDate(start, end) {
       {
         name: "Electrician",
         icon: "tools",
-        compoundId: PiramidHeightsCompoundId,
+        compoundId: PyramidHeightsCompoundId,
         slots: [
           {
             to: "2022-11-01T14:00:00.000Z",
@@ -393,7 +393,7 @@ function randomDate(start, end) {
       {
         name: "Car Wash",
         icon: "car-wash",
-        compoundId: MoutainViewCompoundId,
+        compoundId: MountainViewCompoundId,
         slots: [
           {
             to: "2022-11-01T14:00:00.000Z",
@@ -405,7 +405,7 @@ function randomDate(start, end) {
       {
         name: "Groceries Shopping",
         icon: "cart-outline",
-        compoundId: MoutainViewCompoundId,
+        compoundId: MountainViewCompoundId,
         slots: [
           {
             to: "2022-11-01T14:00:00.000Z",
@@ -417,7 +417,7 @@ function randomDate(start, end) {
       {
         name: "Laundry",
         icon: "tshirt-crew-outline",
-        compoundId: MoutainViewCompoundId,
+        compoundId: MountainViewCompoundId,
         slots: [
           {
             to: "2022-11-01T14:00:00.000Z",
@@ -429,7 +429,7 @@ function randomDate(start, end) {
       {
         name: "House Cleaning",
         icon: "home-search-outline",
-        compoundId: MoutainViewCompoundId,
+        compoundId: MountainViewCompoundId,
         slots: [
           {
             to: "2022-11-01T14:00:00.000Z",
@@ -441,7 +441,7 @@ function randomDate(start, end) {
       {
         name: "Plumber",
         icon: "water-pump",
-        compoundId: MoutainViewCompoundId,
+        compoundId: MountainViewCompoundId,
         slots: [
           {
             to: "2022-11-01T14:00:00.000Z",
@@ -453,7 +453,7 @@ function randomDate(start, end) {
       {
         name: "Electrician",
         icon: "tools",
-        compoundId: MoutainViewCompoundId,
+        compoundId: MountainViewCompoundId,
         slots: [
           {
             to: "2022-11-01T14:00:00.000Z",
@@ -468,9 +468,9 @@ function randomDate(start, end) {
   await prisma.discover.createMany({
     data: [
       {
-        userId: PiramidHeightsSuperAdmin,
+        userId: PyramidHeightsSuperAdmin,
         categoryId: 1,
-        compoundId: PiramidHeightsCompoundId,
+        compoundId: PyramidHeightsCompoundId,
         name: "Masr Bank",
         photoUrl:
           "https://www.elaosboa.com/wp-content/uploads/2022/09/elaosboa85726.png",
@@ -480,9 +480,9 @@ function randomDate(start, end) {
         address: "57 home street",
       },
       {
-        userId: PiramidHeightsSuperAdmin,
+        userId: PyramidHeightsSuperAdmin,
         categoryId: 1,
-        compoundId: PiramidHeightsCompoundId,
+        compoundId: PyramidHeightsCompoundId,
         name: "NBE Bank",
         photoUrl:
           "https://www.egycareers.com/wp-content/uploads/2022/05/%D8%A7%D9%84%D8%A8%D9%86%D9%83-%D8%A7%D9%84%D8%A3%D9%87%D9%84%D9%8A-%D8%A7%D9%84%D9%85%D8%B5%D8%B1%D9%8A.jpeg",
@@ -492,9 +492,9 @@ function randomDate(start, end) {
         address: "55 home street",
       },
       {
-        userId: PiramidHeightsSuperAdmin,
+        userId: PyramidHeightsSuperAdmin,
         categoryId: 2,
-        compoundId: PiramidHeightsCompoundId,
+        compoundId: PyramidHeightsCompoundId,
         name: "Carrefour",
         photoUrl:
           "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Carrefour_logo.svg/800px-Carrefour_logo.svg.png",
@@ -506,9 +506,9 @@ function randomDate(start, end) {
       },
       //--
       {
-        userId: MoutainViewSuperAdmin,
+        userId: MountainViewSuperAdmin,
         categoryId: 1,
-        compoundId: MoutainViewCompoundId,
+        compoundId: MountainViewCompoundId,
         name: "Banque Misr",
         shortDescription: "Egyptian Bank",
         description:
@@ -519,9 +519,9 @@ function randomDate(start, end) {
         address: "Abou Quer, Bab Sharqi WA Wabour Al Meyah, Bab Sharqi, Alexandria",
       },
       {
-        userId: MoutainViewSuperAdmin,
+        userId: MountainViewSuperAdmin,
         categoryId: 1,
-        compoundId: MoutainViewCompoundId,
+        compoundId: MountainViewCompoundId,
         name: "National Bank of Egypt",
         photoUrl:
           "https://www.egycareers.com/wp-content/uploads/2022/05/%D8%A7%D9%84%D8%A8%D9%86%D9%83-%D8%A7%D9%84%D8%A3%D9%87%D9%84%D9%8A-%D8%A7%D9%84%D9%85%D8%B5%D8%B1%D9%8A.jpeg",
@@ -531,9 +531,9 @@ function randomDate(start, end) {
         address: "Mid District, 42, Amir El-Bahr, St., Moharram Bek, Alexandria",
       },
       {
-        userId: MoutainViewSuperAdmin,
+        userId: MountainViewSuperAdmin,
         categoryId: 2,
-        compoundId: MoutainViewCompoundId,
+        compoundId: MountainViewCompoundId,
         name: "Carrefour",
         photoUrl:
           "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Carrefour_logo.svg/800px-Carrefour_logo.svg.png",

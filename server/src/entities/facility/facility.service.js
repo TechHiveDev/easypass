@@ -1,10 +1,10 @@
 /**
  *  Entity Service
  * ------------------------------------
- * this module aim to carry custom bussniess logic
+ * this module aim to carry custom business logic
  * for entity if entity not just CRUD
  *
- * you can add here any bussiness logic you need
+ * you can add here any business logic you need
  * and will be calls from entity controller
  *
  * Entity
