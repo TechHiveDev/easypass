@@ -1,10 +1,10 @@
 /**
  *  Entity Service
  * ------------------------------------
- * this module aim to carry custom bussniess logic
+ * this module aim to carry custom business logic
  * for entity if entity not just CRUD
  *
- * you can add here any bussiness logic you need
+ * you can add here any business logic you need
  * and will be calls from entity controller
  *
  * Entity
@@ -52,38 +52,38 @@ export const getRequestsByUser = async (userId, query) => {
 
 export const createRequest = async (data) => {
   try {
-    const { availableDateFrom, availableDateTo, facilityId, type } = data;
+    const { availableDateFrom, availableDateTo, facilityId, type, userType } =
+      data;
     if (type === "Facility") {
+      if (!IsUserCanUpdateRequest({ requestStatus: "Pending", userType }))
+        throw { status: 403, message: "not allowed to create a request" };
+
       let facility = await prisma.facility.findUnique({
         where: { id: facilityId },
       });
 
       let { slots, ...res } = facility;
-      let newRequest;
 
-      for (let i = 0; i < slots.length; i++) {
-        if (
-          slots[i].from == availableDateFrom &&
-          slots[i].to == availableDateTo &&
-          slots[i].available
-        ) {
-          slots[i].available = false;
+      let newSlots = getSlotToUpdate({
+        availableDateFrom,
+        availableDateTo,
+        slots,
+        available: true,
+      });
 
-          await prisma.facility.update({
-            where: { id: facilityId },
-            data: { ...res, slots },
-          });
-
-          newRequest = await prisma.request.create({
-            data,
-          });
-        }
-      }
-      if (newRequest) {
+      if (newSlots) {
+        await prisma.facility.update({
+          where: { id: facilityId },
+          data: { ...res, slots: newSlots },
+        });
+        delete data.userType;
+        delete data.requestStatus;
+        const newRequest = await prisma.request.create({
+          data,
+        });
         await sendNotificationToAssociatedAdmin(facilityId, newRequest);
         return newRequest;
-      } else
-        throw { status: 400, message: "invalid request or no slots available" };
+      }
     } else {
       return await prisma.request.create(data);
     }
@@ -97,32 +97,28 @@ export const createRequest = async (data) => {
 export const deleteRequest = async (id) => {
   const request = await prisma.request.findUnique({ where: { id } });
 
-  if (request.type === "Facility") {
-    let facility = await prisma.facility.findUnique({
-      where: { id: request.facilityId },
+  let facility = await prisma.facility.findUnique({
+    where: { id: request.facilityId },
+  });
+
+  const { slots, ...res } = facility;
+  if (!(request.status == "Cancelled" || request.status == "AdminRefused")) {
+    // if the request is cancelled, then the slot is already freed
+    let freedSlots = getSlotToUpdate({
+      available: false,
+      availableDateFrom: request.availableDateFrom,
+      availableDateTo: request.availableDateTo,
+      slots,
     });
 
-    const { slots, ...res } = facility;
-    for (let i = 0; i < slots.length; i++) {
-      if (
-        new Date(slots[i].from).getTime() ==
-          request.availableDateFrom.getTime() &&
-        new Date(slots[i].to).getTime() == request.availableDateTo.getTime() &&
-        !slots[i].available &&
-        request.status !== "Cancelled"
-      ) {
-        slots[i].available = true;
-
-        await prisma.facility.update({
-          where: { id: request.facilityId },
-          data: { ...res, slots },
-        });
-        return await prisma.request.delete({ where: { id } });
-      }
+    if (freedSlots) {
+      await prisma.facility.update({
+        where: { id: request.facilityId },
+        data: { ...res, slots: freedSlots },
+      });
     }
-  } else {
-    return await prisma.request.delete({ where: { id } });
   }
+  return await prisma.request.delete({ where: { id } });
 };
 
 // ------------------------------------------------------------------
@@ -132,41 +128,37 @@ export const updateRequest = async (id, data) => {
     where: { id },
     include: { user: true, facility: true },
   });
-
-  if (request.type === "Facility") {
-    // if cancelling free the slot
+  if (!request) throw { status: 404, message: `Request not found` };
+  if (request.status == "Cancelled" || request.status == "AdminRefused")
+    throw { status: 400, message: `Cannot update a Cancelled request` };
+  if (data.status) {
     if (
-      request.status != "Cancelled" &&
-      data.status &&
-      data.status == "Cancelled"
-    ) {
-      let facility = await prisma.facility.findUnique({
-        where: { id: request.facilityId },
-      });
+      !IsUserCanUpdateRequest({
+        requestStatus: data.status,
+        userType: data.userType,
+      })
+    )
+      throw { status: 403, message: `not allowed to ${data.status} a request` };
 
-      const { slots, ...res } = facility;
-      for (let i = 0; i < slots.length; i++) {
-        if (
-          new Date(slots[i].from).getTime() ==
-            request.availableDateFrom.getTime() &&
-          new Date(slots[i].to).getTime() ==
-            request.availableDateTo.getTime() &&
-          !slots[i].available
-        ) {
-          slots[i].available = true;
+    let facility = await prisma.facility.findUnique({
+      where: { id: request.facilityId },
+    });
 
-          await prisma.facility.update({
-            where: { id: request.facilityId },
-            data: { ...res, slots },
-          });
-        }
-      }
-    }
+    const { slots, ...res } = facility;
+    let newSlots = getSlotToUpdate({
+      available: !(data.status == "Cancelled" || data.status == "AdminRefused"),
+      availableDateFrom: request.availableDateFrom,
+      availableDateTo: request.availableDateTo,
+      slots,
+    });
+
+    await prisma.facility.update({
+      where: { id: request.facilityId },
+      data: { ...res, slots: newSlots },
+    });
   }
-
-  if (data.isAdmin) {
-    // if admin, notify user
-    delete data.isAdmin;
+  if (data.userType == "Admin" || data.userType == "SuperAdmin") {
+    // send notification to users if admin updated the request
     await sendNotificationExpo({
       usersPushTokens: [request.user.notificationToken],
       title: `Response to ${request.facility.name}`,
@@ -174,10 +166,11 @@ export const updateRequest = async (id, data) => {
       data: { respond: true, requestId: request.id },
     });
   }
+  delete data.userType;
   return await prisma.request.update({ where: { id }, data });
 };
 
-// ------------------------------------------------------------------
+// ==================================================================
 
 const sendNotificationToAssociatedAdmin = async (facilityId, newRequest) => {
   const facility = await prisma.facility.findFirst({
@@ -225,3 +218,46 @@ const sendNotificationToAssociatedAdmin = async (facilityId, newRequest) => {
     },
   });
 };
+
+// ------------------------------------------------------------------
+
+const getSlotToUpdate = ({
+  slots,
+  availableDateFrom,
+  availableDateTo,
+  available,
+}) => {
+  let flag = false;
+  for (let i = 0; i < slots.length; i++) {
+    if (
+      (slots[i].from == availableDateFrom &&
+        slots[i].to == availableDateTo &&
+        slots[i].available == available) ||
+      (typeof availableDateFrom != "string" &&
+        new Date(slots[i].from).getTime() == availableDateFrom.getTime() &&
+        new Date(slots[i].to).getTime() == availableDateTo.getTime() &&
+        slots[i].available == available)
+    ) {
+      slots[i].available = !slots[i].available;
+      flag = true;
+    }
+  }
+
+  if (!flag)
+    throw { status: 400, message: "invalid request or no slots available" };
+  return slots;
+};
+
+// ------------------------------------------------------------------
+
+const IsUserCanUpdateRequest = ({ requestStatus, userType }) => {
+  const userTypes = {
+    Resident: ["Pending", "Cancelled"],
+    Admin: ["AdminRefused", "InProgress", "Completed"],
+    SuperAdmin: ["AdminRefused", "InProgress", "Completed"],
+    Security: [],
+  };
+  return userTypes[userType]?.includes(requestStatus);
+};
+
+// ------------------------------------------------------------------

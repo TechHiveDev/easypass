@@ -232,6 +232,7 @@ model Request {
 
   // requestNote String?
   respondNote String?
+  seen Boolean @default(false)
 
   userId Int
   user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -242,8 +243,12 @@ model Request {
   compoundId Int
   compound   Compound @relation(fields: [compoundId], references: [id], onDelete: Cascade)
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  pendingAt      DateTime  @default(now())
+  cancelledAt    DateTime?
+  adminRefusedAt DateTime?
+  inProgressAt   DateTime?
+  completedAt    DateTime?
+  updatedAt      DateTime  @updatedAt
 }
 
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
@@ -269,14 +274,11 @@ enum ScanType {
 }
 
 enum RequestStatus {
-  Pending
-  // Declined
-  // InProgress
-  // Accepted
-  Completed
-  Cancelled
-  Refused
-  Done
+  Pending // pendingAt  (by user)
+  Cancelled // cancelledAt (by user)            
+  AdminRefused // adminRefusedAt (by admin)
+  InProgress // inProgressAt (by user/by admin)
+  Completed // completedAt (by user/by admin)
 }
 
 enum RequestType {

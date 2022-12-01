@@ -62,12 +62,12 @@ app.use("/assets", express.static(path.join(__dirname, "/assets")));
 
 // ------------------------------------------------------
 
-// Swagger Documentaion Middleware
+// Swagger Documentation Middleware
 app.use("/api-docs", swagger.server, swagger.setup); // Docs
 
 // ------------------------------------------------------
 
-// Custom Middleware to remove null values on the requst body
+// Custom Middleware to remove null values on the request body
 // TODO: Refactor
 app.use((req, res, next) => {
   for (var key in req.body) {
@@ -95,7 +95,7 @@ app.use(passportAuthenticate(passport));
 
 // ------------------------------------------------------
 
-// Entities contollers use
+// Entities controllers use
 app.use(compoundController);
 app.use(userController);
 app.use(userCompoundController);
