@@ -232,7 +232,8 @@ model Request {
 
   // requestNote String?
   respondNote String?
-  seen Boolean @default(false)
+  seen        Boolean @default(true)
+  adminSeen   Boolean @default(false)
 
   userId Int
   user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
