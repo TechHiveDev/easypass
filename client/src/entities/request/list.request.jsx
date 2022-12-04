@@ -1,5 +1,6 @@
 import {
   AutocompleteInput,
+  BooleanField,
   Datagrid,
   FunctionField,
   List,
@@ -14,6 +15,7 @@ import {
 import Actions from '../../reactAdmin/components/Actions';
 import { RespondButton } from './RespondButton.request';
 import dateFormatter, { daysMergerWithTime } from '../../utils/dateFormatter';
+import { SeenButton } from './SeenButton.request';
 
 const requestFilters = [
   <SearchInput source="q" alwaysOn />,
@@ -64,6 +66,7 @@ export default function ListRequest(props) {
           source="status"
           render={(rec) => `${t(`status.${rec.status}`)}`}
         />
+        <BooleanField source="adminSeen" />
         <ReferenceField source="userId" reference="user" link="show">
           <TextField source="name" />
         </ReferenceField>
@@ -83,6 +86,7 @@ export default function ListRequest(props) {
         <Actions label="">
           <ShowButton label="ra.action.show" />
           <RespondButton />
+          <SeenButton />
         </Actions>
       </Datagrid>
     </List>

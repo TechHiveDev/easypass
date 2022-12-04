@@ -59,15 +59,19 @@ export const RespondButton = () => {
         ? {
             respondNote: `${status}#ST#${note}`,
             userType: 'Admin',
+            seen: false,
+            adminSeen: true,
           }
         : {
             respondNote: `${status}#ST#${note}`,
             userType: 'Admin',
             status,
+            seen: false,
+            adminSeen: true,
           };
 
     const res = await mutateAsync(
-      key ? { ...variables, seen: false, [key]: currentTime } : variables
+      key ? { ...variables, [key]: currentTime } : variables
     );
     if (res?.data?.id) {
       handleClose();

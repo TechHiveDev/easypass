@@ -10,13 +10,14 @@ import {
 import Title from './title.request';
 import { RespondButton } from './RespondButton.request';
 import dateFormatter from '../../utils/dateFormatter';
+import { SeenButton } from './SeenButton.request';
 
 // ------------------------------------------------
 
 export default function ShowRequest(props) {
   const t = useTranslate();
   return (
-    <Show title={<Title />} actions={[<RespondButton />]}>
+    <Show title={<Title />} actions={[<RespondButton />, <SeenButton />]}>
       <SimpleShowLayout>
         <NumberField variant="outlined" source="id" />
         <FunctionField
