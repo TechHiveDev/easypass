@@ -1,11 +1,11 @@
 import React, { useEffect, useMemo } from "react";
-import globalStyles from "../../Theme/global.styles";
 import { View } from "react-native";
-import { useGetListQuery } from "../../API/api";
 import { useSelector } from "react-redux";
 import { FlashList } from "@shopify/flash-list";
 import { Text } from "react-native-paper";
 import { useIsFocused } from "@react-navigation/native";
+import globalStyles from "../../Theme/global.styles";
+import { useGetListQuery } from "../../API/api";
 import Notification from "./Notification";
 import formatData from "./formatData";
 

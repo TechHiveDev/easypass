@@ -25,7 +25,9 @@ export default function UserCard() {
       skip: !userId,
     }
   );
-  let notificationCount = data ? data?.filter((d) => d?.seen === false) : 0;
+  let notificationCount = data
+    ? data?.filter((d) => d?.seen === false).length
+    : 0;
   const navigation = useNavigation();
   const isFocused = useIsFocused();
 

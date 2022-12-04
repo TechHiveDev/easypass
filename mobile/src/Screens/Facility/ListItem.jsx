@@ -24,6 +24,8 @@ export const ListItem = ({ item, cancel = true, notificationId }) => {
       status: "Cancelled",
       userType: "Resident",
       cancelledAt: new Date().toISOString(),
+      seen: true,
+      adminSeen: false,
     },
   });
   const [visible, setVisible] = React.useState(false);
@@ -37,6 +39,8 @@ export const ListItem = ({ item, cancel = true, notificationId }) => {
         status: "Cancelled",
         userType: "Resident",
         cancelledAt: new Date().toISOString(),
+        seen: true,
+        adminSeen: false,
       },
     });
     const data = res.data;

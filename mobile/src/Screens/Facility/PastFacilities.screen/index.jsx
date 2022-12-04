@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import { FlashList } from "@shopify/flash-list";
 import { Request } from "../Request";
 import { Text } from "react-native-paper";
-import { useIsFocused } from "@react-navigation/native";
+import { useIsFocused, useRoute } from "@react-navigation/native";
 
 const groupBy = (xs, key) => {
   return xs.reduce(function (rv, x) {
@@ -21,6 +21,7 @@ const currentDate = newDate.toISOString();
 const ListEmptyComponent = () => <Text>No Past Requests</Text>;
 
 const Past = () => {
+  const { params } = useRoute();
   const userId = useSelector((s) => s.auth.user.id);
   const { data, error, isLoading, isFetching, refetch } = useGetListQuery({
     entity: `request/user/${userId}`,
@@ -75,7 +76,12 @@ const Past = () => {
         data={sortedItems}
         renderItem={({ item }) => {
           return (
-            <Request date={item} list={formattedData[item]} cancel={false} />
+            <Request
+              date={item}
+              list={formattedData[item]}
+              cancel={false}
+              notificationId={params?.id}
+            />
           );
         }}
         ListEmptyComponent={ListEmptyComponent}

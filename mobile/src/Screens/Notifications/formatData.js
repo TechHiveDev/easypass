@@ -7,6 +7,7 @@
 // }
 const formatData = (data) => {
   let list = [];
+  const currentDate = new Date();
   data?.forEach((item) => {
     const {
       id,
@@ -25,22 +26,22 @@ const formatData = (data) => {
       ? respondNote.split("#ST#")[0]
       : undefined;
     [
-      { status: "Pending", date: pendingAt, seen: true },
-      { status: "Cancelled", date: cancelledAt, seen: true },
+      { status: "Pending", date: pendingAt, seen },
+      { status: "Cancelled", date: cancelledAt, seen },
       {
         status: "InProgress",
         date: inProgressAt,
-        seen: completedAt || adminRefusedAt ? true : seen,
+        seen,
       },
       {
         status: "AdminRefused",
         date: adminRefusedAt,
-        seen: completedAt ? true : seen,
+        seen,
       },
       {
         status: "Completed",
         date: completedAt,
-        seen: adminRefusedAt ? true : seen,
+        seen,
       },
     ]
       .map((e) => {
@@ -66,8 +67,24 @@ const formatData = (data) => {
         }
       });
   });
-  return list.sort((a, b) => {
-    return new Date(b.date).getTime() - new Date(a.date).getTime();
-  });
+  return list
+    .sort((a, b) => {
+      return new Date(b.date).getTime() - new Date(a.date).getTime();
+    })
+    .map((e, i) => {
+      const { seen, ...rest } = e;
+      if (i === 0 && seen === false) {
+        return {
+          ...rest,
+          seen: false,
+          past: new Date(e.from) < currentDate,
+        };
+      }
+      return {
+        ...rest,
+        seen: true,
+        past: new Date(e.from) < currentDate,
+      };
+    });
 };
 export default formatData;

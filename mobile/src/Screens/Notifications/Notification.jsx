@@ -3,23 +3,14 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from "react-native-responsive-screen";
-import { Button, Card, Text } from "react-native-paper";
-import { TouchableOpacity, View } from "react-native";
+import { Card, Text } from "react-native-paper";
+import { StyleSheet, View } from "react-native";
 import theme from "../../Theme/paper.theme";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-//   Pending // pendingAt  (by user)
-// Cancelled // cancelledAt (by user)
-// AdminRefused // adminRefusedAt (by admin)
-// InProgress // inProgressAt (by user/by admin)
-// Completed // completedAt (by user/by admin)
-const messageMapper = {
-  // Pending: "You requested",
-  // Cancelled: "You cancelled",
-  // AdminRefused: "Admin refused your service request",
-  // InProgress: "Service is in progress",
-  Completed: "Your Service has been completed",
-};
+import { useUpdateMutation } from "../../API/api";
+import TouchableOpacity from "../../Components/TouchableOpacity";
+
 const timeMerger = (from, to) => {
   return ` at ${from.split("T")[0]} from ${from
     .split("T")[1]
@@ -53,56 +44,67 @@ const getMessage = ({ name, from, to, status }) => {
   return "You requested " + name + " service" + timeMerger(from, to);
 };
 const Notification = ({ item }) => {
-  const { status, seen, icon, name, requestId, from, to } = item;
+  const { status, seen, icon, name, requestId, from, to, respondNote, past } =
+    item;
   const navigation = useNavigation();
+  const [markAsSeen] = useUpdateMutation({
+    entity: "request",
+    id: requestId,
+    body: {
+      seen: true,
+    },
+  });
   return (
     <TouchableOpacity
-      onPress={() =>
+      onPress={async () => {
+        markAsSeen({
+          entity: "request",
+          id: requestId,
+          body: {
+            seen: true,
+          },
+        });
         navigation.navigate("Services", {
-          screen: "UpComing",
+          screen: past ? "Past" : "UpComing",
           params: {
             id: requestId,
           },
-        })
-      }
+        });
+      }}
     >
       <Card
-        style={{
-          marginBottom: hp(1.5),
-        }}
+        style={
+          seen
+            ? styles.card
+            : {
+                ...styles.card,
+                borderColor: theme.colors.primary,
+                borderWidth: wp(1),
+              }
+        }
       >
-        <Card.Content
-          style={{
-            display: "flex",
-            flexDirection: "row",
-          }}
-        >
-          <View
-            style={{
-              backgroundColor: theme.colors.primary,
-              padding: wp(1),
-              width: wp(10),
-              height: wp(10),
-              borderRadius: wp(10 / 2),
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
+        <Card.Content style={styles.row}>
+          <View style={styles.iconContainer}>
             <MaterialCommunityIcons
               name={icon}
               color={theme.colors.white}
               size={wp(6)}
             />
           </View>
-          <Text
-            style={{
-              width: wp(80),
-              marginLeft: wp(4),
-            }}
-          >
-            {getMessage({ name: name.toLowerCase(), from, to, status })}
-          </Text>
+          <View style={styles.col}>
+            <Text>
+              {getMessage({
+                name: name.toLowerCase(),
+                from,
+                to,
+                status,
+              })}
+              {respondNote ? " with message from admin" : ""}
+            </Text>
+            {respondNote ? (
+              <Text style={styles.message}>{respondNote} </Text>
+            ) : null}
+          </View>
         </Card.Content>
       </Card>
     </TouchableOpacity>
@@ -110,3 +112,31 @@ const Notification = ({ item }) => {
 };
 
 export default Notification;
+const styles = StyleSheet.create({
+  card: {
+    marginBottom: hp(2),
+  },
+  iconContainer: {
+    backgroundColor: theme.colors.primary,
+    padding: wp(1),
+    width: wp(10),
+    height: wp(10),
+    borderRadius: wp(10 / 2),
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  col: {
+    display: "flex",
+    flexDirection: "column",
+    width: wp(75),
+    marginLeft: wp(4),
+  },
+  row: {
+    display: "flex",
+    flexDirection: "row",
+  },
+  message: {
+    fontWeight: "bold",
+  },
+});
