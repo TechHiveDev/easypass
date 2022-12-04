@@ -30,11 +30,14 @@ const requestFilters = [
     <AutocompleteInput optionText="name" />
   </ReferenceInput>,
 ];
+const requestRowStyle = (record, index) => ({
+  backgroundColor: record.adminSeen === false ? 'rgba(0,140,255,0.09)' : null,
+});
 export default function ListRequest(props) {
   const t = useTranslate();
   return (
     <List filters={requestFilters}>
-      <Datagrid>
+      <Datagrid rowStyle={requestRowStyle}>
         <NumberField variant="outlined" source="id" />
         <FunctionField
           source="type"
