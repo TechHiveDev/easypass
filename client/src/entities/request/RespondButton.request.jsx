@@ -67,7 +67,7 @@ export const RespondButton = () => {
           };
 
     const res = await mutateAsync(
-      key ? { ...variables, [key]: currentTime } : variables
+      key ? { ...variables, seen: false, [key]: currentTime } : variables
     );
     if (res?.data?.id) {
       handleClose();
