@@ -1,6 +1,5 @@
 import {
   AutocompleteInput,
-  BooleanField,
   Datagrid,
   FunctionField,
   List,
@@ -66,7 +65,7 @@ export default function ListRequest(props) {
           source="status"
           render={(rec) => `${t(`status.${rec.status}`)}`}
         />
-        <BooleanField source="adminSeen" />
+        {/* <BooleanField source="adminSeen" /> */}
         <ReferenceField source="userId" reference="user" link="show">
           <TextField source="name" />
         </ReferenceField>
