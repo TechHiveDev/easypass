@@ -81,7 +81,7 @@ export const createRequest = async (data) => {
         const newRequest = await prisma.request.create({
           data,
         });
-        await sendNotificationToAssociatedAdmin(facilityId, newRequest);
+        // await sendNotificationToAssociatedAdmin(facilityId, newRequest);
         return newRequest;
       }
     } else {
@@ -158,15 +158,15 @@ export const updateRequest = async (id, data) => {
       data: { ...res, slots: newSlots },
     });
   }
-  if (data.userType == "Admin" || data.userType == "SuperAdmin") {
-    // send notification to users if admin updated the request
-    await sendNotificationExpo({
-      usersPushTokens: [request.user.notificationToken],
-      title: `Response to ${request.facility.name}`,
-      body: `admin: ${data.respondNote}`,
-      data: { respond: true, requestId: request.id },
-    });
-  }
+  // if (data.userType == "Admin" || data.userType == "SuperAdmin") {
+  //   // send notification to users if admin updated the request
+  //   await sendNotificationExpo({
+  //     usersPushTokens: [request.user.notificationToken],
+  //     title: `Response to ${request.facility.name}`,
+  //     body: `admin: ${data.respondNote}`,
+  //     data: { respond: true, requestId: request.id },
+  //   });
+  // }
   delete data.userType;
   return await prisma.request.update({ where: { id }, data });
 };
