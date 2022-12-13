@@ -7,7 +7,7 @@ import {
 } from "react-native-responsive-screen";
 
 // const hiddenStatusBar = ["login", "Home", "AllFacilityCategories"];
-const imageStatusBar = ["Home"];
+const imageStatusBar = ["HomeScreen"];
 const hiddenStatusBar = ["login", "AllFacilityCategories"];
 const allowBackList = [
   "SingleDiscoveryCategory",
@@ -18,6 +18,7 @@ const allowBackList = [
 const mapper = {
   AllDiscoverCategories: "Discover",
   AllFacilityCategories: "Facilities",
+  HomeScreen:"Home"
 };
 export default function MyStatusBar({
   navigation: { goBack },

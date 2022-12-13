@@ -5,7 +5,6 @@ import { useAppSelector } from "../Store/redux.hooks";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import theme from "../Theme/paper.theme";
 import MyStatusBar from "../Components/MyStatusBar";
-import HomeScreen from "../Screens/Home/Home.screen";
 import FacilitiesNavigator from "./FaciltyTopTab.navigator";
 import Profile from "../Screens/Profile/Profile.screen";
 import QrCode from "../Screens/QrCode/QrCode.screen";
@@ -64,7 +63,9 @@ export default function TabNavigator() {
     </Tab.Navigator>
   ) : (
     <Tab.Navigator screenOptions={screenOptions}>
-      <Tab.Screen name={"Home"} component={HomeNavigator} />
+      <Tab.Screen name={"Home"} component={HomeNavigator}        options={{
+          headerShown: false,
+      }} />
       <Tab.Screen name={"Invite"} component={InviteGuest} />
       <Tab.Screen
         name={"Discover"}

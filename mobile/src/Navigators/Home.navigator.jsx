@@ -6,7 +6,7 @@ import Notifications from "../Screens/Notifications";
 const Stack = createNativeStackNavigator();
 
 const screenOptions = {
-  headerShown: false,
+  headerShown: true,
   header: (props) => <MyStatusBar {...props} />,
 };
 
