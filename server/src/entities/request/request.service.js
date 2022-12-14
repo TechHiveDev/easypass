@@ -129,8 +129,8 @@ export const updateRequest = async (id, data) => {
     include: { user: true, facility: true },
   });
   if (!request) throw { status: 404, message: `Request not found` };
-  if (request.status == "Cancelled" || request.status == "AdminRefused")
-    throw { status: 400, message: `Cannot update a Cancelled request` };
+  // if (request.status == "Cancelled" || request.status == "AdminRefused")
+  //   throw { status: 400, message: `Cannot update a Cancelled request` };
   if (data.status) {
     if (
       !IsUserCanUpdateRequest({
