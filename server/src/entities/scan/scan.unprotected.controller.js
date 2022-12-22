@@ -9,16 +9,15 @@ import qrcode from "qrcode";
 const scanGuestController = async (req, res, next) => {
   try {
     const { encryptedQrcode, deviceId } = req?.body;
-    // let { success, qrcode } =
+    // res.send({scan:{success:true}})
     res.send(await scanQrCode({ encryptedQrcode, deviceId }));
-    // res.send({ success });
-    // return res.render("QRCode", { qrcode });
   } catch (error) {
     next(error);
   }
 };
 
-//  ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+//  =================================================================
+
 const guestController = async (req, res, next) => {
   try {
     const encryptedQrcode = await scanQrCode({
@@ -33,11 +32,30 @@ const guestController = async (req, res, next) => {
     next(err);
   }
 };
+
+//  =================================================================
+
+router.route("/guest/:encryptedQrcode").get(guestController);
+
+//  =================================================================
+const validateQrcode = (qrcode) => {
+  console.log(qrcode);
+}
+const arduinoScannerController = async (req, res, next) => {
+  try {
+    res.render("arduino", { validateQrcode });
+  } catch (err) {
+    next(err);
+  }
+};
+
+//  =================================================================
+
+router.route("/arduino").get(arduinoScannerController);
+
 //  =================================================================
 
 router.route("/guest/").post(scanGuestController);
-
-router.route("/guest/:encryptedQrcode").get(guestController);
 
 //  =================================================================
 
