@@ -22,10 +22,10 @@ const scanGuestController = async (req, res, next) => {
 
 const guestController = async (req, res, next) => {
   try {
-    const { encryptedQrcode } = req?.params?.encryptedQrcode;
+    const encryptedQrcode = req?.params?.encryptedQrcode;
     const { message } = await scanQrCode({ encryptedQrcode });
     res.render("qrcode", {
-      qr_code: await qrcode.toDataURL(req.params.encryptedQrcode),
+      qr_code: await qrcode.toDataURL(encryptedQrcode),
       title: name,
       message,
     });
@@ -33,11 +33,6 @@ const guestController = async (req, res, next) => {
     next(err);
   }
 };
-
-//  =================================================================
-
-// What ?
-const validateQrcode = (qrcode) => console.log(qrcode);
 
 //  =================================================================
 
