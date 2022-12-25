@@ -54,7 +54,7 @@ app.use(passport.session());
 // ------------------------------------------------------
 
 // set ejs engine
-app.set("views", path.join(__dirname, "./src/entities/scan"));
+app.set("views", path.join(__dirname, "./src/entities/scan/views"));
 app.set("view engine", "ejs");
 
 // Static Files ( Uploaded Images )

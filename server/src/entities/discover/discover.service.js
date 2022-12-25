@@ -14,12 +14,6 @@
 
 // ------------------------------------------------------------
 
-/**
- *  you can call your orm here ( prisma ) and
- *  return what you want from database
- *
- */
-
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
@@ -32,8 +26,6 @@ export const getDiscoverByCompound = async (compoundId) => {
 // ------------------------------------------------------------------
 
 export const createDiscover = async (adminId, data) => {
-  return await prisma.discover.create({
-    data: { ...data, userId: adminId },
-  });
+  return await prisma.discover.create({ data: { ...data, userId: adminId } });
 };
 // ------------------------------------------------------------------

@@ -110,7 +110,7 @@ import {
   getRequestsByUser,
   createRequest,
   deleteRequest,
-  updateRequest
+  updateRequest,
 } from "./request.service";
 
 // ==================================================================
@@ -122,6 +122,7 @@ const crudController = {
 };
 
 // ------------------------------------------------------------------
+
 const customRoutesController = [
   {
     method: "get", // get, post, put, delete  (from express router)
@@ -135,6 +136,9 @@ const customRoutesController = [
       }
     },
   },
+
+  // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
   {
     method: "get", // get, post, put, delete  (from express router)
     path: "/request/user/:id",
@@ -148,5 +152,7 @@ const customRoutesController = [
     },
   },
 ];
+
 // ------------------------------------------------------------------
+
 export default crud("/request", crudController, customRoutesController);

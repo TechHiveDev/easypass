@@ -105,10 +105,7 @@
 // ------------------------------------------------------------------
 
 import { crud, prismaCrud } from "../../utils/crud/express-crud-router";
-import {
-  getDiscoverByCompound,
-  createDiscover,
-} from "./discover.service";
+import { getDiscoverByCompound, createDiscover } from "./discover.service";
 
 // ==================================================================
 const crudController = {
@@ -116,9 +113,10 @@ const crudController = {
 };
 
 // ------------------------------------------------------------------
+
 const customRoutesController = [
   {
-    method: "get", // get, post, put, delete  (from express router)
+    method: "get",
     path: "/discover/compound/:id",
     controller: async (req, res, next) => {
       try {
@@ -130,7 +128,7 @@ const customRoutesController = [
     },
   },
 
-  // ------------------------------------------------------------------
+  // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
   {
     method: "post",
@@ -145,5 +143,7 @@ const customRoutesController = [
     },
   },
 ];
+
 // ------------------------------------------------------------------
+
 export default crud("/discover", crudController, customRoutesController);

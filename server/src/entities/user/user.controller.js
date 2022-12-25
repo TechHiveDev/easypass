@@ -110,6 +110,5 @@
 import { crud, prismaCrud } from "../../utils/crud/express-crud-router";
 
 // ------------------------------------------------------------------
-// ------------------------------------------------------------------
 
 export default crud("/user", prismaCrud("user"));

@@ -101,9 +101,12 @@
 
 import { crud, prismaCrud } from "../../utils/crud/express-crud-router";
 import { getDiscoverCompound } from "./category.service";
+
 // ------------------------------------------------------------------
 
 const crudController = { ...prismaCrud("category") };
+
+// ------------------------------------------------------------------
 
 const customRoutesController = [
   {

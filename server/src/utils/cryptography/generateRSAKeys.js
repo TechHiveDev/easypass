@@ -3,10 +3,14 @@
  * This module for Generate Private and Public Key for cryptography purposes
  */
 
+// ==================================================================
+
 const crypto = require("crypto");
 const fs = require("fs");
 const { promisify } = require("util");
 const keysPath = __dirname + "/keys";
+
+// ==================================================================
 
 /* Generate new public and private key */
 const generateKeyPair = promisify(crypto.generateKeyPair);
@@ -23,5 +27,7 @@ const generateRSAKeys = async () => {
     console.error(err);
   }
 };
+
+// ==================================================================
 
 module.exports = generateRSAKeys;

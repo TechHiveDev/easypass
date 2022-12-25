@@ -71,36 +71,28 @@ export const verifyGuestQrCode = async ({
     },
   });
 
-  if (!invitation)
+  const commonPayload = { ...rest, type, expiresAt, userId, compoundId };
+
+  if (!invitation) {
     return {
-      ...rest,
+      ...commonPayload,
       invitationId,
-      userId,
-      compoundId,
-      type,
       success: false,
       message: "Invalid QrCode",
     };
+  }
 
   if (new Date(expiresAt) < new Date()) {
     return {
-      ...rest,
+      ...commonPayload,
       invitation,
-      userId,
-      compoundId,
-      expiresAt,
-      type,
       success: false,
       message: "Expired QrCode",
     };
   }
+
   return {
-    ...rest,
-    invitation,
-    userId,
-    compoundId,
-    type,
-    expiresAt,
+    ...commonPayload,
     success: true,
     message: "QrCode Accepted",
   };

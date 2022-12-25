@@ -113,12 +113,19 @@ Baud:
 <br />
 <div id="serialResults"></div> -->
 <script>
+  /**
+   * Delete All un used things Please
+   */
+
   var port,
     textEncoder,
     writableStreamClosed,
     writer,
     historyIndex = -1;
   const lineHistory = [];
+
+  // -----------------------------------------
+
   async function connectSerial() {
     try {
       // Prompt user to select any serial port.
@@ -139,6 +146,8 @@ Baud:
     }
   }
 
+  // -----------------------------------------
+
   async function validateQrcode(qrcode) {
     const rawResponse = await fetch("http://localhost:5000/guest", {
       method: "POST",
@@ -149,14 +158,19 @@ Baud:
       body: JSON.stringify({ encryptedQrcode: qrcode, deviceId: 1 }),
     });
     const content = await rawResponse.json();
-    console.log({content,boo:content?.scan?.success})
+    console.log({ content, boo: content?.scan?.success });
     return content.scan.success;
   }
+
+  // -----------------------------------------
+
   async function sendCharacterNumber() {
     document.getElementById("lineToSend").value = String.fromCharCode(
       document.getElementById("lineToSend").value
     );
   }
+
+  // -----------------------------------------
 
   async function sendSerialLine() {
     dataToSend = document.getElementById("lineToSend").value;
@@ -171,16 +185,18 @@ Baud:
     //   appendToTerminal("> " + dataToSend);
     const isValid = await validateQrcode(dataToSend);
     console.log(isValid);
-    if(isValid){
-
-        await writer.write("AT");
-    }else{
-        console.log("sad")
+    if (isValid) {
+      await writer.write("AT");
+    } else {
+      console.log("sad");
     }
     // if (dataToSend.trim().startsWith("\x03")) echo(false);
     document.getElementById("lineToSend").value = "";
     document.getElementById("lineToSend").value = "";
   }
+
+  // -----------------------------------------
+
   async function listenToPort() {
     const textDecoder = new TextDecoderStream();
     const readableStreamClosed = port.readable.pipeTo(textDecoder.writable);
@@ -200,7 +216,13 @@ Baud:
       document.getElementById("");
     }
   }
+
+  // -----------------------------------------
+
   const serialResultsDiv = document.getElementById("serialResults");
+
+  // -----------------------------------------
+
   async function appendToTerminal(newStuff) {
     serialResultsDiv.innerHTML += newStuff;
     if (serialResultsDiv.innerHTML.length > 3000)
@@ -211,6 +233,9 @@ Baud:
     //scroll down to bottom of div
     serialResultsDiv.scrollTop = serialResultsDiv.scrollHeight;
   }
+
+  // -----------------------------------------
+
   function scrollHistory(direction) {
     // Clamp the value between -1 and history length
     historyIndex = Math.max(
@@ -223,6 +248,9 @@ Baud:
       document.getElementById("lineToSend").value = "";
     }
   }
+
+  // -----------------------------------------
+
   document
     .getElementById("lineToSend")
     .addEventListener("keyup", async function (event) {
@@ -236,12 +264,15 @@ Baud:
         scrollHistory(-1);
       }
     });
+
+  // -----------------------------------------
+
   document.getElementById("baud").value =
     localStorage.baud == undefined ? 9600 : localStorage.baud;
-//   document.getElementById("addLine").checked =
-//     localStorage.addLine == "false" ? false : true;
-//   document.getElementById("carriageReturn").checked =
-//     localStorage.carriageReturn == "false" ? false : true;
-//   document.getElementById("echoOn").checked =
-//     localStorage.echoOn == "false" ? false : true;
+  //   document.getElementById("addLine").checked =
+  //     localStorage.addLine == "false" ? false : true;
+  //   document.getElementById("carriageReturn").checked =
+  //     localStorage.carriageReturn == "false" ? false : true;
+  //   document.getElementById("echoOn").checked =
+  //     localStorage.echoOn == "false" ? false : true;
 </script>

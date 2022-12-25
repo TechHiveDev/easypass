@@ -2,6 +2,7 @@ import { encryptWithPublicKey } from "../../../utils/cryptography/cryptography";
 import invitationService from "../../invitation/invitation.service";
 import { isUserBelongsToCompound } from "../../userCompound/userCompound.service";
 import { API_URL } from "../../../../../configs";
+
 // ===============================================================
 
 const addHoursToDate = (date = new Date(), hours = 3) => {
@@ -79,16 +80,7 @@ export const generateGuestQrCodeInvitationLink = async ({
     })
   );
 
-  // const fileName = Date.now() + "_" + userId + ".png";
-  // const path = "assets/qrcodes/" + fileName;
-
-  // const image = await qrcode.toFile(
-  //   "assets/qrcodes/" + fileName,
-  //   encryptedQrcode
-  // );
-
   return {
-    // link: `${API_URL}/${path}`,
     link: `${API_URL}/guest/${encryptedQrcode}`,
     qrcode: encryptedQrcode,
   };

@@ -105,9 +105,14 @@
 // ------------------------------------------------------------------
 
 import { crud, prismaCrud } from "../../utils/crud/express-crud-router";
-import { getFacilitiesByCompound, createFacility, updateFacility } from "./facility.service";
+import {
+  getFacilitiesByCompound,
+  createFacility,
+  updateFacility,
+} from "./facility.service";
 
 // ==================================================================
+
 const crudController = {
   ...prismaCrud("facility"),
   create: createFacility,
@@ -115,13 +120,14 @@ const crudController = {
 };
 
 // ------------------------------------------------------------------
+
 const customRoutesController = [
   {
     method: "get", // get, post, put, delete  (from express router)
     path: "/facility/compound/:id",
     controller: async (req, res, next) => {
       try {
-        let facilities = await getFacilitiesByCompound(+req.params.id);
+        const facilities = await getFacilitiesByCompound(+req.params.id);
         res.status(202).json(facilities);
       } catch (err) {
         next(err);
@@ -129,5 +135,7 @@ const customRoutesController = [
     },
   },
 ];
+
 // ------------------------------------------------------------------
+
 export default crud("/facility", crudController, customRoutesController);

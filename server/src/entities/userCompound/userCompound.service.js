@@ -23,6 +23,8 @@ export const isUserBelongsToCompound = async ({ userId, compoundId }) => {
   return userCompound;
 };
 
+// ===============================================================
+
 export const getUserCompounds = async (userId) => {
   if (!userId) {
     throw { status: 400, message: "userId is required" };

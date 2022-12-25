@@ -9,10 +9,14 @@
  *
  */
 
+// ==================================================================
+
 const crypto = require("crypto");
 const fs = require("fs");
 const keysPath = __dirname + "/keys";
 const { hash } = require("./hashing.js");
+
+// ==================================================================
 
 /* Public and Private keys if exists */
 const getPublicKey = () => fs.readFileSync(keysPath + "/id_rsa_public.pem");
@@ -54,6 +58,8 @@ const sign = async (message) => {
     digitalSignature,
   };
 };
+
+// ==================================================================
 
 module.exports = {
   encryptWithPublicKey,

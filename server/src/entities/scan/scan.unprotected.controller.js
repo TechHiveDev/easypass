@@ -1,15 +1,17 @@
 import express from "express";
 import { scanQrCode } from "./services/scanQrCode.service";
-const router = express.Router();
 import { name } from "../../../../configs";
 import qrcode from "qrcode";
+
+//  =================================================================
+
+const router = express.Router();
 
 //  =================================================================
 
 const scanGuestController = async (req, res, next) => {
   try {
     const { encryptedQrcode, deviceId } = req?.body;
-    // res.send({scan:{success:true}})
     res.send(await scanQrCode({ encryptedQrcode, deviceId }));
   } catch (error) {
     next(error);
@@ -20,13 +22,12 @@ const scanGuestController = async (req, res, next) => {
 
 const guestController = async (req, res, next) => {
   try {
-    const encryptedQrcode = await scanQrCode({
-      encryptedQrcode: req.params.encryptedQrcode,
-    });
+    const { encryptedQrcode } = req?.params?.encryptedQrcode;
+    const { message } = await scanQrCode({ encryptedQrcode });
     res.render("qrcode", {
       qr_code: await qrcode.toDataURL(req.params.encryptedQrcode),
       title: name,
-      message: encryptedQrcode.message,
+      message,
     });
   } catch (err) {
     next(err);
@@ -35,12 +36,11 @@ const guestController = async (req, res, next) => {
 
 //  =================================================================
 
-router.route("/guest/:encryptedQrcode").get(guestController);
+// What ?
+const validateQrcode = (qrcode) => console.log(qrcode);
 
 //  =================================================================
-const validateQrcode = (qrcode) => {
-  console.log(qrcode);
-}
+
 const arduinoScannerController = async (req, res, next) => {
   try {
     res.render("arduino", { validateQrcode });
@@ -51,10 +51,11 @@ const arduinoScannerController = async (req, res, next) => {
 
 //  =================================================================
 
+/**
+ * What is this , and why it's here ?
+ */
+router.route("/guest/:encryptedQrcode").get(guestController);
 router.route("/arduino").get(arduinoScannerController);
-
-//  =================================================================
-
 router.route("/guest/").post(scanGuestController);
 
 //  =================================================================

@@ -111,14 +111,14 @@ import {
 } from "./announcement.service";
 
 // ==================================================================
-const crudController = {
-  ...prismaCrud("announcement"),
-};
+
+const crudController = { ...prismaCrud("announcement") };
 
 // ------------------------------------------------------------------
+
 const customRoutesController = [
   {
-    method: "get", // get, post, put, delete  (from express router)
+    method: "get",
     path: "/announcement/compound/:id",
     controller: async (req, res, next) => {
       try {
@@ -130,7 +130,7 @@ const customRoutesController = [
     },
   },
 
-  // ------------------------------------------------------------------
+  // -------------------------
 
   {
     method: "post",
@@ -145,5 +145,7 @@ const customRoutesController = [
     },
   },
 ];
+
 // ------------------------------------------------------------------
+
 export default crud("/announcement", crudController, customRoutesController);

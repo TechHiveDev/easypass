@@ -14,12 +14,6 @@
 
 // ------------------------------------------------------------
 
-/**
- *  you can call your orm here ( prisma ) and
- *  return what you want from database
- *
- */
-
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
@@ -46,6 +40,8 @@ export const updateFacility = async (id, data) => {
   }
   return prisma.facility.update({ where: { id }, data });
 };
+
+// ------------------------------------------------------------------
 
 const validateAndTransform = (slot, index) => {
   const fromDate = slot.from.split("T")[0];
