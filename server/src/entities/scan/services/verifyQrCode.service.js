@@ -11,8 +11,10 @@ const prisma = new PrismaClient({
 // ===============================================================
 
 export const verifyEncryptedQrCode = async (encryptedQrcode) => {
-  const decryptedString = await decryptWithPrivateKey(encryptedQrcode);
-  const decryptedObject = JSON.parse(decryptedString);
+  // const decryptedString = await decryptWithPrivateKey(encryptedQrcode);
+  // const decryptedObject = JSON.parse(decryptedString);
+  const decryptedObject = JSON.parse(encryptedQrcode)
+  console.log(decryptedObject)
 
   const { userId, compoundId, type, expiresAt } = decryptedObject;
 

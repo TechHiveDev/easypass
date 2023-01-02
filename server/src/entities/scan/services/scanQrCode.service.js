@@ -8,6 +8,7 @@ const prisma = new PrismaClient({ log: ["info"] });
 // ===============================================================
 
 export const scanQrCode = async ({ encryptedQrcode, deviceId }) => {
+  console.log(encryptedQrcode);
   const qrcode = await verifyEncryptedQrCode(encryptedQrcode);
   const { type, expiresAt, invitation, success, userId, message, compoundId } =
     qrcode;

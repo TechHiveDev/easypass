@@ -12,6 +12,7 @@ const router = express.Router();
 const scanGuestController = async (req, res, next) => {
   try {
     const { encryptedQrcode, deviceId } = req?.body;
+    // res.send({scan:{success:true}})
     res.send(await scanQrCode({ encryptedQrcode, deviceId }));
   } catch (error) {
     next(error);
@@ -51,7 +52,7 @@ const arduinoScannerController = async (req, res, next) => {
  */
 router.route("/guest/:encryptedQrcode").get(guestController);
 router.route("/arduino").get(arduinoScannerController);
-router.route("/guest/").post(scanGuestController);
+router.route("/guest").post(scanGuestController);
 
 //  =================================================================
 

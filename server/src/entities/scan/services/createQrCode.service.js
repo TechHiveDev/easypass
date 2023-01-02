@@ -26,14 +26,15 @@ export const generateResidentQrCode = async ({ userId, compoundId }) => {
     throw { status: 400, message: "user is not resident" };
   }
 
-  return encryptWithPublicKey(
-    JSON.stringify({
-      userId,
-      compoundId,
-      type: userCompound?.user?.type,
-      expiresAt: addMinutesToDate(new Date(), 1),
-    })
-  );
+  const stringifiedObj = JSON.stringify({
+    userId,
+    compoundId,
+    type: userCompound?.user?.type,
+    expiresAt: addMinutesToDate(new Date(), 1),
+  })
+
+  return encodeURI(stringifiedObj);
+  // return encryptWithPublicKey(stringifiedObj);
 };
 
 // ===============================================================
@@ -70,15 +71,16 @@ export const generateGuestQrCodeInvitationLink = async ({
 
   if (!invitation.id) throw { status: 400, message: "can't invite " + type };
 
-  const encryptedQrcode = encryptWithPublicKey(
-    JSON.stringify({
-      userId,
-      compoundId,
-      invitationId: invitation?.id,
-      type,
-      expiresAt: addMinutesToDate(new Date(), 1),
-    })
-  );
+  const stringifiedObj = JSON.stringify({
+    userId,
+    compoundId,
+    invitationId: invitation?.id,
+    type,
+    expiresAt: addMinutesToDate(new Date(), 1),
+  })
+
+  // const encryptedQrcode = encryptWithPublicKey(stringifiedObj);
+  const encryptedQrcode = encodeURI(stringifiedObj);
 
   return {
     link: `${API_URL}/guest/${encryptedQrcode}`,
@@ -88,4 +90,4 @@ export const generateGuestQrCodeInvitationLink = async ({
 
 // ===============================================================
 
-export const serveQrCodeScreen = async ({}) => {};
+export const serveQrCodeScreen = async ({ }) => { };
