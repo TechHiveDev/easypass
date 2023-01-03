@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { parseQuery } from "../../utils/crud/controller/controller.utils";
-// import { sendNotificationFirebase } from "../../utils/notification/firebase";
+import { sendNotificationFirebase } from "../../utils/notification/firebase";
 
 // ------------------------------------------------------------
 
@@ -58,7 +58,7 @@ export const createRequest = async (data) => {
         const newRequest = await prisma.request.create({
           data,
         });
-        // await sendNotificationToAssociatedAdmin(facilityId, newRequest);
+        await sendNotificationToAssociatedAdmin(facilityId, newRequest);
         return newRequest;
       }
     } else {
@@ -180,14 +180,14 @@ const sendNotificationToAssociatedAdmin = async (facilityId, newRequest) => {
   const from = newRequest.availableDateFrom.toISOString().slice(0, 10);
   const to = newRequest.availableDateTo.toISOString().slice(0, 10);
 
-  // await sendNotificationFirebase({
-  //   usersPushTokens,
-  //   title: "A user requested a service",
-  //   body: `user requested a service from ${from} to ${to}`,
-  //   data: {
-  //     requestId: newRequest.id,
-  //   },
-  // });
+  await sendNotificationFirebase({
+    usersPushTokens,
+    title: "A user requested a service",
+    body: `user requested a service from ${from} to ${to}`,
+    data: {
+      requestId: newRequest.id,
+    },
+  });
 };
 
 // ------------------------------------------------------------------
