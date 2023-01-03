@@ -14,7 +14,6 @@ import translations from "./src/Config/translations";
 import toastConfig from "./src/Config/toast.config";
 import { navigationRef } from "./src/Navigators/navigationUtils";
 
-// -----------------------------------------------------
 
 i18n.translations = translations;
 i18n.locale = "en";
