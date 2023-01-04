@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { parseQuery } from "../../utils/crud/controller/controller.utils";
 import { sendNotificationFirebase } from "../../utils/notification/firebase";
-
+import { sendNotificationExpo } from "../../utils/notification/expo.js";
 // ------------------------------------------------------------
 
 const prisma = new PrismaClient();
@@ -135,6 +135,15 @@ export const updateRequest = async (id, data) => {
       data: { ...res, slots: newSlots },
     });
   }
+  if (data.userType == "Admin" || data.userType == "SuperAdmin") {
+    // send notification to users if admin updated the request
+    await sendNotificationExpo({
+      usersPushTokens: [request.user.notificationToken],
+      title: `Response to ${request.facility.name}`,
+      body: `admin: ${data.respondNote}`,
+      data: { respond: true, requestId: request.id },
+    });
+  }
 
   delete data.userType;
   return await prisma.request.update({ where: { id }, data });
@@ -142,7 +151,6 @@ export const updateRequest = async (id, data) => {
 
 // ==================================================================
 
-// Can you delete it if not using it
 const sendNotificationToAssociatedAdmin = async (facilityId, newRequest) => {
   const facility = await prisma.facility.findFirst({
     where: {
