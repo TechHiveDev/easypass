@@ -137,10 +137,11 @@ export const updateRequest = async (id, data) => {
   }
   if (data.userType == "Admin" || data.userType == "SuperAdmin") {
     // send notification to users if admin updated the request
+    const message = data.respondNote.includes("#ST#")?data.respondNote.split("#ST#")[1]:data.respondNote
     await sendNotificationExpo({
       usersPushTokens: [request.user.notificationToken],
       title: `Response to ${request.facility.name}`,
-      body: `admin: ${data.respondNote}`,
+      body: `admin: ${message}`,
       data: { respond: true, requestId: request.id },
     });
   }
