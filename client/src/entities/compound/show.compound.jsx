@@ -14,6 +14,7 @@ import {
 import CompoundTitle from './title.compound';
 import CompoundShowActions from './actions.show.compound';
 import Actions from '../../reactAdmin/components/Actions';
+
 // ------------------------------------------------
 
 export default function ShowCompound(props) {

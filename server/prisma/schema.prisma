@@ -14,7 +14,6 @@ generator client {
 // ===============================================================
 
 // Data Model
-
 model User {
   id           Int            @id @default(autoincrement())
   email        String         @unique
@@ -81,6 +80,7 @@ model UserCompound {
 
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
+// add phone number to the invited one
 model Invitation {
   id        Int            @id @default(autoincrement())
   name      String?
@@ -186,6 +186,9 @@ model Discover {
 }
 
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+// Show Facility description ,price in UI
+// Add Facility Category
 model Facility {
   id Int @id @default(autoincrement())
 
@@ -206,6 +209,8 @@ model Facility {
 }
 
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+// TODO : Rename to Discover Category 
 model Category {
   id Int @id @default(autoincrement())
 
@@ -219,6 +224,7 @@ model Category {
 
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
+// Need to add Request 
 model Request {
   id Int @id @default(autoincrement())
 
@@ -230,7 +236,6 @@ model Request {
   facilityId Int?
   facility   Facility?     @relation(fields: [facilityId], references: [id], onDelete: NoAction)
 
-  // requestNote String?
   respondNote String?
   seen        Boolean @default(true)
   adminSeen   Boolean @default(false)
@@ -268,12 +273,17 @@ enum InvitationType {
   Delivery
 }
 
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
 enum ScanType {
   Resident
   Visitor
   Delivery
 }
 
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+// TODO: Rename in-progress to Accepted
 enum RequestStatus {
   Pending // pendingAt  (by user)
   Cancelled // cancelledAt (by user)            
@@ -281,6 +291,8 @@ enum RequestStatus {
   InProgress // inProgressAt (by user/by admin)
   Completed // completedAt (by user/by admin)
 }
+
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
 enum RequestType {
   Facility

@@ -6,8 +6,8 @@ import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 
 const RenderItem = ({
   item,
-  index,
-  separators,
+  _index,
+  _separators,
   icon = null,
   itemTitleField,
   itemDescriptionField,
@@ -40,9 +40,7 @@ export default function List({
   icon = null,
   itemTitleField = "title",
   itemDescriptionField = "description",
-
-  // itemPress props :   item, index, separators
-  itemPress = (props) => null,
+  itemPress = (_props) => null,
 }) {
   return (
     <FlatList

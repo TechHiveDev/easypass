@@ -13,7 +13,10 @@ import {
 import Actions from "../../reactAdmin/components/Actions";
 
 // ------------------------------------------------
+
 const compoundFilters = [<SearchInput source="q" alwaysOn />];
+
+// ------------------------------------------------
 
 export default function ListCompound(props) {
   const { isLoading, permissions } = usePermissions();
@@ -23,11 +26,7 @@ export default function ListCompound(props) {
         <NumberField variant="outlined" source="id" />
         <TextField variant="outlined" source="name" />
         <TextField variant="outlined" source="location" />
-        <div
-          style={{
-            display: "flex",
-          }}
-        >
+        <div style={{ display: "flex" }}>
           <ShowButton label="ra.action.show" />
           {!isLoading && permissions === "SuperAdmin" ? (
             <>

@@ -29,17 +29,9 @@ const prisma = new PrismaClient({ log: ["info" /* "query" */] });
 // ---------------------------------------------------------
 
 export const createUserAndAddress = async (payload) => {
-  const expectedUserBody = [
-    "email",
-    "name",
-    "password",
-    "phone",
-    "type",
-    // "active",
-  ];
+  const expectedUserBody = ["email", "name", "password", "phone", "type"];
 
   const expectedResiendtBody = [
-    // "compoundName",
     "compoundId",
     "streetName",
     "blockNumber",
@@ -71,7 +63,6 @@ export const createUserAndAddress = async (payload) => {
     name,
     phone,
     password,
-    // compoundName,
     compoundId,
     streetName,
     blockNumber,
@@ -81,10 +72,7 @@ export const createUserAndAddress = async (payload) => {
   } = payload;
 
   const compound = await prisma.compound.findFirst({
-    where: {
-      // name: compoundName,
-      id: +compoundId,
-    },
+    where: { id: +compoundId },
   });
 
   if (!compound?.id) {
@@ -197,6 +185,7 @@ export const login = async ({ email, password }) => {
   const accessToken = jwt.sign(user, process.env.jwtSecret, {
     expiresIn: process.env.jwtExpires,
   });
+
   for (let index = 0; index < user.userCompound.length; index++) {
     const compound = await prisma.compound.findUnique({
       where: { id: user.userCompound[index].compoundId },
@@ -348,5 +337,6 @@ export const isThirdPartyUser = async ({ email, id, phone }) => {
   if (user.googleId) return true;
   if (user.githubId) return true;
   if (!user.password) return true;
+
   return false;
 };

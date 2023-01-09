@@ -14,46 +14,9 @@ import { useAppSelector } from "../../Store/redux.hooks";
 import Success from "./Success";
 import { LinearGradient } from "expo-linear-gradient";
 import { capitalize } from "../../Utils/string.util";
+
 // ======================================================================
 
-// dummy data
-// const invitationUser = {
-//   name: "Jan Karam",
-//   phone: "4545454545",
-//   photoUrl: "https://picsum.photos/900",
-//   type: "Resident",
-//   userCompound: [
-//     {
-//       id: 1,
-//       streetName: "haga",
-//       blockNumber: 89,
-//       unitNumber: 20,
-//       compoundId: 1,
-//     },
-//     {
-//       id: 2,
-//       streetName: "haga",
-//       blockNumber: 89,
-//       unitNumber: 250,
-//       compoundId: 1,
-//     },
-//     {
-//       id: 3,
-//       streetName: "haga",
-//       blockNumber: 89,
-//       unitNumber: 420,
-//       compoundId: 1,
-//     },
-//   ],
-// };
-// const currentCompoundId = 1;
-// const isLoading = false;
-// const data = {
-//   scan: {
-//     success: true,
-//   },
-//   message: "yeahhhhhhhhh",
-// };
 export default function ScanQrCode() {
   const isFocused = useIsFocused();
   const [scanQrCode, { data, isLoading, reset }] = useScanQrCodeMutation();
@@ -69,9 +32,13 @@ export default function ScanQrCode() {
   const currentAddresses = invitationUser?.userCompound?.filter(
     (c) => currentCompoundId === c?.compoundId
   );
+
   // -----------------------------------------
+
   const clickToScan = () => setActive(!active);
+
   // -----------------------------------------
+
   useEffect(() => {
     const requestCameraPermission = async () => {
       const { status } = await BarCodeScanner.requestPermissionsAsync();
@@ -88,6 +55,8 @@ export default function ScanQrCode() {
       setActive(false);
     }
   });
+
+  // -----------------------------------------
 
   const handleSuccess = async ({ data }) => {
     setActive(!active);

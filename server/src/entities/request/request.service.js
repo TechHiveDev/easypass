@@ -2,6 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import { parseQuery } from "../../utils/crud/controller/controller.utils";
 import { sendNotificationFirebase } from "../../utils/notification/firebase";
 import { sendNotificationExpo } from "../../utils/notification/expo.js";
+
 // ------------------------------------------------------------
 
 const prisma = new PrismaClient();
@@ -137,7 +138,9 @@ export const updateRequest = async (id, data) => {
   }
   if (data.userType == "Admin" || data.userType == "SuperAdmin") {
     // send notification to users if admin updated the request
-    const message = data.respondNote.includes("#ST#")?data.respondNote.split("#ST#")[1]:data.respondNote
+    const message = data.respondNote.includes("#ST#")
+      ? data.respondNote.split("#ST#")[1]
+      : data.respondNote;
     await sendNotificationExpo({
       usersPushTokens: [request.user.notificationToken],
       title: `Response to ${request.facility.name}`,

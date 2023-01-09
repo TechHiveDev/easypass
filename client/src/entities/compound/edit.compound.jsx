@@ -1,6 +1,7 @@
 import { Edit, ImageInput, SimpleForm, TextInput } from "react-admin";
 import CompoundTitle from "./title.compound";
 import PreviewImage from "../../components/PreviewImage";
+
 export default function EditCompound() {
   return (
     <Edit title={<CompoundTitle />}>

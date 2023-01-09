@@ -27,26 +27,6 @@ const baseQueryClient = fetchBaseQuery({
  */
 const baseQuery = async (args, api, extraOptions) => {
   let result = await baseQueryClient(args, api, extraOptions);
-
-  // const status = result?.error?.status;
-  // if (status === "FETCH_ERROR") {
-  //   Toast.show({
-  //     type: "success",
-  //     text1: `😔  Can't Connect to Network on Server ${config.API_URL}`,
-  //   });
-  // } else {
-  //   if (result?.error?.data?.message) {
-  //     Toast.show({
-  //       type: "error",
-  //       text1: "😔  " + result?.error?.data?.message,
-  //     });
-  //   }
-  // }
-
-  /*
-   * TODO: can handle if the token is expired
-   * const refreshResult = await baseQueryClient("/refreshToken", api, extraOptions);
-   */
   return result;
 };
 
