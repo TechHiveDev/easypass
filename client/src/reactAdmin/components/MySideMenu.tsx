@@ -10,15 +10,15 @@ import GroupIcon from "@mui/icons-material/Group";
 import YouTubeIcon from "@mui/icons-material/YouTube";
 import ViewTimelineIcon from "@mui/icons-material/ViewTimeline";
 import Collapse from "@mui/material/Collapse";
-import * as React from "react";
 import { useState } from "react";
 import Button from "@mui/material/Button";
 import AssessmentIcon from "@mui/icons-material/Assessment";
 import { useToasts } from "react-toast-notifications";
 import { Link } from "react-router-dom";
-// import { onMessageListener } from '../../utils/firebase';
+import { onMessageListener } from "../../utils/firebase/firebase";
 import entities from "../../entities/entities";
 import customFetch from "../../utils/customFetch";
+
 // ------------------------------------------------
 
 const icons = {
@@ -27,27 +27,28 @@ const icons = {
   post: <ViewTimelineIcon />,
 };
 // ------------------------------------------------
+
 const NotificationProvider = () => {
   const { addToast } = useToasts();
-  // onMessageListener()
-  //   .then(({ notification, data }) => {
-  //     addToast(
-  //       <>
-  //         <h3>{notification.title}</h3>
-  //         <Link to={`/request/${data.requestId}/show`}>See it</Link>
-  //       </>,
-  //       {
-  //         appearance: "info",
-  //       }
-  //     );
-  //   })
-  //   .catch((err) => console.log("failed: ", err));
+  onMessageListener()
+    .then(({ notification, data }: any) => {
+      addToast(
+        <>
+          <h3>{notification.title}</h3>
+          <Link to={`/request/${data.requestId}/show`}>See it</Link>
+        </>,
+        {
+          appearance: "info",
+        }
+      );
+    })
+    .catch((err) => console.log("failed: ", err));
   return null;
 };
 
 // =======================================================================
 
-export default function MySideMenu(props) {
+export default function MySideMenu(props: any) {
   const translate = useTranslate();
   const [checked, setChecked] = useState(true);
   const [open] = useSidebarState();
@@ -55,13 +56,16 @@ export default function MySideMenu(props) {
   const { data } = useQuery(["notifications"], () =>
     customFetch("/request", {})
   );
-  const notificationCount = data?.filter((d) => d?.adminSeen === false).length;
+  const notificationCount = data?.filter(
+    (d: any) => d?.adminSeen === false
+  ).length;
+
   return (
     <Sidebar {...props}>
       <NotificationProvider />
       {entities
         .filter((e) => !e.hide)
-        .map((entity, index) => {
+        .map((entity: any, index: number) => {
           const { name, label } = entity;
           if (
             name === "request" &&
@@ -82,6 +86,7 @@ export default function MySideMenu(props) {
                   to={`/${name}`}
                   resource={entity}
                   primaryText={translate(`menu.${label}`)}
+                  // @ts-ignore
                   leftIcon={icons[name] ? icons[name] : <GroupIcon />}
                 />
                 <div
@@ -118,6 +123,7 @@ export default function MySideMenu(props) {
               to={`/${name}`}
               resource={entity}
               primaryText={translate(`menu.${label}`)}
+              // @ts-ignore
               leftIcon={icons[name] ? icons[name] : <GroupIcon />}
             />
           );
@@ -140,7 +146,9 @@ export default function MySideMenu(props) {
       <Collapse in={open && checked}>
         <div
           style={{
+            //@ts-ignore
             marginLeft: locale === "en" ? "20px" : null,
+            //@ts-ignore
             marginRight: locale === "ar" ? "20px" : null,
           }}
         >

@@ -5,7 +5,8 @@ import allEnglishMessages from "./englishMessages";
 // ------------------------------------------------
 
 const i18nProvider = polyglotI18nProvider(
-  (locale) => (locale === "ar" ? arabicMessages : allEnglishMessages),
+  // @ts-ignore
+  (locale: any) => (locale === "ar" ? arabicMessages : allEnglishMessages),
   "en" // Default locale
 );
 

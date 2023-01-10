@@ -46,13 +46,19 @@ export const authProvider = {
   // send username and password to the auth server and get back credentials
   login: async ({ username: email, password }: any) => {
     const data = await queryAuth(authUrls.login, { email, password });
-    if (data?.accessToken && data?.user?.id) {
-      localStorage.setItem("user", JSON.stringify(data?.user));
-      localStorage.setItem("accessToken", data?.accessToken);
-      if (data?.user?.type !== "Admin" && data?.user?.type !== "SuperAdmin") {
+
+    const { accessToken, user }: any = data;
+    const { type, id }: any = user;
+
+    if (accessToken && id) {
+      localStorage.setItem("user", JSON.stringify(user));
+      localStorage.setItem("accessToken", accessToken);
+
+      if (!["Admin", "SuperAdmin"].includes(type)) {
         alert("You're not admin");
         return Promise.reject();
       }
+
       window.dispatchEvent(event);
       return Promise.resolve();
     }
@@ -72,13 +78,15 @@ export const authProvider = {
   // when the user navigates, make sure that their credentials are still valid
   checkAuth: async (_params: any) => {
     const token = localStorage.getItem("accessToken");
+
     if (!token) return Promise.reject();
+
     const data = await queryAuth(authUrls.me, {}, "GET", {
       Authorization: `Bearer ${token}`,
     });
-    if (token && data?.id) {
-      return Promise.resolve();
-    }
+
+    if (token && data?.id) return Promise.resolve();
+
     return Promise.reject();
   },
 

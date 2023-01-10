@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -20,6 +20,9 @@ import Select from "@mui/material/Select";
 import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
 import useLocalStorage from "../../utils/useLocalStorage";
+
+// =================================================================
+
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -29,6 +32,10 @@ ChartJS.register(
   Legend,
   ArcElement
 );
+
+// =================================================================
+
+const timeString = "T00:00:00.000Z";
 const options = {
   responsive: true,
   title: {
@@ -44,7 +51,7 @@ const options = {
     y: {
       ticks: {
         // remove fractions from graph
-        callback: function (value, index, ticks) {
+        callback: function (value: any, _index: any, _ticks: any) {
           const isInteger = Number.isInteger(value);
           return isInteger ? value : "";
         },
@@ -52,18 +59,26 @@ const options = {
     },
   },
 };
-const timeString = "T00:00:00.000Z";
-const Scan = () => {
+
+// =================================================================
+
+export default function Scan() {
   const translate = useTranslate();
   const [locale] = useLocaleState();
   const [compound, setCompound] = useLocalStorage("reportCompoundScan", "");
+
+  // ---------------------------------------------------
+
   const {
     data: compounds,
-    compoundsLoading,
-    compoundsError,
+    isLoading: compoundsLoading,
+    error: compoundsError,
   } = useQuery(["compound", "getAll"], () => customFetch("/compound", {}), {
     staleTime: Infinity,
   });
+
+  // ---------------------------------------------------
+
   const [{ from, to, interval }, setFromToInterval] = useLocalStorage(
     "fromToIntervalScan",
     {
@@ -72,8 +87,13 @@ const Scan = () => {
       interval: 7,
     }
   );
+
+  // ---------------------------------------------------
+
   const [filterParams, setFilterParams] = useState({});
-  const chartRef = useRef();
+  const chartRef: any = useRef();
+
+  // ---------------------------------------------------
 
   const [chart, setChart] = useLocalStorage("reportChartScan", 0);
   const { data, isLoading, error } = useQuery(
@@ -91,13 +111,14 @@ const Scan = () => {
       enabled: !!compound,
     }
   );
+
   const graphData =
     chart === 0
       ? {
           labels:
             interval === 1
-              ? data?.[0]?.report?.dates?.map((d) => d?.substring(0, 10))
-              : data?.[0]?.report?.dates?.map((d, i) => {
+              ? data?.[0]?.report?.dates?.map((d: any) => d?.substring(0, 10))
+              : data?.[0]?.report?.dates?.map((d: any, i: number) => {
                   const currentDate = new Date(d);
                   const nextDay = data?.[0]?.report?.dates?.[i + 1];
                   if (interval === 30) {
@@ -130,11 +151,11 @@ const Scan = () => {
             {
               data: [
                 data?.[0]?.report?.fail.reduce(
-                  (partialSum, a) => partialSum + a,
+                  (partialSum: number, a: number) => partialSum + a,
                   0
                 ),
                 data?.[0]?.report?.success.reduce(
-                  (partialSum, a) => partialSum + a,
+                  (partialSum: number, a: number) => partialSum + a,
                   0
                 ),
               ],
@@ -149,8 +170,11 @@ const Scan = () => {
             },
           ],
         };
-  const onClick = (event) => {
-    const elementAtEvent = getElementAtEvent(chartRef.current, event);
+
+  // -----------------------------------------------------
+
+  const onClick = (event: any) => {
+    const elementAtEvent = getElementAtEvent(chartRef?.current, event);
     if (!elementAtEvent?.[0]) return;
     const { datasetIndex, index: dataIndex } = elementAtEvent[0];
     let success = false;
@@ -196,9 +220,22 @@ const Scan = () => {
       compoundId: compound,
     });
   };
+
+  // -----------------------------------------------------
+
+  const { success, createdAt }: any = filterParams;
+
+  // -----------------------------------------------------
+
   if (isLoading || compoundsLoading) return <Loading />;
+
+  // @ts-ignore
   if (error || compoundsError) return <Error error={error || compoundsError} />;
+
   if (!compounds || (!compounds && !compound)) return null;
+
+  // -----------------------------------------------------
+
   return (
     <div>
       <div
@@ -214,7 +251,7 @@ const Scan = () => {
             type={"date"}
             value={from}
             onChange={(e) =>
-              setFromToInterval((p) => ({ ...p, from: e.target.value }))
+              setFromToInterval((p: any) => ({ ...p, from: e.target.value }))
             }
             style={{
               minWidth: "120px",
@@ -229,7 +266,7 @@ const Scan = () => {
             type={"date"}
             value={to}
             onChange={(e) =>
-              setFromToInterval((p) => ({ ...p, to: e.target.value }))
+              setFromToInterval((p: any) => ({ ...p, to: e.target.value }))
             }
             style={{
               minWidth: "120px",
@@ -246,7 +283,10 @@ const Scan = () => {
               label="Interval"
               value={interval}
               onChange={(e) => {
-                setFromToInterval((p) => ({ ...p, interval: e.target.value }));
+                setFromToInterval((p: any) => ({
+                  ...p,
+                  interval: e.target.value,
+                }));
               }}
             >
               <MenuItem value={1}>{translate("day")}</MenuItem>
@@ -264,7 +304,7 @@ const Scan = () => {
             value={compound}
             onChange={(e) => setCompound(e.target.value)}
           >
-            {compounds?.map((c) => {
+            {compounds?.map((c: any) => {
               return (
                 <MenuItem key={c?.id} value={c?.id}>
                   {c?.name}
@@ -298,6 +338,7 @@ const Scan = () => {
           </h2>
           {chart === 0 ? (
             <Bar
+              // @ts-ignore
               options={options}
               data={graphData}
               ref={chartRef}
@@ -320,7 +361,7 @@ const Scan = () => {
           )}
         </>
       )}
-      {filterParams?.createdAt ? (
+      {createdAt && (
         <Button
           color="primary"
           component={Link}
@@ -334,16 +375,14 @@ const Scan = () => {
         >
           {locale === "ar"
             ? `كل الكشوف ال ${
-                filterParams?.success ? "ناجحة" : "غير ناجحة"
-              }  من${filterParams.createdAt.gte.substring(0, 10)}  الي` +
-              `${filterParams.createdAt.lte.substring(0, 10)}`
-            : ` ${filterParams?.success ? "successful" : "failed"} scans from
-          ${filterParams.createdAt.gte.substring(0, 10)} to
-          ${filterParams.createdAt.lte.substring(0, 10)}`}
+                success ? "ناجحة" : "غير ناجحة"
+              }  من${createdAt.gte.substring(0, 10)}  الي` +
+              `${createdAt.lte.substring(0, 10)}`
+            : ` ${success ? "successful" : "failed"} scans from
+          ${createdAt.gte.substring(0, 10)} to
+          ${createdAt.lte.substring(0, 10)}`}
         </Button>
-      ) : null}
+      )}
     </div>
   );
-};
-
-export default Scan;
+}

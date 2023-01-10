@@ -11,13 +11,12 @@ import Invite from "../../custom-views/Reports/Invite";
 // =======================================================
 export default function MyAdmin() {
   const [type, setType] = useState(
-    // @ts-ignore
-    JSON.parse(localStorage.getItem("user"))?.type || "Admin"
+    JSON.parse(localStorage.getItem("user") || "")?.type || "Admin"
   );
+
   useEffect(() => {
     window.addEventListener("login", () => {
-      // @ts-ignore
-      setType(JSON.parse(localStorage.getItem("user"))?.type || "Admin");
+      setType(JSON.parse(localStorage.getItem("user") || "")?.type || "Admin");
     });
   }, []);
 
@@ -57,7 +56,7 @@ export default function MyAdmin() {
             }
           />
           <Route
-            path="/reports/invite"
+            path="/tarek"
             element={
               <Authenticated>
                 <Invite />{" "}

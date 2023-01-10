@@ -21,6 +21,8 @@ import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
 import useLocalStorage from "../../utils/useLocalStorage";
 
+// =================================================================
+
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -30,7 +32,11 @@ ChartJS.register(
   Legend,
   ArcElement
 );
-const options = {
+
+// =================================================================
+
+const timeString = "T00:00:00.000Z";
+const options: any = {
   responsive: true,
   title: {
     display: true,
@@ -57,19 +63,26 @@ const options = {
     },
   },
 };
-const timeString = "T00:00:00.000Z";
 
-const Invite = () => {
+// =================================================================
+
+export default function Invite() {
   const [locale] = useLocaleState();
   const translate = useTranslate();
   const [compound, setCompound] = useLocalStorage("reportCompoundInvite", "");
+
+  // ---------------------------------------------------
+
   const {
     data: compounds,
-    compoundsLoading,
-    compoundsError,
+    isLoading: compoundsLoading,
+    error: compoundsError,
   } = useQuery(["compound", "getAll"], () => customFetch("/compound", {}), {
     staleTime: Infinity,
   });
+
+  // ---------------------------------------------------
+
   const [{ from, to, interval }, setFromToInterval] = useLocalStorage(
     "fromToIntervalInvite",
     {
@@ -78,8 +91,13 @@ const Invite = () => {
       interval: 7,
     }
   );
+
+  // ---------------------------------------------------
+
   const [filterParams, setFilterParams] = useState({});
-  const chartRef = useRef();
+  const chartRef: any = useRef();
+
+  // ---------------------------------------------------
 
   const [chart, setChart] = useLocalStorage("reportChartInvite", 0);
   const { data, isLoading, error } = useQuery(
@@ -97,13 +115,16 @@ const Invite = () => {
       enabled: !!compound,
     }
   );
+
+  // ---------------------------------------------------
+
   const graphData =
     chart === 0
       ? {
           labels:
             interval === 1
-              ? data?.[0]?.report?.dates?.map((d) => d?.substring(0, 10))
-              : data?.[0]?.report?.dates?.map((d, i) => {
+              ? data?.[0]?.report?.dates?.map((d: any) => d?.substring(0, 10))
+              : data?.[0]?.report?.dates?.map((d: any, i: number) => {
                   const currentDate = new Date(d);
                   const nextDay = data?.[0]?.report?.dates?.[i + 1];
                   if (interval === 30) {
@@ -136,11 +157,11 @@ const Invite = () => {
             {
               data: [
                 data?.[0]?.report?.visitor.reduce(
-                  (partialSum, a) => partialSum + a,
+                  (partialSum: number, a: number) => partialSum + a,
                   0
                 ),
                 data?.[0]?.report?.delivery.reduce(
-                  (partialSum, a) => partialSum + a,
+                  (partialSum: number, a: number) => partialSum + a,
                   0
                 ),
               ],
@@ -155,8 +176,11 @@ const Invite = () => {
             },
           ],
         };
-  const onClick = (event) => {
-    const elementAtEvent = getElementAtEvent(chartRef.current, event);
+
+  // -----------------------------------------------------
+
+  const onClick = (event: any) => {
+    const elementAtEvent = getElementAtEvent(chartRef?.current, event);
     if (!elementAtEvent?.[0]) return;
 
     const { datasetIndex, index: dataIndex } = elementAtEvent[0];
@@ -225,9 +249,22 @@ const Invite = () => {
           }
     );
   };
+
+  // -----------------------------------------------------
+
+  const { createdAt, type }: any = filterParams;
+
+  // -----------------------------------------------------
+
   if (isLoading || compoundsLoading) return <Loading />;
+
+  // @ts-ignore
   if (error || compoundsError) return <Error error={error || compoundsError} />;
+
   if (!compounds || (!compounds && !compound)) return null;
+
+  // -----------------------------------------------------
+
   return (
     <div>
       <div
@@ -243,7 +280,7 @@ const Invite = () => {
             type={"date"}
             value={from}
             onChange={(e) =>
-              setFromToInterval((p) => ({ ...p, from: e.target.value }))
+              setFromToInterval((p: any) => ({ ...p, from: e.target.value }))
             }
             style={{
               minWidth: "120px",
@@ -258,7 +295,7 @@ const Invite = () => {
             type={"date"}
             value={to}
             onChange={(e) =>
-              setFromToInterval((p) => ({ ...p, to: e.target.value }))
+              setFromToInterval((p: any) => ({ ...p, to: e.target.value }))
             }
             style={{
               minWidth: "120px",
@@ -275,7 +312,10 @@ const Invite = () => {
               label="Interval"
               value={interval}
               onChange={(e) => {
-                setFromToInterval((p) => ({ ...p, interval: e.target.value }));
+                setFromToInterval((p: any) => ({
+                  ...p,
+                  interval: e.target.value,
+                }));
               }}
             >
               <MenuItem value={1}>{translate("day")}</MenuItem>
@@ -293,7 +333,7 @@ const Invite = () => {
             value={compound}
             onChange={(e) => setCompound(e.target.value)}
           >
-            {compounds?.map((c) => {
+            {compounds?.map((c: any) => {
               return (
                 <MenuItem key={c?.id} value={c?.id}>
                   {c?.name}
@@ -349,7 +389,7 @@ const Invite = () => {
           )}
         </>
       )}
-      {filterParams?.createdAt ? (
+      {createdAt && (
         <Button
           color="primary"
           component={Link}
@@ -363,18 +403,16 @@ const Invite = () => {
         >
           {locale === "ar"
             ? `كل دعوات ال${
-                filterParams?.type === "Visitor" ? "زوار" : "توصيل"
-              } من ${filterParams.createdAt.gte.substring(
+                type === "Visitor" ? "زوار" : "توصيل"
+              } من ${createdAt.gte.substring(
                 0,
                 10
-              )} الي${filterParams.createdAt.lte.substring(0, 10)} `
-            : `All ${filterParams?.type} Invites from
-          ${filterParams.createdAt.gte.substring(0, 10)} to
-          ${filterParams.createdAt.lte.substring(0, 10)}`}
+              )} الي${createdAt.lte.substring(0, 10)} `
+            : `All ${type} Invites from
+          ${createdAt?.gte.substring(0, 10)} to
+          ${createdAt?.lte.substring(0, 10)}`}
         </Button>
-      ) : null}
+      )}
     </div>
   );
-};
-
-export default Invite;
+}
