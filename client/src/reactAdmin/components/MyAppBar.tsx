@@ -6,7 +6,7 @@ import ThemeToggler from "./ThemeToggler";
 
 // ------------------------------------------------
 
-const MyUserMenu = (props) => (
+const MyUserMenu = (props: any) => (
   <UserMenu {...props}>
     <SwitchLanguage />
     <ThemeToggler />
@@ -16,7 +16,7 @@ const MyUserMenu = (props) => (
 
 // ------------------------------------------------
 
-const MyAppBar = (props) => (
+const MyAppBar = (props: any) => (
   <AppBar {...props} userMenu={<MyUserMenu />} style={{ paddingLeft: 10 }}>
     <Box flex="1">
       <Typography variant="h6" id="react-admin-title"></Typography>

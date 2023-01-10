@@ -8,7 +8,8 @@ import { useRequestPermissionAndSendToken } from "./utils/firebase/useRequestPer
 // ------------------------------------------------
 
 // set initial direction
-const locale = JSON.parse(localStorage.getItem("RaStore.locale") || "") || "en";
+const locale =
+  JSON.parse(localStorage.getItem("RaStore.locale") || "{}") || "en";
 document.dir = locale === "en" ? "ltr" : "rtl";
 
 // set initial backgroundColor for dark mode

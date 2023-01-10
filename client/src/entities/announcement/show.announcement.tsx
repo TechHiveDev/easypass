@@ -13,8 +13,8 @@ export default function ShowAnnouncement(props: any) {
   return (
     <Show title={<AnnouncementTitle />}>
       <SimpleShowLayout>
-        <TextField variant="outlined" source="title" />
-        <TextField variant="outlined" source="description" multiline={true} />
+        <TextField source="title" />
+        <TextField source="description" />
         <ImageField source="photoUrl" title="title" />
         <ReferenceField
           source="compoundId"

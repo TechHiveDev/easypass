@@ -5,7 +5,7 @@ import PreviewImage from "../../components/PreviewImage";
 export default function EditCompound() {
   return (
     <Edit title={<CompoundTitle />}>
-      <SimpleForm redirect="list">
+      <SimpleForm>
         <TextInput variant="outlined" source="name" />
         <ImageInput source="logoUrl" accept="image/*">
           <PreviewImage source="src" />

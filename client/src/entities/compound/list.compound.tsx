@@ -18,14 +18,14 @@ const compoundFilters = [<SearchInput source="q" alwaysOn />];
 
 // ------------------------------------------------
 
-export default function ListCompound(props) {
+export default function ListCompound(props: any) {
   const { isLoading, permissions } = usePermissions();
   return (
     <List filters={compoundFilters}>
       <Datagrid>
-        <NumberField variant="outlined" source="id" />
-        <TextField variant="outlined" source="name" />
-        <TextField variant="outlined" source="location" />
+        <NumberField source="id" />
+        <TextField source="name" />
+        <TextField source="location" />
         <div style={{ display: "flex" }}>
           <ShowButton label="ra.action.show" />
           {!isLoading && permissions === "SuperAdmin" ? (

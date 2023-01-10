@@ -17,7 +17,7 @@ import {
 } from "react-admin";
 import Actions from "../../reactAdmin/components/Actions";
 import UserType from "../../components/UserType";
-import dateFormatter from "../../utils/dateFormatter";
+import { dateFormatter } from "../../utils/dateFormatter";
 
 // ------------------------------------------------
 const inviteFilters = [
@@ -45,16 +45,16 @@ const inviteFilters = [
     <AutocompleteInput label="user" optionText="name" />
   </ReferenceInput>,
 ];
-export default function ListInvitation(props) {
+export default function ListInvitation(props: any) {
   return (
     <List filters={inviteFilters}>
       <Datagrid>
-        <NumberField variant="outlined" source="id" />
-        <TextField variant="outlined" source="name" />
+        <NumberField source="id" />
+        <TextField source="name" />
         <WrapperField label="type">
           <UserType />
         </WrapperField>
-        <TextField variant="outlined" source="notes" />
+        <TextField source="notes" />
         <ReferenceField source="userId" reference="user" link="show">
           <TextField source="name" />
         </ReferenceField>
@@ -63,7 +63,7 @@ export default function ListInvitation(props) {
         </ReferenceField>
         <FunctionField
           source="createdAt"
-          render={(rec) => dateFormatter(rec.createdAt)}
+          render={(rec: any) => dateFormatter(rec.createdAt)}
         />
         <Actions label="">
           <ShowButton label="ra.action.show" />

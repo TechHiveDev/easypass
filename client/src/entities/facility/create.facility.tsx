@@ -6,17 +6,20 @@ import {
   DateTimeInput,
   NumberInput,
   ReferenceInput,
-  required,
   SimpleForm,
   SimpleFormIterator,
   TextInput,
   TimeInput,
   useTranslate,
-} from 'react-admin';
-import Title from './title.facility';
-import IconHelper from '../../components/IconHelper';
+} from "react-admin";
+import Title from "./title.facility";
+import IconHelper from "../../components/IconHelper";
 
-let currentTime;
+// =================================================================
+
+let currentTime: any;
+
+// =================================================================
 
 export default function CreateFacility() {
   const t = useTranslate();
@@ -29,7 +32,7 @@ export default function CreateFacility() {
         <IconHelper />
         <TextInput variant="outlined" source="icon" />
         <ReferenceInput
-          required
+          isRequired={true}
           source="compoundId"
           reference="compound"
           label="compound"
@@ -38,9 +41,9 @@ export default function CreateFacility() {
           <AutocompleteInput
             label="compound"
             optionText="name"
-            required
+            isRequired={true}
             validate={(v) => {
-              if (v === '') return t('requiredCompound');
+              if (v === "") return t("isRequired={true}Compound");
               return undefined;
             }}
           />
@@ -50,11 +53,11 @@ export default function CreateFacility() {
             <DateTimeInput
               source="from"
               helperText={false}
+              isRequired={true}
               validate={[
-                required(),
                 (value) => {
                   currentTime = value;
-                  if (Date.parse(value) < new Date()) {
+                  if (new Date(Date.parse(value)) < new Date()) {
                     return `must set date and time to later time not now or in the past`;
                   }
                 },
@@ -63,18 +66,18 @@ export default function CreateFacility() {
             <TimeInput
               source="to"
               helperText={false}
+              isRequired={true}
               validate={[
-                required(),
                 (value) => {
                   const from = new Date(currentTime);
-                  const fromDate = from.toISOString().split('T')[0];
+                  const fromDate = from.toISOString().split("T")[0];
                   const to = new Date(value);
-                  const toTime = to.toISOString().split('T')[1];
+                  const toTime = to.toISOString().split("T")[1];
                   const toTransformed = `${fromDate}T${toTime}`;
                   if (
                     new Date(toTransformed) < from ||
                     toTime.substring(0, 5) ===
-                      from.toISOString().split('T')[1].substring(0, 5)
+                      from.toISOString().split("T")[1].substring(0, 5)
                   ) {
                     return `to value can't be less than or equal to from value`;
                   }
@@ -85,7 +88,7 @@ export default function CreateFacility() {
               defaultValue
               source="available"
               helperText={false}
-              validate={required()}
+              isRequired={true}
             />
           </SimpleFormIterator>
         </ArrayInput>

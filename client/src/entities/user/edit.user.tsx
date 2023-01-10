@@ -14,7 +14,7 @@ import PreviewImage from "../../components/PreviewImage";
 
 // ------------------------------------------------
 
-export default function EditUser(props) {
+export default function EditUser(props: any) {
   const { isLoading, permissions } = usePermissions();
   const t = useTranslate();
   return (
@@ -22,7 +22,7 @@ export default function EditUser(props) {
       {isLoading ? (
         <h3>Loading</h3>
       ) : (
-        <SimpleForm redirect="list">
+        <SimpleForm>
           {/*<NumberInput variant="outlined" source="id" />*/}
           <TextInput variant="outlined" source="email" />
           <TextInput variant="outlined" source="name" />
@@ -33,7 +33,7 @@ export default function EditUser(props) {
           </ImageInput>
           <TextInput variant="outlined" source="phone" />
           <SelectInput
-            required
+            isRequired={true}
             name={"type"}
             source={"type"}
             choices={

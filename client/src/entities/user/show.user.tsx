@@ -19,29 +19,29 @@ import UserTitle from "./title.user";
 import ActionsShowUser from "./actions.show.user";
 import Actions from "../../reactAdmin/components/Actions";
 import UserType from "../../components/UserType";
-import dateFormatter from "../../utils/dateFormatter";
 import { RespondButton } from "../request/RespondButton.request";
+import { dateFormatter } from "../../utils/dateFormatter";
 
 // ------------------------------------------------
-export default function ShowUser(props) {
+export default function ShowUser(props: any) {
   const t = useTranslate();
   return (
     <Show title={<UserTitle />} actions={<ActionsShowUser />}>
       <SimpleShowLayout>
-        <NumberField variant="outlined" source="id" />
-        <TextField variant="outlined" source="email" />
-        <TextField variant="outlined" source="name" />
+        <NumberField source="id" />
+        <TextField source="email" />
+        <TextField source="name" />
         <WrapperField label={"type"}>
           <UserType />
         </WrapperField>
         <ImageField source="photoUrl" title="photo" />
-        <BooleanField variant="outlined" source="active" />
-        <TextField variant="outlined" source="phone" />
+        <BooleanField source="active" />
+        <TextField source="phone" />
         <ReferenceManyField
           label="properties"
           reference="userCompound"
           target="userId"
-          link="show"
+          // link="show"
           pagination={<Pagination />}
           perPage={10}
         >
@@ -53,9 +53,9 @@ export default function ShowUser(props) {
             >
               <TextField source="name" />
             </ReferenceField>
-            <TextField variant="outlined" source="streetName" />
-            <NumberField variant="outlined" source={"blockNumber"} />
-            <NumberField variant="outlined" source={"unitNumber"} />
+            <TextField source="streetName" />
+            <NumberField source={"blockNumber"} />
+            <NumberField source={"unitNumber"} />
             <Actions label="">
               <ShowButton label="ra.action.show" />
               <EditButton label="ra.action.edit" />
@@ -66,24 +66,24 @@ export default function ShowUser(props) {
           label="menu.Request"
           reference="request"
           target="userId"
-          link="show"
+          // link="show"
           pagination={<Pagination />}
           perPage={10}
         >
           <Datagrid>
             <FunctionField
               source={"type"}
-              render={(rec) => `${t("facilityType." + rec.type)}`}
+              render={(rec: any) => `${t("facilityType." + rec.type)}`}
             />
             <FunctionField
               source={"createdAt"}
-              render={(rec) =>
+              render={(rec: any) =>
                 `${rec?.createdAt ? dateFormatter(rec.createdAt) : "-"}`
               }
             />
             <FunctionField
               source={"availableDateFrom"}
-              render={(rec) =>
+              render={(rec: any) =>
                 `${
                   rec?.availableDateFrom
                     ? dateFormatter(rec.availableDateFrom)
@@ -93,7 +93,7 @@ export default function ShowUser(props) {
             />
             <FunctionField
               source={"availableDateTo"}
-              render={(rec) =>
+              render={(rec: any) =>
                 `${
                   rec?.availableDateTo
                     ? dateFormatter(rec.availableDateTo)
@@ -101,10 +101,10 @@ export default function ShowUser(props) {
                 }`
               }
             />
-            <TextField variant="outlined" source="requestNote" />
+            <TextField source="requestNote" />
             <FunctionField
               source={"respondNote"}
-              render={(rec) =>
+              render={(rec: any) =>
                 `${
                   rec?.respondNote
                     ? rec.respondNote.length > 40
@@ -117,7 +117,7 @@ export default function ShowUser(props) {
             {/*Pending || Refused || InProgress || Completed*/}
             <FunctionField
               source={"status"}
-              render={(rec) => `${t("status." + rec.status)}`}
+              render={(rec: any) => `${t("status." + rec.status)}`}
             />
             <ReferenceField
               source="compoundId"
@@ -150,14 +150,14 @@ export default function ShowUser(props) {
           label="menu.Invitation"
           reference="invitation"
           target="userId"
-          link="show"
+          // link="show"
         >
           <Datagrid>
-            <TextField variant="outlined" source="name" />
+            <TextField source="name" />
             <WrapperField label={"type"}>
               <UserType />
             </WrapperField>
-            <TextField variant="outlined" source="notes" />
+            <TextField source="notes" />
             <ReferenceField
               source="compoundId"
               reference="compound"
@@ -167,7 +167,7 @@ export default function ShowUser(props) {
             </ReferenceField>
             <FunctionField
               source={"createdAt"}
-              render={(rec) => dateFormatter(rec.createdAt)}
+              render={(rec: any) => dateFormatter(rec.createdAt)}
             />
             <Actions label={""}>
               <ShowButton label="ra.action.show" />
@@ -178,13 +178,13 @@ export default function ShowUser(props) {
           label="menu.Scan"
           reference="scan"
           target="userId"
-          link="show"
+          // link="show"
           pagination={<Pagination />}
           perPage={10}
         >
           <Datagrid>
-            <TextField variant="outlined" source="deviceId" />
-            <BooleanField variant="outlined" source="success" />
+            <TextField source="deviceId" />
+            <BooleanField source="success" />
             <ReferenceField
               source="compoundId"
               reference="compound"
@@ -197,7 +197,7 @@ export default function ShowUser(props) {
             </WrapperField>
             <FunctionField
               source={"createdAt"}
-              render={(rec) => dateFormatter(rec.createdAt)}
+              render={(rec: any) => dateFormatter(rec.createdAt)}
             />
             <Actions label={""}>
               <ShowButton label="ra.action.show" />

@@ -17,7 +17,7 @@ export default function EditInvitation(_props: any) {
       <SimpleForm>
         <TextInput variant="outlined" source="name" />
         <SelectInput
-          required
+          isRequired={true}
           name={"type"}
           source={"type"}
           choices={[

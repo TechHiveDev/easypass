@@ -2,11 +2,7 @@ import {
   Edit,
   SimpleForm,
   TextInput,
-  NumberInput,
-  BooleanInput,
-  DateInput,
   ReferenceInput,
-  SelectInput,
   AutocompleteInput,
   useTranslate,
 } from "react-admin";
@@ -21,18 +17,18 @@ export default function EditDevice(_props: any) {
       <SimpleForm>
         <TextInput variant="outlined" source="ip" />
         <ReferenceInput
-          required
           source="compoundId"
           reference="compound"
           label="compound"
           name="compoundId"
+          isRequired={true}
         >
           <AutocompleteInput
             optionText="name"
             label="compound"
             isRequired={true}
             validate={(v) => {
-              if (v === "") return t("requiredCompound");
+              if (v === "") return t("isRequired={true}Compound");
               return undefined;
             }}
           />

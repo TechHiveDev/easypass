@@ -8,10 +8,10 @@ import {
 
 // ------------------------------------------------
 
-export default function CreateCompound(props) {
+export default function CreateCompound(props: any) {
   return (
     <Create>
-      <SimpleForm redirect="list">
+      <SimpleForm>
         <TextInput variant="outlined" source="name" />
         <ImageInput source="logoUrl" accept="image/*">
           <ImageField source="src" title="title" />

@@ -9,43 +9,57 @@ import Scan from "../../custom-views/Reports/Scan";
 import Invite from "../../custom-views/Reports/Invite";
 
 // =======================================================
+
 export default function MyAdmin() {
+  // ---------------------------------------------------
+
   const [type, setType] = useState(
-    JSON.parse(localStorage.getItem("user") || "")?.type || "Admin"
+    JSON.parse(localStorage.getItem("user") || "{}")?.type || "Admin"
   );
+
+  // ---------------------------------------------------
 
   useEffect(() => {
     window.addEventListener("login", () => {
-      setType(JSON.parse(localStorage.getItem("user") || "")?.type || "Admin");
+      setType(
+        JSON.parse(localStorage.getItem("user") || "{}")?.type || "Admin"
+      );
     });
   }, []);
+
+  // ---------------------------------------------------
 
   return (
     <ToastProvider>
       <AdminUI layout={MyLayout} loginPage={<SignUp />}>
         {entities?.map(({ label, ...rest }) => {
+          // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
           if (label === "User" && !["Admin", "SuperAdmin"].includes(type)) {
             const { create, ...others }: any = rest;
-            return <Resource key={label} option={{ label }} {...others} />;
+            return <Resource key={label} options={{ label }} {...others} />;
           }
+
+          // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
           if (label === "Compound" && type !== "SuperAdmin") {
             const { show, list, name } = rest;
             return (
               <Resource
                 key={label}
-                // @ts-ignore
-                option={{ label }}
-                show={show}
-                list={list}
-                name={name}
+                options={{ label }}
+                {...{ show, list, name }}
               />
             );
           }
 
-          // @ts-ignore
-          return <Resource key={label} option={{ label }} {...rest} />;
+          // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+          return <Resource key={label} options={{ label }} {...rest} />;
         })}
+
+        {/* ----------------------- */}
+
         <CustomRoutes>
           <Route
             path="/reports/scan"

@@ -2,11 +2,7 @@ import {
   Create,
   SimpleForm,
   TextInput,
-  NumberInput,
-  BooleanInput,
-  DateInput,
   ReferenceInput,
-  SelectInput,
   AutocompleteInput,
   useTranslate,
 } from "react-admin";
@@ -20,7 +16,7 @@ export default function CreateDevice(_props: any) {
       <SimpleForm>
         <TextInput variant="outlined" source="ip" />
         <ReferenceInput
-          required
+          isRequired={true}
           source="compoundId"
           reference="compound"
           label="compound"
@@ -30,8 +26,8 @@ export default function CreateDevice(_props: any) {
             optionText="name"
             label="compound"
             isRequired={true}
-            validate={(v) => {
-              if (v === "") return t("requiredCompound");
+            validate={(v: any) => {
+              if (v === "") return t("isRequired={true}Compound");
               return undefined;
             }}
           />

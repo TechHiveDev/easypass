@@ -21,6 +21,8 @@ import Dialog from "@mui/material/Dialog";
 import ExploreIcon from "@mui/icons-material/Explore";
 import SaveToolbar from "../../components/SaveToolbar";
 
+// =============================================================
+
 export default function CompoundShowActions() {
   const { isLoading, permissions } = usePermissions();
   const t = useTranslate();
@@ -202,7 +204,7 @@ export default function CompoundShowActions() {
               resource="userCompound"
             >
               <ReferenceInput
-                required
+                isRequired={true}
                 label="user"
                 source="userId"
                 reference="user"
@@ -211,15 +213,27 @@ export default function CompoundShowActions() {
                   optionText="name"
                   label="user"
                   isRequired={true}
-                  validate={(v) => {
+                  validate={(v: any) => {
                     if (v === "") return t("requiredUser");
                     return undefined;
                   }}
                 />
               </ReferenceInput>
-              <TextInput variant="outlined" source="streetName" required />
-              <NumberInput variant="outlined" source="blockNumber" required />
-              <NumberInput variant="outlined" source="unitNumber" required />
+              <TextInput
+                variant="outlined"
+                source="streetName"
+                isRequired={true}
+              />
+              <NumberInput
+                variant="outlined"
+                source="blockNumber"
+                isRequired={true}
+              />
+              <NumberInput
+                variant="outlined"
+                source="unitNumber"
+                isRequired={true}
+              />
             </SimpleForm>
           ) : null}
           {type === "announcement" || type === "discover" ? (

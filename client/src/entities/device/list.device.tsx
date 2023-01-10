@@ -3,8 +3,6 @@ import {
   Datagrid,
   TextField,
   NumberField,
-  BooleanField,
-  DateField,
   ShowButton,
   EditButton,
   DeleteButton,
@@ -18,8 +16,8 @@ export default function ListDevice(_props: any) {
   return (
     <List>
       <Datagrid>
-        <NumberField variant="outlined" source="id" />
-        <TextField variant="outlined" source="ip" />
+        <NumberField source="id" />
+        <TextField source="ip" />
         <ReferenceField source="compoundId" reference="compound" link="show">
           <TextField source="name" />
         </ReferenceField>

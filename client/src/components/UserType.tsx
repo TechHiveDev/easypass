@@ -1,14 +1,13 @@
-import { FunctionField, useTranslate, WrapperField } from "react-admin";
+import { FunctionField, useTranslate } from "react-admin";
 
-const UserType = () => {
+export default function UserType() {
   const t = useTranslate();
   return (
     <FunctionField
       label="type"
-      render={(record) => {
+      render={(record: any) => {
         return `${t("userType." + record.type)}`;
       }}
     />
   );
-};
-export default UserType;
+}

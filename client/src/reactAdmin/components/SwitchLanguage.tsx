@@ -1,13 +1,13 @@
+import React from "react";
 import LanguageIcon from "@mui/icons-material/Language";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import MenuItem from "@mui/material/MenuItem";
-import * as React from "react";
 import { useLocaleState, useUserMenu } from "react-admin";
 
-// ------------------------------------------------
+// ==========================================================
 
-const SwitchLanguage = React.forwardRef((props, ref) => {
+const SwitchLanguage = React.forwardRef((props: any, ref: any) => {
   const [locale, setLocale] = useLocaleState();
   const { onClose } = useUserMenu();
   return (

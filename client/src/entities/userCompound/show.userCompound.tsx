@@ -9,20 +9,20 @@ import UserCompoundTitle from "./title.userCompound";
 
 // ------------------------------------------------
 
-export default function ShowUserCompound(props) {
+export default function ShowUserCompound(props: any) {
   return (
     <Show title={<UserCompoundTitle />}>
       <SimpleShowLayout>
-        <NumberField variant="outlined" source="id" />
+        <NumberField source="id" />
         <ReferenceField source="userId" reference="user" link="show">
           <TextField source="name" />
         </ReferenceField>
         <ReferenceField source="compoundId" reference="compound" link="show">
           <TextField source="name" />
         </ReferenceField>
-        <TextField variant="outlined" source="streetName" />
-        <NumberField variant="outlined" source={"blockNumber"} />
-        <NumberField variant="outlined" source={"unitNumber"} />
+        <TextField source="streetName" />
+        <NumberField source={"blockNumber"} />
+        <NumberField source={"unitNumber"} />
       </SimpleShowLayout>
     </Show>
   );

@@ -19,8 +19,8 @@ darkTheme.palette.background.default = "#000";
 
 // ------------------------------------------------
 
-const ThemeToggler = React.forwardRef((props, ref) => {
-  const [theme, setTheme] = useTheme();
+const ThemeToggler = React.forwardRef((props: any, ref: any) => {
+  const [theme, setTheme]: any = useTheme();
   const translate = useTranslate();
   const { onClose } = useUserMenu();
   return (

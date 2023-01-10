@@ -7,9 +7,9 @@ import {
   AutocompleteInput,
   useTranslate,
   TimeInput,
-} from 'react-admin';
-import AnnouncementTitle from './title.discover';
-import PreviewImage from '../../components/PreviewImage';
+} from "react-admin";
+import AnnouncementTitle from "./title.discover";
+import PreviewImage from "../../components/PreviewImage";
 
 // ------------------------------------------------
 
@@ -17,11 +17,11 @@ export default function EditDiscover() {
   const t = useTranslate();
   return (
     <Edit title={<AnnouncementTitle />}>
-      <SimpleForm redirect="list">
+      <SimpleForm>
         <TextInput variant="outlined" source="name" />
         <TextInput variant="outlined" source="shortDescription" multiline />
         <TextInput variant="outlined" source="description" multiline />
-        <ImageInput source="photoUrl" title="title">
+        <ImageInput source="photoUrl">
           <PreviewImage source="src" title="title" />
         </ImageInput>
         <TextInput source="phone" />
@@ -29,7 +29,7 @@ export default function EditDiscover() {
         <TimeInput source="openDateFrom" />
         <TimeInput source="openDateTo" />
         <ReferenceInput
-          required
+          isRequired={true}
           source="compoundId"
           reference="compound"
           label="compound"
@@ -38,26 +38,24 @@ export default function EditDiscover() {
           <AutocompleteInput
             optionText="name"
             label="compound"
-            required
+            isRequired={true}
             validate={(v) => {
-              if (v === '') return t('requiredCompound');
+              if (v === "") return t("isRequired={true}Compound");
               return undefined;
             }}
           />
         </ReferenceInput>
         <ReferenceInput
-          required
+          isRequired={true}
           source="categoryId"
           reference="category"
-          // label="category"
-          // name="name"
         >
           <AutocompleteInput
             optionText="name"
             label="category"
-            required
-            validate={(v) => {
-              if (v === '') return t('requiredCategory');
+            isRequired={true}
+            validate={(v: any) => {
+              if (v === "") return t("isRequired={true}Category");
               return undefined;
             }}
           />

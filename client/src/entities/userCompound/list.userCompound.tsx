@@ -10,14 +10,18 @@ import {
   useTranslate,
   ReferenceInput,
   AutocompleteInput,
-} from 'react-admin';
-import Actions from '../../reactAdmin/components/Actions';
+} from "react-admin";
+import Actions from "../../reactAdmin/components/Actions";
 
-// ------------------------------------------------
+// =================================================================
+
 const Title = () => {
   const translate = useTranslate();
-  return <span>{translate('properties')}</span>;
+  return <span>{translate("properties")}</span>;
 };
+
+// =================================================================
+
 const userCompoundFilters = [
   <ReferenceInput
     source="compoundId"
@@ -31,21 +35,23 @@ const userCompoundFilters = [
     <AutocompleteInput label="user" optionText="name" />
   </ReferenceInput>,
 ];
-export default function ListUserCompound(props) {
+
+// =================================================================
+
+export default function ListUserCompound(props: any) {
   return (
     <List title={<Title />} filters={userCompoundFilters}>
       <Datagrid>
-        <NumberField variant="outlined" source="id" />
-
+        <NumberField source="id" />
         <ReferenceField source="userId" reference="user" link="show">
           <TextField source="name" />
         </ReferenceField>
         <ReferenceField source="compoundId" reference="compound" link="show">
           <TextField source="name" />
         </ReferenceField>
-        <TextField variant="outlined" source="streetName" />
-        <NumberField variant="outlined" source="blockNumber" />
-        <NumberField variant="outlined" source="unitNumber" />
+        <TextField source="streetName" />
+        <NumberField source="blockNumber" />
+        <NumberField source="unitNumber" />
         <Actions label="">
           <ShowButton label="ra.action.show" />
           <EditButton label="ra.action.edit" />

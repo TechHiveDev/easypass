@@ -73,25 +73,37 @@ const UserShowActions = () => {
             resource="userCompound"
           >
             <ReferenceInput
-              required
               source="compoundId"
               reference="compound"
               label="compound"
               name="compoundId"
+              isRequired={true}
             >
               <AutocompleteInput
                 optionText="name"
                 label="compound"
                 isRequired={true}
-                validate={(v) => {
-                  if (v === "") return t("requiredCompound");
+                validate={(v: any) => {
+                  if (v === "") return t("isRequired={true}Compound");
                   return undefined;
                 }}
               />
             </ReferenceInput>
-            <TextInput variant="outlined" source="streetName" required />
-            <NumberInput variant="outlined" source="blockNumber" required />
-            <NumberInput variant="outlined" source="unitNumber" required />
+            <TextInput
+              variant="outlined"
+              source="streetName"
+              isRequired={true}
+            />
+            <NumberInput
+              variant="outlined"
+              source="blockNumber"
+              isRequired={true}
+            />
+            <NumberInput
+              variant="outlined"
+              source="unitNumber"
+              isRequired={true}
+            />
           </SimpleForm>
         </div>
       </Dialog>

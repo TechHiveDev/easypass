@@ -6,24 +6,24 @@ import {
   ImageInput,
   AutocompleteInput,
   useTranslate,
-} from 'react-admin';
-import AnnouncementTitle from './title.announcement';
-import PreviewImage from '../../components/PreviewImage';
+} from "react-admin";
+import AnnouncementTitle from "./title.announcement";
+import PreviewImage from "../../components/PreviewImage";
 
 // ------------------------------------------------
 
-export default function EditAnnouncement(props) {
+export default function EditAnnouncement(props: any) {
   const t = useTranslate();
   return (
     <Edit title={<AnnouncementTitle />}>
-      <SimpleForm redirect="list">
+      <SimpleForm>
         <TextInput variant="outlined" source="title" />
         <TextInput variant="outlined" source="description" multiline />
         <ImageInput source="photoUrl" accept="image/*">
           <PreviewImage source="src" />
         </ImageInput>
         <ReferenceInput
-          required
+          isRequired={true}
           source="compoundId"
           reference="compound"
           label="compound"
@@ -32,9 +32,9 @@ export default function EditAnnouncement(props) {
           <AutocompleteInput
             optionText="name"
             label="compound"
-            required
-            validate={(v) => {
-              if (v === '') return t('requiredCompound');
+            isRequired={true}
+            validate={(v: any) => {
+              if (v === "") return t("requiredCompound");
               return undefined;
             }}
           />

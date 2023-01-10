@@ -7,9 +7,9 @@ import {
   ArrayField,
   Datagrid,
   FunctionField,
-} from 'react-admin';
-import Title from './title.facility';
-import { daysMergerWithTime } from '../../utils/dateFormatter';
+} from "react-admin";
+import Title from "./title.facility";
+import { daysMergerWithTime } from "../../utils/dateFormatter";
 
 // ------------------------------------------------
 
@@ -17,10 +17,10 @@ export default function ShowFacility() {
   return (
     <Show title={<Title />}>
       <SimpleShowLayout>
-        <TextField variant="outlined" source="name" />
-        <TextField variant="outlined" source="description" multiline />
-        <TextField variant="outlined" source="price" />
-        <TextField variant="outlined" source="icon" />
+        <TextField source="name" />
+        <TextField source="description" />
+        <TextField source="price" />
+        <TextField source="icon" />
         <ReferenceField
           source="compoundId"
           reference="compound"
@@ -33,9 +33,9 @@ export default function ShowFacility() {
           <Datagrid>
             <FunctionField
               source="time"
-              render={(rec) => daysMergerWithTime(rec?.from, rec.to)}
+              render={(rec: any) => daysMergerWithTime(rec?.from, rec.to)}
             />
-            <BooleanField source="available" helperText={false} />
+            <BooleanField source="available" />
           </Datagrid>
         </ArrayField>
       </SimpleShowLayout>

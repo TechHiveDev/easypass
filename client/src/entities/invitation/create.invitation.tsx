@@ -17,7 +17,7 @@ export default function CreateInvitation(_props: any) {
       <SimpleForm>
         <TextInput variant="outlined" source="name" />
         <SelectInput
-          required
+          isRequired={true}
           name="type"
           source="type"
           choices={[
@@ -27,7 +27,7 @@ export default function CreateInvitation(_props: any) {
         />
         <TextInput variant="outlined" source="notes" />
         <ReferenceInput
-          required
+          isRequired={true}
           source="compoundId"
           reference="compound"
           label="compound"
@@ -36,20 +36,25 @@ export default function CreateInvitation(_props: any) {
           <AutocompleteInput
             optionText="name"
             label="compound"
-            required
+            isRequired={true}
             validate={(v) => {
-              if (v === "") return t("requiredCompound");
+              if (v === "") return t("isRequired={true}Compound");
               return undefined;
             }}
           />
         </ReferenceInput>
-        <ReferenceInput required label="user" source="userId" reference="user">
+        <ReferenceInput
+          isRequired={true}
+          label="user"
+          source="userId"
+          reference="user"
+        >
           <AutocompleteInput
             optionText="name"
             label="user"
-            required
+            isRequired={true}
             validate={(v) => {
-              if (v === "") return t("requiredUser");
+              if (v === "") return t("isRequired={true}User");
               return undefined;
             }}
           />

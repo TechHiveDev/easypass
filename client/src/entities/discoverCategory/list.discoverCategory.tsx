@@ -16,8 +16,8 @@ import {
   ReferenceInput,
   SelectInput,
   AutocompleteInput,
-} from 'react-admin';
-import Actions from '../../reactAdmin/components/Actions';
+} from "react-admin";
+import Actions from "../../reactAdmin/components/Actions";
 
 // ------------------------------------------------
 const announcementFilters = [
@@ -30,15 +30,14 @@ const announcementFilters = [
     <AutocompleteInput optionText="name" />
   </ReferenceInput>,
 ];
-export default function ListDiscoverCategory(props) {
+export default function ListDiscoverCategory(props: any) {
   return (
     <List filters={announcementFilters}>
       <Datagrid>
-        <NumberField variant="outlined" source="id" />
-        <TextField variant="outlined" source="name" />
-        <TextField variant="outlined" source="description" />
-        <TextField variant="outlined" source="icon" />
-
+        <NumberField source="id" />
+        <TextField source="name" />
+        <TextField source="description" />
+        <TextField source="icon" />
         <Actions label="">
           <ShowButton label="ra.action.show" />
           <EditButton label="ra.action.edit" />

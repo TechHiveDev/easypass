@@ -27,7 +27,7 @@ export default function CreateAnnouncement(_props: any) {
           <ImageField source="src" title="title" />
         </ImageInput>
         <ReferenceInput
-          required
+          isRequired={true}
           source="compoundId"
           reference="compound"
           label="compound"
@@ -38,7 +38,7 @@ export default function CreateAnnouncement(_props: any) {
             label="compound"
             isRequired={true}
             validate={(v) => {
-              if (v === "") return t("requiredCompound");
+              if (v === "") return t("isRequired={true}Compound");
               return undefined;
             }}
           />

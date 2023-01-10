@@ -9,12 +9,12 @@ import DeviceTitle from "./title.device";
 
 // ------------------------------------------------
 
-export default function ShowDevice(props) {
+export default function ShowDevice(props: any) {
   return (
     <Show title={<DeviceTitle />}>
       <SimpleShowLayout>
-        <NumberField variant="outlined" source="id" />
-        <TextField variant="outlined" source="ip" />
+        <NumberField source="id" />
+        <TextField source="ip" />
         <ReferenceField source="compoundId" reference="compound" link="show">
           <TextField source="name" />
         </ReferenceField>

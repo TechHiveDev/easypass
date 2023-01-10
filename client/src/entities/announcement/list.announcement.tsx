@@ -32,9 +32,9 @@ export default function ListAnnouncement(_props: any) {
   return (
     <List filters={announcementFilters}>
       <Datagrid>
-        <NumberField variant="outlined" source="id" />
-        <TextField variant="outlined" source="title" />
-        <ImageField variant="outlined" source="photoUrl" />
+        <NumberField source="id" />
+        <TextField source="title" />
+        <ImageField source="photoUrl" />
         <ReferenceField source="compoundId" reference="compound" link="show">
           <TextField source="name" />
         </ReferenceField>

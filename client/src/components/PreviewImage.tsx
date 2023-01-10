@@ -1,23 +1,22 @@
-import { FormDataConsumer, ImageField, Labeled } from 'react-admin';
+import { FormDataConsumer, ImageField } from "react-admin";
 
-const PreviewImage = ({ record, source, ...props }) => {
-  if (typeof record === 'string') {
-    record = {
-      [source]: record,
-    };
+export default function PreviewImage({ record, source }: any) {
+  if (typeof record === "string") {
+    record = { [source]: record };
   }
+
   return (
     <>
       <ImageField record={record} source={source} />
       <FormDataConsumer>
-        {({ formData, dispatch, ...rest }) => {
+        {({ formData, dispatch, ...rest }: any) => {
           if (!formData?.photoUrl?.src && !formData?.logoUrl?.src) {
             return (
               <img
                 style={{
-                  width: '10vw',
-                  height: '30vh',
-                  objectFit: 'contain',
+                  width: "10vw",
+                  height: "30vh",
+                  objectFit: "contain",
                   margin: 0,
                   padding: 0,
                 }}
@@ -31,5 +30,4 @@ const PreviewImage = ({ record, source, ...props }) => {
       </FormDataConsumer>
     </>
   );
-};
-export default PreviewImage;
+}

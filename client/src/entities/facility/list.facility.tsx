@@ -7,15 +7,14 @@ import {
   EditButton,
   DeleteButton,
   ReferenceField,
-  Button,
   ReferenceInput,
   AutocompleteInput,
-  ImageField,
   SearchInput,
-} from 'react-admin';
-import Actions from '../../reactAdmin/components/Actions';
+} from "react-admin";
+import Actions from "../../reactAdmin/components/Actions";
 
 // ------------------------------------------------
+
 const facilityFilters = [
   <SearchInput source="q" alwaysOn />,
   <ReferenceInput
@@ -27,17 +26,17 @@ const facilityFilters = [
     <AutocompleteInput optionText="name" />
   </ReferenceInput>,
 ];
-export default function ListFacility(props) {
+
+export default function ListFacility(_props: any) {
   return (
     <List filters={facilityFilters}>
       <Datagrid>
-        <NumberField variant="outlined" source="id" />
-        <TextField variant="outlined" source="name" />
-        <TextField variant="outlined" source="price" />
+        <NumberField source="id" />
+        <TextField source="name" />
+        <TextField source="price" />
         <ReferenceField source="compoundId" reference="compound" link="show">
           <TextField source="name" />
         </ReferenceField>
-
         <Actions label="">
           <ShowButton label="ra.action.show" />
           <EditButton label="ra.action.edit" />

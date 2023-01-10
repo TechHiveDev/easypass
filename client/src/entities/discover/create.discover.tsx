@@ -8,11 +8,12 @@ import {
   ImageField,
   AutocompleteInput,
   useTranslate,
-  TimeInput, TextField,
-} from 'react-admin';
-import Title from './title.discover';
+  TimeInput,
+  TextField,
+} from "react-admin";
+import Title from "./title.discover";
 
-export default function CreateDiscover(props) {
+export default function CreateDiscover(props: any) {
   const t = useTranslate();
   return (
     <Create
@@ -20,7 +21,7 @@ export default function CreateDiscover(props) {
       resource="discover/create"
       redirect="/discover"
     >
-      <SimpleForm redirect="list">
+      <SimpleForm>
         <TextInput variant="outlined" source="name" />
         <TextInput variant="outlined" source="shortDescription" multiline />
         <TextInput variant="outlined" source="description" multiline />
@@ -32,7 +33,7 @@ export default function CreateDiscover(props) {
         <TimeInput source="openDateFrom" />
         <TimeInput source="openDateTo" />
         <ReferenceInput
-          required
+          isRequired={true}
           source="compoundId"
           reference="compound"
           label="compound"
@@ -41,15 +42,15 @@ export default function CreateDiscover(props) {
           <AutocompleteInput
             optionText="name"
             label="compound"
-            required
+            isRequired={true}
             validate={(v) => {
-              if (v === '') return t('requiredCompound');
+              if (v === "") return t("isRequired={true}Compound");
               return undefined;
             }}
           />
         </ReferenceInput>
         <ReferenceInput
-          required
+          isRequired={true}
           source="categoryId"
           reference="category"
           label="category"
@@ -58,9 +59,9 @@ export default function CreateDiscover(props) {
           <AutocompleteInput
             optionText="name"
             label="category"
-            required
+            isRequired={true}
             validate={(v) => {
-              if (v === '') return t('requiredCategory');
+              if (v === "") return t("isRequired={true}Category");
               return undefined;
             }}
           />

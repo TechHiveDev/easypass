@@ -8,7 +8,6 @@ import {
   EditButton,
   DeleteButton,
   SearchInput,
-  useTranslate,
   WrapperField,
   useRecordContext,
   useLocaleState,
@@ -21,9 +20,14 @@ import { useMutation } from "react-query";
 import CircularProgress from "@mui/material/CircularProgress";
 import Button from "@mui/material/Button";
 import AddTaskIcon from "@mui/icons-material/AddTask";
-// ------------------------------------------------
+
+// =================================================================
+
 const userFilters = [<SearchInput source="q" alwaysOn />];
-const ActiveButton = () => {
+
+// =================================================================
+
+function ActiveButton() {
   const refresh = useRefresh();
   const [locale] = useLocaleState();
   const { active } = useRecordContext();
@@ -35,8 +39,11 @@ const ActiveButton = () => {
       dataProvider.update("user", {
         id: record.id,
         data: { ...record, active: true },
-      })
+      } as any)
   );
+
+  // ------------------------------------------------
+
   return (
     <Button
       sx={{
@@ -46,7 +53,7 @@ const ActiveButton = () => {
       startIcon={<AddTaskIcon />}
       disabled={isLoading}
       onClick={async () => {
-        const res = await mutateAsync({ ...record, active: true });
+        const res: any = await mutateAsync({ ...record, active: true } as any);
         if (res?.data?.id) {
           refresh();
         }
@@ -59,16 +66,19 @@ const ActiveButton = () => {
       )}
     </Button>
   );
-};
-export default function ListUser(props) {
+}
+
+// =================================================================
+
+export default function ListUser(_props: any) {
   return (
     <List filters={userFilters}>
       <Datagrid>
-        <NumberField variant="outlined" source="id" />
-        <TextField variant="outlined" source="email" />
-        <TextField variant="outlined" source="name" />
-        <TextField variant="outlined" source="phone" />
-        <BooleanField variant="outlined" source="active" />
+        <NumberField source="id" />
+        <TextField source="email" />
+        <TextField source="name" />
+        <TextField source="phone" />
+        <BooleanField source="active" />
         <WrapperField label={"type"}>
           <UserType />
         </WrapperField>

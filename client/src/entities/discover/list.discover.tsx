@@ -17,11 +17,12 @@ import {
   SelectInput,
   AutocompleteInput,
   FunctionField,
-} from 'react-admin';
-import Actions from '../../reactAdmin/components/Actions';
-import { timeFormatter, timeMerger } from '../../utils/dateFormatter';
+} from "react-admin";
+import Actions from "../../reactAdmin/components/Actions";
+import { timeFormatter, timeMerger } from "../../utils/dateFormatter";
 
 // ------------------------------------------------
+
 const announcementFilters = [
   <ReferenceInput
     source="compoundId"
@@ -31,31 +32,26 @@ const announcementFilters = [
   >
     <AutocompleteInput optionText="name" />
   </ReferenceInput>,
-  <ReferenceInput
-    required
-    source="categoryId"
-    reference="category"
-    // label="category"
-    // name="name"
-  >
+  <ReferenceInput isRequired={true} source="categoryId" reference="category">
     <AutocompleteInput optionText="name" />
   </ReferenceInput>,
 ];
 
-export default function ListDiscover(props) {
+// ------------------------------------------------
+
+export default function ListDiscover(props: any) {
   return (
     <List filters={announcementFilters}>
       <Datagrid>
-        <NumberField variant="outlined" source="id" />
-        <TextField variant="outlined" source="name" />
-        <TextField variant="outlined" source="shortDescription" />
-        <ImageField variant="outlined" source="photoUrl" />
-        <TextField variant="outlined" source="phone" />
-        <TextField variant="outlined" source="address" />
+        <NumberField source="id" />
+        <TextField source="name" />
+        <TextField source="shortDescription" />
+        <ImageField source="photoUrl" />
+        <TextField source="phone" />
+        <TextField source="address" />
         <FunctionField
-          variant="outlined"
           source="openDateFrom"
-          render={(r) => timeMerger(r.openDateFrom, r.openDateTo)}
+          render={(r: any) => timeMerger(r.openDateFrom, r.openDateTo)}
         />
         <ReferenceField source="compoundId" reference="compound" link="show">
           <TextField source="name" />
@@ -63,7 +59,6 @@ export default function ListDiscover(props) {
         <ReferenceField source="categoryId" reference="category" link="show">
           <TextField source="name" />
         </ReferenceField>
-
         <Actions label="">
           <ShowButton label="ra.action.show" />
           <EditButton label="ra.action.edit" />

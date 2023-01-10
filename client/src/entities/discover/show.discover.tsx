@@ -6,27 +6,26 @@ import {
   ImageField,
   NumberField,
   FunctionField,
-} from 'react-admin';
-import DiscoverTitle from './title.discover';
-import { timeMerger } from '../../utils/dateFormatter';
+} from "react-admin";
+import DiscoverTitle from "./title.discover";
+import { timeMerger } from "../../utils/dateFormatter";
 
 // ------------------------------------------------
 
-export default function ShowDiscover(props) {
+export default function ShowDiscover(props: any) {
   return (
     <Show title={<DiscoverTitle />}>
       <SimpleShowLayout>
-        <NumberField variant="outlined" source="id" />
-        <TextField variant="outlined" source="name" />
-        <TextField variant="outlined" source="shortDescription" />
-        <TextField variant="outlined" source="description" />
-        <ImageField variant="outlined" source="photoUrl" />
-        <TextField variant="outlined" source="phone" />
-        <TextField variant="outlined" source="address" />
+        <NumberField source="id" />
+        <TextField source="name" />
+        <TextField source="shortDescription" />
+        <TextField source="description" />
+        <ImageField source="photoUrl" />
+        <TextField source="phone" />
+        <TextField source="address" />
         <FunctionField
-          variant="outlined"
           source="openFromTo"
-          render={(r) => timeMerger(r.openDateFrom, r.openDateTo)}
+          render={(r: any) => timeMerger(r.openDateFrom, r.openDateTo)}
         />
         <ReferenceField source="compoundId" reference="compound" link="show">
           <TextField source="name" />

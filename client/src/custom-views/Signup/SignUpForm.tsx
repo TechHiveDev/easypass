@@ -52,7 +52,7 @@ export const SignUpForm = () => {
             </InputLabel>
             <Input
               type="text"
-              labelId="Name-label"
+              // labelId="Name-label"
               id="Name"
               {...register("name", {
                 required: {
