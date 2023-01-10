@@ -1,5 +1,4 @@
 import { useForm } from "react-hook-form";
-import React from "react";
 import Input from "@mui/material/Input";
 import Button from "@mui/material/Button";
 import Alert from "@mui/material/Alert";
@@ -15,17 +14,22 @@ import { queryAuth } from "../../reactAdmin/providers/auth.provider.hook";
 import config from "../../configs/config";
 import cardStyles from "./cardStyles";
 
-export const SignUpForm = () => {
+// ========================================================================
+
+export function SignUpForm() {
   const translate = useTranslate();
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm();
+  }: any = useForm();
   const notify = useNotify();
   const login = useLogin();
-  const onSubmit = async (data) => {
+
+  // -----------------------------------------
+
+  const onSubmit = async (data: any) => {
     const res = await queryAuth(config.baseUrl + "/oauth/register", {
       ...data,
       active: true,
@@ -41,11 +45,13 @@ export const SignUpForm = () => {
     }
   };
 
+  // -----------------------------------------
+
   return (
     <Card sx={cardStyles}>
       <CardContent>
         <h2> {translate("signUp.label")}</h2>
-        <Stack spacing={2} as={"form"} onSubmit={handleSubmit(onSubmit)}>
+        <Stack spacing={2} onSubmit={handleSubmit(onSubmit)}>
           <FormControl fullWidth>
             <InputLabel id="Name-label">
               {translate("signUp.name.label")}
@@ -150,7 +156,7 @@ export const SignUpForm = () => {
               type="password"
               label-id={"ConfirmPassword-label"}
               {...register("ConfirmPassword", {
-                validate: (val) => {
+                validate: (val: any) => {
                   if (watch("password") !== val) {
                     return translate("signUp.confirmPassword.match");
                   }
@@ -187,4 +193,4 @@ export const SignUpForm = () => {
       </CardContent>
     </Card>
   );
-};
+}

@@ -1,5 +1,4 @@
 import { useForm } from "react-hook-form";
-import React from "react";
 import Input from "@mui/material/Input";
 import Button from "@mui/material/Button";
 import FormControl from "@mui/material/FormControl";
@@ -10,15 +9,21 @@ import Stack from "@mui/material/Stack";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import cardStyles from "./cardStyles";
-export const SignInForm = () => {
+
+// =======================================================
+
+export function SignInForm() {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  }: any = useForm();
   const notify = useNotify();
   const login = useLogin();
-  const onSubmit = (data) => {
+
+  // -------------------------------------
+
+  const onSubmit = (data: any) => {
     const { email, password } = data;
     login({
       username: email,
@@ -26,16 +31,22 @@ export const SignInForm = () => {
     }).catch(() => notify("Invalid email or password"));
   };
 
+  // -------------------------------------
+
   return (
     <Card sx={cardStyles}>
       <CardContent>
         <h2>Sign-In</h2>
-        <Stack spacing={2} as={"form"} onSubmit={handleSubmit(onSubmit)}>
+        <Stack
+          spacing={2}
+          // as={"form"}
+          onSubmit={handleSubmit(onSubmit)}
+        >
           <FormControl fullWidth>
             <InputLabel id="Email-label">Email</InputLabel>
             <Input
               type="text"
-              labelId="Email-label"
+              // labelId="Email-label"
               id="Email"
               {...register("email", {
                 required: { value: true, message: "Email is required" },
@@ -77,4 +88,4 @@ export const SignInForm = () => {
       </CardContent>
     </Card>
   );
-};
+}

@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { SignUpForm } from "./SignUpForm";
 import { SignInForm } from "./SignInForm";
 import Button from "@mui/material/Button";
+
+// =================================================
 
 export default function SignUp() {
   const [login, setLogin] = useState(true);

@@ -26,7 +26,7 @@ const entitiesWithImages = [
   "discover",
   "discover/create", // custom discover
 ];
-const entitiesMapper = {
+const entitiesMapper: any = {
   "oauth/register": "user",
   "announcement/create": "announcement",
   "discover/create": "discover",
@@ -56,8 +56,6 @@ const uploadImage = async ({ image, entity, id }: any) => {
 // =================================================================
 
 export const dataProvider = {
-  // ---------------------------------
-
   ...defaultDataProvider,
 
   // ---------------------------------
@@ -65,10 +63,13 @@ export const dataProvider = {
   create: async (resource: any, params: any) => {
     if (entitiesWithImages.includes(resource)) {
       const uploadTarget = resource === "compound" ? "logoUrl" : "photoUrl";
+
       if (!params?.data?.[uploadTarget]?.rawFile)
         return defaultDataProvider.create(resource, params);
+
       let entity = resource;
-      const mappedEntity = entitiesMapper[resource];
+      const mappedEntity: any = entitiesMapper[resource];
+
       if (mappedEntity) {
         entity = mappedEntity;
       }
