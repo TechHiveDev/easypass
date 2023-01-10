@@ -28,4 +28,5 @@ export const getDiscoverByCompound = async (compoundId) => {
 export const createDiscover = async (adminId, data) => {
   return await prisma.discover.create({ data: { ...data, userId: adminId } });
 };
+
 // ------------------------------------------------------------------

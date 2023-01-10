@@ -3,23 +3,18 @@ import {
   Datagrid,
   TextField,
   NumberField,
-  BooleanField,
-  DateField,
   ShowButton,
   EditButton,
   ImageField,
   DeleteButton,
   ReferenceField,
-  TextInput,
-  DateTimeInput,
-  BooleanInput,
   ReferenceInput,
-  SelectInput,
   AutocompleteInput,
-} from 'react-admin';
-import Actions from '../../reactAdmin/components/Actions';
+} from "react-admin";
+import Actions from "../../reactAdmin/components/Actions";
 
 // ------------------------------------------------
+
 const announcementFilters = [
   <ReferenceInput
     source="compoundId"
@@ -30,7 +25,10 @@ const announcementFilters = [
     <AutocompleteInput optionText="name" />
   </ReferenceInput>,
 ];
-export default function ListAnnouncement(props) {
+
+// ------------------------------------------------
+
+export default function ListAnnouncement(_props: any) {
   return (
     <List filters={announcementFilters}>
       <Datagrid>

@@ -9,7 +9,7 @@ import AnnouncementTitle from "./title.announcement";
 
 // ------------------------------------------------
 
-export default function ShowAnnouncement(props) {
+export default function ShowAnnouncement(props: any) {
   return (
     <Show title={<AnnouncementTitle />}>
       <SimpleShowLayout>

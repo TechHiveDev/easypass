@@ -19,7 +19,6 @@
  *  return what you want from database
  *
  */
-
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 

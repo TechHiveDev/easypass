@@ -9,15 +9,15 @@ import {
   SelectInput,
   AutocompleteInput,
   useTranslate,
-} from 'react-admin';
+} from "react-admin";
 
 // ------------------------------------------------
 
-export default function CreateDevice(props) {
+export default function CreateDevice(_props: any) {
   const t = useTranslate();
   return (
     <Create>
-      <SimpleForm redirect="list">
+      <SimpleForm>
         <TextInput variant="outlined" source="ip" />
         <ReferenceInput
           required
@@ -29,9 +29,9 @@ export default function CreateDevice(props) {
           <AutocompleteInput
             optionText="name"
             label="compound"
-            required
+            isRequired={true}
             validate={(v) => {
-              if (v === '') return t('requiredCompound');
+              if (v === "") return t("requiredCompound");
               return undefined;
             }}
           />

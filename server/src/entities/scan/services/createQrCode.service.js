@@ -1,7 +1,6 @@
-import { encryptWithPublicKey } from "../../../utils/cryptography/cryptography";
-import invitationService from "../../invitation/invitation.service";
 import { isUserBelongsToCompound } from "../../userCompound/userCompound.service";
 import { API_URL } from "../../../../../configs";
+import { createInvitationService } from "../../invitation/invitation.service";
 
 // ===============================================================
 
@@ -31,7 +30,7 @@ export const generateResidentQrCode = async ({ userId, compoundId }) => {
     compoundId,
     type: userCompound?.user?.type,
     expiresAt: addMinutesToDate(new Date(), 1),
-  })
+  });
 
   return encodeURI(stringifiedObj);
   // return encryptWithPublicKey(stringifiedObj);
@@ -60,7 +59,7 @@ export const generateGuestQrCodeInvitationLink = async ({
     expiresAt = addHoursToDate(new Date(), 3);
   }
 
-  const invitation = await invitationService.create({
+  const invitation = await createInvitationService({
     name,
     userId,
     type,
@@ -77,7 +76,7 @@ export const generateGuestQrCodeInvitationLink = async ({
     invitationId: invitation?.id,
     type,
     expiresAt: addMinutesToDate(new Date(), 1),
-  })
+  });
 
   // const encryptedQrcode = encryptWithPublicKey(stringifiedObj);
   const encryptedQrcode = encodeURI(stringifiedObj);
@@ -90,4 +89,4 @@ export const generateGuestQrCodeInvitationLink = async ({
 
 // ===============================================================
 
-export const serveQrCodeScreen = async ({ }) => { };
+export const serveQrCodeScreen = async ({}) => {};

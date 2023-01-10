@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from "react";
 import {
   AutocompleteInput,
   EditButton,
@@ -10,21 +10,23 @@ import {
   useCreateController,
   useRefresh,
   useTranslate,
-} from 'react-admin';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import HomeIcon from '@mui/icons-material/Home';
-import SaveToolbar from '../../components/SaveToolbar';
+} from "react-admin";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import HomeIcon from "@mui/icons-material/Home";
+import SaveToolbar from "../../components/SaveToolbar";
+
+// =================================================================
 
 const UserShowActions = () => {
   const t = useTranslate();
   const [open, setOpen] = useState(false);
   const refresh = useRefresh();
   const { save: saveUser } = useCreateController({
-    resource: 'userCompound',
+    resource: "userCompound",
     redirect: false,
   });
-  const submitHandler = (values) => {
+  const submitHandler = (values: any) => {
     const {
       compoundId,
       id: userId,
@@ -32,6 +34,7 @@ const UserShowActions = () => {
       blockNumber,
       unitNumber,
     } = values;
+    // @ts-ignore
     saveUser(
       {
         compoundId,
@@ -60,7 +63,7 @@ const UserShowActions = () => {
         }}
         startIcon={<HomeIcon />}
       >
-        &nbsp;{t('add')} {t('property').replace('ال', '')}
+        &nbsp;{t("add")} {t("property").replace("ال", "")}
       </Button>
       <Dialog onClose={() => setOpen(false)} open={open}>
         <div>
@@ -79,9 +82,9 @@ const UserShowActions = () => {
               <AutocompleteInput
                 optionText="name"
                 label="compound"
-                required
+                isRequired={true}
                 validate={(v) => {
-                  if (v === '') return t('requiredCompound');
+                  if (v === "") return t("requiredCompound");
                   return undefined;
                 }}
               />

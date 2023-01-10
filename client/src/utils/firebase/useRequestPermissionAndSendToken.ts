@@ -1,23 +1,24 @@
-import { getToken } from 'firebase/messaging';
-import { useEffect } from 'react';
-import { messaging } from './index';
-import customFetch from '../customFetch';
+import { getToken } from "firebase/messaging";
+import { useEffect } from "react";
+import { messaging } from "./firebase";
+import customFetch from "../customFetch";
 
 export const useRequestPermissionAndSendToken = () => {
-  const user = JSON.parse(localStorage.getItem('user'));
+  // @ts-ignore
+  const user = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
     const request = async () => {
       try {
         const permission = await Notification.requestPermission();
-        if (permission === 'granted') {
+        if (permission === "granted") {
           const notificationToken = await getToken(messaging, {
             vapidKey:
-              'BA0KkPsqJcZQ_O7wDOuFfoB4Bv9t0vpiYF6mNVGIDzh115WSVK2FJSbeIrhjSqHvAb6zUiT2KGHGKlks9qmDUfA',
+              "BA0KkPsqJcZQ_O7wDOuFfoB4Bv9t0vpiYF6mNVGIDzh115WSVK2FJSbeIrhjSqHvAb6zUiT2KGHGKlks9qmDUfA",
           });
           if (notificationToken) {
             await customFetch(`/user/${user.id}`, {
-              method: 'PUT',
+              method: "PUT",
               body: {
                 notificationToken,
               },
@@ -25,7 +26,7 @@ export const useRequestPermissionAndSendToken = () => {
           }
         }
       } catch (e) {
-        console.log('error retrieving token', e);
+        console.log("error retrieving token", e);
       }
     };
     if (user?.id) {

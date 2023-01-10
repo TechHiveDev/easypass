@@ -3,15 +3,16 @@ import {
   SimpleForm,
   TextInput,
   ReferenceInput,
-  SelectInput,
   ImageInput,
   ImageField,
   AutocompleteInput,
   useTranslate,
-} from 'react-admin';
-import Title from './title.announcement';
+} from "react-admin";
+import Title from "./title.announcement";
 
-export default function CreateAnnouncement(props) {
+// =================================================================
+
+export default function CreateAnnouncement(_props: any) {
   const t = useTranslate();
   return (
     <Create
@@ -19,7 +20,7 @@ export default function CreateAnnouncement(props) {
       redirect="/announcement"
       title={<Title create />}
     >
-      <SimpleForm redirect="list">
+      <SimpleForm>
         <TextInput variant="outlined" source="title" />
         <TextInput variant="outlined" source="description" multiline />
         <ImageInput source="photoUrl" accept="image/*">
@@ -35,9 +36,9 @@ export default function CreateAnnouncement(props) {
           <AutocompleteInput
             optionText="name"
             label="compound"
-            required
+            isRequired={true}
             validate={(v) => {
-              if (v === '') return t('requiredCompound');
+              if (v === "") return t("requiredCompound");
               return undefined;
             }}
           />

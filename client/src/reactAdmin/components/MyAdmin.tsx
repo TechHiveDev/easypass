@@ -5,8 +5,8 @@ import { ToastProvider } from "react-toast-notifications";
 import entities from "../../entities/entities";
 import MyLayout from "./MyLayout";
 import SignUp from "../../custom-views/Signup";
-import Scan from "../../custom-views/Reports/Scan";
-import Invite from "../../custom-views/Reports/Invite";
+// import Scan from "../../custom-views/Reports/Scan";
+// import Invite from "../../custom-views/Reports/Invite";
 
 // =======================================================
 export default function MyAdmin() {
@@ -40,7 +40,7 @@ export default function MyAdmin() {
           }
           return <Resource key={label} option={{ label }} {...rest} />;
         })}
-        <CustomRoutes>
+        {/* <CustomRoutes>
           <Route
             path="/reports/scan"
             element={
@@ -57,7 +57,7 @@ export default function MyAdmin() {
               </Authenticated>
             }
           />
-        </CustomRoutes>
+        </CustomRoutes> */}
       </AdminUI>
     </ToastProvider>
   );

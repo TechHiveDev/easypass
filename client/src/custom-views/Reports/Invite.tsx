@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -46,7 +46,7 @@ const options = {
       stacked: true,
       ticks: {
         // remove fractions from graph
-        callback: function (value, index, ticks) {
+        callback: function (value: any, _index: any, _ticks: any) {
           const isInteger = Number.isInteger(value);
           return isInteger ? value : "";
         },

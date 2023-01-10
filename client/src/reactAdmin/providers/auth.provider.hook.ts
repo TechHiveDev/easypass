@@ -11,7 +11,7 @@ const authUrls = {
 // =====================================================================
 
 export const queryAuth = async (
-  url,
+  url: string,
   payload = {},
   method = "POST",
   headers = {}
@@ -31,7 +31,7 @@ export const queryAuth = async (
     const rawResponse = await fetch(url, options);
     const data = await rawResponse.json();
     return data;
-  } catch (e) {
+  } catch (e: any) {
     console.error(e.message);
     return e;
   }
@@ -44,7 +44,7 @@ export const authProvider = {
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
   // send username and password to the auth server and get back credentials
-  login: async ({ username: email, password }) => {
+  login: async ({ username: email, password }: any) => {
     const data = await queryAuth(authUrls.login, { email, password });
     if (data?.accessToken && data?.user?.id) {
       localStorage.setItem("user", JSON.stringify(data?.user));
@@ -62,7 +62,7 @@ export const authProvider = {
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
   // when the dataProvider returns an error, check if this is an authentication error
-  checkError: (error) => {
+  checkError: (error: any) => {
     console.error({ error });
     return Promise.resolve();
   },
@@ -70,10 +70,10 @@ export const authProvider = {
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
   // when the user navigates, make sure that their credentials are still valid
-  checkAuth: async (params) => {
+  checkAuth: async (_params: any) => {
     const token = localStorage.getItem("accessToken");
     if (!token) return Promise.reject();
-    const data = await queryAuth(authUrls.me, null, "GET", {
+    const data = await queryAuth(authUrls.me, {}, "GET", {
       Authorization: `Bearer ${token}`,
     });
     if (token && data?.id) {

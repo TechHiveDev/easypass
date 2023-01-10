@@ -4,21 +4,21 @@ import {
   useLocaleState,
   useSidebarState,
   useTranslate,
-} from 'react-admin';
-import { useQuery } from 'react-query';
-import GroupIcon from '@mui/icons-material/Group';
-import YouTubeIcon from '@mui/icons-material/YouTube';
-import ViewTimelineIcon from '@mui/icons-material/ViewTimeline';
-import Collapse from '@mui/material/Collapse';
-import * as React from 'react';
-import { useState } from 'react';
-import Button from '@mui/material/Button';
-import AssessmentIcon from '@mui/icons-material/Assessment';
-import { useToasts } from 'react-toast-notifications';
-import { Link } from 'react-router-dom';
-import { onMessageListener } from '../../utils/firebase';
-import entities from '../../entities/entities';
-import customFetch from '../../utils/customFetch';
+} from "react-admin";
+import { useQuery } from "react-query";
+import GroupIcon from "@mui/icons-material/Group";
+import YouTubeIcon from "@mui/icons-material/YouTube";
+import ViewTimelineIcon from "@mui/icons-material/ViewTimeline";
+import Collapse from "@mui/material/Collapse";
+import * as React from "react";
+import { useState } from "react";
+import Button from "@mui/material/Button";
+import AssessmentIcon from "@mui/icons-material/Assessment";
+import { useToasts } from "react-toast-notifications";
+import { Link } from "react-router-dom";
+// import { onMessageListener } from '../../utils/firebase';
+import entities from "../../entities/entities";
+import customFetch from "../../utils/customFetch";
 // ------------------------------------------------
 
 const icons = {
@@ -29,28 +29,31 @@ const icons = {
 // ------------------------------------------------
 const NotificationProvider = () => {
   const { addToast } = useToasts();
-  onMessageListener()
-    .then(({ notification, data }) => {
-      addToast(
-        <>
-          <h3>{notification.title}</h3>
-          <Link to={`/request/${data.requestId}/show`}>See it</Link>
-        </>,
-        {
-          appearance: 'info',
-        }
-      );
-    })
-    .catch((err) => console.log('failed: ', err));
+  // onMessageListener()
+  //   .then(({ notification, data }) => {
+  //     addToast(
+  //       <>
+  //         <h3>{notification.title}</h3>
+  //         <Link to={`/request/${data.requestId}/show`}>See it</Link>
+  //       </>,
+  //       {
+  //         appearance: "info",
+  //       }
+  //     );
+  //   })
+  //   .catch((err) => console.log("failed: ", err));
   return null;
 };
+
+// =======================================================================
+
 export default function MySideMenu(props) {
   const translate = useTranslate();
   const [checked, setChecked] = useState(true);
   const [open] = useSidebarState();
   const [locale] = useLocaleState();
-  const { data } = useQuery(['notifications'], () =>
-    customFetch('/request', {})
+  const { data } = useQuery(["notifications"], () =>
+    customFetch("/request", {})
   );
   const notificationCount = data?.filter((d) => d?.adminSeen === false).length;
   return (
@@ -61,16 +64,16 @@ export default function MySideMenu(props) {
         .map((entity, index) => {
           const { name, label } = entity;
           if (
-            name === 'request' &&
+            name === "request" &&
             notificationCount &&
             notificationCount !== 0
           ) {
             return (
               <div
                 style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'center',
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
                 }}
               >
                 <MenuItemLink
@@ -82,24 +85,24 @@ export default function MySideMenu(props) {
                 />
                 <div
                   style={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    minHeight: '20px',
-                    minWidth: '20px',
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    minHeight: "20px",
+                    minWidth: "20px",
                   }}
                 >
                   <span
                     style={{
-                      display: 'flex',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      height: '25px',
-                      width: '25px',
-                      backgroundColor: '#2196f3',
-                      borderRadius: '50%',
-                      textAlign: 'center',
-                      color: 'white',
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      height: "25px",
+                      width: "25px",
+                      backgroundColor: "#2196f3",
+                      borderRadius: "50%",
+                      textAlign: "center",
+                      color: "white",
                     }}
                   >
                     {notificationCount}
@@ -120,34 +123,34 @@ export default function MySideMenu(props) {
         })}
       <Button
         sx={{
-          textTransform: 'none',
-          width: '100%',
-          justifyContent: 'flex-start',
-          color: 'gray',
-          fontSize: '1rem',
-          paddingLeft: '1.2rem',
-          zIndex: '1',
+          textTransform: "none",
+          width: "100%",
+          justifyContent: "flex-start",
+          color: "gray",
+          fontSize: "1rem",
+          paddingLeft: "1.2rem",
+          zIndex: "1",
         }}
         onClick={() => setChecked((p) => !p)}
         startIcon={<AssessmentIcon />}
       >
-        &nbsp; {translate('reports')}
+        &nbsp; {translate("reports")}
       </Button>
       <Collapse in={open && checked}>
         <div
           style={{
-            marginLeft: locale === 'en' ? '20px' : null,
-            marginRight: locale === 'ar' ? '20px' : null,
+            marginLeft: locale === "en" ? "20px" : null,
+            marginRight: locale === "ar" ? "20px" : null,
           }}
         >
           <MenuItemLink
             to="/reports/scan"
-            primaryText={translate('menu.Scan')}
+            primaryText={translate("menu.Scan")}
             leftIcon={<GroupIcon />}
           />
           <MenuItemLink
             to="/reports/invite"
-            primaryText={translate('menu.Invitation')}
+            primaryText={translate("menu.Invitation")}
             leftIcon={<GroupIcon />}
           />
         </div>

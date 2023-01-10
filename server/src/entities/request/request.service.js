@@ -101,28 +101,27 @@ export const deleteRequest = async (id) => {
 
 // ------------------------------------------------------------------
 
-export const updateRequest = async (id, data) => {
+export const updateRequest = async (id, { userType, status, respondNote }) => {
   const request = await prisma.request.findUnique({
     where: { id },
     include: { user: true, facility: true },
   });
-  if (!request) throw { status: 404, message: `Request not found` };
-  // if (request.status == "Cancelled" || request.status == "AdminRefused")
-  //   throw { status: 400, message: `Cannot update a Cancelled request` };
-  if (data.status) {
-    if (
-      !IsUserCanUpdateRequest({
-        requestStatus: data.status,
-        userType: data.userType,
-      })
-    )
+
+  if (!request) {
+    throw { status: 404, message: `Request not found` };
+  }
+
+  if (status) {
+    if (!IsUserCanUpdateRequest({ requestStatus: status, userType })) {
       throw { status: 403, message: `not allowed to ${data.status} a request` };
+    }
 
     let facility = await prisma.facility.findUnique({
       where: { id: request.facilityId },
     });
 
     const { slots, ...res } = facility;
+
     let newSlots = getSlotToUpdate({
       available: !(data.status == "Cancelled" || data.status == "AdminRefused"),
       availableDateFrom: request.availableDateFrom,
@@ -136,11 +135,13 @@ export const updateRequest = async (id, data) => {
       data: { ...res, slots: newSlots },
     });
   }
-  if (data.userType == "Admin" || data.userType == "SuperAdmin") {
-    // send notification to users if admin updated the request
-    const message = data.respondNote.includes("#ST#")
-      ? data.respondNote.split("#ST#")[1]
-      : data.respondNote;
+
+  // send notification to users if admin updated the request
+  if (["Admin", "SuperAdmin"].includes(userType)) {
+    const message = respondNote.includes("#ST#")
+      ? respondNote.split("#ST#")[1]
+      : respondNote;
+
     await sendNotificationExpo({
       usersPushTokens: [request.user.notificationToken],
       title: `Response to ${request.facility.name}`,
@@ -153,7 +154,7 @@ export const updateRequest = async (id, data) => {
   return await prisma.request.update({ where: { id }, data });
 };
 
-// ==================================================================
+// ------------------------------------------------------------------
 
 const sendNotificationToAssociatedAdmin = async (facilityId, newRequest) => {
   const facility = await prisma.facility.findFirst({
@@ -212,6 +213,7 @@ const getSlotToUpdate = ({
   isPut = false,
 }) => {
   let flag = false;
+
   for (let i = 0; i < slots.length; i++) {
     if (
       (slots[i].from == availableDateFrom &&
@@ -226,8 +228,11 @@ const getSlotToUpdate = ({
       flag = true;
     }
   }
-  if (!flag && !isPut)
+
+  if (!flag && !isPut) {
     throw { status: 400, message: "invalid request or no slots available" };
+  }
+
   return slots;
 };
 

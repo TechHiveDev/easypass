@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from "react";
 import {
   AutocompleteInput,
   EditButton,
@@ -13,38 +13,40 @@ import {
   usePermissions,
   useRefresh,
   useTranslate,
-} from 'react-admin';
-import Button from '@mui/material/Button';
-import AnnouncementIcon from '@mui/icons-material/Announcement';
-import HomeIcon from '@mui/icons-material/Home';
-import Dialog from '@mui/material/Dialog';
-import ExploreIcon from '@mui/icons-material/Explore';
-import SaveToolbar from '../../components/SaveToolbar';
+} from "react-admin";
+import Button from "@mui/material/Button";
+import AnnouncementIcon from "@mui/icons-material/Announcement";
+import HomeIcon from "@mui/icons-material/Home";
+import Dialog from "@mui/material/Dialog";
+import ExploreIcon from "@mui/icons-material/Explore";
+import SaveToolbar from "../../components/SaveToolbar";
 
-const CompoundShowActions = () => {
+export default function CompoundShowActions() {
   const { isLoading, permissions } = usePermissions();
   const t = useTranslate();
   const [{ open, type }, setOpen] = useState({ open: false, type: undefined });
   const refresh = useRefresh();
   const { save: saveUser } = useCreateController({
-    resource: 'userCompound',
+    resource: "userCompound",
     redirect: false,
   });
   const { save: saveAnnouncement } = useCreateController({
-    resource: 'announcement/create',
+    resource: "announcement/create",
     redirect: false,
   });
   const { save: saveDiscover } = useCreateController({
-    resource: 'discover/create',
+    resource: "discover/create",
     redirect: false,
   });
   const { save: saveFacility } = useCreateController({
-    resource: 'facility',
+    resource: "facility",
     redirect: false,
   });
-  const submitHandler = (values) => {
-    if (type === 'announcement') {
+  const submitHandler = (values: any) => {
+    if (type === "announcement") {
       const { id: compoundId, title, description, photoUrl } = values;
+
+      // @ts-ignore
       return saveAnnouncement(
         { compoundId, title, description, photoUrl },
         {
@@ -58,8 +60,10 @@ const CompoundShowActions = () => {
         }
       );
     }
-    if (type === 'discover') {
+
+    if (type === "discover") {
       const { id: compoundId, title, description, photoUrl } = values;
+      // @ts-ignore
       return saveDiscover(
         { compoundId, title, description, photoUrl },
         {
@@ -73,7 +77,8 @@ const CompoundShowActions = () => {
         }
       );
     }
-    if (type === 'user') {
+
+    if (type === "user") {
       const {
         id: compoundId,
         userId,
@@ -81,6 +86,8 @@ const CompoundShowActions = () => {
         blockNumber,
         unitNumber,
       } = values;
+
+      // @ts-ignore
       saveUser(
         {
           compoundId,
@@ -100,7 +107,7 @@ const CompoundShowActions = () => {
         }
       );
     }
-    if (type === 'facility') {
+    if (type === "facility") {
       const {
         id: compoundId,
         facilityName: name,
@@ -108,6 +115,8 @@ const CompoundShowActions = () => {
         price,
         photoUrl,
       } = values;
+
+      // @ts-ignore
       saveFacility(
         {
           compoundId,
@@ -130,47 +139,51 @@ const CompoundShowActions = () => {
   };
   return (
     <TopToolbar>
-      {!isLoading && permissions === 'SuperAdmin' ? <EditButton /> : null}
+      {!isLoading && permissions === "SuperAdmin" ? <EditButton /> : null}
       {/* Add your custom actions */}
       <Button
         size="small"
         color="primary"
         onClick={() => {
-          setOpen({ type: 'user', open: true });
+          // @ts-ignore
+          setOpen({ type: "user", open: true });
         }}
         startIcon={<HomeIcon />}
       >
-        &nbsp;{t('add')} {t('property').replace('ال', '')}
+        &nbsp;{t("add")} {t("property").replace("ال", "")}
       </Button>
       <Button
         size="small"
         color="primary"
         onClick={() => {
-          setOpen({ type: 'announcement', open: true });
+          // @ts-ignore
+          setOpen({ type: "announcement", open: true });
         }}
         startIcon={<AnnouncementIcon />}
       >
-        &nbsp;{t('add')} {t('announcement').replace('ال', '')}
+        &nbsp;{t("add")} {t("announcement").replace("ال", "")}
       </Button>
       <Button
         size="small"
         color="primary"
         onClick={() => {
-          setOpen({ type: 'facility', open: true });
+          // @ts-ignore
+          setOpen({ type: "facility", open: true });
         }}
         startIcon={<AnnouncementIcon />}
       >
-        &nbsp;{t('add')} {t('facility').replace('ال', '')}
-      </Button>{' '}
+        &nbsp;{t("add")} {t("facility").replace("ال", "")}
+      </Button>{" "}
       <Button
         size="small"
         color="primary"
         onClick={() => {
-          setOpen({ type: 'discover', open: true });
+          // @ts-ignore
+          setOpen({ type: "discover", open: true });
         }}
         startIcon={<ExploreIcon />}
       >
-        &nbsp;{t('add')} {t('discover').replace('ال', '')}
+        &nbsp;{t("add")} {t("discover").replace("ال", "")}
       </Button>
       <Dialog
         onClose={() =>
@@ -182,7 +195,7 @@ const CompoundShowActions = () => {
         open={open}
       >
         <div>
-          {type === 'user' ? (
+          {type === "user" ? (
             <SimpleForm
               onSubmit={submitHandler}
               toolbar={<SaveToolbar />}
@@ -197,9 +210,9 @@ const CompoundShowActions = () => {
                 <AutocompleteInput
                   optionText="name"
                   label="user"
-                  required
+                  isRequired={true}
                   validate={(v) => {
-                    if (v === '') return t('requiredUser');
+                    if (v === "") return t("requiredUser");
                     return undefined;
                   }}
                 />
@@ -209,7 +222,7 @@ const CompoundShowActions = () => {
               <NumberInput variant="outlined" source="unitNumber" required />
             </SimpleForm>
           ) : null}
-          {type === 'announcement' || type === 'discover' ? (
+          {type === "announcement" || type === "discover" ? (
             <SimpleForm
               onSubmit={submitHandler}
               toolbar={<SaveToolbar />}
@@ -222,10 +235,10 @@ const CompoundShowActions = () => {
               </ImageInput>
             </SimpleForm>
           ) : null}
-          {type === 'facility' ? (
+          {type === "facility" ? (
             <SimpleForm
               defaultValues={{
-                name: '',
+                name: "",
               }}
               onSubmit={submitHandler}
               toolbar={<SaveToolbar />}
@@ -247,5 +260,4 @@ const CompoundShowActions = () => {
       </Dialog>
     </TopToolbar>
   );
-};
-export default CompoundShowActions;
+}

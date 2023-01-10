@@ -17,30 +17,8 @@
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient({ log: ["info"] });
 
-// ------------------------------------------------------------
-
-const invitationService = {
-  create: async ({ userId, name, type, compoundId, expiresAt, notes = "" }) => {
-    return await prisma.invitation.create({
-      data: {
-        userId: +userId,
-        type,
-        name,
-        compoundId,
-        expiresAt,
-        notes,
-      },
-    });
-  },
-};
-
 // ------------------------------------------------------------------
 
-export default invitationService;
-
-/**
- * report invitation Report
- */
 export const invitationReport = async ({
   compoundId,
   start,
@@ -139,7 +117,7 @@ export const invitationReport = async ({
       // fill in the visitor/delivery with their relavent data
       // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
       let index = 0;
-      
+
       if (typeOfInterval == 30) {
         let diffInMonth =
           invitation.createdAt.getMonth() - start.getMonth() + 1;
@@ -167,5 +145,26 @@ export const invitationReport = async ({
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   return res;
 };
+
+// ===============================================================
+
+export const createInvitationService = async ({
+  userId,
+  name,
+  type,
+  compoundId,
+  expiresAt,
+  notes = "",
+}) =>
+  await prisma.invitation.create({
+    data: {
+      userId: +userId,
+      type,
+      name,
+      compoundId,
+      expiresAt,
+      notes,
+    },
+  });
 
 // ===============================================================

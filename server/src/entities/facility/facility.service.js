@@ -49,8 +49,11 @@ const validateAndTransform = (slot, index) => {
   const toTransformed = `${fromDate}T${toTime}`;
   const fromObject = new Date(slot.from);
   const toObject = new Date(toTransformed);
-  if (fromObject > toObject)
+
+  if (fromObject > toObject) {
     throw { message: `to can't be less than from in slot number ${index}` };
+  }
+
   return {
     ...slot,
     to: toTransformed,
