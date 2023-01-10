@@ -4,8 +4,7 @@ import { messaging } from "./firebase";
 import customFetch from "../customFetch";
 
 export const useRequestPermissionAndSendToken = () => {
-  // @ts-ignore
-  const user = JSON.parse(localStorage.getItem("user"));
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
 
   useEffect(() => {
     const request = async () => {
