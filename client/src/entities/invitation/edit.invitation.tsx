@@ -10,11 +10,11 @@ import InvitationTitle from "./title.invitation";
 
 // ------------------------------------------------
 
-export default function EditInvitation(props) {
+export default function EditInvitation(_props: any) {
   const t = useTranslate();
   return (
     <Edit title={<InvitationTitle />}>
-      <SimpleForm redirect="list">
+      <SimpleForm>
         <TextInput variant="outlined" source="name" />
         <SelectInput
           required

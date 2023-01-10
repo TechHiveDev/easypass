@@ -9,16 +9,16 @@ import {
   SelectInput,
   AutocompleteInput,
   useTranslate,
-} from 'react-admin';
-import DeviceTitle from './title.device';
+} from "react-admin";
+import DeviceTitle from "./title.device";
 
 // ------------------------------------------------
 
-export default function EditDevice(props) {
+export default function EditDevice(_props: any) {
   const t = useTranslate();
   return (
     <Edit title={<DeviceTitle />}>
-      <SimpleForm redirect="list">
+      <SimpleForm>
         <TextInput variant="outlined" source="ip" />
         <ReferenceInput
           required
@@ -30,9 +30,9 @@ export default function EditDevice(props) {
           <AutocompleteInput
             optionText="name"
             label="compound"
-            required
+            isRequired={true}
             validate={(v) => {
-              if (v === '') return t('requiredCompound');
+              if (v === "") return t("requiredCompound");
               return undefined;
             }}
           />

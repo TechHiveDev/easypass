@@ -14,22 +14,23 @@ import {
   SelectInput,
   AutocompleteInput,
   WrapperField,
-} from 'react-admin';
-import Actions from '../../reactAdmin/components/Actions';
-import UserType from '../../components/UserType';
-import dateFormatter from '../../utils/dateFormatter';
+} from "react-admin";
+import Actions from "../../reactAdmin/components/Actions";
+import UserType from "../../components/UserType";
+import dateFormatter from "../../utils/dateFormatter";
 
 // ------------------------------------------------
 const inviteFilters = [
   <DateTimeInput label="from" source="createdAt.gte" />,
   <DateTimeInput label="to" source="createdAt.lte" />,
+  // @ts-ignore
   <TextInput />,
   <SelectInput
     label="type"
     source="type"
     choices={[
-      { id: 'Delivery', name: 'Delivery' },
-      { id: 'Visitor', name: 'Visitor' },
+      { id: "Delivery", name: "Delivery" },
+      { id: "Visitor", name: "Visitor" },
     ]}
   />,
   <ReferenceInput

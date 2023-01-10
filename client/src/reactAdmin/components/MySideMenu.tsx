@@ -70,6 +70,7 @@ export default function MySideMenu(props) {
           ) {
             return (
               <div
+                key={index}
                 style={{
                   display: "flex",
                   flexDirection: "row",

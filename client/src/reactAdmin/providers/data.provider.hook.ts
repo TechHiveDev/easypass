@@ -1,10 +1,11 @@
 import simpleRestProvider from "ra-data-simple-rest";
 import { fetchUtils } from "react-admin";
 import config from "../../configs/config";
+
 // =================================================================
 
-const httpClient = (url, options = {}) => {
-  if (!options.headers) {
+const httpClient = (url: string, options: any = {}) => {
+  if (!options?.headers) {
     options.headers = new Headers({ Accept: "application/json" });
   }
   const token = localStorage.getItem("accessToken");
@@ -12,7 +13,9 @@ const httpClient = (url, options = {}) => {
 
   return fetchUtils.fetchJson(url, options);
 };
+
 // =================================================================
+
 const entitiesWithImages = [
   "compound",
   "oauth/register", // custom user
@@ -28,9 +31,14 @@ const entitiesMapper = {
   "announcement/create": "announcement",
   "discover/create": "discover",
 };
+
+// =================================================================
+
 const defaultDataProvider = simpleRestProvider(config?.baseUrl, httpClient);
 
-const uploadImage = async ({ image, entity, id }) => {
+// =================================================================
+
+const uploadImage = async ({ image, entity, id }: any) => {
   const token = localStorage.getItem("accessToken");
   const url = id ? `/api/upload/${entity}?id=${id}` : `/api/upload/${entity}`;
   const formData = new FormData();
@@ -44,9 +52,17 @@ const uploadImage = async ({ image, entity, id }) => {
   });
   return res.json();
 };
+
+// =================================================================
+
 export const dataProvider = {
+  // ---------------------------------
+
   ...defaultDataProvider,
-  create: async (resource, params) => {
+
+  // ---------------------------------
+
+  create: async (resource: any, params: any) => {
     if (entitiesWithImages.includes(resource)) {
       const uploadTarget = resource === "compound" ? "logoUrl" : "photoUrl";
       if (!params?.data?.[uploadTarget]?.rawFile)
@@ -73,7 +89,10 @@ export const dataProvider = {
     }
     return defaultDataProvider.create(resource, params);
   },
-  update: async (resource, params) => {
+
+  // ---------------------------------
+
+  update: async (resource: any, params: any) => {
     if (entitiesWithImages.includes(resource)) {
       let uploadTarget = resource === "compound" ? "logoUrl" : "photoUrl";
       if (!params?.data?.[uploadTarget]?.rawFile)
@@ -97,8 +116,12 @@ export const dataProvider = {
     }
     return defaultDataProvider.update(resource, params);
   },
+
+  // ---------------------------------
 };
+
 // =================================================================
+
 export default function UseDataProvider() {
   return dataProvider;
 }

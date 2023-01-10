@@ -14,7 +14,7 @@ import Actions from "../../reactAdmin/components/Actions";
 
 // ------------------------------------------------
 
-export default function ListDevice(props) {
+export default function ListDevice(_props: any) {
   return (
     <List>
       <Datagrid>
@@ -23,7 +23,6 @@ export default function ListDevice(props) {
         <ReferenceField source="compoundId" reference="compound" link="show">
           <TextField source="name" />
         </ReferenceField>
-
         <Actions label="">
           <ShowButton label="ra.action.show" />
           <EditButton label="ra.action.edit" />

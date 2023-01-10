@@ -6,23 +6,23 @@ import {
   SelectInput,
   AutocompleteInput,
   useTranslate,
-} from 'react-admin';
+} from "react-admin";
 
 // ------------------------------------------------
 
-export default function CreateInvitation(props) {
+export default function CreateInvitation(_props: any) {
   const t = useTranslate();
   return (
     <Create>
-      <SimpleForm redirect="list">
+      <SimpleForm>
         <TextInput variant="outlined" source="name" />
         <SelectInput
           required
           name="type"
           source="type"
           choices={[
-            { id: 'Visitor', name: t('userType.' + 'Visitor') },
-            { id: 'Delivery', name: t('userType.' + 'Delivery') },
+            { id: "Visitor", name: t("userType." + "Visitor") },
+            { id: "Delivery", name: t("userType." + "Delivery") },
           ]}
         />
         <TextInput variant="outlined" source="notes" />
@@ -38,7 +38,7 @@ export default function CreateInvitation(props) {
             label="compound"
             required
             validate={(v) => {
-              if (v === '') return t('requiredCompound');
+              if (v === "") return t("requiredCompound");
               return undefined;
             }}
           />
@@ -49,7 +49,7 @@ export default function CreateInvitation(props) {
             label="user"
             required
             validate={(v) => {
-              if (v === '') return t('requiredUser');
+              if (v === "") return t("requiredUser");
               return undefined;
             }}
           />

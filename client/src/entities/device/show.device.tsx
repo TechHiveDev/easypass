@@ -3,8 +3,6 @@ import {
   SimpleShowLayout,
   TextField,
   NumberField,
-  BooleanField,
-  DateField,
   ReferenceField,
 } from "react-admin";
 import DeviceTitle from "./title.device";
